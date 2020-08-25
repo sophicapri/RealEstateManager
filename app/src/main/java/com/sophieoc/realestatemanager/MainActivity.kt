@@ -3,7 +3,7 @@ package com.sophieoc.realestatemanager
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.sophieoc.realestatemanager.Utils.convertDollarToEuro
+import com.sophieoc.realestatemanager.utils.Utils
 
 class MainActivity : AppCompatActivity() {
     private var textViewMain: TextView? = null
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     // added "String.valueOf()"
     private fun configureTextViewQuantity() {
-        val quantity = convertDollarToEuro(100)
+        val quantity = Utils.convertDollarToEuro(100)
         textViewQuantity!!.textSize = 20f
         textViewQuantity!!.text = quantity.toString()
     }

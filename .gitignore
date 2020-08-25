@@ -12,4 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+/.idea/sonarlint/issuestore
+/.idea/sonarlint
 /gradle.properties

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager
+package com.sophieoc.realestatemanager.utils
 
 import android.content.Context
 import android.net.wifi.WifiManager
@@ -17,9 +17,12 @@ object Utils {
      * @param dollars
      * @return
      */
-    @JvmStatic
     fun convertDollarToEuro(dollars: Int): Int {
-        return (dollars * 0.812).roundToInt()
+        return (dollars * 0.846).roundToInt()
+    }
+
+    fun convertEuroToDollar(euro: Int): Int {
+        return (euro * 1.154).roundToInt()
     }
 
     /**

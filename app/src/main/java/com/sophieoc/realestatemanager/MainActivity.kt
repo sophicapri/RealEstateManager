@@ -1,38 +1,32 @@
-package com.sophieoc.realestatemanager;
+package com.sophieoc.realestatemanager
 
-import android.os.Bundle;
-import android.widget.TextView;
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.sophieoc.realestatemanager.Utils.convertDollarToEuro
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import static java.lang.String.valueOf;
-
-public class MainActivity extends AppCompatActivity {
-
-    private TextView textViewMain;
-    private TextView textViewQuantity;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+class MainActivity : AppCompatActivity() {
+    private var textViewMain: TextView? = null
+    private var textViewQuantity: TextView? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         // changed "activity_SECOND_activity_text_view_main" to "activity_MAIN_activity_text_view_main"
-        this.textViewMain = findViewById(R.id.activity_main_activity_text_view_main);
-        this.textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity);
-
-        this.configureTextViewMain();
-        this.configureTextViewQuantity();
+        textViewMain = findViewById(R.id.activity_main_activity_text_view_main)
+        textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity)
+        configureTextViewMain()
+        configureTextViewQuantity()
     }
 
-    private void configureTextViewMain(){
-        this.textViewMain.setTextSize(15);
-        this.textViewMain.setText("Le premier bien immobilier enregistré vaut ");
+    private fun configureTextViewMain() {
+        textViewMain!!.textSize = 15f
+        textViewMain!!.text = "Le premier bien immobilier enregistré vaut "
     }
 
     // added "String.valueOf()"
-    private void configureTextViewQuantity(){
-        int quantity = Utils.convertDollarToEuro(100);
-        this.textViewQuantity.setTextSize(20);
-        this.textViewQuantity.setText(valueOf(quantity));
+    private fun configureTextViewQuantity() {
+        val quantity = convertDollarToEuro(100)
+        textViewQuantity!!.textSize = 20f
+        textViewQuantity!!.text = quantity.toString()
     }
 }

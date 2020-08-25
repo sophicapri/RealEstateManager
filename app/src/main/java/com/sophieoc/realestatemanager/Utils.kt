@@ -1,26 +1,25 @@
-package com.sophieoc.realestatemanager;
+package com.sophieoc.realestatemanager
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import android.content.Context
+import android.net.wifi.WifiManager
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.roundToInt
 
 /**
  * Created by Philippe on 21/02/2018.
  */
-
-public class Utils {
-
+object Utils {
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      * @param dollars
      * @return
      */
-    public static int convertDollarToEuro(int dollars){
-        return (int) Math.round(dollars * 0.812);
+    @JvmStatic
+    fun convertDollarToEuro(dollars: Int): Int {
+        return (dollars * 0.812).roundToInt()
     }
 
     /**
@@ -28,10 +27,11 @@ public class Utils {
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      * @return
      */
-    public static String getTodayDate(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        return dateFormat.format(new Date());
-    }
+    val todayDate: String
+        get() {
+            val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+            return dateFormat.format(Date())
+        }
 
     /**
      * Vérification de la connexion réseau
@@ -39,8 +39,8 @@ public class Utils {
      * @param context
      * @return
      */
-    public static Boolean isInternetAvailable(Context context){
-        WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-        return wifi.isWifiEnabled();
+    fun isInternetAvailable(context: Context): Boolean {
+        val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        return wifi.isWifiEnabled
     }
 }

@@ -16,6 +16,16 @@ class MainActivity : AppCompatActivity() {
         textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity)
         configureTextViewMain()
         configureTextViewQuantity()
+        verifyConnection()
+        getTodayDate()
+    }
+
+    private fun getTodayDate() {
+        Utils.todayDate
+    }
+
+    private fun verifyConnection() {
+        Utils.isInternetAvailable(this)
     }
 
     private fun configureTextViewMain() {

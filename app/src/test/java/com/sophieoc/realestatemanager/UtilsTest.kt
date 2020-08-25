@@ -1,17 +1,19 @@
-package com.sophieoc.realestatemanager;
+package com.sophieoc.realestatemanager
 
-import org.junit.Test;
+import org.junit.Assert
+import org.junit.Test
+import java.util.*
 
-import static org.junit.Assert.*;
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
+class UtilsTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    fun todayDatePattern_isCorrect() {
+        val todayDate = Calendar.getInstance()
+        val day = todayDate.get(Calendar.DAY_OF_MONTH)
+        val month = todayDate.get(Calendar.MONTH) + 1
+        val year = todayDate.get(Calendar.YEAR)
+        val dateExpected = if (month > 9 ) "$day/$month/$year" else "$day/0$month/$year"
+        println(dateExpected)
+        val todayDateResult = Utils.todayDate
+        Assert.assertEquals(dateExpected, todayDateResult)
     }
 }

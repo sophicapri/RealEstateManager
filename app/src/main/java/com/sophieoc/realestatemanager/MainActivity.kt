@@ -1,6 +1,10 @@
 package com.sophieoc.realestatemanager
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.sophieoc.realestatemanager.utils.Utils
@@ -16,16 +20,10 @@ class MainActivity : AppCompatActivity() {
         textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity)
         configureTextViewMain()
         configureTextViewQuantity()
-        verifyConnection()
-        getTodayDate()
-    }
-
-    private fun getTodayDate() {
-        Utils.todayDate
-    }
-
-    private fun verifyConnection() {
-        Utils.isInternetAvailable(this)
+        textViewMain?.setOnClickListener {
+            val intent = Intent(applicationContext, SecondActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun configureTextViewMain() {

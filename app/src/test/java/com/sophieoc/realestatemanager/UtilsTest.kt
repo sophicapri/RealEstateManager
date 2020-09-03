@@ -14,7 +14,6 @@ class UtilsTest {
         val month = todayDate.get(Calendar.MONTH) + 1
         val year = todayDate.get(Calendar.YEAR)
         val dateExpected = if (month > 9 ) "$day/$month/$year" else "$day/0$month/$year"
-        println(dateExpected)
         val todayDateResult = Utils.todayDate
         Assert.assertEquals(dateExpected, todayDateResult)
     }
@@ -34,5 +33,4 @@ class UtilsTest {
         val result = Utils.convertEuroToDollar(euro)
         Assert.assertEquals(valueExpected, result)
     }
-
 }

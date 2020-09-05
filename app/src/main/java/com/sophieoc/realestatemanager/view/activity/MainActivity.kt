@@ -2,19 +2,23 @@ package com.sophieoc.realestatemanager.view.activity
 
 import android.os.Bundle
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.utils.Utils
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : BaseActivity() {
     private var textViewMain: TextView? = null
     private var textViewQuantity: TextView? = null
+    override fun getLayout(): Int {
+        return R.layout.activity_main
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         // changed "activity_SECOND_activity_text_view_main" to "activity_MAIN_activity_text_view_main"
-        textViewMain = findViewById(R.id.activity_main_activity_text_view_main)
-        textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity)
+        textViewMain = activity_main_activity_text_view_main
+        textViewQuantity = activity_main_activity_text_view_quantity
         configureTextViewMain()
         configureTextViewQuantity()
     }

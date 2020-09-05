@@ -2,10 +2,8 @@ package com.sophieoc.realestatemanager.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.databinding.ActivitySplashScreenBinding
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 
 class SplashScreenActivity : BaseActivity() {
@@ -14,8 +12,8 @@ class SplashScreenActivity : BaseActivity() {
         if (isCurrentUserLogged()) startMainActivity() else startLoginActivity()
     }
 
-    override fun getLayout(): View {
-        return ActivitySplashScreenBinding.inflate(layoutInflater).root
+    override fun getLayout(): Int {
+        return R.layout.activity_splash_screen
     }
 
     fun getViewModelClass(): Class<*>? {

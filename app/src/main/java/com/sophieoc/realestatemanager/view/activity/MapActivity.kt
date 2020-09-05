@@ -7,7 +7,7 @@ import com.sophieoc.realestatemanager.base.BaseActivity
 
 class MapActivity: BaseActivity() {
     private var locationManager: LocationManager? = null
-    override fun getLayout(): View {
+    override fun getLayout(): Int {
         TODO("Not yet implemented")
     }
 

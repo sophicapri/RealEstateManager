@@ -1,8 +1,6 @@
 package com.sophieoc.realestatemanager.base
 
-import android.location.LocationManager
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -16,7 +14,7 @@ abstract class BaseActivity : AppCompatActivity() {
         //
     }
 
-    abstract fun getLayout(): View
+    abstract fun getLayout(): Int
 
     fun isCurrentUserLogged(): Boolean {
         return true

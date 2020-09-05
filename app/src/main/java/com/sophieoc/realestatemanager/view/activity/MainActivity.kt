@@ -1,12 +1,9 @@
-package com.sophieoc.realestatemanager
+package com.sophieoc.realestatemanager.view.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.utils.Utils
 
 class MainActivity : AppCompatActivity() {
@@ -20,10 +17,6 @@ class MainActivity : AppCompatActivity() {
         textViewQuantity = findViewById(R.id.activity_main_activity_text_view_quantity)
         configureTextViewMain()
         configureTextViewQuantity()
-        textViewMain?.setOnClickListener {
-            val intent = Intent(applicationContext, SecondActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun configureTextViewMain() {

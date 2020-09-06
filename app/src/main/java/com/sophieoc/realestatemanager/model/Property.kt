@@ -10,9 +10,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @Entity(tableName = "property",
-        foreignKeys = [ForeignKey(entity = EstateAgent::class,
+        foreignKeys = [ForeignKey(entity = User::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("estateAgentId"))])
+        childColumns = arrayOf("userId"))])
 data class Property (
         @PrimaryKey(autoGenerate = true) val id: Int,
         @ColumnInfo(name = "type") val type: PropertyType,
@@ -28,4 +28,4 @@ data class Property (
         var address: Address,
         var photos: ArrayList<Photo>,
         var pointOfInterests: ArrayList<PointOfInterest>,
-        var estateAgentId: Int)
+        var userId: Int)

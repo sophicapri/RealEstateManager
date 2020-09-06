@@ -3,10 +3,10 @@ package com.sophieoc.realestatemanager.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class EstateAgentAndProperties(
-        @Embedded val estateAgent: EstateAgent,
+data class UserAndProperties(
+        @Embedded val user: User,
         @Relation(
                 parentColumn = "uid",
-                entityColumn = "estateAgentId"
+                entityColumn = "userId"
         ) val properties: List<Property>
 )

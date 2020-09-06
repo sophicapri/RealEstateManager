@@ -24,7 +24,7 @@
         <activity android:name=".view.activity.MainActivity" />
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.MapActivity" />
-        <activity android:name=".view.activity.EstateAgentProfileActivity" />
+        <activity android:name=".view.activity.UserProfileActivity" />
     </application>
 
 </manifest>

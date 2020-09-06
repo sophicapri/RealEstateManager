@@ -28,4 +28,9 @@ data class Property (
         var address: Address,
         var photos: ArrayList<Photo>,
         var pointOfInterests: ArrayList<PointOfInterest>,
-        var userId: Int)
+        var userId: Int
+){
+    constructor():this(-1, PropertyType.FLAT,"",-1,-1,
+            -1,-1,"", PropertyAvailability.AVAILABLE,Date(), Date(),
+            Address(), ArrayList(), ArrayList(), -1)
+}

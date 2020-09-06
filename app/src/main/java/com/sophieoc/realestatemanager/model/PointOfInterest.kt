@@ -16,4 +16,6 @@ data class PointOfInterest(
         @ColumnInfo(name = "address") var address: String,
         @ColumnInfo(name = "distance") var distance: Int,
         val propertyId: Int
-)
+){
+    constructor():this(-1, "","","",-1,-1)
+}

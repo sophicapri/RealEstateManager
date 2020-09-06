@@ -14,4 +14,6 @@ data class Photo(
         @ColumnInfo(name = "url_photo") val urlPhoto: String,
         @ColumnInfo(name = "description") var description: String,
         val propertyId: Int
-)
+){
+    constructor():this(-1, "","",-1)
+}

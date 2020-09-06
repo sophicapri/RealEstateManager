@@ -20,6 +20,7 @@ data class Address (
         @ColumnInfo(name = "country") var country: String,
         val propertyId: Int
 ){
+    constructor():this(-1, "","","","","","","",-1)
 
     fun toLatLng(){
         //

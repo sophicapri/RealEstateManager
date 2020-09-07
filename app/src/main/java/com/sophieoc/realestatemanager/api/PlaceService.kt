@@ -16,7 +16,7 @@ object PlaceService {
     }
 
     private fun initApiKey() {
-     /*   httpClient.addInterceptor(fun(chain: Interceptor.Chain): Response {
+        httpClient.addInterceptor { chain ->
             val original: Request = chain.request()
             val originalHttpUrl: HttpUrl = original.url
             val url: HttpUrl = originalHttpUrl.newBuilder()
@@ -27,9 +27,8 @@ object PlaceService {
             val requestBuilder = original.newBuilder()
                     .url(url)
             val request = requestBuilder.build()
-            return chain.proceed(request)
-        })
-      */
+            chain.proceed(request)
+        }
     }
 
     fun <S> createService(serviceClass: Class<S>?): S {

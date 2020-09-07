@@ -71,7 +71,6 @@ class LoginActivity: BaseActivity() {
         return false
     }
 
-
     private fun updateUI() {
         new_account.visibility = VISIBLE
         add_profile_picture.visibility = VISIBLE

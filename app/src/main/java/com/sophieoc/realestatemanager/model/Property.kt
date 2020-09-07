@@ -1,9 +1,6 @@
 package com.sophieoc.realestatemanager.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import java.util.*
@@ -25,9 +22,9 @@ data class Property (
         @ColumnInfo(name = "availability") val availability: PropertyAvailability,
         @ColumnInfo(name = "date_on_market") val dateOnMarket: Date,
         @ColumnInfo(name = "date_sold") val dateSold: Date?,
-        var address: Address,
-        var photos: ArrayList<Photo>,
-        var pointOfInterests: ArrayList<PointOfInterest>,
+        @Embedded var address: Address,
+        @ColumnInfo(name = "photos")var photos: ArrayList<Photo>,
+        @ColumnInfo(name = "point_of_interest")var pointOfInterests: ArrayList<PointOfInterest>,
         var userId: Int
 ){
     constructor():this(-1, PropertyType.FLAT,"",-1,-1,

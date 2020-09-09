@@ -22,10 +22,9 @@ abstract class RealEstateDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var instance: RealEstateDatabase? = null
-        private val LOCK = Any()
     }
 
-    operator fun invoke(context: Context) = instance?: synchronized(LOCK){
+    operator fun invoke(context: Context) = instance?: synchronized(this){
         instance?: createDatabase(context).also { instance = it}
     }
 

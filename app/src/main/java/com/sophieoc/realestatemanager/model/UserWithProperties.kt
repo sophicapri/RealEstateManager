@@ -3,7 +3,7 @@ package com.sophieoc.realestatemanager.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class UserAndProperties(
+data class UserWithProperties(
         @Embedded val user: User,
         @Relation(
                 parentColumn = "uid",

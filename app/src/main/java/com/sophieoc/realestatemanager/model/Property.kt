@@ -25,9 +25,10 @@ data class Property (
         @Embedded var address: Address,
         @ColumnInfo(name = "photos")var photos: ArrayList<Photo>,
         @ColumnInfo(name = "point_of_interest")var pointOfInterests: ArrayList<PointOfInterest>,
-        var userId: Int
+        @ColumnInfo(name = "user") var user: User
+        //var userId: Int
 ){
     constructor():this(-1, PropertyType.FLAT,"",-1,-1,
             -1,-1,"", PropertyAvailability.AVAILABLE,Date(), Date(),
-            Address(), ArrayList(), ArrayList(), -1)
+            Address(), ArrayList(), ArrayList(), User())
 }

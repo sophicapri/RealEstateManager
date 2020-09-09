@@ -31,7 +31,7 @@ object PlaceService {
         }
     }
 
-    fun <S> createService(serviceClass: Class<S>?): S {
+    fun <S> createService(serviceClass: Class<S>): S {
         initApiKey()
         initLogging()
         val retrofit: Retrofit = Retrofit.Builder()

@@ -10,6 +10,7 @@ android {
         applicationId "com.sophieoc.realestatemanager"
         minSdkVersion 19
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         buildConfigField "String", 'API_KEY',  API_KEY
@@ -28,12 +29,17 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
     implementation 'androidx.navigation:navigation-ui:2.3.0'
@@ -64,6 +70,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+    // Koin
+    def koin_version = "2.0.1"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 }
 repositories {
     mavenCentral()

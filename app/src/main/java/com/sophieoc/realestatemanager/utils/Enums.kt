@@ -12,3 +12,4 @@ enum class PropertyAvailability(val s: String){
     SOLD("Sold")
 }
 
+

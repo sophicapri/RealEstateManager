@@ -11,5 +11,8 @@ class MainActivity : BaseActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //ADD DATA TO ROOM
+        println(viewModel.getData())
+
     }
 }

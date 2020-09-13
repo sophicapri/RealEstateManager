@@ -1,5 +1,5 @@
 package com.sophieoc.realestatemanager.api
 
-interface PlaceAPI {
+interface PlaceApi {
 
 }

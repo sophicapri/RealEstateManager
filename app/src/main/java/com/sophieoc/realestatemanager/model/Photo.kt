@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("propertyId"))])
 data class Photo(
-        @PrimaryKey(autoGenerate = true) val id: Int,
+        @PrimaryKey(autoGenerate = true) val id: Int = -1,
         @ColumnInfo(name = "url_photo") val urlPhoto: String,
         @ColumnInfo(name = "description") var description: String,
         val propertyId: Int

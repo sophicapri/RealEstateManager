@@ -7,6 +7,7 @@ import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
+import java.util.*
 
 class Converters {
 
@@ -39,4 +40,15 @@ class Converters {
 
     @TypeConverter
     fun jsonToEnumPropertyAvailability(value: String) = Gson().fromJson(value, PropertyAvailability::class.java)
+
+
+    @TypeConverter
+    fun toDate(dateLong: Long?): Date? {
+        return dateLong?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun fromDate(date: Date?): Long? {
+        return date?.time
+    }
 }

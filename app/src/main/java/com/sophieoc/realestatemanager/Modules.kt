@@ -1,16 +1,84 @@
 package com.sophieoc.realestatemanager
 
-import com.sophieoc.realestatemanager.repository.PropertyDataRepository
-import com.sophieoc.realestatemanager.repository.UserDataRepository
+import android.app.Application
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.sophieoc.realestatemanager.api.PlaceApi
+import com.sophieoc.realestatemanager.api.PlaceService
+import com.sophieoc.realestatemanager.repository.PropertyRepository
+import com.sophieoc.realestatemanager.repository.UserRepository
+import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
+import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
+import com.sophieoc.realestatemanager.room_database.dao.UserDao
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val appModule = module {
-    // single = defines a singleton (only one instance)
-    single { UserDataRepository() }
+val apiModule = module {
 
-    single { PropertyDataRepository() }
+    fun providePlaceApi(placeService: PlaceService): PlaceApi {
+        return placeService.createService(PlaceApi::class.java)
+    }
+    single { providePlaceApi(get()) }
+    single { PlaceService }
 
-    // factory = creates a new instance every time
-    factory { MyViewModel(get(), get()) }
+}
+
+val databaseModule = module {
+
+    fun provideDatabase(application: Application): RealEstateDatabase {
+        return Room.databaseBuilder(application, RealEstateDatabase::class.java, "RealEstate.db")
+                .fallbackToDestructiveMigration()
+                //.addCallback(roomCallback())
+                .build()
+    }
+
+    fun provideUserDao(database: RealEstateDatabase): UserDao {
+        return database.userDao()
+    }
+
+    fun providePropertyDao(database: RealEstateDatabase): PropertyDao {
+        return database.propertyDao()
+    }
+
+    single { provideDatabase(androidApplication()) }
+    single { provideUserDao(get()) }
+    single { providePropertyDao(get()) }
+}
+
+fun roomCallback(): RoomDatabase.Callback? {
+    return object : RoomDatabase.Callback() {
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            GlobalScope.launch {
+
+            }
+        }
+    }
+}
+
+val repositoryModule = module {
+
+    fun provideUserRepository(userDao : UserDao): UserRepository {
+        return UserRepository(userDao)
+    }
+
+    fun providePropertyRepository(propertyDao: PropertyDao, placeApi: PlaceApi): PropertyRepository {
+        return PropertyRepository(propertyDao, placeApi)
+    }
+    single { provideUserRepository(get()) }
+    single { providePropertyRepository(get(), get()) }
+
+}
+
+val viewModelModule = module {
+    // Specific viewModel pattern to tell Koin how to build CountriesViewModel
+    viewModel {
+        MyViewModel(get(), get())
+    }
+
 }

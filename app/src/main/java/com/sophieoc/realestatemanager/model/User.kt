@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "users")
 data class User(
-        @PrimaryKey(autoGenerate = true) val uid: Int,
+        @PrimaryKey val uid: String,
         @ColumnInfo(name = "first_name") val firstName: String,
         @ColumnInfo(name = "last_name") val lastName: String,
         @ColumnInfo(name = "email") var email: String,
         @ColumnInfo(name = "password") var password: String,
         @ColumnInfo(name = "url_photo") var urlPhoto: String
 ) {
-    constructor() : this(-1, "","", "", "", "todo : add default pic link")
+    constructor() : this("idDefault", "","", "", "", "todo : add default pic link")
 }

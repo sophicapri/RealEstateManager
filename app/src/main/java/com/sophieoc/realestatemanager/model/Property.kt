@@ -8,10 +8,11 @@ import kotlin.collections.ArrayList
 
 @Entity(tableName = "property",
         foreignKeys = [ForeignKey(entity = User::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("userId"))])
-data class Property (
-        @PrimaryKey(autoGenerate = true) val id: Int,
+                parentColumns = arrayOf("uid"),
+                childColumns = arrayOf("user_id"))],
+        indices = [Index(value = ["user_id"])])
+data class Property(
+        @PrimaryKey val id: String,
         @ColumnInfo(name = "type") val type: PropertyType,
         @ColumnInfo(name = "price") var price: String,
         @ColumnInfo(name = "surface") var surface: Int,
@@ -23,12 +24,12 @@ data class Property (
         @ColumnInfo(name = "date_on_market") val dateOnMarket: Date,
         @ColumnInfo(name = "date_sold") val dateSold: Date?,
         @Embedded var address: Address,
-        @ColumnInfo(name = "photos")var photos: ArrayList<Photo>,
-        @ColumnInfo(name = "point_of_interest")var pointOfInterests: ArrayList<PointOfInterest>,
-        @ColumnInfo(name = "user") var user: User
-        //var userId: Int
-){
-    constructor():this(-1, PropertyType.FLAT,"",-1,-1,
-            -1,-1,"", PropertyAvailability.AVAILABLE,Date(), Date(),
-            Address(), ArrayList(), ArrayList(), User())
+        @ColumnInfo(name = "photos") var photos: List<Photo>,
+        @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
+        //@ColumnInfo(name = "user") var user: User
+        @ColumnInfo(name = "user_id") var userId: Int,
+) {
+    constructor() : this("idDefault", PropertyType.FLAT, "", -1, -1,
+            -1, -1, "", PropertyAvailability.AVAILABLE, Date(), Date(),
+            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), -1)
 }

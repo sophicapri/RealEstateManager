@@ -22,6 +22,4 @@ interface UserDao {
 
     @Query("SELECT * FROM users")
     fun getUsersWithProperties(): LiveData<List<UserWithProperties>>
-
-
 }

@@ -26,7 +26,6 @@ data class Property(
         @Embedded var address: Address,
         @ColumnInfo(name = "photos") var photos: List<Photo>,
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
-        //@ColumnInfo(name = "user") var user: User
         @ColumnInfo(name = "user_id") var userId: Int,
 ) {
     constructor() : this("idDefault", PropertyType.FLAT, "", -1, -1,

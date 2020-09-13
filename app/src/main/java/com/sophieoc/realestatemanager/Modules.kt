@@ -33,7 +33,6 @@ val databaseModule = module {
     fun provideDatabase(application: Application): RealEstateDatabase {
         return Room.databaseBuilder(application, RealEstateDatabase::class.java, "RealEstate.db")
                 .fallbackToDestructiveMigration()
-                //.addCallback(roomCallback())
                 .build()
     }
 
@@ -48,17 +47,6 @@ val databaseModule = module {
     single { provideDatabase(androidApplication()) }
     single { provideUserDao(get()) }
     single { providePropertyDao(get()) }
-}
-
-fun roomCallback(): RoomDatabase.Callback? {
-    return object : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            GlobalScope.launch {
-
-            }
-        }
-    }
 }
 
 val repositoryModule = module {

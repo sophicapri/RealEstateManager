@@ -8,7 +8,7 @@ import com.sophieoc.realestatemanager.model.UserWithProperties
 @Dao
 interface UserDao {
     @Insert
-    suspend fun insert(user: User): Long
+    fun insert(user: User): Long
 
     @Update
     suspend fun update(user: User): Int

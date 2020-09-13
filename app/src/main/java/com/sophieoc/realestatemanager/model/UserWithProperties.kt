@@ -9,6 +9,5 @@ data class UserWithProperties(
         @Relation(
                 parentColumn = "uid",
                 entityColumn = "user_id",
-               // entity = Property::class
         ) val properties: List<Property>
 )

@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.model.User
-
 
 @Dao
 interface PropertyDao {

@@ -14,11 +14,9 @@ import kotlinx.coroutines.launch
 class MyViewModel(private val userSource: UserRepository, private val propertySource: PropertyRepository): ViewModel() {
     // FIRESTORE
     val propertiesFirestore = propertySource.getAllPropertiesFirestore()
-    val currentUserLocal = userSource.currentUserLocal
-    val currentUserFirestore =  userSource.currentUserFirestore
 
-    fun getUserByIdFirestore(uid: String): LiveData<User?> {
-        return userSource.getUserByIdFirestore(uid)
+    fun getCurrentUser(): LiveData<User> {
+        return userSource.getCurrentUser()
     }
 
     fun getUserByIdLocal(uid: String): LiveData<UserWithProperties> {

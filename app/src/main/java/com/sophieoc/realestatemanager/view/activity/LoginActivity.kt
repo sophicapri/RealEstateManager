@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
@@ -48,7 +49,9 @@ class LoginActivity : BaseActivity() {
         val response: IdpResponse? = IdpResponse.fromResultIntent(data)
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
-                checkIfUserExistInFirestore()
+                viewModel.getCurrentUser().observe(this, {
+                  startMainActivity()
+                })
             } else { // ERRORS
                     if (response!!.getError()!!.getErrorCode() == ErrorCodes.NO_NETWORK) {
                        // Toast.makeText(this, getString(R.string.error_no_internet), Toast.LENGTH_SHORT).show()
@@ -56,26 +59,6 @@ class LoginActivity : BaseActivity() {
                        // Toast.makeText(this, getString(R.string.error_unknown_error), Toast.LENGTH_SHORT).show()
                     }
             }
-        }
-    }
-
-    private fun checkIfUserExistInFirestore() {
-        getCurrentUser()?.uid?.let {
-            viewModel.getUserByIdFirestore(it).observe(this) { user ->
-                if (user == null) createUserInFirestore() else startMainActivity()
-            }
-        }
-    }
-
-    private fun createUserInFirestore() {
-        if (getCurrentUser() != null) {
-            val urlPicture = if (getCurrentUser()!!.photoUrl != null) getCurrentUser()!!.photoUrl.toString() else null
-            val uid: String = getCurrentUser()!!.uid
-            val username: String = getCurrentUser()!!.displayName!!
-            val email: String = getCurrentUser()!!.email!!
-            val currentUser = User(uid = uid, username = username, email = email, urlPhoto = urlPicture)
-            PreferenceHelper.uid = uid
-            viewModel.insert(currentUser)
         }
     }
 

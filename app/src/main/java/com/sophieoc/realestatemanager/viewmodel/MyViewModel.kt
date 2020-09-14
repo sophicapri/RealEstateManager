@@ -14,15 +14,12 @@ import com.sophieoc.realestatemanager.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class MyViewModel(private val userSource: UserRepository, private val propertySource: PropertyRepository): ViewModel() {
-    val propertiesFirestore = propertySource.getAllPropertiesFirestore()
+    val properties = propertySource.getAllProperties()
+    val currentUser = userSource.currentUser
 
-    fun getCurrentUser(): LiveData<UserWithProperties>? {
-        return userSource.currentUser
+    fun getUserById(uid: String): MutableLiveData<UserWithProperties>? {
+        return userSource.getUserWithProperties(uid)
     }
-
-    fun getUserLocal(uid: String) = userSource.getUserByIdLocal(FirebaseAuth.getInstance().uid.toString())
-
-    fun getUsersLocal(): LiveData<List<UserWithProperties>> { return userSource.getUsersLocal()}
 
     fun getUser(uid :String) = userSource.getUserWithProperties(uid)
 
@@ -30,14 +27,6 @@ class MyViewModel(private val userSource: UserRepository, private val propertySo
 
     fun getPropertyById(propertyId: String): LiveData<Property> {
         return propertySource.getPropertyById(propertyId)
-    }
-
-    fun getPropertiesLocal(): LiveData<List<Property>> {
-        return propertySource.propertiesLocal
-    }
-
-    fun getPropertyByIdLocal(uid: String): LiveData<Property> {
-        return propertySource.getPropertyLocal(uid)
     }
 
     fun update(user: User) = viewModelScope.launch {

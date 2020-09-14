@@ -8,7 +8,7 @@ import com.sophieoc.realestatemanager.model.UserWithProperties
 
 @Dao
 interface UserDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: User): Long
 
     @Update

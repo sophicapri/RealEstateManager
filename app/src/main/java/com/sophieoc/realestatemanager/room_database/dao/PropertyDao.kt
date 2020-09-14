@@ -1,17 +1,15 @@
 package com.sophieoc.realestatemanager.room_database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.sophieoc.realestatemanager.model.Property
+
 
 @Dao
 interface PropertyDao {
 
-    @Insert()
-    suspend fun insert(property: Property)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg property: Property)
 
     @Update
     suspend fun update(property: Property)

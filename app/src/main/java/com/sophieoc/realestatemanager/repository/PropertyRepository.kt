@@ -2,7 +2,6 @@ package com.sophieoc.realestatemanager.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -12,14 +11,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import kotlinx.coroutines.*
+import okhttp3.internal.toImmutableList
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
-    val propertiesFirestore: LiveData<List<Property>> = getAllPropertiesFirestore()
-    val propertiesLocal = propertyDao.getProperties()
 
     fun insert(property: Property): MutableLiveData<Property> {
         val propertyToCreate: MutableLiveData<Property> = MutableLiveData<Property>()
@@ -38,35 +37,47 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         return propertyToCreate
     }
 
-    private fun insertInRoom(property: Property) {
+    private fun insertInRoom(vararg property: Property) {
         val job: CompletableJob = Job()
         job.let {
             CoroutineScope(Dispatchers.IO + it).launch {
-                propertyDao.insert(property)
+                propertyDao.insert(*property)
                 it.complete()
             }
         }
     }
 
+    fun getPropertyById(id: String): LiveData<Property> {
+        val property: MutableLiveData<Property> = MutableLiveData()
+        property.postValue(getPropertyFromRoom(id).value)
+        getPropertyFromFirestore(id, property)
+        return property
+    }
 
-    fun getAllPropertiesFirestore(): MutableLiveData<List<Property>> {
-        val properties = MutableLiveData<List<Property>>()
-        propertyCollectionRef.get().addOnCompleteListener { task: Task<QuerySnapshot> ->
-            if (task.isSuccessful) if (task.result != null)
-                properties.postValue(task.result?.toObjects(Property::class.java))
-            else if (task.exception != null)
-                Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)
-        }
+    fun getAllProperties(): MutableLiveData<List<Property>> {
+        val properties: MutableLiveData<List<Property>> = MutableLiveData()
+        properties.postValue(getPropertiesFromRoom().value)
+        getPropertiesFromFirestore(properties)
         return properties
     }
 
-    fun getPropertyById(id: String): LiveData<Property> {
-        val property: MutableLiveData<Property> = MutableLiveData()
-        property.postValue(getPropertyLocal(id).value)
-        println("propertyDAO description= " + property.value?.description)
-        getPropertyFromFirestore(id, property)
-        println("propertyFIRESTORE description= " + property.value?.description)
-        return property
+    private fun getPropertiesFromRoom() = propertyDao.getProperties()
+
+    private fun getPropertiesFromFirestore(properties: MutableLiveData<List<Property>>) {
+        propertyCollectionRef.get().addOnCompleteListener { task: Task<QuerySnapshot> ->
+            if (task.isSuccessful) {
+                val propertyResult = task.result?.toObjects(Property::class.java)
+                propertyResult?.let {
+                    properties.postValue(it)
+                    insertInRoom(*it.toTypedArray())
+                }
+            }else if (task.exception != null)
+                Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)
+        }
+    }
+
+    private fun getPropertyFromRoom(id: String): LiveData<Property> {
+        return propertyDao.getPropertyById(id)
     }
 
     private fun getPropertyFromFirestore(id: String, property: MutableLiveData<Property>) {
@@ -82,11 +93,6 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         }
     }
 
-    fun getPropertyLocal(id: String): LiveData<Property> {
-        return propertyDao.getPropertyById(id)
-    }
-
 
     suspend fun updateProperty(property: Property) = propertyDao.update(property)
-
 }

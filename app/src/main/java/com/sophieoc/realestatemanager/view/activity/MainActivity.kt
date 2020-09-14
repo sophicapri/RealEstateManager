@@ -18,27 +18,18 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val property = Property()
+       /* val property = Property()
         property.type = PropertyType.FLAT
         property.description = "Great FLATTY!"
         property.userId = getCurrentUser()?.uid.toString()
 
         viewModel.insert(property)
+        */
 
-        viewModel.getPropertyByIdLocal(property.id).observe(this, Observer {
-            if (it != null)
-                println("getProperty LOCALE  description = " + it.description)
-        })
-
-        viewModel.getPropertiesLocal().observe(this, Observer {
-            if (it != null)
-                println("getProperties LOCALE  description = " + it.size)
-        })
-
-        viewModel.getCurrentUser()?.observe(this, Observer {
-            println("current user name = " + it?.user?.username)
-            if (it != null)
-            println("current user property description = " + it.properties.size)
+        viewModel.getPropertyById("3d77d003-deec-424a-8efb-1895e7397d2c").observe(this, Observer {
+            println("what happened above ?")
+            if(it != null)
+            println("description = " + it.description)
         })
     }
 }

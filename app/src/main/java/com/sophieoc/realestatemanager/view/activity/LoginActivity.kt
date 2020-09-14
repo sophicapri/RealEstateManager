@@ -48,9 +48,8 @@ class LoginActivity : BaseActivity() {
         val response: IdpResponse? = IdpResponse.fromResultIntent(data)
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
-                viewModel.getCurrentUser()?.observe(this, {
-                    //println("login activity = " + it.user.username)
-                  startMainActivity()
+                viewModel.currentUser.observe(this, {
+                    startMainActivity()
                 })
             } else { // ERRORS
                     if (response?.error?.errorCode == ErrorCodes.NO_NETWORK) {

@@ -23,7 +23,7 @@ class UserRepository(private val userDao: UserDao) {
     private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     val currentUser = getUserWithProperties(uid)
 
-    fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties>? {
+    fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val currentUser: MutableLiveData<UserWithProperties> = MutableLiveData()
         currentUser.postValue(getUserByIdLocal(uid).value)
         getUserFromFirestore(uid, currentUser)
@@ -103,11 +103,5 @@ class UserRepository(private val userDao: UserDao) {
             // Save in room
             insertInRoom(currentUser)
         }
-    }
-
-    fun getUsersLocal(): LiveData<List<UserWithProperties>> {
-        val result = userDao.getUsersWithProperties()
-        println("users = " + result.value?.size)
-        return result
     }
 }

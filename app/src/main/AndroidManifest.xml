@@ -16,18 +16,18 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <!-- <activity android:name=".view.activity.SplashScreenActivity" android:theme="@style/SplashScreenTheme"> -->
-        <activity android:name=".view.activity.MainActivity">
+        <activity android:name=".view.activity.SplashScreenActivity" android:theme="@style/SplashScreenTheme">
+        <!--<activity android:name=".view.activity.MainActivity"> -->
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-    <!--   <activity android:name=".view.activity.MainActivity" /> -->
+        <activity android:name=".view.activity.MainActivity" />
     <activity android:name=".view.activity.LoginActivity" />
     <activity android:name=".view.activity.MapActivity" />
     <activity android:name=".view.activity.UserProfileActivity" />
-    <activity android:name=".view.activity.SplashScreenActivity" />
+   <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
 </application>
 
     </manifest>

@@ -4,28 +4,33 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 
 class UserRepository(private val userDao: UserDao) {
     private val userCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("users")
-    private val uid = PreferenceHelper.uid
+    private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    val currentUser = getUserWithProperties(uid)
 
-    fun getCurrentUser(): LiveData<User> {
-        val currentUser: MutableLiveData<User> = MutableLiveData()
+    fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties>? {
         // TODO: récupérer le user depuis Room
-        currentUser.postValue(getUserByIdLocal(uid).value?.user)
+        val currentUser: MutableLiveData<UserWithProperties> = MutableLiveData()
+        currentUser.postValue(getUserByIdLocal(uid).value)
         // TODO: le renvoyer à la vue
         // TODO: récupérer le user depuis Firestore
-        getUserByIdFirestore(uid, currentUser)
+        // currentUser.postValue(UserWithProperties(getUserFromFirestore(uid)))
+        getUserFromFirestore(uid, currentUser)
         // TODO: renvoyer à la vue
         return currentUser
     }
@@ -35,8 +40,14 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getUserWithPropertiesById(uid)
     }
 
-    fun insert(user: User): Long {
-        return userDao.insert(user)
+    private fun insertInRoom(user: User) {
+        val job: CompletableJob = Job()
+                job.let {
+                    CoroutineScope(IO + it).launch {
+                        userDao.insert(user)
+                        it.complete()
+                    }
+                }
     }
 
     suspend fun update(user: User): Int {
@@ -48,30 +59,63 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     // FIRESTORE
-    fun getUserByIdFirestore(uid: String, user: MutableLiveData<User>) {
+    private fun getUserFromFirestore(uid: String, userMutable: MutableLiveData<UserWithProperties>) {
         userCollectionRef.document(uid).get().addOnCompleteListener { task: Task<DocumentSnapshot?> ->
             if (task.isSuccessful) {
-                task.result?.toObject(User::class.java)?.let { currentUser ->
-                    insert(currentUser)
-                    user.postValue(currentUser)
+                val userResult = task.result?.toObject(User::class.java)
+                userResult?.let { user ->
+                    insertInRoom(user)
+                    getUserPropertiesFromFirestore(uid, userMutable, user)
+                    //userMutable.value?.user = currentUser
                 }
+                if (userResult == null)
+                    saveUserInFirestoreAndRoom()
             } else if (task.exception != null)
                 Log.e("TAG", "getUser " + task.exception!!.message)
-            else if (!task.isSuccessful) {
-                createUserInFirestore()
-            }
         }
     }
 
-    private fun createUserInFirestore() {
+    private fun getUserPropertiesFromFirestore(uid: String, userMutable: MutableLiveData<UserWithProperties>, user: User) {
+        propertyCollectionRef.whereEqualTo("userId", uid).get().addOnCompleteListener { task: Task<QuerySnapshot> ->
+            if (task.isSuccessful)
+                task.result?.toObjects(Property::class.java)?.let {
+                    //user.value?.properties = it
+                    userMutable.postValue(UserWithProperties(user, it))
+                    println("properties = " + it.size)
+                }
+            else if (task.exception != null)
+                Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)
+        }
+    }
+
+    private fun saveUserInFirestoreAndRoom() {
         FirebaseAuth.getInstance().currentUser?.let { firebaseUser ->
             val urlPicture = firebaseUser.photoUrl?.toString()
             val uid: String = firebaseUser.uid
             val username: String = firebaseUser.displayName ?: ""
             val email: String = firebaseUser.email ?: ""
             val currentUser = User(uid = uid, username = username, email = email, urlPhoto = urlPicture)
-            insert(currentUser)
+            val userToCreate = MutableLiveData<User>()
+            userCollectionRef.document(uid).get().addOnCompleteListener { uidTask: Task<DocumentSnapshot?> ->
+                if (uidTask.isSuccessful) {
+                    if (uidTask.result != null) userCollectionRef.document(uid).set(currentUser).addOnCompleteListener { userCreationTask: Task<Void?> ->
+                        if (userCreationTask.isSuccessful)
+                            userToCreate.setValue(currentUser)
+                        else if (userCreationTask.exception != null)
+                            Log.e("TAG", " createUserInFirestore: " + userCreationTask.exception?.message)
+                    }
+                } else if (uidTask.exception != null)
+                    Log.e("TAG", " createUser: " + uidTask.exception?.message)
+            }
             PreferenceHelper.uid = uid
+            // Save in room
+            insertInRoom(currentUser)
         }
+    }
+
+    fun getUsersLocal(): LiveData<List<UserWithProperties>> {
+        val result = userDao.getUsersWithProperties()
+        println("users = " + result.value?.size)
+        return result
     }
 }

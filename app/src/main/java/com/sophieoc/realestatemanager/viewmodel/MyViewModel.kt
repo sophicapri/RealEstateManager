@@ -2,8 +2,10 @@ package com.sophieoc.realestatemanager.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
@@ -12,28 +14,22 @@ import com.sophieoc.realestatemanager.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class MyViewModel(private val userSource: UserRepository, private val propertySource: PropertyRepository): ViewModel() {
-    // FIRESTORE
     val propertiesFirestore = propertySource.getAllPropertiesFirestore()
 
-    fun getCurrentUser(): LiveData<User> {
-        return userSource.getCurrentUser()
+    fun getCurrentUser(): LiveData<UserWithProperties>? {
+        return userSource.currentUser
     }
 
-    fun getUserByIdLocal(uid: String): LiveData<UserWithProperties> {
-        return userSource.getUserByIdLocal(uid)
-    }
+    fun getUserLocal(uid: String) = userSource.getUserByIdLocal(FirebaseAuth.getInstance().uid.toString())
 
-    fun getUserPropertiesByIdFirestore(uid: String): LiveData<List<Property?>> {
-        return propertySource.getUserPropertiesById(uid)
-    }
+    fun getUsersLocal(): LiveData<List<UserWithProperties>> { return userSource.getUsersLocal()}
 
-    // ROOM
-    val propertiesLocal = propertySource.propertiesLocal
+    fun getUser(uid :String) = userSource.getUserWithProperties(uid)
 
-    fun insert(user: User) = viewModelScope.launch {
-        val newRowId = userSource.insert(user)
-        if (newRowId < 0)
-            Log.e("TAG", "insert user: failed")
+    fun insert(property: Property): LiveData<Property> = propertySource.insert(property)
+
+    fun getPropertyById(propertyId: String) {
+        propertySource.getPropertyById(propertyId)
     }
 
     fun update(user: User) = viewModelScope.launch {
@@ -48,5 +44,7 @@ class MyViewModel(private val userSource: UserRepository, private val propertySo
             Log.e("TAG", "delete users: failed")
     }
 
-    fun getPropertyByIdLocal(id: String) = propertySource.getPropertyById(id)
+    fun getUserByIdLocal(uid: String): LiveData<UserWithProperties> {
+        return userSource.getUserByIdLocal(uid)
+    }
 }

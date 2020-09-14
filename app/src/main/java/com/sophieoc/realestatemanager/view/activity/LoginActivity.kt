@@ -27,35 +27,35 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // change to google button
-        next_button.setOnClickListener { startSignInWithGoogle()}
+        google_sign_in_btn.setOnClickListener { startSignInWithGoogle()}
     }
 
     private fun startSignInWithGoogle() {
         startActivityForResult(AuthUI.getInstance()
                 .createSignInIntentBuilder()
-                .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build())) //GOOGLE
+                .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build()))
                 .setIsSmartLockEnabled(false, true)
                 .build(), RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) handleResponseAfterSignIn(requestCode, resultCode, data)
-        }
+        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK)
+            handleResponseAfterSignIn(requestCode, resultCode, data)
     }
 
     private fun handleResponseAfterSignIn(requestCode: Int, resultCode: Int, data: Intent?) {
         val response: IdpResponse? = IdpResponse.fromResultIntent(data)
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
-                viewModel.getCurrentUser().observe(this, {
+                viewModel.getCurrentUser()?.observe(this, {
+                    //println("login activity = " + it.user.username)
                   startMainActivity()
                 })
             } else { // ERRORS
-                    if (response!!.getError()!!.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    if (response?.error?.errorCode == ErrorCodes.NO_NETWORK) {
                        // Toast.makeText(this, getString(R.string.error_no_internet), Toast.LENGTH_SHORT).show()
-                    } else if (response.getError()!!.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    } else if (response?.error?.errorCode == ErrorCodes.UNKNOWN_ERROR) {
                        // Toast.makeText(this, getString(R.string.error_unknown_error), Toast.LENGTH_SHORT).show()
                     }
             }

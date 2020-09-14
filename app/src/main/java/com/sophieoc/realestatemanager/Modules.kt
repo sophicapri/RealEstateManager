@@ -11,6 +11,7 @@ import com.sophieoc.realestatemanager.repository.UserRepository
 import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
+import com.sophieoc.realestatemanager.utils.DATABASE_NAME
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ val apiModule = module {
 val databaseModule = module {
 
     fun provideDatabase(application: Application): RealEstateDatabase {
-        return Room.databaseBuilder(application, RealEstateDatabase::class.java, "RealEstate.db")
+        return Room.databaseBuilder(application, RealEstateDatabase::class.java, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
     }

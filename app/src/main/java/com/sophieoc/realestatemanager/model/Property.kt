@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
         indices = [Index(value = ["user_id"])])
 data class Property(
         @PrimaryKey val id: String,
-        @ColumnInfo(name = "type") val type: PropertyType,
+        @ColumnInfo(name = "type") var type: PropertyType,
         @ColumnInfo(name = "price") var price: String,
         @ColumnInfo(name = "surface") var surface: Int,
         @ColumnInfo(name = "number_of_rooms") var numberOfRooms: Int,
@@ -26,9 +26,9 @@ data class Property(
         @Embedded var address: Address,
         @ColumnInfo(name = "photos") var photos: List<Photo>,
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
-        @ColumnInfo(name = "user_id") var userId: Int,
+        @ColumnInfo(name = "user_id") var userId: String,
 ) {
-    constructor() : this("idDefault", PropertyType.FLAT, "", -1, -1,
+    constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, "", -1, -1,
             -1, -1, "", PropertyAvailability.AVAILABLE, Date(), Date(),
-            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), -1)
+            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "")
 }

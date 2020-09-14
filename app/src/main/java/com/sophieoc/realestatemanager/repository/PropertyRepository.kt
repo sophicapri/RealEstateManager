@@ -23,13 +23,12 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
 
     fun insert(property: Property): MutableLiveData<Property> {
         val propertyToCreate: MutableLiveData<Property> = MutableLiveData<Property>()
-        propertyCollectionRef.document(property.id).get().addOnCompleteListener(OnCompleteListener {
-            propertyIdTask: Task<DocumentSnapshot?> ->
+        propertyCollectionRef.document(property.id).get().addOnCompleteListener(OnCompleteListener { propertyIdTask: Task<DocumentSnapshot?> ->
             if (propertyIdTask.isSuccessful) {
                 if (propertyIdTask.result != null) propertyCollectionRef.document(property.id).set(property)
                         .addOnCompleteListener(OnCompleteListener { propertyCreationTask: Task<Void?> ->
                             if (propertyCreationTask.isSuccessful) {
-                                propertyToCreate.value = property
+                                propertyToCreate.postValue(property)
                                 insertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
                                 Log.e("TAG", " createProperty: " + propertyCreationTask.exception?.message)
@@ -41,20 +40,10 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
 
     private fun insertInRoom(property: Property) {
         val job: CompletableJob = Job()
-       object : LiveData<Long>() {
-            override fun onActive() {
-                super.onActive()
-                job.let {
-                    CoroutineScope(Dispatchers.IO + it).launch {
-                        val newRowId = propertyDao.insert(property)
-                        withContext(Dispatchers.Main) {
-                            value = newRowId
-                            if (newRowId < 0)
-                                Log.e("TAG", "insert property: failed")
-                        }
-                        it.complete()
-                    }
-                }
+        job.let {
+            CoroutineScope(Dispatchers.IO + it).launch {
+                propertyDao.insert(property)
+                it.complete()
             }
         }
     }
@@ -71,12 +60,12 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         return properties
     }
 
-
-    fun getPropertyById(id: String): LiveData<Property>? {
-        val property: MutableLiveData<Property>? = getPropertyLocal(id)
-        println("propertyDAO description= " + property?.value?.description)
-        property?.let { getPropertyFromFirestore(id, it) }
-        println("propertyFIRESTORE description= " + property?.value?.description)
+    fun getPropertyById(id: String): LiveData<Property> {
+        val property: MutableLiveData<Property> = MutableLiveData()
+        property.postValue(getPropertyLocal(id).value)
+        println("propertyDAO description= " + property.value?.description)
+        getPropertyFromFirestore(id, property)
+        println("propertyFIRESTORE description= " + property.value?.description)
         return property
     }
 
@@ -85,7 +74,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             if (task.isSuccessful) {
                 val propertyResult = task.result?.toObject(Property::class.java)
                 propertyResult?.let { it ->
-                    property.value = it
+                    property.postValue(it)
                     insertInRoom(it)
                 }
             } else if (task.exception != null)
@@ -93,11 +82,8 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         }
     }
 
-    private fun getPropertyLocal(id: String): MutableLiveData<Property>? {
-        val property = MutableLiveData<Property>()
-        val mediator = MediatorLiveData<Unit>()
-        mediator.addSource(propertyDao.getPropertyById(id)) { property.value = it }
-        return property
+    fun getPropertyLocal(id: String): LiveData<Property> {
+        return propertyDao.getPropertyById(id)
     }
 
 

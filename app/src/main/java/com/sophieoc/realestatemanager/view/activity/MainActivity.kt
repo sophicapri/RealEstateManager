@@ -19,23 +19,26 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         val property = Property()
-        property.type = PropertyType.DUPLEX
-        property.description = "Great duplex!"
+        property.type = PropertyType.FLAT
+        property.description = "Great FLATTY!"
         property.userId = getCurrentUser()?.uid.toString()
 
-        //viewModel.insert(property)
-        viewModel.getUsersLocal().observe(this, Observer {
-            println("local users = " + it.size)
+        viewModel.insert(property)
+
+        viewModel.getPropertyByIdLocal(property.id).observe(this, Observer {
+            if (it != null)
+                println("getProperty LOCALE  description = " + it.description)
         })
 
-        viewModel.getUserByIdLocal(getCurrentUser()?.uid.toString()).observe(this, Observer {
-            println("userlocal MAIN = " + it.user.username)
+        viewModel.getPropertiesLocal().observe(this, Observer {
+            if (it != null)
+                println("getProperties LOCALE  description = " + it.size)
         })
 
         viewModel.getCurrentUser()?.observe(this, Observer {
             println("current user name = " + it?.user?.username)
             if (it != null)
-            println("current user property description = " + it.properties[0].description)
+            println("current user property description = " + it.properties.size)
         })
     }
 }

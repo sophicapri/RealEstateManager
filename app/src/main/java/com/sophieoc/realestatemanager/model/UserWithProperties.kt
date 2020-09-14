@@ -5,9 +5,9 @@ import androidx.room.Relation
 
 
 data class UserWithProperties(
-        @Embedded var user: User,
+        @Embedded val user: User,
         @Relation(
                 parentColumn = "uid",
                 entityColumn = "user_id",
-        ) var properties: List<Property>
+        ) val properties: List<Property>
 )

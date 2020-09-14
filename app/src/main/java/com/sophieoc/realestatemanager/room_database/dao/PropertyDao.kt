@@ -11,10 +11,10 @@ import com.sophieoc.realestatemanager.model.Property
 interface PropertyDao {
 
     @Insert()
-    suspend fun insert(property: Property): Long
+    suspend fun insert(property: Property)
 
     @Update
-    suspend fun update(property: Property): Int
+    suspend fun update(property: Property)
 
     @Query("SELECT * FROM property")
     fun getProperties(): LiveData<List<Property>>

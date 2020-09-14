@@ -24,14 +24,9 @@ class UserRepository(private val userDao: UserDao) {
     val currentUser = getUserWithProperties(uid)
 
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties>? {
-        // TODO: récupérer le user depuis Room
         val currentUser: MutableLiveData<UserWithProperties> = MutableLiveData()
         currentUser.postValue(getUserByIdLocal(uid).value)
-        // TODO: le renvoyer à la vue
-        // TODO: récupérer le user depuis Firestore
-        // currentUser.postValue(UserWithProperties(getUserFromFirestore(uid)))
         getUserFromFirestore(uid, currentUser)
-        // TODO: renvoyer à la vue
         return currentUser
     }
 
@@ -42,12 +37,12 @@ class UserRepository(private val userDao: UserDao) {
 
     private fun insertInRoom(user: User) {
         val job: CompletableJob = Job()
-                job.let {
-                    CoroutineScope(IO + it).launch {
-                        userDao.insert(user)
-                        it.complete()
-                    }
-                }
+        job.let {
+            CoroutineScope(IO + it).launch {
+                userDao.insert(user)
+                it.complete()
+            }
+        }
     }
 
     suspend fun update(user: User): Int {
@@ -66,7 +61,6 @@ class UserRepository(private val userDao: UserDao) {
                 userResult?.let { user ->
                     insertInRoom(user)
                     getUserPropertiesFromFirestore(uid, userMutable, user)
-                    //userMutable.value?.user = currentUser
                 }
                 if (userResult == null)
                     saveUserInFirestoreAndRoom()
@@ -79,9 +73,7 @@ class UserRepository(private val userDao: UserDao) {
         propertyCollectionRef.whereEqualTo("userId", uid).get().addOnCompleteListener { task: Task<QuerySnapshot> ->
             if (task.isSuccessful)
                 task.result?.toObjects(Property::class.java)?.let {
-                    //user.value?.properties = it
                     userMutable.postValue(UserWithProperties(user, it))
-                    println("properties = " + it.size)
                 }
             else if (task.exception != null)
                 Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)

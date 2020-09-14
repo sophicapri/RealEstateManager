@@ -28,8 +28,16 @@ class MyViewModel(private val userSource: UserRepository, private val propertySo
 
     fun insert(property: Property): LiveData<Property> = propertySource.insert(property)
 
-    fun getPropertyById(propertyId: String) {
-        propertySource.getPropertyById(propertyId)
+    fun getPropertyById(propertyId: String): LiveData<Property> {
+        return propertySource.getPropertyById(propertyId)
+    }
+
+    fun getPropertiesLocal(): LiveData<List<Property>> {
+        return propertySource.propertiesLocal
+    }
+
+    fun getPropertyByIdLocal(uid: String): LiveData<Property> {
+        return propertySource.getPropertyLocal(uid)
     }
 
     fun update(user: User) = viewModelScope.launch {

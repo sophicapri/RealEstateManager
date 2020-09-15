@@ -9,7 +9,7 @@ data class User(
         @PrimaryKey val uid: String,
         @ColumnInfo(name = "username") var username: String,
         @ColumnInfo(name = "email") var email: String,
-        @ColumnInfo(name = "url_photo") var urlPhoto: String?
+        @ColumnInfo(name = "url_photo") var urlPhoto: String
 ) {
     constructor() : this("idDefault","", "", "todo : add default pic link")
 }

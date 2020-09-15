@@ -78,7 +78,7 @@ class UserRepository(private val userDao: UserDao) {
 
     private fun createUserAndSaveInDB() {
         firebaseUser?.let { firebaseUser ->
-            val urlPicture = firebaseUser.photoUrl?.toString()
+            val urlPicture = firebaseUser.photoUrl.toString()
             val uid: String = firebaseUser.uid
             val username: String = firebaseUser.displayName ?: ""
             val email: String = firebaseUser.email ?: ""

@@ -20,33 +20,29 @@ import kotlinx.coroutines.Dispatchers.IO
 class UserRepository(private val userDao: UserDao) {
     private val userCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("users")
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
-    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
-    val currentUser = getUserWithProperties(uid)
+    private val firebaseUser = FirebaseAuth.getInstance().currentUser
+    val currentUser = getUserWithProperties(firebaseUser?.uid.toString())
 
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
-        val currentUser: MutableLiveData<UserWithProperties> = MutableLiveData()
-        currentUser.postValue(getUserByIdLocal(uid).value)
-        getUserFromFirestore(uid, currentUser)
-        return currentUser
+        val user: MutableLiveData<UserWithProperties> = MutableLiveData()
+        user.postValue(getUserFromRoom(uid).value)
+        getUserFromFirestore(uid, user)
+        return user
     }
 
     // ROOM
-    fun getUserByIdLocal(uid: String): LiveData<UserWithProperties> {
+    private fun getUserFromRoom(uid: String): LiveData<UserWithProperties> {
         return userDao.getUserWithPropertiesById(uid)
     }
 
-    private fun insertInRoom(user: User) {
+    private fun upsertInRoom(user: User) {
         val job: CompletableJob = Job()
         job.let {
             CoroutineScope(IO + it).launch {
-                userDao.insert(user)
+                userDao.upsert(user)
                 it.complete()
             }
         }
-    }
-
-    suspend fun update(user: User): Int {
-        return userDao.update(user)
     }
 
     suspend fun deleteUsers(): Int {
@@ -59,11 +55,11 @@ class UserRepository(private val userDao: UserDao) {
             if (task.isSuccessful) {
                 val userResult = task.result?.toObject(User::class.java)
                 userResult?.let { user ->
-                    insertInRoom(user)
+                    upsertInRoom(user)
                     getUserPropertiesFromFirestore(uid, userMutable, user)
                 }
                 if (userResult == null)
-                    saveUserInFirestoreAndRoom()
+                    createUserAndSaveInDB()
             } else if (task.exception != null)
                 Log.e("TAG", "getUser " + task.exception!!.message)
         }
@@ -80,28 +76,30 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
-    private fun saveUserInFirestoreAndRoom() {
-        FirebaseAuth.getInstance().currentUser?.let { firebaseUser ->
+    private fun createUserAndSaveInDB() {
+        firebaseUser?.let { firebaseUser ->
             val urlPicture = firebaseUser.photoUrl?.toString()
             val uid: String = firebaseUser.uid
             val username: String = firebaseUser.displayName ?: ""
             val email: String = firebaseUser.email ?: ""
             val currentUser = User(uid = uid, username = username, email = email, urlPhoto = urlPicture)
-            val userToCreate = MutableLiveData<User>()
-            userCollectionRef.document(uid).get().addOnCompleteListener { uidTask: Task<DocumentSnapshot?> ->
-                if (uidTask.isSuccessful) {
-                    if (uidTask.result != null) userCollectionRef.document(uid).set(currentUser).addOnCompleteListener { userCreationTask: Task<Void?> ->
-                        if (userCreationTask.isSuccessful)
-                            userToCreate.setValue(currentUser)
-                        else if (userCreationTask.exception != null)
-                            Log.e("TAG", " createUserInFirestore: " + userCreationTask.exception?.message)
-                    }
-                } else if (uidTask.exception != null)
-                    Log.e("TAG", " createUser: " + uidTask.exception?.message)
-            }
+            upsertUser(currentUser)
             PreferenceHelper.uid = uid
-            // Save in room
-            insertInRoom(currentUser)
+        }
+    }
+
+    fun upsertUser(user: User) {
+        userCollectionRef.document(user.uid).get().addOnCompleteListener { task: Task<DocumentSnapshot?> ->
+            if (task.isSuccessful) {
+                if (task.result != null)
+                    userCollectionRef.document(user.uid).set(user).addOnCompleteListener { userUpsertTask: Task<Void?> ->
+                    if (userUpsertTask.isSuccessful)
+                        upsertInRoom(user)
+                        else if (userUpsertTask.exception != null)
+                        Log.e("TAG", "upsertUserTask " + userUpsertTask.exception?.message)
+                }
+            } else if (task.exception != null)
+                Log.e("TAG", "upsertUser " + task.exception!!.message)
         }
     }
 }

@@ -8,20 +8,27 @@ import com.sophieoc.realestatemanager.model.UserWithProperties
 
 @Dao
 interface UserDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(user: User): Long
 
     @Update
-    suspend fun update(user: User): Int
+    suspend fun update(user: User)
+
+    suspend fun upsert(user: User) {
+        val id: Long = insert(user)
+        if (id == -1L) {
+            update(user)
+        }
+    }
 
     @Transaction
     @Query("SELECT * FROM users WHERE uid = :uid")
     fun getUserWithPropertiesById(uid: String): LiveData<UserWithProperties>
 
-    @Query("DELETE FROM users")
-    suspend fun deleteUsers(): Int
-
     @Transaction
     @Query("SELECT * FROM users")
     fun getUsersWithProperties(): LiveData<List<UserWithProperties>>
+
+    @Query("DELETE FROM users")
+    suspend fun deleteUsers(): Int
 }

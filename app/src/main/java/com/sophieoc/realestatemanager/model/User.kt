@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "users")
 data class User(
         @PrimaryKey val uid: String,
-        @ColumnInfo(name = "username") val username: String,
+        @ColumnInfo(name = "username") var username: String,
         @ColumnInfo(name = "email") var email: String,
         @ColumnInfo(name = "url_photo") var urlPhoto: String?
 ) {

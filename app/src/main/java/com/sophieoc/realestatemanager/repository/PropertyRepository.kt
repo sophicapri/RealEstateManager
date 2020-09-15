@@ -13,14 +13,12 @@ import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import kotlinx.coroutines.*
-import okhttp3.internal.toImmutableList
-import java.util.*
-import kotlin.collections.ArrayList
 
 class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
+    private var job: CompletableJob? = null
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
 
-    fun insert(property: Property): MutableLiveData<Property> {
+    fun upsert(property: Property): MutableLiveData<Property> {
         val propertyToCreate: MutableLiveData<Property> = MutableLiveData<Property>()
         propertyCollectionRef.document(property.id).get().addOnCompleteListener(OnCompleteListener { propertyIdTask: Task<DocumentSnapshot?> ->
             if (propertyIdTask.isSuccessful) {
@@ -28,7 +26,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                         .addOnCompleteListener(OnCompleteListener { propertyCreationTask: Task<Void?> ->
                             if (propertyCreationTask.isSuccessful) {
                                 propertyToCreate.postValue(property)
-                                insertInRoom(property)
+                                upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
                                 Log.e("TAG", " createProperty: " + propertyCreationTask.exception?.message)
                         })
@@ -37,11 +35,11 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         return propertyToCreate
     }
 
-    private fun insertInRoom(vararg property: Property) {
-        val job: CompletableJob = Job()
-        job.let {
+    private fun upsertInRoom(property: Property) {
+        job = Job()
+        job?.let {
             CoroutineScope(Dispatchers.IO + it).launch {
-                propertyDao.insert(*property)
+                propertyDao.upsert(property)
                 it.complete()
             }
         }
@@ -69,7 +67,6 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                 val propertyResult = task.result?.toObjects(Property::class.java)
                 propertyResult?.let {
                     properties.postValue(it)
-                    insertInRoom(*it.toTypedArray())
                 }
             }else if (task.exception != null)
                 Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)
@@ -86,13 +83,10 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                 val propertyResult = task.result?.toObject(Property::class.java)
                 propertyResult?.let { it ->
                     property.postValue(it)
-                    insertInRoom(it)
+                    upsertInRoom(it)
                 }
             } else if (task.exception != null)
                 Log.e("TAG", "getUser " + task.exception!!.message)
         }
     }
-
-
-    suspend fun updateProperty(property: Property) = propertyDao.update(property)
 }

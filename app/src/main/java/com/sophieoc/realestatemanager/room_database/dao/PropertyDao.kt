@@ -8,11 +8,18 @@ import com.sophieoc.realestatemanager.model.Property
 @Dao
 interface PropertyDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg property: Property)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(property: Property): Long
 
     @Update
     suspend fun update(property: Property)
+
+    suspend fun upsert(property: Property) {
+        val id: Long = insert(property)
+        if (id == -1L) {
+            update(property)
+        }
+    }
 
     @Query("SELECT * FROM property")
     fun getProperties(): LiveData<List<Property>>

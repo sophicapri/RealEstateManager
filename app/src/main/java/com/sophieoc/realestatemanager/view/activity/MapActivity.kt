@@ -12,7 +12,7 @@ import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import kotlinx.android.synthetic.main.fragment_map.*
 
 class MapActivity : BaseActivity() {
-    private var locationManager: LocationManager? = null
+    lateinit var locationManager: LocationManager
 
     override fun getLayout() = R.layout.activity_map
 

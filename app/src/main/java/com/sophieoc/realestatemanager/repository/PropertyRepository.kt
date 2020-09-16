@@ -11,8 +11,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.model.json_to_java.Location
+import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
+import com.sophieoc.realestatemanager.model.json_to_java.PlacesResult
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 
 class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
     private var job: CompletableJob? = null
@@ -68,7 +72,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                 propertyResult?.let {
                     properties.postValue(it)
                 }
-            }else if (task.exception != null)
+            } else if (task.exception != null)
                 Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)
         }
     }
@@ -89,4 +93,24 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                 Log.e("TAG", "getUser " + task.exception!!.message)
         }
     }
+
+    fun getNearbyPointOfInterests(location: String): LiveData<List<PlaceDetails>> {
+        job = Job()
+        return object : LiveData<List<PlaceDetails>>() {
+            override fun onActive() {
+                super.onActive()
+                job?.let{
+                    CoroutineScope(Dispatchers.IO + it).launch {
+                        val placeDetailsList = placeApi.getNearbyPlaces(location).placeDetails
+                        withContext(Main){
+                            value = placeDetailsList
+                            it.complete()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun cancelJobs() = job?.cancel()
 }

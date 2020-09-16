@@ -2,12 +2,14 @@ package com.sophieoc.realestatemanager.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.model.Property
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Class as Class
 
@@ -27,6 +29,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         configurePropertyDetailFragment()
         configureDrawerLayout()
+
+       /* val property = Property()
+        property.address.streetNumber = "21"
+        property.address.city = "Arpajon"
+        property.address.streetName = "Edouard Robert"
+        property.address.postalCode = "91290"
+        property.address.country = "France"
+
+        Log.d(TAG, "onCreate: property address in string format = " + property.address.toString())
+
+        */
     }
 
 

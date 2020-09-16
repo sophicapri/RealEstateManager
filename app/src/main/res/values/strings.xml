@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
+    <string name="open_navigation_drawer">Open menu drawer</string>
+    <string name="close_navigation_drawer">Close menu drawer</string>
 </resources>

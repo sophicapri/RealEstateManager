@@ -12,7 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Profil Agent"
+        app:title="Profile Agent"
         app:titleTextColor="#FFFFFF"
         app:navigationIcon="@drawable/ic_baseline_arrow_white_24"/>
 

@@ -9,13 +9,15 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
+import com.sophieoc.realestatemanager.view.fragment.UserProfileFragment
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
-    var fragmentMap = MapFragment()
+    val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
+    val fragmentUser = UserProfileFragment()
     val fragmentProfileDetail = PropertyDetailFragment()
     val viewModel by viewModel<MyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {

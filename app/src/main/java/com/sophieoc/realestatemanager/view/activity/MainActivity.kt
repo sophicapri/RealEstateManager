@@ -29,17 +29,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         configurePropertyDetailFragment()
         configureDrawerLayout()
-
-       /* val property = Property()
-        property.address.streetNumber = "21"
-        property.address.city = "Arpajon"
-        property.address.streetName = "Edouard Robert"
-        property.address.postalCode = "91290"
-        property.address.country = "France"
-
-        Log.d(TAG, "onCreate: property address in string format = " + property.address.toString())
-
-        */
     }
 
 

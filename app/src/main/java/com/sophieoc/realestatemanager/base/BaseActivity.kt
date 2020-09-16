@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.base
 
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseActivity : AppCompatActivity() {
+    lateinit var locationManager: LocationManager
     lateinit var auth: FirebaseAuth
     val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
@@ -22,6 +24,7 @@ abstract class BaseActivity : AppCompatActivity() {
     val viewModel by viewModel<MyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         auth = FirebaseAuth.getInstance()
         setContentView(getLayout())
     }

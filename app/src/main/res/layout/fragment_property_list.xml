@@ -2,24 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-        <Button
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/activity_main_activity_text_view_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Property List Fragment"/>
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <Button
-        android:id="@+id/open_map_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp"
-        android:text="map view"
-        app:layout_constraintTop_toBottomOf="@+id/activity_main_activity_text_view_main" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_properties"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/list_properties_format"
+        tools:itemCount="5"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

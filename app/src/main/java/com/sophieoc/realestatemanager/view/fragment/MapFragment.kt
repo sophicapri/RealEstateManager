@@ -39,10 +39,8 @@ import kotlinx.android.synthetic.main.fragment_map.*
 @Suppress("SameParameterValue")
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
-    private lateinit var mapActivity: MapActivity
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mapActivity = activity as MapActivity
         initMap()
         handleMapSize()
         refocus_btn.setOnClickListener {
@@ -81,7 +79,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun fetchLastLocation() {
-        val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mapActivity)
+        val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext)
         if (context?.let { ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) } != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE)
             return
@@ -103,8 +101,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun checkLocationEnabled() {
-        if (!mapActivity.locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            AlertDialog.Builder(mapActivity)
+        if (!mainContext.locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            AlertDialog.Builder(mainContext)
                     .setMessage(R.string.gps_network_not_enabled)
                     .setPositiveButton(R.string.open_location_settings) { _, _ ->
                         startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Companion.REQUEST_CODE_LOCATION)
@@ -136,11 +134,11 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun initMarkers() {
-        viewModel.getProperties().observe(mapActivity, Observer { propertyList ->
+        viewModel.getProperties().observe(mainContext, Observer { propertyList ->
             if (propertyList != null)
                 for (property in propertyList) {
-                    val lat = property.address.toLatLng(mapActivity)?.latitude
-                    val lng = property.address.toLatLng(mapActivity)?.longitude
+                    val lat = property.address.toLatLng(mainContext)?.latitude
+                    val lng = property.address.toLatLng(mainContext)?.longitude
                     if (lat != null && lng != null) {
                         val marker: Marker = map.addMarker(MarkerOptions().title(property.type.toString())
                                 .position(LatLng(lat, lng))

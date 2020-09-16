@@ -31,15 +31,13 @@
                 android:id="@+id/frame_property_list"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                android:layout_weight="40"/>
 
             <FrameLayout
                 android:id="@+id/frame_property_details"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="60"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                android:layout_weight="60"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

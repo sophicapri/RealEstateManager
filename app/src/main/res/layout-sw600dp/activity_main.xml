@@ -31,8 +31,7 @@
                 android:id="@+id/frame_property_list"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="45"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                android:layout_weight="45"/>
 
 
             <View
@@ -44,8 +43,7 @@
                 android:id="@+id/frame_property_details"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="55"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                android:layout_weight="55"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

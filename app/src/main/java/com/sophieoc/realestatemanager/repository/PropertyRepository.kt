@@ -30,6 +30,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                         .addOnCompleteListener(OnCompleteListener { propertyCreationTask: Task<Void?> ->
                             if (propertyCreationTask.isSuccessful) {
                                 propertyToCreate.postValue(property)
+                                println("updated PROP")
                                 upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
                                 Log.e("TAG", " createProperty: " + propertyCreationTask.exception?.message)

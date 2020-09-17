@@ -4,13 +4,14 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
 import com.sophieoc.realestatemanager.utils.toStringFormat
@@ -33,6 +34,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         configurePropertyDetailFragment()
         configureDrawerLayout()
+
+     /*   val property = Property()
+        property.address.streetNumber = "21"
+        property.address.city = "Arpajon"
+        property.address.streetName = "Edouard Robert"
+        property.address.postalCode = "91290"
+        property.address.country = "France"
+      */
     }
 
 

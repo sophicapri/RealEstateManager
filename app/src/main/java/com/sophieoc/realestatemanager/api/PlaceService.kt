@@ -12,7 +12,7 @@ object PlaceService {
     private const val API_URL = "https://maps.googleapis.com/maps/api/place/"
     private fun initLogging() {
         logging.level = HttpLoggingInterceptor.Level.BODY
-        httpClient.addInterceptor(logging)
+       // httpClient.addInterceptor(logging)
     }
 
     private fun initApiKey() {

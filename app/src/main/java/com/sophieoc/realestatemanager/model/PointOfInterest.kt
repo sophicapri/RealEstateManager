@@ -10,12 +10,11 @@ import androidx.room.PrimaryKey
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("propertyId"))])
 data class PointOfInterest(
-        @PrimaryKey(autoGenerate = true) val uid: Int,
-        @ColumnInfo(name = "type") val type: String,
-        @ColumnInfo(name = "name") val name: String,
+        @ColumnInfo(name = "type") var type: String,
+        @ColumnInfo(name = "name") var name: String,
         @ColumnInfo(name = "address") var address: String,
         @ColumnInfo(name = "distance") var distance: Int,
-        val propertyId: Int
+        var propertyId: String
 ){
-    constructor():this(-1, "","","",-1,-1)
+    constructor():this( "","","",-1,"")
 }

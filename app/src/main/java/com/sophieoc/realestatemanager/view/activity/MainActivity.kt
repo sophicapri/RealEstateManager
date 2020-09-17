@@ -1,15 +1,19 @@
 package com.sophieoc.realestatemanager.view.activity
 
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
+import com.sophieoc.realestatemanager.utils.toStringFormat
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Class as Class
 
@@ -51,7 +55,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
-    private fun <T> startNewActivity(activity : Class<T>) {
+    private fun <T> startNewActivity(activity: Class<T>) {
         val intent = Intent(this, activity)
         startActivity(intent)
     }

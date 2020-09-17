@@ -30,18 +30,19 @@ data class Address (
         return address.trim()
     }
 
-    fun toLatLng(context: Context): LatLng? {
+    fun toLatLng(context: Context): LatLng {
         val coder = Geocoder(context)
         val address: List<Address>?
-        var latLng: LatLng? = null
+        var latLng = LatLng(0.0, 0.0)
         try {
             // May throw an IOException
             address = coder.getFromLocationName(this.toString(), 1)
             if (address == null) {
                 Log.e(MainActivity.TAG, "getLocationFromAddress: can't find for $this")
+            } else {
+                val location = address[0]
+                latLng = LatLng(location.latitude, location.longitude)
             }
-            val location = address[0]
-            latLng = LatLng(location.latitude, location.longitude)
         } catch (ex: IOException) {
             ex.printStackTrace()
         }

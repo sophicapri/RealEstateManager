@@ -31,7 +31,9 @@ import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.AppController
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
 import com.sophieoc.realestatemanager.utils.toBitmap
+import com.sophieoc.realestatemanager.utils.toStringFormat
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import kotlinx.android.synthetic.main.fragment_map.*
@@ -49,7 +51,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d(TAG, "onMapReady: ")
         map = googleMap
         map.uiSettings.isZoomGesturesEnabled = true
         map.uiSettings.isMyLocationButtonEnabled = false
@@ -137,11 +138,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.getProperties().observe(mainContext, Observer { propertyList ->
             if (propertyList != null)
                 for (property in propertyList) {
-                    val lat = property.address.toLatLng(mainContext)?.latitude
-                    val lng = property.address.toLatLng(mainContext)?.longitude
-                    if (lat != null && lng != null) {
+                    val latLng = property.address.toLatLng(mainContext)
+                    if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
                         val marker: Marker = map.addMarker(MarkerOptions().title(property.type.toString())
-                                .position(LatLng(lat, lng))
+                                .position(latLng)
                                 .icon(R.drawable.ic_baseline_house_24.toBitmap(resources)))
                         marker.tag = property.id
                     }

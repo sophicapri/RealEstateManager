@@ -104,7 +104,7 @@ class PlaceDetails {
     @Expose
     var website: String? = null
 
-    fun getDistance(propertyLocation: Location?): Int {
+    fun getDistanceFrom(propertyLocation: Location?): Int {
         val location = Location(name)
         location.latitude = geometry?.location?.lat!!
         location.longitude = geometry?.location?.lng!!

@@ -3,11 +3,13 @@ package com.sophieoc.realestatemanager.utils
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.Location
 import android.os.Build
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 
 fun Int.toBitmap(resources: Resources?): BitmapDescriptor? {
     var drawable = ResourcesCompat.getDrawable(resources!!, this, null)
@@ -23,4 +25,8 @@ fun Int.toBitmap(resources: Resources?): BitmapDescriptor? {
         drawable.draw(canvas)
     }
     return BitmapDescriptorFactory.fromBitmap(bitmap)
+}
+
+fun LatLng.toStringFormat(): String{
+    return "$latitude,$longitude"
 }

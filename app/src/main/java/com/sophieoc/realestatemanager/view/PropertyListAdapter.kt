@@ -1,13 +1,11 @@
 package com.sophieoc.realestatemanager.view
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.model.Property
 import kotlinx.android.synthetic.main.list_properties_format.view.*
 

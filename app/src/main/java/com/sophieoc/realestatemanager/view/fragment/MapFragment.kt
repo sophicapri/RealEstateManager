@@ -2,6 +2,7 @@ package com.sophieoc.realestatemanager.view.fragment
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -24,7 +25,6 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
@@ -32,15 +32,16 @@ import com.sophieoc.realestatemanager.AppController
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
+import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
 import com.sophieoc.realestatemanager.utils.toBitmap
 import com.sophieoc.realestatemanager.utils.toStringFormat
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
-import com.sophieoc.realestatemanager.view.activity.MapActivity
 import kotlinx.android.synthetic.main.fragment_map.*
 
 @Suppress("SameParameterValue")
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
+    private val propertyDetailView = activity?.findViewById<View?>(R.id.frame_property_details)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
@@ -55,15 +56,30 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         map.uiSettings.isZoomGesturesEnabled = true
         map.uiSettings.isMyLocationButtonEnabled = false
         map.uiSettings.isMapToolbarEnabled = false
-        map.setOnInfoWindowClickListener(OnInfoWindowClickListener { marker: Marker? ->
-          //   startPropertyDetail(marker)
-            })
+        map.setOnInfoWindowClickListener { marker: Marker? ->
+            if (marker != null)
+                startPropertyDetail(marker)
+        }
         fetchLastLocation()
         initMarkers()
     }
 
+    private fun startPropertyDetail(marker: Marker) {
+        propertyDetailView?.visibility = VISIBLE
+        btn_map_size.text = "Réduire"
+        val bundle = Bundle()
+        bundle.putString(PROPERTY_KEY, marker.id)
+        val propertyDetailFragment = PropertyDetailFragment()
+        propertyDetailFragment.arguments = bundle
+        mainContext.supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_property_details, propertyDetailFragment).commit()
+    }
+
     private fun handleMapSize() {
-        val propertyDetailView = activity?.findViewById<View?>(R.id.frame_property_details)
+        if (!mainContext.intent.hasExtra(PROPERTY_KEY)) {
+            propertyDetailView?.visibility = GONE
+            btn_map_size.visibility = GONE
+        }
         if (propertyDetailView?.visibility == VISIBLE) {
             btn_map_size.visibility = VISIBLE
             btn_map_size.setOnClickListener {
@@ -134,16 +150,24 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             Log.d(TAG, "onRequestPermissionsResult: refused")
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_LOCATION && resultCode == Activity.RESULT_OK
+                && mainContext.locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            fetchLastLocation()
+    }
+
     private fun initMarkers() {
         viewModel.getProperties().observe(mainContext, Observer { propertyList ->
             if (propertyList != null)
                 for (property in propertyList) {
-                    val latLng = property.address.toLatLng(mainContext)
-                    if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
-                        val marker: Marker = map.addMarker(MarkerOptions().title(property.type.toString())
-                                .position(latLng)
-                                .icon(R.drawable.ic_baseline_house_24.toBitmap(resources)))
-                        marker.tag = property.id
+                    if (property.address.toString().isNotEmpty()) {
+                        val latLng = property.address.toLatLng(mainContext)
+                        if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
+                            val marker: Marker = map.addMarker(MarkerOptions().title(property.type.toString())
+                                    .position(latLng)
+                                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources)))
+                            marker.tag = property.id
+                        }
                     }
                 }
         })

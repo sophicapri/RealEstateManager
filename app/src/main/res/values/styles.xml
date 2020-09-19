@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/DrawerStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -20,6 +21,14 @@
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="DrawerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+       <!-- <item name="spinBars">true</item> -->
+        <item name="color">@color/white</item>
+      <!--  <item name="itemTextColor">@color/colorWhite</item>
+        <item name="itemTextAppearance">@style/TextDrawerStyle</item>
+        -->
     </style>
 
 </resources>

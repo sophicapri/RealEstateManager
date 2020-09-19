@@ -11,7 +11,6 @@ class SplashScreenActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //deleteDatabase(DATABASE_NAME)
-        //auth.signOut()
         if (isCurrentUserLogged()) startMainActivity() else startLoginActivity()
     }
 

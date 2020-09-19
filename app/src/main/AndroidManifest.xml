@@ -32,7 +32,8 @@
     <activity android:name=".view.activity.LoginActivity" />
     <activity android:name=".view.activity.MapActivity" />
     <activity android:name=".view.activity.UserProfileActivity" />
-   <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
+        <activity android:name=".view.activity.PropertyDetailActivity" />
+        <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
 </application>
 
     </manifest>

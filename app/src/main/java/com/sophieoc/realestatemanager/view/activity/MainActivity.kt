@@ -1,22 +1,18 @@
 package com.sophieoc.realestatemanager.view.activity
 
+import android.app.Activity
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.model.PointOfInterest
-import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
-import com.sophieoc.realestatemanager.utils.toStringFormat
+import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
+import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.Class as Class
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     companion object {
@@ -31,19 +27,21 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_list, fragmentList, fragmentList.javaClass.simpleName).commit()
-
-        configurePropertyDetailFragment()
         configureDrawerLayout()
-
-     /*   val property = Property()
-        property.address.streetNumber = "21"
-        property.address.city = "Arpajon"
-        property.address.streetName = "Edouard Robert"
-        property.address.postalCode = "91290"
-        property.address.country = "France"
-      */
     }
 
+    override fun onResume() {
+        super.onResume()
+        configurePropertyDetailFragment()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null) {
+            if (data.hasExtra(PROPERTY_KEY))
+                intent.putExtra(PROPERTY_KEY, data.getStringExtra(PROPERTY_KEY))
+        }
+    }
 
     private fun configureDrawerLayout() {
         val toggle = ActionBarDrawerToggle(this, drawer_layout, my_toolbar,

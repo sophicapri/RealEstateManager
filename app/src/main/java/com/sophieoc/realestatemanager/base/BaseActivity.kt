@@ -20,7 +20,7 @@ abstract class BaseActivity : AppCompatActivity() {
     val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
     val fragmentUser = UserProfileFragment()
-    val fragmentProfileDetail = PropertyDetailFragment()
+    val fragmentPropertyDetail = PropertyDetailFragment()
     val viewModel by viewModel<MyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +45,9 @@ abstract class BaseActivity : AppCompatActivity() {
         var fragment = supportFragmentManager.findFragmentById(R.id.frame_property_details)
 
         if (fragment == null && propertyDetailView != null) {
-            fragment = fragmentProfileDetail
+            fragment = fragmentPropertyDetail
             val fm = supportFragmentManager.beginTransaction()
-            fm.add(R.id.frame_property_details, fragment).commit()
+            fm.add(R.id.frame_property_details, fragment, fragment::class.java.simpleName).commit()
         }
     }
 }

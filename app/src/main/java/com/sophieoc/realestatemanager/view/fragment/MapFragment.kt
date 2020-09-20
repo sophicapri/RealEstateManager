@@ -31,21 +31,20 @@ import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.AppController
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
-import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
-import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
-import com.sophieoc.realestatemanager.utils.toBitmap
-import com.sophieoc.realestatemanager.utils.toStringFormat
+import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
+import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import kotlinx.android.synthetic.main.fragment_map.*
 
 @Suppress("SameParameterValue")
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
-    private val propertyDetailView = activity?.findViewById<View?>(R.id.frame_property_details)
+    private var propertyDetailView : View? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
         handleMapSize()
+        propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener {
             AppController.instance.currentLocation?.let { location -> focusMap(location) }
         }
@@ -65,34 +64,41 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun startPropertyDetail(marker: Marker) {
-        propertyDetailView?.visibility = VISIBLE
-        btn_map_size.text = "Réduire"
-        val bundle = Bundle()
-        bundle.putString(PROPERTY_KEY, marker.id)
-        val propertyDetailFragment = PropertyDetailFragment()
-        propertyDetailFragment.arguments = bundle
-        mainContext.supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_property_details, propertyDetailFragment).commit()
+        if (propertyDetailView == null){
+            val intent = Intent(mainContext, PropertyDetailActivity::class.java)
+            intent.putExtra(PROPERTY_KEY, marker.tag.toString())
+            mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
+        } else {
+            propertyDetailView?.visibility = VISIBLE
+            btn_map_size.text = "Réduire"
+            val bundle = Bundle()
+            bundle.putString(PROPERTY_KEY, marker.tag.toString())
+            val propertyDetailFragment = PropertyDetailFragment()
+            propertyDetailFragment.arguments = bundle
+            mainContext.supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame_property_details, propertyDetailFragment).commit()
+        }
     }
 
     private fun handleMapSize() {
-        if (!mainContext.intent.hasExtra(PROPERTY_KEY)) {
-            propertyDetailView?.visibility = GONE
-            btn_map_size.visibility = GONE
-        }
         if (propertyDetailView?.visibility == VISIBLE) {
             btn_map_size.visibility = VISIBLE
             btn_map_size.setOnClickListener {
-                if (propertyDetailView.visibility == VISIBLE) {
-                    propertyDetailView.visibility = GONE
+                if (propertyDetailView?.visibility == VISIBLE) {
+                    propertyDetailView?.visibility = GONE
                     btn_map_size.text = "Réduire"
                 } else {
-                    propertyDetailView.visibility = VISIBLE
+                    propertyDetailView?.visibility = VISIBLE
                     btn_map_size.text = "Agrandir"
                 }
             }
         } else if (propertyDetailView == null)
             btn_map_size.visibility = GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handleMapSize()
     }
 
     private fun fetchLastLocation() {

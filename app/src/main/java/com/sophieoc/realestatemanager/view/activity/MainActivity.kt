@@ -35,14 +35,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         configurePropertyDetailFragment()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null) {
-            if (data.hasExtra(PROPERTY_KEY))
-                intent.putExtra(PROPERTY_KEY, data.getStringExtra(PROPERTY_KEY))
-        }
-    }
-
     private fun configureDrawerLayout() {
         val toggle = ActionBarDrawerToggle(this, drawer_layout, my_toolbar,
                 R.string.open_navigation_drawer, R.string.close_navigation_drawer)

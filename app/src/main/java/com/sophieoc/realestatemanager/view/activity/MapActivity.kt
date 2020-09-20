@@ -18,7 +18,11 @@ class MapActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_map, fragmentMap, fragmentMap.javaClass.simpleName).commit()
+    }
 
+
+    override fun onResume() {
+        super.onResume()
         configurePropertyDetailFragment()
     }
 }

@@ -25,13 +25,11 @@ class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClick
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.getProperties().observe(mainContext, Observer {
             if (it != null) {
                 adapter.updateList(ArrayList(it))
             }
         })
-
         configureRecyclerView()
     }
 

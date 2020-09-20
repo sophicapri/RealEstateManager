@@ -1,5 +1,7 @@
 package com.sophieoc.realestatemanager.base
 
+import android.app.Activity
+import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
@@ -7,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
+import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
@@ -48,6 +52,14 @@ abstract class BaseActivity : AppCompatActivity() {
             fragment = fragmentPropertyDetail
             val fm = supportFragmentManager.beginTransaction()
             fm.add(R.id.frame_property_details, fragment, fragment::class.java.simpleName).commit()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null) {
+            if (data.hasExtra(PROPERTY_KEY))
+                intent.putExtra(PROPERTY_KEY, data.getStringExtra(PROPERTY_KEY))
         }
     }
 }

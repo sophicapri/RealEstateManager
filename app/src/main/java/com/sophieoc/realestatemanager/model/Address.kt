@@ -34,7 +34,6 @@ data class Address(
         val latLng: LatLng
         try {
             address = coder.getFromLocationName(this.toString(), 1)
-            println("address value = " + address.toString() + " null? " + address.isEmpty())
         } catch (ex: IOException) {
             ex.printStackTrace()
         }

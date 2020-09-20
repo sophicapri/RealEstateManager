@@ -43,7 +43,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
-        handleMapSize()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener {
             AppController.instance.currentLocation?.let { location -> focusMap(location) }
@@ -99,6 +98,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         handleMapSize()
+        fetchLastLocation()
     }
 
     private fun fetchLastLocation() {

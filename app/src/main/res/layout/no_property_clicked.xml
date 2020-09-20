@@ -9,8 +9,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click on a property to open details"
-        app:layout_constraintVertical_bias="0.4"
+        android:text="Click on a property\nto open details"
+        android:gravity="center"
+        app:layout_constraintVertical_bias="0.5"
         android:textSize="20sp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"

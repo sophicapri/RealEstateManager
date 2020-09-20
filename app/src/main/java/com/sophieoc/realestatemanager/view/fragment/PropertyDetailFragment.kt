@@ -16,6 +16,7 @@ import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
 import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
+import com.sophieoc.realestatemanager.view.activity.MapActivity
 import kotlinx.android.synthetic.main.fragment_property_detail.*
 
 
@@ -26,13 +27,12 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun getLayout() = R.layout.fragment_property_detail
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         when {
             arguments != null -> {
                 try {
                     if (requireArguments().containsKey(PROPERTY_KEY)) {
-                        property_detail_view.visibility = VISIBLE
                         val propertyId = arguments?.get(PROPERTY_KEY) as String
                         if (propertyId.isNotEmpty())
                             getProperty(propertyId)
@@ -42,13 +42,16 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
                 }
             }
             mainContext.intent.hasExtra(PROPERTY_KEY) -> {
-                property_detail_view.visibility = VISIBLE
                 val propertyId = mainContext.intent.extras?.get(PROPERTY_KEY) as String
                 getProperty(propertyId)
             }
             else -> {
-                no_property_clicked.visibility = VISIBLE
-                property_detail_view.visibility = GONE
+                mainContext.supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_property_details, NoPropertyClickedFragment()).commit()
+             /*   if (activity is MapActivity)
+                    view?.visibility = GONE
+
+              */
             }
         }
     }
@@ -69,7 +72,6 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun getProperty(propertyId: String) {
-        no_property_clicked.visibility = GONE
         viewModel.getPropertyById(propertyId).observe(mainContext, Observer {
             if (it != null) {
                 property = it
@@ -82,4 +84,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
     }
 
+    class NoPropertyClickedFragment : BaseFragment() {
+        override fun getLayout() = R.layout.no_property_clicked
+    }
 }

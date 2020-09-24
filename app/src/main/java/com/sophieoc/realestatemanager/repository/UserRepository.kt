@@ -22,7 +22,6 @@ class UserRepository(private val userDao: UserDao) {
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
     private val firebaseUser = FirebaseAuth.getInstance().currentUser
     val currentUser = getUserWithProperties(firebaseUser?.uid.toString())
-    private var job: CompletableJob? = null
 
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val user: MutableLiveData<UserWithProperties> = MutableLiveData()
@@ -37,12 +36,8 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     private fun upsertInRoom(user: User) {
-       job = Job()
-        job?.let {
-            CoroutineScope(IO + it).launch {
-                userDao.upsert(user)
-                it.complete()
-            }
+        CoroutineScope(IO).launch {
+            userDao.upsert(user)
         }
     }
 
@@ -94,15 +89,13 @@ class UserRepository(private val userDao: UserDao) {
             if (task.isSuccessful) {
                 if (task.result != null)
                     userCollectionRef.document(user.uid).set(user).addOnCompleteListener { userUpsertTask: Task<Void?> ->
-                    if (userUpsertTask.isSuccessful)
-                        upsertInRoom(user)
+                        if (userUpsertTask.isSuccessful)
+                            upsertInRoom(user)
                         else if (userUpsertTask.exception != null)
-                        Log.e("TAG", "upsertUserTask " + userUpsertTask.exception?.message)
-                }
+                            Log.e("TAG", "upsertUserTask " + userUpsertTask.exception?.message)
+                    }
             } else if (task.exception != null)
                 Log.e("TAG", "upsertUser " + task.exception!!.message)
         }
     }
-
-    fun cancelJobs() = job?.cancel()
 }

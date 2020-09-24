@@ -19,7 +19,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 
 class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
-    private var job: CompletableJob? = null
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
 
     fun upsert(property: Property): MutableLiveData<Property> {
@@ -30,7 +29,6 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                         .addOnCompleteListener(OnCompleteListener { propertyCreationTask: Task<Void?> ->
                             if (propertyCreationTask.isSuccessful) {
                                 propertyToCreate.postValue(property)
-                                println("updated PROP")
                                 upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
                                 Log.e("TAG", " createProperty: " + propertyCreationTask.exception?.message)
@@ -41,12 +39,8 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     }
 
     private fun upsertInRoom(property: Property) {
-        job = Job()
-        job?.let {
-            CoroutineScope(Dispatchers.IO + it).launch {
-                propertyDao.upsert(property)
-                it.complete()
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            propertyDao.upsert(property)
         }
     }
 
@@ -96,22 +90,16 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     }
 
     fun getNearbyPointOfInterests(location: String): LiveData<List<PlaceDetails>> {
-        job = Job()
         return object : LiveData<List<PlaceDetails>>() {
             override fun onActive() {
                 super.onActive()
-                job?.let{
-                    CoroutineScope(Dispatchers.IO + it).launch {
-                        val placeDetailsList = placeApi.getNearbyPlaces(location).placeDetails
-                        withContext(Main){
-                            value = placeDetailsList
-                            it.complete()
-                        }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val placeDetailsList = placeApi.getNearbyPlaces(location).placeDetails
+                    withContext(Main) {
+                        value = placeDetailsList
                     }
                 }
             }
         }
     }
-
-    fun cancelJobs() = job?.cancel()
 }

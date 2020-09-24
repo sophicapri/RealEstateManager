@@ -1,9 +1,7 @@
-package com.sophieoc.realestatemanager
+package com.sophieoc.realestatemanager.utils
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.api.PlaceService
 import com.sophieoc.realestatemanager.repository.PropertyRepository
@@ -11,10 +9,7 @@ import com.sophieoc.realestatemanager.repository.UserRepository
 import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
-import com.sophieoc.realestatemanager.utils.DATABASE_NAME
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

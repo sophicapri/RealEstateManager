@@ -8,6 +8,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="House front"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/spring_dots_indicator"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+                    android:id="@+id/spring_dots_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:dampingRatio="0.5"
+                    app:dotsColor="@color/colorAccent"
+                    app:dotsSize="10dp"
+                    app:dotsSpacing="3dp"
+                    app:dotsStrokeColor="@color/white"
+                    app:dotsStrokeWidth="1dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/viewPager"
+                    app:layout_constraintStart_toStartOf="@+id/viewPager"
+                    app:stiffness="300" />
+
                 <androidx.fragment.app.FragmentContainerView xmlns:map="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -17,6 +50,7 @@
                     map:liteMode="true"
                     map:mapType="normal"
                     android:layout_marginBottom="20dp"
+                    map:layout_constraintTop_toBottomOf="@id/viewPager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>

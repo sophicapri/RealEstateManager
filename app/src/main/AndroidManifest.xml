@@ -34,6 +34,11 @@
     <activity android:name=".view.activity.UserProfileActivity" />
         <activity android:name=".view.activity.PropertyDetailActivity" />
         <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
+
+        <provider
+            android:authorities="com.sophieoc.realestatemanager.provider"
+            android:name=".provider.ItemContentProvider"
+            android:exported="true" />
 </application>
 
     </manifest>

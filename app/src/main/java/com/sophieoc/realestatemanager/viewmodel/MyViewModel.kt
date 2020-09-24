@@ -21,9 +21,4 @@ class MyViewModel(private val userSource: UserRepository, private val propertySo
     fun getProperties() = propertySource.getAllProperties()
 
     fun getPointOfInterests(location: String) = propertySource.getNearbyPointOfInterests(location)
-
-    fun cancelJobs() {
-        userSource.cancelJobs()
-        propertySource.cancelJobs()
-    }
 }

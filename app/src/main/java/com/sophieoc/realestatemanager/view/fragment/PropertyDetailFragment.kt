@@ -1,10 +1,6 @@
 package com.sophieoc.realestatemanager.view.fragment
 
-import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,14 +12,13 @@ import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
 import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
-import com.sophieoc.realestatemanager.view.activity.MapActivity
-import kotlinx.android.synthetic.main.fragment_property_detail.*
 
 
 class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     var property: Property = Property()
     var map: GoogleMap? = null
-    var marker: MarkerOptions? = null
+    var propertyMarker: MarkerOptions? = null
+
 
     override fun getLayout() = R.layout.fragment_property_detail
 
@@ -58,15 +53,15 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        if (property.address.toString().isNotEmpty() && marker == null)
+        if (property.address.toString().isNotEmpty() && propertyMarker == null)
             addMarkerAndZoom()
     }
 
     private fun addMarkerAndZoom() {
         val latLng = property.address.toLatLng(mainContext)
         if (latLng.toString() != LAT_LNG_NOT_FOUND) {
-            marker = MarkerOptions().position(latLng)
-            map?.addMarker(marker)
+            propertyMarker = MarkerOptions().position(latLng)
+            map?.addMarker(propertyMarker)
             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
     }

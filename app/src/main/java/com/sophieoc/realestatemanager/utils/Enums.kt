@@ -4,11 +4,12 @@ enum class PropertyType(val s: String) {
     DUPLEX("Duplex"),
     FLAT("Flat"),
     HOUSE("House"),
-    PENTHOUSE("Penthouse")
+    PENTHOUSE("Penthouse"),
+    VILLA("Villa")
 }
 
 enum class PropertyAvailability(val s: String){
-    AVAILABLE("Available"),
+    AVAILABLE("For sale"),
     SOLD("Sold")
 }
 

@@ -2,7 +2,7 @@ package com.sophieoc.realestatemanager
 
 import android.app.Application
 import android.location.Location
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

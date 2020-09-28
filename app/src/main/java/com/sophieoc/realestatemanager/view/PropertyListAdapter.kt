@@ -1,15 +1,12 @@
 package com.sophieoc.realestatemanager.view
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.model.Property
 import kotlinx.android.synthetic.main.list_properties_format.view.*
 
@@ -49,7 +46,7 @@ class PropertyListAdapter(
             glide.load(property.photos[0].urlPhoto)
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.image_property)
-            itemView.type_property.text = property.type.toString()
+            itemView.type_and_city.text = property.type.toString()
             itemView.city_property.text = property.address.city
             itemView.price_property.text = "$${property.price}"
         }

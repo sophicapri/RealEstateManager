@@ -37,7 +37,7 @@
 
         <provider
             android:authorities="com.sophieoc.realestatemanager.provider"
-            android:name=".provider.ItemContentProvider"
+            android:name=".provider.PropertyContentProvider"
             android:exported="true" />
 </application>
 

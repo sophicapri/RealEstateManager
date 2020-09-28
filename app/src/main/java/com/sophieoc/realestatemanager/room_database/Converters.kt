@@ -30,16 +30,16 @@ class Converters {
     fun jsonToUser(value: String) = Gson().fromJson(value, User::class.java)
 
     @TypeConverter
-    fun enumToJson(value: PropertyType?) = Gson().toJson(value)
+    fun enumToJson(value: PropertyType?): String = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToEnumPropertyType(value: String) = Gson().fromJson(value, PropertyType::class.java)
+    fun jsonToEnumPropertyType(value: String): PropertyType = Gson().fromJson(value, PropertyType::class.java)
 
     @TypeConverter
-    fun enumToJson(value: PropertyAvailability?) = Gson().toJson(value)
+    fun enumToJson(value: PropertyAvailability?): String = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToEnumPropertyAvailability(value: String) = Gson().fromJson(value, PropertyAvailability::class.java)
+    fun jsonToEnumPropertyAvailability(value: String): PropertyAvailability = Gson().fromJson(value, PropertyAvailability::class.java)
 
 
     @TypeConverter

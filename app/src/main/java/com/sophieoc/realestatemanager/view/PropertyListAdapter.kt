@@ -47,7 +47,6 @@ class PropertyListAdapter(
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.image_property)
             itemView.type_and_city.text = property.type.toString()
-            itemView.city_property.text = property.address.city
             itemView.price_property.text = "$${property.price}"
         }
     }

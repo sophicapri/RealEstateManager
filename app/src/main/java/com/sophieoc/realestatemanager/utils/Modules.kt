@@ -27,9 +27,7 @@ val apiModule = module {
 val databaseModule = module {
 
     fun provideDatabase(application: Application): RealEstateDatabase {
-        return Room.databaseBuilder(application, RealEstateDatabase::class.java, DATABASE_NAME)
-                .fallbackToDestructiveMigration()
-                .build()
+        return RealEstateDatabase.getInstance(application)
     }
 
     fun provideUserDao(database: RealEstateDatabase): UserDao {
@@ -60,9 +58,8 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    // Specific viewModel pattern to tell Koin how to build CountriesViewModel
+    // Specific viewModel pattern to tell Koin how to build ViewModel
     viewModel {
         MyViewModel(get(), get())
     }
-
 }

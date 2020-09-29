@@ -12,13 +12,13 @@ import java.util.*
 class Converters {
 
     @TypeConverter
-    fun listPhotoToJson(value: List<Photo>?) = Gson().toJson(value)
+    fun listPhotoToJson(value: List<Photo>?): String = Gson().toJson(value)
 
     @TypeConverter
     fun jsonToListPhoto(value: String) = Gson().fromJson(value, Array<Photo>::class.java).toList()
 
     @TypeConverter
-    fun listPointOfInterestToJson(value: List<PointOfInterest>?) = Gson().toJson(value)
+    fun listPointOfInterestToJson(value: List<PointOfInterest>?): String = Gson().toJson(value)
 
     @TypeConverter
     fun jsonToListPointOfInterest(value: String) = Gson().fromJson(value, Array<PointOfInterest>::class.java).toList()

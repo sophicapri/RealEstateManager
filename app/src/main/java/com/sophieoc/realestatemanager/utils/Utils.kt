@@ -42,6 +42,7 @@ object Utils {
      * @param context
      * @return
      */
+    //TODO: chercher comment verifier la connexion 4G/ données mobiles
     fun isInternetAvailable(context: Context): Boolean {
         val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         return wifi.isWifiEnabled

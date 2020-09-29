@@ -26,7 +26,6 @@ interface PropertyDao {
     @Query("SELECT * FROM property")
     fun getProperties(): LiveData<List<Property>>
 
-
     @Query("SELECT * FROM property")
     fun getPropertiesWithCursor(): Cursor
 
@@ -35,6 +34,12 @@ interface PropertyDao {
 
     @Query("SELECT * FROM property WHERE id = :id")
     fun getPropertyById(id: String): LiveData<Property>
+
+    @Query("DELETE FROM property WHERE id = :propertyId")
+    fun deleteById(propertyId: String): Int
+
+    @Query("DELETE FROM property")
+    fun deleteAll(): Int
 
     /*@Query("""SELECT * FROM property WHERE type = :type AND surface > :minSurface
         AND surface < :maxSurface AND date_on_market < :dateOnMarket AND date_sold < :dateSold 

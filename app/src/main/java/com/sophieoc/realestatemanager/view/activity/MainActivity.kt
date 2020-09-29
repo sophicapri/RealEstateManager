@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
@@ -28,6 +29,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_list, fragmentList, fragmentList.javaClass.simpleName).commit()
         configureDrawerLayout()
+
+        viewModel.getUserById("12345").observe(this, Observer {
+            it?.let {
+                Log.d(TAG, "onCreate: list property size = ${it.user.username}")
+            }
+        })
     }
 
     override fun onResume() {

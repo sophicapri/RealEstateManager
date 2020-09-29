@@ -61,7 +61,15 @@ class PropertyContentProvider() : ContentProvider() {
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
         context?.let {
-            val count: Int = RealEstateDatabase.getInstance(it).propertyDao().deleteAll()
+            val userId: Long
+            var count : Int
+            try {
+                userId = ContentUris.parseId(uri)
+                count = RealEstateDatabase.getInstance(it).propertyDao().deleteById(userId.toString())
+            }
+            catch (e: NumberFormatException){
+                count = RealEstateDatabase.getInstance(it).propertyDao().deleteAll()
+            }
             it.contentResolver.notifyChange(uri, null)
             return count
         }

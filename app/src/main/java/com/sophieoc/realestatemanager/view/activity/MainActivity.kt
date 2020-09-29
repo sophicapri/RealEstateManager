@@ -29,12 +29,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_list, fragmentList, fragmentList.javaClass.simpleName).commit()
         configureDrawerLayout()
-
-        viewModel.getUserById("12345").observe(this, Observer {
-            it?.let {
-                Log.d(TAG, "onCreate: list property size = ${it.user.username}")
-            }
-        })
     }
 
     override fun onResume() {

@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
+import android.database.Cursor
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -32,7 +33,6 @@ class PropertyContentProviderTests {
                 .allowMainThreadQueries()
                 .build()
         contentResolver = InstrumentationRegistry.getInstrumentation().context.contentResolver
-       // contentResolver?.delete(PropertyContentProvider.URI_PROPERTY, null,null)
     }
 
     @Test
@@ -55,11 +55,24 @@ class PropertyContentProviderTests {
         Assert.assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("photos")), Matchers.`is`(Gson().toJson(listOf(Photo(), Photo()))))
 
         //Delete property created :
-        val id = cursor?.getString(cursor.getColumnIndexOrThrow("id"))
-        id?.toLong()?.let { ContentUris.withAppendedId(PropertyContentProvider.URI_PROPERTY, it) }?.let {
-            val count = contentResolver?.delete(it, null, null)
-            Assert.assertThat(count, Matchers.`is`(1))
-        }
+        deleteProperty(cursor)
+    }
+
+    @Test
+    fun insertAndGetPropertyForUser() {
+        // BEFORE : Adding demo item
+        contentResolver?.insert(PropertyContentProvider.URI_PROPERTY, generateProperty())
+        Thread.sleep(3000)
+
+        // Then : get value for User
+        val cursor = contentResolver?.query(ContentUris.withAppendedId(PropertyContentProvider.URI_PROPERTY, DUMMY_USER_ID), null, null, null, null)
+
+        // TEST
+        Assert.assertThat(cursor?.moveToFirst(), Matchers.`is`(true))
+        Assert.assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("description")), Matchers.`is`("This is a property"))
+
+        //Delete property created :
+        deleteProperty(cursor)
     }
 
     // ---
@@ -72,14 +85,21 @@ class PropertyContentProviderTests {
         values.put("dateOnMarket", DATE.time)
         values.put("streetName", "Park Avenue")
         values.put("photos", Gson().toJson(listOf(Photo(), Photo())))
-        values.put("userId", DUMMY_USER_ID)
+        values.put("userId", DUMMY_USER_ID.toString())
         return values
     }
 
-    //TODO: add dummy user for tests
+    private fun deleteProperty(cursor: Cursor?) {
+        val id = cursor?.getString(cursor.getColumnIndexOrThrow("id"))
+        id?.toLong()?.let { ContentUris.withAppendedId(PropertyContentProvider.URI_PROPERTY, it) }?.let {
+            val count = contentResolver?.delete(it, null, null)
+            Assert.assertThat(count, Matchers.`is`(1))
+        }
+    }
+
     companion object {
         // DATA SET FOR TEST
-        private const val DUMMY_USER_ID = "12345"
+        private const val DUMMY_USER_ID = 12345L
         private val DATE: Date = Date()
     }
 }

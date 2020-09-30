@@ -1,18 +1,14 @@
 package com.sophieoc.realestatemanager.view.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
-import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
+import com.sophieoc.realestatemanager.room_database.RealEstateDatabase.Companion.DATABASE_NAME
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {

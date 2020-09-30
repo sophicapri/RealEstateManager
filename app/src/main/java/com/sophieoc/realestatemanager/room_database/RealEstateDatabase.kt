@@ -10,7 +10,7 @@ import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
 
-@Database(entities = [User::class, Property::class], version = 7, exportSchema = false)
+@Database(entities = [User::class, Property::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -20,6 +20,7 @@ abstract class RealEstateDatabase : RoomDatabase() {
         // For Singleton instantiation
         @Volatile
         private var instance: RealEstateDatabase? = null
+        const val DATABASE_NAME = "RealEstate.db"
 
         fun getInstance(context: Context): RealEstateDatabase {
             return instance ?: synchronized(this) {
@@ -32,7 +33,7 @@ abstract class RealEstateDatabase : RoomDatabase() {
                 Room.databaseBuilder(
                         context.applicationContext,
                         RealEstateDatabase::class.java,
-                        "RealEstate.db")
+                        DATABASE_NAME)
                         .fallbackToDestructiveMigration()
                         .build()
     }

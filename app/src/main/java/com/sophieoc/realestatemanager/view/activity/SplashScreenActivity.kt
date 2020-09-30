@@ -4,13 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.utils.DATABASE_NAME
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
 
 class SplashScreenActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //deleteDatabase(DATABASE_NAME)
         if (isCurrentUserLogged()) startMainActivity() else startLoginActivity()
     }
 

@@ -45,7 +45,6 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
                         .replace(R.id.frame_property_details, NoPropertyClickedFragment()).commit()
              /*   if (activity is MapActivity)
                     view?.visibility = GONE
-
               */
             }
         }

@@ -2,6 +2,7 @@ package com.sophieoc.realestatemanager
 
 import android.app.Application
 import android.location.Location
+import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -13,6 +14,7 @@ class AppController: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        //deleteDatabase(RealEstateDatabase.DATABASE_NAME)
         PreferenceHelper.initPreferenceHelper(this)
         startKoin {
             androidLogger()

@@ -32,7 +32,6 @@ class PropertyEditFragment: BaseFragment() {
                             pointOfInterest.name = placeDetails.name.toString()
                             pointOfInterest.address = placeDetails.vicinity.toString()
                             pointOfInterest.distance = placeDetails.getDistanceFrom(location)
-                            pointOfInterest.propertyId = property.id
                             if (listPointOfInterest.size < 3) {
                                 listPointOfInterest.add(pointOfInterest)
                                 if (listPointOfInterest.size == 2) {

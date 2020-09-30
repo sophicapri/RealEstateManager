@@ -31,7 +31,7 @@ data class Property(
         @ColumnInfo(name = "user_id") var userId: String,
 ) {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, "", -1,
-            -1, -1, "", PropertyAvailability.AVAILABLE, Date(), Date(),
+            -1, -1, "", PropertyAvailability.AVAILABLE, Date(), null,
             Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "")
 
     companion object {

@@ -50,7 +50,7 @@ class PropertyListAdapter(
             itemView.price_property.text = "$${property.price}"
             itemView.nbr_of_beds.text = property.numberOfBedrooms.toString()
             itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
-            itemView.surface.text = "${property.surface.toString()} sqft"
+            itemView.surface.text = property.surface.toString()
         }
     }
 

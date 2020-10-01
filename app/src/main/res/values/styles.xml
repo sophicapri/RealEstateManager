@@ -32,11 +32,22 @@
         <item name="materialThemeOverlay">@style/MyFabOverlay</item>
     </style>
 
+    <style name="MyFABWhite" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/MyFabOverlayWhite</item>
+    </style>
+
     <style name="MyFabOverlay">
         <!-- color of the background -->
         <item name="colorSecondary">@color/colorPrimary</item>
         <!-- color of the icon -->
         <item name="colorOnSecondary">@color/white</item>
+    </style>
+
+    <style name="MyFabOverlayWhite">
+        <!-- color of the background -->
+        <item name="colorSecondary">@color/white</item>
+        <!-- color of the icon -->
+        <item name="colorOnSecondary">@color/colorPrimary</item>
     </style>
 
 </resources>

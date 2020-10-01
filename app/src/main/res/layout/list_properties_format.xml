@@ -34,8 +34,7 @@
         android:text="House in New York"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="20sp"
-
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/image_property_container"
         app:layout_constraintTop_toBottomOf="@+id/image_property_container" />
 
@@ -48,7 +47,7 @@
         android:text="$ 21,300,800"
         android:textColor="@color/colorPrimary"
         android:fontFamily="@font/rockwell_nova"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/type_and_city"
         app:layout_constraintTop_toBottomOf="@+id/type_and_city" />
@@ -70,7 +69,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="2"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
         app:layout_constraintStart_toEndOf="@+id/ic_bed"
@@ -102,7 +100,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="1"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
         app:layout_constraintStart_toEndOf="@+id/ic_bath"
@@ -113,11 +110,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:text="1234 sqft"
-        android:textSize="16sp"
+        android:text="1234"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
         app:layout_constraintStart_toEndOf="@+id/ic_surface"
+        app:layout_constraintTop_toTopOf="@+id/nbr_of_bath" />
+
+    <TextView
+        android:id="@+id/sqft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="sqft"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/surface"
+        app:layout_constraintStart_toEndOf="@+id/surface"
         app:layout_constraintTop_toTopOf="@+id/nbr_of_bath" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

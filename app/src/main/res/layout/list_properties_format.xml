@@ -1,99 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@color/white"
-    app:cardElevation="40dp"
-    android:layout_marginStart="15dp"
-    android:layout_marginEnd="15dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/image_property_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/image_property"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:contentDescription="property picture"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:contentDescription="property picture" />
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/type_and_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="House in New York"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_property" />
+    <TextView
+        android:id="@+id/type_and_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="House in New York"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
 
-        <TextView
-            android:id="@+id/price_property"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:text="$ 21,300,800"
-            android:textColor="@color/colorAccent"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/type_and_city" />
+        app:layout_constraintStart_toStartOf="@+id/image_property_container"
+        app:layout_constraintTop_toBottomOf="@+id/image_property_container" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_outline_king_bed_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_property" />
+    <TextView
+        android:id="@+id/price_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:layout_marginTop="5dp"
+        android:text="$ 21,300,800"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/rockwell_nova"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/type_and_city"
+        app:layout_constraintTop_toBottomOf="@+id/type_and_city" />
 
-        <TextView
-            android:id="@+id/number_of_beds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="2"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/price_property" />
+    <ImageView
+        android:id="@+id/ic_bed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_outline_king_bed_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/price_property"
+        app:layout_constraintTop_toBottomOf="@id/price_property" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/ic_baseline_bathtub_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/number_of_beds"
-            app:layout_constraintTop_toBottomOf="@+id/price_property" />
+    <TextView
+        android:id="@+id/nbr_of_beds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="2"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
+        app:layout_constraintStart_toEndOf="@+id/ic_bed"
+        app:layout_constraintTop_toTopOf="@+id/ic_bed" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_size_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_property" />
+    <ImageView
+        android:id="@+id/ic_bath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/ic_baseline_bathtub_24"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
+        app:layout_constraintStart_toEndOf="@+id/nbr_of_beds"
+        app:layout_constraintTop_toTopOf="@+id/ic_bed" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/price_property" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/ic_surface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/ic_size_24"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
+        app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
+        app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+
+    <TextView
+        android:id="@+id/nbr_of_bath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
+        app:layout_constraintStart_toEndOf="@+id/ic_bath"
+        app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+
+    <TextView
+        android:id="@+id/surface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="1234 sqft"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
+        app:layout_constraintStart_toEndOf="@+id/ic_surface"
+        app:layout_constraintTop_toTopOf="@+id/nbr_of_bath" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 

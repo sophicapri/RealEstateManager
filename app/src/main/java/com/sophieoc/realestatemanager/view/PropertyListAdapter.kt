@@ -46,8 +46,11 @@ class PropertyListAdapter(
             glide.load(property.photos[0].urlPhoto)
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.image_property)
-            itemView.type_and_city.text = property.type.toString()
+            itemView.type_and_city.text = "${property.type.s} in ${property.address.city}"
             itemView.price_property.text = "$${property.price}"
+            itemView.nbr_of_beds.text = property.numberOfBedrooms.toString()
+            itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
+            itemView.surface.text = "${property.surface.toString()} sqft"
         }
     }
 

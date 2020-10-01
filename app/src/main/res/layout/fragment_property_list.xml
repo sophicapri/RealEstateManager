@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_properties"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_properties_format"
-        tools:itemCount="5"/>
+        tools:itemCount="5"
+        tools:listitem="@layout/list_properties_format" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_add_24"
+        android:theme="@style/MyFAB"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_properties"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,11 +36,24 @@ class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClick
         })
         configureRecyclerView()
         fab_add_property.setOnClickListener {
-            startAddPropertyActivity()
+            showAddPropertyFragment()
         }
     }
 
-    private fun startAddPropertyActivity() {
+    private fun showAddPropertyFragment() {
+        val fragmentFrame = activity?.findViewById<View?>(R.id.frame_property_details)
+        when {
+            fragmentFrame != null -> showFragment()
+            else -> startActivity()
+        }
+    }
+
+    private fun showFragment() {
+        mainContext.supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_property_details, PropertyEditOrCreateFragment()).commit()
+    }
+
+    private fun startActivity() {
         val intent = Intent(mainContext, AddPropertyActivity::class.java)
         mainContext.startActivityForResult(intent, RQ_CODE_ADD_PROPERTY)
     }

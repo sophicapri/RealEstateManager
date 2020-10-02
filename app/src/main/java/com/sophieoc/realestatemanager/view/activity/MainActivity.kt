@@ -46,6 +46,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         configurePropertyDetailFragment()
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        configureDrawerLayout()
+    }
+
     private fun configureDrawerLayout() {
         val toggle = ActionBarDrawerToggle(this, drawer_layout, my_toolbar,
                 R.string.open_navigation_drawer, R.string.close_navigation_drawer)

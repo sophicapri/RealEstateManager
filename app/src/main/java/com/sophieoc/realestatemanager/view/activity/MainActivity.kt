@@ -16,7 +16,9 @@ import com.google.api.Property
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.utils.PropertyType
+import com.sophieoc.realestatemanager.utils.RQ_CODE_ADD_PROPERTY
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_property_list.*
 
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnShowListener, DialogInterface.OnDismissListener {

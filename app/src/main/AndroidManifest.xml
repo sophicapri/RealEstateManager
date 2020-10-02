@@ -33,6 +33,7 @@
     <activity android:name=".view.activity.MapActivity" />
     <activity android:name=".view.activity.UserProfileActivity" />
         <activity android:name=".view.activity.PropertyDetailActivity" />
+        <activity android:name=".view.activity.AddPropertyActivity" />
         <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
 
         <provider

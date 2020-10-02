@@ -1,15 +1,32 @@
 package com.sophieoc.realestatemanager.view.fragment
 
 import android.location.Location
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.utils.ADD_PROPERTY_KEY
 import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
+import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
 import com.sophieoc.realestatemanager.utils.toStringFormat
 
-class PropertyEditFragment: BaseFragment() {
+class PropertyEditOrCreateFragment: BaseFragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        var savedState: Bundle? = null
+        when {
+            mainContext.intent.hasExtra(ADD_PROPERTY_KEY) -> {
+                savedState = mainContext.intent.extras?.get(ADD_PROPERTY_KEY) as Bundle
+            }
+        }
+        return super.onCreateView(inflater, container, savedState)
+    }
 
     fun editMode(property: Property) {
         getPointOfInterests(property)
@@ -58,6 +75,6 @@ class PropertyEditFragment: BaseFragment() {
     }
 
     override fun getLayout(): Int {
-        return R.layout.fragment_property_edit
+        return R.layout.fragment_edit_create_property
     }
 }

@@ -5,17 +5,20 @@
 
         <item
             android:id="@+id/map_view"
-            android:title="Carte des biens"
+            android:title="Map"
             android:icon="@drawable/ic_baseline_map_24"/>
 
         <item
             android:id="@+id/user_profile"
-            android:title="Mon profil"
-            android:icon="@drawable/ic_baseline_person_24"/>
+            android:title="My properties"
+            android:icon="@drawable/ic_property_24"/>
 
+        <item android:id="@+id/settings"
+            android:title="Settings"
+            android:icon="@drawable/ic_outline_settings_24"/>
         <item
             android:id="@+id/sign_out"
-            android:title="Déconnexion"
+            android:title="Sign out"
             android:icon="@drawable/ic_power_settings_new_white_24"/>
 
 </menu>

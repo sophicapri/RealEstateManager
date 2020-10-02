@@ -1,11 +1,19 @@
 package com.sophieoc.realestatemanager.base
 
 import android.app.Activity
+import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.Spinner
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sophieoc.realestatemanager.R
@@ -19,7 +27,7 @@ import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(){
     lateinit var locationManager: LocationManager
     lateinit var auth: FirebaseAuth
     val fragmentMap = MapFragment()
@@ -27,6 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
     val fragmentUser = UserProfileFragment()
     val fragmentPropertyDetail = PropertyDetailFragment()
     val viewModel by viewModel<MyViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -43,7 +52,6 @@ abstract class BaseActivity : AppCompatActivity() {
     fun isCurrentUserLogged(): Boolean {
         return getCurrentUser() != null
     }
-
 
     fun configurePropertyDetailFragment() {
         val propertyDetailView = findViewById<View?>(R.id.frame_property_details)

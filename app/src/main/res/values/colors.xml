@@ -3,9 +3,12 @@
     <color name="colorPrimary">#AD5931</color>
     <color name="colorPrimaryLight">#CC693A</color>
     <color name="colorPrimaryDark">#854425</color>
+    <color name="colorSecondary">#592C17</color>
     <color name="colorAccent">#FFB175</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <color name="lightGray">#C3C3C3</color>
 
     <!-- Colors for the shadow background in PropertyDetail -->
     <color name="translucent_scrim_top">#26000000</color>

@@ -5,5 +5,14 @@
     <string name="cant_get_location">Can\'t get current location</string>
     <string name="gps_network_not_enabled">Accès à la position désactivé</string>
     <string name="open_location_settings">Ouvrir les paramètres</string>
-    <string name="Cancel">Annuler</string>
+    <string name="cancel">Annuler</string>
+
+    <string name="house">House</string>
+    <string name="flat">Flat</string>
+    <string name="duplex">Duplex</string>
+    <string name="penthouse">Penthouse</string>
+    <string name="villa">Villa</string>
+
+    <string name="for_sale">For sale</string>
+    <string name="sold">Sold</string>
 </resources>

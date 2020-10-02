@@ -130,7 +130,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     .setPositiveButton(R.string.open_location_settings) { _, _ ->
                         startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Companion.REQUEST_CODE_LOCATION)
                     }
-                    .setNegativeButton(R.string.Cancel, null)
+                    .setNegativeButton(R.string.
+                    cancel, null)
                     .show()
         }
     }

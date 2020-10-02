@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title_property_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:text="Property type"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/type_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_property_type"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/house"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/house" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/flat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flat" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/duplex" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/penthouse" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/villa" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/title_nbr_of_beds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Number of bedrooms"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/type_chip_group"
+            app:layout_constraintTop_toBottomOf="@+id/type_chip_group" />
+
+        <ImageView
+            android:id="@+id/ic_bed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_outline_king_bed_24"
+            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" />
+
+        <EditText
+            android:id="@+id/nbr_of_beds_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:cursorVisible="true"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
+            app:layout_constraintStart_toEndOf="@+id/ic_bed"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" />
+
+        <TextView
+            android:id="@+id/title_nbr_of_bath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Number of bathrooms"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/ic_bed"
+            app:layout_constraintTop_toBottomOf="@+id/ic_bed" />
+
+        <ImageView
+            android:id="@+id/ic_bath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_baseline_bathtub_24"
+            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
+
+        <EditText
+            android:id="@+id/nbr_of_bath_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:cursorVisible="true"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
+            app:layout_constraintStart_toEndOf="@+id/ic_bath"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
+
+        <TextView
+            android:id="@+id/title_property_availability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:text="Property availability"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/ic_bath"
+            app:layout_constraintTop_toBottomOf="@+id/ic_bath" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/availability_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
+            app:layout_constraintStart_toStartOf="@+id/type_chip_group"
+            app:layout_constraintTop_toBottomOf="@+id/title_property_availability"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/for_sale" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sold" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/title_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:text="since :"
+            app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
+            app:layout_constraintTop_toBottomOf="@+id/availability_chip_group" />
+
+        <Button
+            android:id="@+id/select_date"
+            style="@style/ButtonPositiveStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="click to choose a date"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/title_date"
+            app:layout_constraintStart_toEndOf="@+id/title_date"
+            app:layout_constraintTop_toTopOf="@+id/title_date" />
+
+        <TextView
+            android:id="@+id/title_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Price"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
+            app:layout_constraintTop_toBottomOf="@+id/title_date" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/range_slider_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:stepSize="10"
+            android:valueFrom="0"
+            android:valueTo="2000000"
+            app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
+            app:layout_constraintStart_toStartOf="@+id/type_chip_group"
+            app:layout_constraintTop_toBottomOf="@id/title_price"
+            app:thumbColor="@color/colorPrimary"
+            app:thumbElevation="4dp"
+            app:thumbRadius="10dp"
+            app:tickColor="@android:color/transparent"
+            app:trackColorActive="@color/colorPrimary"
+            app:trackColorInactive="@color/lightGray"
+            app:values="@array/initial_price_slider_values" />
+
+        <TextView
+            android:id="@+id/min_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bkg_rectangle_brown"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="10dp"
+            android:text="$ 0"
+            app:layout_constraintStart_toStartOf="@+id/range_slider_price"
+            app:layout_constraintTop_toBottomOf="@+id/range_slider_price" />
+
+        <TextView
+            android:id="@+id/max_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bkg_rectangle_brown"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="10dp"
+            android:text="$ 10000000"
+            app:layout_constraintEnd_toEndOf="@+id/range_slider_price"
+            app:layout_constraintTop_toBottomOf="@+id/range_slider_price" />
+
+        <TextView
+            android:id="@+id/title_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Surface"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
+            app:layout_constraintTop_toBottomOf="@+id/min_price" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/range_slider_surface"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:stepSize="10"
+            android:valueFrom="0"
+            android:valueTo="1000"
+            app:layout_constraintEnd_toEndOf="@+id/range_slider_price"
+            app:layout_constraintStart_toStartOf="@+id/range_slider_price"
+            app:layout_constraintTop_toBottomOf="@id/title_surface"
+            app:thumbColor="@color/colorPrimary"
+            app:thumbElevation="4dp"
+            app:thumbRadius="10dp"
+            app:tickColor="@android:color/transparent"
+            app:trackColorActive="@color/colorPrimary"
+            app:trackColorInactive="@color/lightGray"
+            app:values="@array/initial_surface_slider_values" />
+
+        <TextView
+            android:id="@+id/min_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bkg_rectangle_brown"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="10dp"
+            android:text="0 sqft"
+            app:layout_constraintStart_toStartOf="@+id/range_slider_surface"
+            app:layout_constraintTop_toBottomOf="@+id/range_slider_surface" />
+
+        <TextView
+            android:id="@+id/max_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bkg_rectangle_brown"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="10dp"
+            android:text="500 sqft"
+            app:layout_constraintEnd_toEndOf="@+id/range_slider_surface"
+            app:layout_constraintTop_toBottomOf="@+id/range_slider_surface" />
+
+        <TextView
+            android:id="@+id/title_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="With pictures"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/range_slider_surface"
+            app:layout_constraintTop_toBottomOf="@+id/min_surface" />
+
+        <CheckBox
+            android:id="@+id/checkbox_pictures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/title_picture"
+            app:layout_constraintEnd_toEndOf="@+id/range_slider_price"
+            app:layout_constraintTop_toTopOf="@+id/title_picture" />
+
+        <TextView
+            android:id="@+id/subtitle_nbr_of_pics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="at least:"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintStart_toStartOf="@+id/title_picture"
+            app:layout_constraintTop_toBottomOf="@+id/title_picture" />
+
+        <EditText
+            android:id="@+id/nbr_of_pic_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
+            app:layout_constraintStart_toEndOf="@+id/subtitle_nbr_of_pics"
+            app:layout_constraintTop_toBottomOf="@+id/title_picture" />
+
+        <TextView
+            android:id="@+id/text_view_pictures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pictures"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
+            app:layout_constraintStart_toEndOf="@+id/nbr_of_pic_input"
+            app:layout_constraintTop_toTopOf="@+id/subtitle_nbr_of_pics" />
+
+        <TextView
+            android:id="@+id/title_point_of_interest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Close to points of interests"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/title_picture"
+            app:layout_constraintTop_toBottomOf="@+id/subtitle_nbr_of_pics" />
+
+        <CheckBox
+            android:id="@+id/checkbox_point_of_interest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/title_point_of_interest"
+            app:layout_constraintEnd_toEndOf="@+id/checkbox_pictures"
+            app:layout_constraintTop_toTopOf="@+id/title_point_of_interest" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

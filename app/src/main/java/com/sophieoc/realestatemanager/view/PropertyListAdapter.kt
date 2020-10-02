@@ -48,7 +48,7 @@ class PropertyListAdapter(
                     .into(itemView.image_property)
             itemView.type_and_city.text = "${property.type.s} in ${property.address.city}"
             itemView.price_property.text = "$${property.price}"
-            itemView.nbr_of_beds.text = property.numberOfBedrooms.toString()
+            itemView.nbr_of_beds_input.text = property.numberOfBedrooms.toString()
             itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
             itemView.surface.text = property.surface.toString()
         }

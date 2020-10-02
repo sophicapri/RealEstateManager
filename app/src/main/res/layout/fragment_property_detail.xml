@@ -144,7 +144,7 @@
                 app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/nbr_of_beds"
+                android:id="@+id/nbr_of_beds_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_baseline_bathtub_24"
-                app:layout_constraintStart_toEndOf="@+id/nbr_of_beds"
+                app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
                 app:layout_constraintTop_toTopOf="@+id/ic_bed"
                 app:tint="@color/white" />
 

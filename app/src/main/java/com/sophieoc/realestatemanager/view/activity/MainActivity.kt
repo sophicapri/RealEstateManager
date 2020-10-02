@@ -93,7 +93,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         filterChipGroup = filterDialog?.findViewById(R.id.type_chip_group)
         filterChipGroup?.setOnCheckedChangeListener { chipGroup, checkedId ->
             val chip = chipGroup.findViewById<Chip>(checkedId)
-            Log.d(TAG, "showFilterDialog: selected chip ID = ${chip.text == PropertyType.HOUSE.s} "  )
+            Log.d(TAG, "showFilterDialog: selected chip ID = ${chip?.text == PropertyType.HOUSE.s} "  )
         }
     }
 

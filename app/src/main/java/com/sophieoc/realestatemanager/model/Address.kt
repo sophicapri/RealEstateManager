@@ -19,7 +19,7 @@ data class Address(
     constructor() : this("", "", "", "", "", "", "")
 
     override fun toString(): String {
-        val attributList = arrayOf(streetNumber, streetName, apartmentNumber, city, postalCode, region, country)
+        val attributList = arrayOf(streetNumber, streetName, city, postalCode, region, country)
         var address = String()
         for (value in attributList) {
             if (value.isNotEmpty())

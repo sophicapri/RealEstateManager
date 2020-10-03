@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
@@ -24,8 +25,8 @@ import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import kotlinx.android.synthetic.main.fragment_property_list.*
 
 
-class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
-    private lateinit var adapter: PropertyListAdapter
+open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
+    lateinit var adapter: PropertyListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,7 +35,7 @@ class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClick
                 adapter.updateList(ArrayList(it))
             }
         })
-        configureRecyclerView()
+        configureRecyclerView(recycler_view_properties)
         fab_add_property.setOnClickListener {
             showAddPropertyFragment()
         }
@@ -58,12 +59,12 @@ class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClick
         mainContext.startActivityForResult(intent, RQ_CODE_ADD_PROPERTY)
     }
 
-    private fun configureRecyclerView() {
+    fun configureRecyclerView(recyclerView: RecyclerView) {
         val linearLayoutManager = LinearLayoutManager(context)
-        recycler_view_properties.setHasFixedSize(true)
-        recycler_view_properties.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = linearLayoutManager
         adapter = PropertyListAdapter(this, Glide.with(this))
-        recycler_view_properties.adapter = adapter
+        recyclerView.adapter = adapter
     }
 
     override fun onPropertyClick(propertyId: String) {
@@ -83,5 +84,4 @@ class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClick
     }
 
     override fun getLayout() = R.layout.fragment_property_list
-
 }

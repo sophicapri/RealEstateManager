@@ -2,16 +2,12 @@ package com.sophieoc.realestatemanager.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.model.User
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {

@@ -12,13 +12,10 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.navigation.NavigationView
-import com.google.api.Property
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.utils.PropertyType
-import com.sophieoc.realestatemanager.utils.RQ_CODE_ADD_PROPERTY
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_property_list.*
 
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
@@ -62,7 +59,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.map_view -> startNewActivity(MapActivity::class.java)
-            R.id.user_profile -> startNewActivity(UserProfileActivity::class.java)
+            R.id.user_profile -> startNewActivity(UserPropertiesActivity::class.java)
             R.id.sign_out -> signOut()
         }
         drawer_layout.closeDrawer(GravityCompat.START)

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
-    val fragmentUser = UserProfileFragment()
+    val fragmentUser = UserPropertiesFragment()
     val fragmentPropertyDetail = PropertyDetailFragment()
     val viewModel by viewModel<MyViewModel>()
 

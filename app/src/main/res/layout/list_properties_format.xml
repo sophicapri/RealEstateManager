@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/image_property_container"
@@ -31,9 +30,9 @@
         android:id="@+id/type_and_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="House in New York"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:text="House in New York"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/image_property_container"
         app:layout_constraintTop_toBottomOf="@+id/image_property_container" />
@@ -42,11 +41,11 @@
         android:id="@+id/price_property"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
         android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/rockwell_nova"
         android:text="$ 21,300,800"
         android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/rockwell_nova"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/type_and_city"

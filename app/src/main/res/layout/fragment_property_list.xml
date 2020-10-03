@@ -7,9 +7,8 @@
 
     <include
         android:id="@+id/results_search_container"
-        layout="@layout/results_for_search" />
-
-
+        layout="@layout/results_for_search"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_properties"
         android:layout_width="match_parent"

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_baseline_arrow_white_24"
+        app:title="Settings"
+        app:titleTextColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/touch_to_update_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Touch to update"
+        android:textColor="@color/colorSecondary"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/profile_picture"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
+
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Maria GONZALES"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
+        app:layout_constraintEnd_toStartOf="@+id/profile_picture"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_picture" />
+
+    <TextView
+        android:id="@+id/touch_to_update_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Touch to update"
+        android:textColor="@color/colorSecondary"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <!-- EDIT USERNAME-->
+    <LinearLayout
+        android:id="@+id/edit_username_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bkg_edit_name"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingBottom="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/username"
+        app:layout_constraintVertical_bias="0.5">
+
+        <EditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:cursorVisible="true"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+            android:inputType="text"
+            android:textSize="16sp"
+            tools:ignore="Autofill,LabelFor">
+            <requestFocus/>
+        </EditText>
+
+        <ImageView
+            android:id="@+id/save_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_check_black_24"
+            app:tint="@android:color/holo_green_dark" />
+
+        <ImageView
+            android:id="@+id/cancel_username_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_close_black_24dp" />
+    </LinearLayout>
+    <!-- END EDIT USERNAME-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

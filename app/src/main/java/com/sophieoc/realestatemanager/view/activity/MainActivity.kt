@@ -34,12 +34,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_list, fragmentList, fragmentList.javaClass.simpleName).commit()
-        configureDrawerLayout()
         setSupportActionBar(my_toolbar)
     }
 
     override fun onResume() {
         super.onResume()
+        configureDrawerLayout()
         configurePropertyDetailFragment()
     }
 
@@ -59,7 +59,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.map_view -> startNewActivity(MapActivity::class.java)
-            R.id.user_profile -> startNewActivity(UserPropertiesActivity::class.java)
+            R.id.user_properties -> startNewActivity(UserPropertiesActivity::class.java)
+            R.id.settings ->  startNewActivity(SettingsActivity::class.java)
             R.id.sign_out -> signOut()
         }
         drawer_layout.closeDrawer(GravityCompat.START)

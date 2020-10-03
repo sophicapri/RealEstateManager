@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_baseline_map_24"/>
 
         <item
-            android:id="@+id/user_profile"
+            android:id="@+id/user_properties"
             android:title="My properties"
             android:icon="@drawable/ic_property_24"/>
 

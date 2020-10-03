@@ -34,6 +34,7 @@
     <activity android:name=".view.activity.UserPropertiesActivity" />
         <activity android:name=".view.activity.PropertyDetailActivity" />
         <activity android:name=".view.activity.AddPropertyActivity" />
+        <activity android:name=".view.activity.SettingsActivity" />
         <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
 
         <provider

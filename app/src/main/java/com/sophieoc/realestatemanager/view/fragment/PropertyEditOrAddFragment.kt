@@ -17,11 +17,13 @@ import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
-import kotlinx.android.synthetic.main.fragment_edit_create_property.*
+import kotlinx.android.synthetic.main.fragment_edit_add_property.*
 import kotlinx.android.synthetic.main.pictures_property_edit_format.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class PropertyEditOrCreateFragment : BaseFragment() {
+class PropertyEditOrAddFragment : BaseFragment() {
     var property = Property()
     private lateinit var adapter: PicturesAdapter
 
@@ -40,8 +42,10 @@ class PropertyEditOrCreateFragment : BaseFragment() {
         super.onResume()
         arguments?.let {
             getPropertyId(it)
+            title_edit_create.text = "Edit property"
         }
-        toolbar.setNavigationOnClickListener { mainContext.onBackPressed()}
+        if (arguments == null) title_edit_create.text = "Add a property"
+        toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
         btn_save_property.setOnClickListener { saveChanges(this.property) }
     }
 
@@ -95,21 +99,18 @@ class PropertyEditOrCreateFragment : BaseFragment() {
     private fun getSpinnerPosition(value: String, array: Int): Int {
         val arrayList = resources.getStringArray(array)
         var position = -1
-        arrayList.forEachIndexed { index, s ->
-            if (s == value)
-                position = index
-        }
+        arrayList.forEachIndexed { index, s -> if (s == value) position = index }
         return position
     }
 
-    fun saveChanges(property: Property) {
+    private fun saveChanges(property: Property) {
         property.address.streetNumber = street_nbr_input.text.toString()
         property.address.apartmentNumber = apartment_nbr_input.text.toString()
         property.address.streetName = street_name_input.text.toString()
         property.address.city = city_input.text.toString()
         property.address.postalCode = postal_code_input.text.toString()
         property.address.region = region_input.text.toString()
-        property.address.country =  country_input.text.toString()
+        property.address.country = country_input.text.toString()
         property.type = PropertyType.values()[types_spinner.selectedItemPosition]
         property.price = price_input.text.toString().toInt()
         property.numberOfBedrooms = nbr_of_beds_input.text.toString().toInt()
@@ -118,6 +119,7 @@ class PropertyEditOrCreateFragment : BaseFragment() {
         property.availability = PropertyAvailability.values()[availability_spinner.selectedItemPosition]
         property.description = description_input.text.toString()
         updatePictures(property)
+        setDates(property)
         if (property.pointOfInterests.isEmpty()) setPointOfInterestsAndSave(property)
         else saveProperty(property)
     }
@@ -129,25 +131,32 @@ class PropertyEditOrCreateFragment : BaseFragment() {
         property.photos = adapter.pictures
     }
 
+    private fun setDates(property: Property) {
+        if (property.dateOnMarket == null) property.dateOnMarket = Date()
+        if (property.availability == PropertyAvailability.SOLD && property.dateSold == null) property.dateSold = Date()
+        if (property.dateSold != null && property.availability == PropertyAvailability.AVAILABLE) property.dateSold = null
+    }
+
     private fun setPointOfInterestsAndSave(property: Property) {
-        println("address found = " + property.address.toString())
         val strLocation = property.address.toLatLng(mainContext).toStringFormat()
         val location = Location(property.id)
         location.latitude = property.address.toLatLng(mainContext).latitude
         location.longitude = property.address.toLatLng(mainContext).longitude
         if (strLocation != LAT_LNG_NOT_FOUND) {
             viewModel.getPointOfInterests(strLocation).observe(this, { placeDetailList ->
-                if (placeDetailList != null && placeDetailList.isNotEmpty()) {
-                    val listPointOfInterest = ArrayList<PointOfInterest>()
-                    for (placeDetails in placeDetailList) {
-                        if (placeDetails.types?.get(0) != POINT_OF_INTEREST) {
-                            val pointOfInterest = PointOfInterest()
-                            pointOfInterest.type = placeDetails.types?.get(0).toString()
-                            pointOfInterest.name = placeDetails.name.toString()
-                            pointOfInterest.address = placeDetails.vicinity.toString()
-                            pointOfInterest.distance = placeDetails.getDistanceFrom(location)
-                            listPointOfInterest.add(pointOfInterest)
-                            if (listPointOfInterest.size == placeDetailList.size) {
+                placeDetailList?.let {
+                    if (placeDetailList.isNotEmpty()) {
+                        val listPointOfInterest = ArrayList<PointOfInterest>()
+                        placeDetailList.forEachIndexed { index, placeDetails ->
+                            if (placeDetails.types?.get(0) != POINT_OF_INTEREST) {
+                                val pointOfInterest = PointOfInterest()
+                                pointOfInterest.type = placeDetails.types?.get(0).toString().capitalize(Locale.ROOT).replace('_', ' ')
+                                pointOfInterest.name = placeDetails.name.toString()
+                                pointOfInterest.address = placeDetails.vicinity.toString()
+                                pointOfInterest.distance = placeDetails.getDistanceFrom(location)
+                                listPointOfInterest.add(pointOfInterest)
+                            }
+                            if ((index + 1) == placeDetailList.size) {
                                 property.pointOfInterests = listPointOfInterest
                                 saveProperty(property)
                             }
@@ -162,15 +171,16 @@ class PropertyEditOrCreateFragment : BaseFragment() {
         viewModel.upsertProperty(property).observe(this, Observer {
             //TODO : send notification
             it?.let {
-                println("property saved ! = ${property.description}")
+                mainContext.onBackPressed()
             }
         })
-        mainContext.onBackPressed()
-        val propertyDetailFragment = mainContext.supportFragmentManager.findFragmentByTag(PropertyDetailFragment::class.java.simpleName)
-        propertyDetailFragment?.let {mainContext.supportFragmentManager.beginTransaction().detach(it).attach(it).commit()}
     }
 
     override fun getLayout(): Int {
-        return R.layout.fragment_edit_create_property
+        return R.layout.fragment_edit_add_property
+    }
+
+    companion object{
+        const val TAG = "PropertyEditFragment"
     }
 }

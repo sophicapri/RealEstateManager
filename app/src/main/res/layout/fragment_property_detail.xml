@@ -225,8 +225,8 @@
 
             <ImageView
                 android:id="@+id/ic_profile_picture"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_profile_no_pic"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
@@ -249,7 +249,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Maria GONZALES"
-                android:layout_marginEnd="2dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@android:color/secondary_text_light"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                 app:layout_constraintEnd_toStartOf="@+id/map"
@@ -321,8 +321,10 @@
                     android:id="@+id/recycler_view_point_of_interest"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:fadeScrollbars="false"
                     android:scrollbarSize="2dp"
-                    android:scrollbarStyle="insideInset"
+                    android:scrollbarStyle="insideOverlay"
                     android:scrollbars="vertical"
                     tools:itemCount="2"
                     tools:listitem="@layout/point_of_interest_format" />

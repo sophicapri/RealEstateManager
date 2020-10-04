@@ -33,7 +33,6 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume: ")
         when {
             arguments != null -> getPropertyIdFromArgs(arguments)
             mainContext.intent.hasExtra(PROPERTY_KEY) -> getPropertyIdFromIntent(mainContext.intent.extras)
@@ -79,7 +78,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         view_pager.adapter = SliderAdapter(property.photos, Glide.with(this))
         pageChangeListener()
         spring_dots_indicator.setViewPager2(view_pager)
-        if(property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
+        if (property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
         property_availability.text = property.availability.s.toUpperCase(Locale.ROOT)
         price_property.text = property.price.formatToDollars()
         type_property.text = property.type.s
@@ -98,7 +97,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun startEditPropertyFragment(propertyId: String) {
-        val editPropertyFragment = PropertyEditOrCreateFragment()
+        val editPropertyFragment = PropertyEditOrAddFragment()
         val bundle = Bundle()
         editPropertyFragment.arguments = bundle.putString(PROPERTY_KEY, propertyId).let { bundle }
         mainContext.supportFragmentManager.beginTransaction()
@@ -117,9 +116,9 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun displayDate() {
         if (property.availability == PropertyAvailability.AVAILABLE)
-            date_property.text = "On the market since ${property.dateOnMarket.format()}"
+            property.dateOnMarket?.let { date_property.text = "On the market since ${it.format()}" }
         else
-            date_property.text = "Sold since ${property.dateOnMarket.format()}"
+            property.dateSold?.let { date_property.text = "Sold since ${it.format()}" }
     }
 
     private fun showAgentInCharge(property: Property) {
@@ -129,7 +128,6 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
                         .load(it.user.urlPhoto)
                         .apply(RequestOptions.circleCropTransform())
                         .into(ic_profile_picture)
-
                 name_agent.text = it.user.username
             }
         })
@@ -138,7 +136,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private fun configureRecyclerView(pointOfInterests: List<PointOfInterest>) {
         recycler_view_point_of_interest.setHasFixedSize(true)
         recycler_view_point_of_interest.layoutManager = LinearLayoutManager(context)
-        recycler_view_point_of_interest.adapter = PointOfInterestAdapter(pointOfInterests, Glide.with(this))
+        recycler_view_point_of_interest.adapter = PointOfInterestAdapter(pointOfInterests)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -160,7 +158,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         override fun getLayout() = R.layout.no_property_clicked
     }
 
-    companion object{
+    companion object {
         const val TAG = "PropertyDetailFragment"
     }
 }

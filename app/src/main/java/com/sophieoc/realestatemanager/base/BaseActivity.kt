@@ -69,8 +69,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun startAddPropertyFragment() {
         val fm = supportFragmentManager.beginTransaction()
-        fm.replace(R.id.frame_property_details, PropertyEditOrCreateFragment(),
-                PropertyEditOrCreateFragment::class.java.simpleName).commit()
+        fm.replace(R.id.frame_property_details, PropertyEditOrAddFragment(),
+                PropertyEditOrAddFragment::class.java.simpleName).commit()
     }
 
     override fun onBackPressed() {

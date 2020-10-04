@@ -9,6 +9,7 @@
     <color name="black">#000000</color>
 
     <color name="lightGray">#C3C3C3</color>
+    <color name="lighterGrey">#C1C1C1</color>
 
     <!-- Colors for the shadow background in PropertyDetail -->
     <color name="translucent_scrim_top">#26000000</color>

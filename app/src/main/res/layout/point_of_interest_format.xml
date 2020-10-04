@@ -5,36 +5,41 @@
     android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/type_poi"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Doctor:"
-        android:textColor="@color/white"
+        android:src="@drawable/ic_baseline_navigate_next_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/name_poi"
+        android:id="@+id/type_and_name_poi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:textColor="@android:color/secondary_text_light"
-        android:text="Kempf Catherine"
+        android:text="Doctor: ..."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/type_poi"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@id/imageView" />
 
     <TextView
         android:id="@+id/address_poi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
         android:text="19 Park Avenue, Manhattan"
         android:textColor="@android:color/secondary_text_light"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/type_poi"
-        app:layout_constraintTop_toBottomOf="@+id/type_poi" />
+        app:layout_constraintStart_toStartOf="@+id/type_and_name_poi"
+        app:layout_constraintTop_toBottomOf="@+id/type_and_name_poi" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="65m away"
+        android:textColor="@color/lighterGrey"
+        android:textStyle="italic"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address_poi" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,7 @@ data class Property(
         @ColumnInfo(name = "number_of_bathrooms") var numberOfBathrooms: Int,
         @ColumnInfo(name = "description") var description: String?,
         @ColumnInfo(name = "availability") var availability: PropertyAvailability,
-        @ColumnInfo(name = "date_on_market") var dateOnMarket: Date,
+        @ColumnInfo(name = "date_on_market") var dateOnMarket: Date?,
         @ColumnInfo(name = "date_sold") var dateSold: Date?,
         @Embedded var address: Address,
         @ColumnInfo(name = "photos") var photos: List<Photo>,
@@ -31,7 +31,7 @@ data class Property(
         @ColumnInfo(name = "user_id") var userId: String,
 ) {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, -1, -1,
-            -1, -1, "", PropertyAvailability.AVAILABLE, Date(), null,
+            -1, -1, "", PropertyAvailability.AVAILABLE, null, null,
             Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "")
 
     companion object {

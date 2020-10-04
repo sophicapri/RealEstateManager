@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.utils.ADD_PROPERTY_KEY
-import com.sophieoc.realestatemanager.view.fragment.PropertyEditOrCreateFragment
+import com.sophieoc.realestatemanager.view.fragment.PropertyEditOrAddFragment
 
 class AddPropertyActivity : BaseActivity() {
     override fun getLayout() = R.layout.activity_add_property
@@ -13,8 +13,8 @@ class AddPropertyActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_add_property, PropertyEditOrCreateFragment(),
-                        PropertyEditOrCreateFragment().javaClass.simpleName).commit()
+                .replace(R.id.frame_add_property, PropertyEditOrAddFragment(),
+                        PropertyEditOrAddFragment().javaClass.simpleName).commit()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

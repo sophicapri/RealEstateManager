@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.model.Property
-import kotlinx.android.synthetic.main.fragment_edit_create_property.view.*
+import kotlinx.android.synthetic.main.fragment_edit_add_property.view.*
 import kotlinx.android.synthetic.main.pictures_property_edit_format.view.*
 
 class PicturesAdapter(var glide: RequestManager) :

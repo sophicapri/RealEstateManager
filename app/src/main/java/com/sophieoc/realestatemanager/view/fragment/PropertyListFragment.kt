@@ -44,7 +44,7 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
 
     private fun showFragment() {
         mainContext.supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_property_details, PropertyEditOrCreateFragment()).commit()
+                .replace(R.id.frame_property_details, PropertyEditOrAddFragment()).commit()
     }
 
     private fun startActivity() {

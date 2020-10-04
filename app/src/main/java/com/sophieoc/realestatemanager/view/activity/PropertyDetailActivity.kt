@@ -19,7 +19,7 @@ class PropertyDetailActivity : BaseActivity() {
         super.onResume()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_details, fragmentPropertyDetail,
-                        fragmentPropertyDetail.javaClass.simpleName).commit()
+                        fragmentPropertyDetail::class.java.simpleName).commit()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

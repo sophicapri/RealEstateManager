@@ -17,10 +17,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
-import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
-import com.sophieoc.realestatemanager.utils.PropertyAvailability
-import com.sophieoc.realestatemanager.utils.format
+import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import kotlinx.android.synthetic.main.fragment_property_detail.*
@@ -36,6 +33,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
         when {
             arguments != null -> getPropertyIdFromArgs(arguments)
             mainContext.intent.hasExtra(PROPERTY_KEY) -> getPropertyIdFromIntent(mainContext.intent.extras)
@@ -51,7 +49,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
                     getProperty(propertyId)
             }
         } catch (e: IllegalStateException) {
-            Log.e("TAG", "getPropertyIdFromArgs: " + e.message)
+            Log.e(TAG, "getPropertyIdFromArgs: " + e.message)
         }
     }
 
@@ -83,7 +81,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         spring_dots_indicator.setViewPager2(view_pager)
         if(property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
         property_availability.text = property.availability.s.toUpperCase(Locale.ROOT)
-        price_property.text = property.price
+        price_property.text = property.price.formatToDollars()
         type_property.text = property.type.s
         address_property.text = property.address.toString()
         nbr_of_beds_input.text = property.numberOfBedrooms.toString()
@@ -104,7 +102,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         val bundle = Bundle()
         editPropertyFragment.arguments = bundle.putString(PROPERTY_KEY, propertyId).let { bundle }
         mainContext.supportFragmentManager.beginTransaction()
-                .add(R.id.frame_property_details, editPropertyFragment,
+                .replace(R.id.frame_property_details, editPropertyFragment,
                         editPropertyFragment.javaClass.simpleName).addToBackStack(null).commit()
     }
 
@@ -160,5 +158,9 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     class NoPropertyClickedFragment : BaseFragment() {
         override fun getLayout() = R.layout.no_property_clicked
+    }
+
+    companion object{
+        const val TAG = "PropertyDetailFragment"
     }
 }

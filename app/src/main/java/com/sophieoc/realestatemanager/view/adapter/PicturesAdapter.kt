@@ -38,7 +38,7 @@ class PicturesAdapter(var glide: RequestManager) :
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.picture_property)
 
-            itemView.description_input.text.insert(0, photo.description)
+            itemView.picture_description_input.text.insert(0, photo.description)
         }
 
         init {

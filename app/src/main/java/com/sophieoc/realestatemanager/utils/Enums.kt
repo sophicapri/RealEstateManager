@@ -1,9 +1,9 @@
 package com.sophieoc.realestatemanager.utils
 
 enum class PropertyType(val s: String) {
-    DUPLEX("Duplex"),
-    FLAT("Flat"),
     HOUSE("House"),
+    FLAT("Flat"),
+    DUPLEX("Duplex"),
     PENTHOUSE("Penthouse"),
     VILLA("Villa")
 }

@@ -38,18 +38,29 @@
         app:layout_constraintTop_toBottomOf="@+id/image_property_container" />
 
     <TextView
-        android:id="@+id/price_property"
+        android:id="@+id/ic_dollar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="$ "
         android:layout_marginTop="5dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/rockwell_nova"
-        android:text="$ 21,300,800"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/type_and_city"
         app:layout_constraintTop_toBottomOf="@+id/type_and_city" />
+
+    <TextView
+        android:id="@+id/price_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/rockwell_nova"
+        android:text="21,300,800"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ic_dollar"
+        app:layout_constraintTop_toTopOf="@+id/ic_dollar" />
 
     <ImageView
         android:id="@+id/ic_bed"
@@ -59,8 +70,8 @@
         android:layout_marginBottom="10dp"
         android:src="@drawable/ic_outline_king_bed_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/price_property"
-        app:layout_constraintTop_toBottomOf="@id/price_property" />
+        app:layout_constraintStart_toStartOf="@+id/ic_dollar"
+        app:layout_constraintTop_toBottomOf="@id/ic_dollar" />
 
     <TextView
         android:id="@+id/nbr_of_beds_input"

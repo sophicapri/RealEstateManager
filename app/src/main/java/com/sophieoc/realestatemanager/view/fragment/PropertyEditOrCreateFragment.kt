@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -17,10 +18,12 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import kotlinx.android.synthetic.main.fragment_edit_create_property.*
+import kotlinx.android.synthetic.main.pictures_property_edit_format.view.*
+
 
 class PropertyEditOrCreateFragment : BaseFragment() {
     var property = Property()
-    lateinit var adapter: PicturesAdapter
+    private lateinit var adapter: PicturesAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -38,6 +41,8 @@ class PropertyEditOrCreateFragment : BaseFragment() {
         arguments?.let {
             getPropertyId(it)
         }
+        toolbar.setNavigationOnClickListener { mainContext.onBackPressed()}
+        btn_save_property.setOnClickListener { saveChanges(this.property) }
     }
 
     private fun getPropertyId(arguments: Bundle?) {
@@ -70,7 +75,7 @@ class PropertyEditOrCreateFragment : BaseFragment() {
         region_input.text.insert(0, property.address.region)
         country_input.text.insert(0, property.address.country)
         types_spinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
-        price_input.text.insert(0, property.price)
+        price_input.text.insert(0, property.price.toString())
         nbr_of_beds_input.text.insert(0, property.numberOfBedrooms.toString())
         nbr_of_bath_input.text.insert(0, property.numberOfBathrooms.toString())
         surface_input.text.insert(0, property.surface.toString())
@@ -98,11 +103,33 @@ class PropertyEditOrCreateFragment : BaseFragment() {
     }
 
     fun saveChanges(property: Property) {
-        property.photos = adapter.pictures
-        setPointOfInterests(property)
+        property.address.streetNumber = street_nbr_input.text.toString()
+        property.address.apartmentNumber = apartment_nbr_input.text.toString()
+        property.address.streetName = street_name_input.text.toString()
+        property.address.city = city_input.text.toString()
+        property.address.postalCode = postal_code_input.text.toString()
+        property.address.region = region_input.text.toString()
+        property.address.country =  country_input.text.toString()
+        property.type = PropertyType.values()[types_spinner.selectedItemPosition]
+        property.price = price_input.text.toString().toInt()
+        property.numberOfBedrooms = nbr_of_beds_input.text.toString().toInt()
+        property.numberOfBathrooms = nbr_of_bath_input.text.toString().toInt()
+        property.surface = surface_input.text.toString().toInt()
+        property.availability = PropertyAvailability.values()[availability_spinner.selectedItemPosition]
+        property.description = description_input.text.toString()
+        updatePictures(property)
+        if (property.pointOfInterests.isEmpty()) setPointOfInterestsAndSave(property)
+        else saveProperty(property)
     }
 
-    private fun setPointOfInterests(property: Property) {
+    private fun updatePictures(property: Property) {
+        adapter.pictures.forEachIndexed { index, photo ->
+            photo.description = recycler_view_pictures[index].picture_description_input.text.toString()
+        }
+        property.photos = adapter.pictures
+    }
+
+    private fun setPointOfInterestsAndSave(property: Property) {
         println("address found = " + property.address.toString())
         val strLocation = property.address.toLatLng(mainContext).toStringFormat()
         val location = Location(property.id)
@@ -133,13 +160,14 @@ class PropertyEditOrCreateFragment : BaseFragment() {
 
     private fun saveProperty(property: Property) {
         viewModel.upsertProperty(property).observe(this, Observer {
-            println("hello null ")
-            if (it != null) {
-                println("point of interest 1 = ${it.pointOfInterests[0].name} à ${it.pointOfInterests[0].distance}m")
-                println("point of interest 2 = ${it.pointOfInterests[1].name} à ${it.pointOfInterests[1].distance}m")
-                println("point of interest 3 = ${it.pointOfInterests[2].name} à ${it.pointOfInterests[2].distance}m")
+            //TODO : send notification
+            it?.let {
+                println("property saved ! = ${property.description}")
             }
         })
+        mainContext.onBackPressed()
+        val propertyDetailFragment = mainContext.supportFragmentManager.findFragmentByTag(PropertyDetailFragment::class.java.simpleName)
+        propertyDetailFragment?.let {mainContext.supportFragmentManager.beginTransaction().detach(it).attach(it).commit()}
     }
 
     override fun getLayout(): Int {

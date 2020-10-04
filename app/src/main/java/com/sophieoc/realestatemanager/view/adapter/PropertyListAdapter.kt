@@ -8,6 +8,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.utils.formatToDollars
 import kotlinx.android.synthetic.main.list_properties_format.view.*
 
 class PropertyListAdapter(
@@ -47,7 +48,7 @@ class PropertyListAdapter(
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.image_property)
             itemView.type_and_city.text = "${property.type.s} in ${property.address.city}"
-            itemView.price_property.text = "$${property.price}"
+            itemView.price_property.text = property.price.formatToDollars()
             itemView.nbr_of_beds_input.text = property.numberOfBedrooms.toString()
             itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
             itemView.surface.text = property.surface.toString()

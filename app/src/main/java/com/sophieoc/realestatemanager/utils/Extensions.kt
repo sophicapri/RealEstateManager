@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import java.text.DateFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +28,10 @@ fun Int.toBitmap(resources: Resources?): BitmapDescriptor? {
         drawable.draw(canvas)
     }
     return BitmapDescriptorFactory.fromBitmap(bitmap)
+}
+
+fun Int.formatToDollars(): String? {
+    return NumberFormat.getNumberInstance(Locale.US).format(this)
 }
 
 fun LatLng.toStringFormat(): String{

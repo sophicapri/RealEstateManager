@@ -22,18 +22,9 @@ data class Address(
         val attributList = arrayOf(streetNumber, apartmentNumber, streetName, city, postalCode, region, country)
         var address = String()
 
-        attributList.forEachIndexed { index, attribut ->
-            if (attribut.isNotEmpty()){
-                address += if (index != STREET_NAME_POSITION || index != POSTAL_CODE_POSITION)
-                    "$attribut "
-                else
-                    "$attribut, "
-            }
-            /*  for (value in attributList) {
+        for (value in attributList) {
             if (value.isNotEmpty())
                 address += "$value "
-        }
-       */
         }
         return address
     }

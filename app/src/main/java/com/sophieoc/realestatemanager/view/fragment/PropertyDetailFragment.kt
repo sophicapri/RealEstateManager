@@ -1,7 +1,13 @@
 package com.sophieoc.realestatemanager.view.fragment
 
+import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -9,9 +15,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
 import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
+import com.sophieoc.realestatemanager.utils.PropertyAvailability
+import com.sophieoc.realestatemanager.utils.format
+import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
+import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
+import kotlinx.android.synthetic.main.fragment_property_detail.*
+import java.util.*
 
 
 class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
@@ -19,35 +32,115 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     var map: GoogleMap? = null
     var propertyMarker: MarkerOptions? = null
 
-
     override fun getLayout() = R.layout.fragment_property_detail
 
     override fun onResume() {
         super.onResume()
         when {
-            arguments != null -> {
-                try {
-                    if (requireArguments().containsKey(PROPERTY_KEY)) {
-                        val propertyId = arguments?.get(PROPERTY_KEY) as String
-                        if (propertyId.isNotEmpty())
-                            getProperty(propertyId)
-                    }
-                } catch (e: IllegalStateException) {
-                    Log.e("TAG", "getLayout: " + e.message)
-                }
-            }
-            mainContext.intent.hasExtra(PROPERTY_KEY) -> {
-                val propertyId = mainContext.intent.extras?.get(PROPERTY_KEY) as String
-                getProperty(propertyId)
-            }
-            else -> {
-                mainContext.supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_property_details, NoPropertyClickedFragment()).commit()
-             /*   if (activity is MapActivity)
-                    view?.visibility = GONE
-              */
-            }
+            arguments != null -> getPropertyIdFromArgs(arguments)
+            mainContext.intent.hasExtra(PROPERTY_KEY) -> getPropertyIdFromIntent(mainContext.intent.extras)
+            else -> displayNoPropertyFragment()
         }
+    }
+
+    private fun getPropertyIdFromArgs(arguments: Bundle?) {
+        try {
+            if (requireArguments().containsKey(PROPERTY_KEY)) {
+                val propertyId = arguments?.get(PROPERTY_KEY) as String
+                if (propertyId.isNotEmpty())
+                    getProperty(propertyId)
+            }
+        } catch (e: IllegalStateException) {
+            Log.e("TAG", "getPropertyIdFromArgs: " + e.message)
+        }
+    }
+
+    private fun getPropertyIdFromIntent(extras: Bundle?) {
+        val propertyId = extras?.get(PROPERTY_KEY) as String
+        getProperty(propertyId)
+    }
+
+    private fun displayNoPropertyFragment() {
+        mainContext.supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_property_details, NoPropertyClickedFragment()).commit()
+    }
+
+    private fun getProperty(propertyId: String) {
+        viewModel.getPropertyById(propertyId).observe(mainContext, Observer {
+            it?.let {
+                property = it
+                map?.let { addMarkerAndZoom() }
+                bindViews(it)
+            }
+        })
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+    }
+
+    private fun bindViews(property: Property) {
+        view_pager.adapter = SliderAdapter(property.photos, Glide.with(this))
+        pageChangeListener()
+        spring_dots_indicator.setViewPager2(view_pager)
+        if(property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
+        property_availability.text = property.availability.s.toUpperCase(Locale.ROOT)
+        price_property.text = property.price
+        type_property.text = property.type.s
+        address_property.text = property.address.toString()
+        nbr_of_beds_input.text = property.numberOfBedrooms.toString()
+        nbr_of_bath.text = property.numberOfBathrooms.toString()
+        surface.text = property.surface.toString()
+        showAgentInCharge(property)
+        description.text = property.description
+        configureRecyclerView(property.pointOfInterests)
+        displayDate()
+        fab_edit_property.setOnClickListener { startEditPropertyFragment(property.id) }
+        property_detail_toolbar.setNavigationOnClickListener {
+            mainContext.onBackPressed()
+        }
+    }
+
+    private fun startEditPropertyFragment(propertyId: String) {
+        val editPropertyFragment = PropertyEditOrCreateFragment()
+        val bundle = Bundle()
+        editPropertyFragment.arguments = bundle.putString(PROPERTY_KEY, propertyId).let { bundle }
+        mainContext.supportFragmentManager.beginTransaction()
+                .add(R.id.frame_property_details, editPropertyFragment,
+                        editPropertyFragment.javaClass.simpleName).addToBackStack(null).commit()
+    }
+
+    private fun pageChangeListener() {
+        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                pic_description.text = property.photos[position].description
+            }
+        })
+    }
+
+    private fun displayDate() {
+        if (property.availability == PropertyAvailability.AVAILABLE)
+            date_property.text = "On the market since ${property.dateOnMarket.format()}"
+        else
+            date_property.text = "Sold since ${property.dateOnMarket.format()}"
+    }
+
+    private fun showAgentInCharge(property: Property) {
+        viewModel.getUserById(property.userId).observe(this, Observer {
+            it?.let {
+                Glide.with(this)
+                        .load(it.user.urlPhoto)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(ic_profile_picture)
+
+                name_agent.text = it.user.username
+            }
+        })
+    }
+
+    private fun configureRecyclerView(pointOfInterests: List<PointOfInterest>) {
+        recycler_view_point_of_interest.setHasFixedSize(true)
+        recycler_view_point_of_interest.layoutManager = LinearLayoutManager(context)
+        recycler_view_point_of_interest.adapter = PointOfInterestAdapter(pointOfInterests, Glide.with(this))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -63,19 +156,6 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             map?.addMarker(propertyMarker)
             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
-    }
-
-    private fun getProperty(propertyId: String) {
-        viewModel.getPropertyById(propertyId).observe(mainContext, Observer {
-            if (it != null) {
-                property = it
-                if (map != null) {
-                    addMarkerAndZoom()
-                }
-            }
-        })
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
     }
 
     class NoPropertyClickedFragment : BaseFragment() {

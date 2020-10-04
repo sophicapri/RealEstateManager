@@ -7,10 +7,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/back_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -29,13 +30,13 @@
             android:gravity="center"
             android:text="Add a property"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/back_arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btn_save_property"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -46,7 +47,7 @@
             app:tint="@color/colorPrimary" />
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="14dp"
@@ -63,7 +64,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintTop_toBottomOf="@+id/separator" />
 
         <TextView
             android:id="@+id/title_street_nbr"
@@ -279,7 +280,7 @@
             android:paddingEnd="3dp"
             android:paddingStart="3dp"
             android:importantForAutofill="no"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/title_price"
             app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
             app:layout_constraintStart_toStartOf="@+id/country_input" />
@@ -469,8 +470,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
             tools:listitem="@layout/pictures_property_edit_format"
             tools:itemCount="3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/description_input"
             app:layout_constraintStart_toStartOf="@+id/title_pictures"
             app:layout_constraintTop_toBottomOf="@+id/title_pictures" />

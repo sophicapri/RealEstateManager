@@ -21,7 +21,7 @@
                 android:id="@+id/ic_profile_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_avatar"
+                android:src="@drawable/ic_profile_no_pic"
                 android:layout_gravity="center"/>
 
             <androidx.appcompat.widget.Toolbar

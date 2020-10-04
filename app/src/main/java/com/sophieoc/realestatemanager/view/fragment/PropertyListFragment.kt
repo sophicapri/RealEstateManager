@@ -1,26 +1,19 @@
 package com.sophieoc.realestatemanager.view.fragment
 
-import android.app.Activity
 import android.content.Intent
-import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
-import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
 import com.sophieoc.realestatemanager.utils.RQ_CODE_ADD_PROPERTY
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
-import com.sophieoc.realestatemanager.view.PropertyListAdapter
+import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.view.activity.AddPropertyActivity
-import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import kotlinx.android.synthetic.main.fragment_property_list.*
 
@@ -60,9 +53,8 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
     }
 
     fun configureRecyclerView(recyclerView: RecyclerView) {
-        val linearLayoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = PropertyListAdapter(this, Glide.with(this))
         recyclerView.adapter = adapter
     }

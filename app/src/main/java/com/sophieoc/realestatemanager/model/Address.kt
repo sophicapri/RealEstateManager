@@ -16,16 +16,26 @@ data class Address(
         @ColumnInfo(name = "region") var region: String,
         @ColumnInfo(name = "country") var country: String,
 ) {
-    constructor() : this("", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "United States")
 
     override fun toString(): String {
-        val attributList = arrayOf(streetNumber, streetName, city, postalCode, region, country)
+        val attributList = arrayOf(streetNumber, apartmentNumber, streetName, city, postalCode, region, country)
         var address = String()
-        for (value in attributList) {
+
+        attributList.forEachIndexed { index, attribut ->
+            if (attribut.isNotEmpty()){
+                address += if (index != STREET_NAME_POSITION || index != POSTAL_CODE_POSITION)
+                    "$attribut "
+                else
+                    "$attribut, "
+            }
+            /*  for (value in attributList) {
             if (value.isNotEmpty())
                 address += "$value "
         }
-        return address.trim()
+       */
+        }
+        return address
     }
 
     fun toLatLng(context: Context): LatLng {
@@ -44,5 +54,10 @@ data class Address(
             LatLng(location.latitude, location.longitude)
         }
         return latLng
+    }
+
+    companion object {
+        const val STREET_NAME_POSITION = 2
+        const val POSTAL_CODE_POSITION = 4
     }
 }

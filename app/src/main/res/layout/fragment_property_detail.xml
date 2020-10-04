@@ -8,26 +8,46 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:background="@drawable/ic_house">
+        android:layout_height="350dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="80dp"
                 android:background="@drawable/shadow_collapsing_toolbar"
                 app:layout_collapseMode="pin" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+
                 android:background="@drawable/shadow_collapsing_toolbar_bottom"
-                android:layout_gravity="bottom"
-                app:layout_collapseMode="pin" />
+                android:layout_gravity="bottom"/>
+
+            <TextView
+                android:id="@+id/pic_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="25dp"
+                android:text="..."
+                app:layout_collapseMode="pin"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/property_detail_toolbar"
@@ -35,6 +55,7 @@
                 android:layout_height="?actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_baseline_arrow_white_24" />
+
             <TextView
                 android:id="@+id/property_availability"
                 android:layout_width="wrap_content"
@@ -42,26 +63,8 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:text="FOR SALE"
+                android:text="..."
                 app:layout_collapseMode="pin"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="25dp"
-                android:text="House front"
-                app:layout_collapseMode="parallax"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -78,9 +81,9 @@
                 app:dotsSpacing="3dp"
                 app:dotsStrokeColor="@color/white"
                 app:dotsStrokeWidth="1dp"
-                app:layout_constraintBottom_toBottomOf="@+id/viewPager"
-                app:layout_constraintEnd_toEndOf="@+id/viewPager"
-                app:layout_constraintStart_toStartOf="@+id/viewPager"
+                app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+                app:layout_constraintEnd_toEndOf="@+id/view_pager"
+                app:layout_constraintStart_toStartOf="@+id/view_pager"
                 app:stiffness="300" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -98,16 +101,26 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/price_property"
+                android:id="@+id/ic_dollar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="$ 2,222,500"
+                android:text="$ "
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/price_property"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2,222,500"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/ic_dollar"
+                app:layout_constraintTop_toTopOf="@+id/ic_dollar" />
 
             <TextView
                 android:id="@+id/type_property"
@@ -123,14 +136,14 @@
 
             <TextView
                 android:id="@+id/address_property"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:text="720 Grager Ave, Manhattan 10320"
                 android:textColor="@android:color/secondary_text_light"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/type_property"
+                app:layout_constraintStart_toStartOf="@+id/ic_dollar"
                 app:layout_constraintTop_toBottomOf="@+id/price_property" />
 
             <ImageView
@@ -183,8 +196,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_size_24"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
                 app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
+                app:layout_constraintTop_toTopOf="@+id/ic_bath"
                 app:tint="@color/white" />
 
             <TextView
@@ -214,7 +228,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginStart="16dp"
-                android:src="@drawable/ic_avatar"
+                android:src="@drawable/ic_profile_no_pic"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/map" />
@@ -235,6 +249,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Maria GONZALES"
+                android:layout_marginEnd="2dp"
                 android:textColor="@android:color/secondary_text_light"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                 app:layout_constraintEnd_toStartOf="@+id/map"
@@ -246,7 +261,7 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="16dp"
                 app:cameraZoom="13"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -303,6 +318,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_point_of_interest"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbarSize="2dp"
@@ -312,11 +328,12 @@
                     tools:listitem="@layout/point_of_interest_format" />
             </LinearLayout>
             <TextView
+                android:id="@+id/date_property"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="16dp"
                 android:text="On the market since 20/07/2020"
                 android:textColor="@color/white"
                 android:textStyle="italic"
@@ -327,7 +344,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_property"
+        android:id="@+id/fab_edit_property"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"

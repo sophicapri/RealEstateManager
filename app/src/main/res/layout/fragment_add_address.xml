@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/title_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Location"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_street_nbr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="street n°:"
+                app:layout_constraintStart_toStartOf="@+id/title_location"
+                app:layout_constraintTop_toBottomOf="@+id/title_location" />
+
+            <EditText
+                android:id="@+id/street_nbr_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bkg_rectangle_brown"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_apartment_nbr"
+                app:layout_constraintTop_toTopOf="@+id/title_street_nbr">
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/title_apartment_nbr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="apartment n°:"
+                app:layout_constraintStart_toStartOf="@+id/title_street_nbr"
+                app:layout_constraintTop_toBottomOf="@+id/street_nbr_input" />
+
+            <EditText
+                android:id="@+id/apartment_nbr_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/bkg_rectangle_dark"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:freezesText="true"
+                app:layout_constraintEnd_toEndOf="@+id/street_nbr_input"
+                app:layout_constraintStart_toEndOf="@+id/title_apartment_nbr"
+                app:layout_constraintTop_toTopOf="@+id/title_apartment_nbr" />
+
+            <TextView
+                android:id="@+id/title_street_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="street name:"
+                app:layout_constraintStart_toStartOf="@+id/title_apartment_nbr"
+                app:layout_constraintTop_toBottomOf="@+id/apartment_nbr_input" />
+
+            <EditText
+                android:id="@+id/street_name_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bkg_rectangle_brown"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="@+id/street_nbr_input"
+                app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
+                app:layout_constraintTop_toTopOf="@+id/title_street_name" />
+
+            <TextView
+                android:id="@+id/title_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="city:"
+                app:layout_constraintStart_toStartOf="@+id/title_street_name"
+                app:layout_constraintTop_toBottomOf="@+id/street_name_input" />
+
+            <EditText
+                android:id="@+id/city_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bkg_rectangle_dark"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="@+id/street_name_input"
+                app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
+                app:layout_constraintTop_toTopOf="@+id/title_city" />
+
+            <TextView
+                android:id="@+id/title_postal_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="postal code:"
+                app:layout_constraintStart_toStartOf="@+id/title_city"
+                app:layout_constraintTop_toBottomOf="@+id/city_input" />
+
+            <EditText
+                android:id="@+id/postal_code_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bkg_rectangle_brown"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="@+id/city_input"
+                app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
+                app:layout_constraintTop_toTopOf="@+id/title_postal_code" />
+
+            <TextView
+                android:id="@+id/title_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="region:"
+                app:layout_constraintStart_toStartOf="@+id/title_postal_code"
+                app:layout_constraintTop_toBottomOf="@+id/postal_code_input" />
+
+            <EditText
+                android:id="@+id/region_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bkg_rectangle_dark"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="@+id/postal_code_input"
+                app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
+                app:layout_constraintTop_toTopOf="@+id/title_region" />
+
+
+            <TextView
+                android:id="@+id/title_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="country:"
+                app:layout_constraintStart_toStartOf="@+id/title_region"
+                app:layout_constraintTop_toBottomOf="@+id/region_input" />
+
+            <EditText
+                android:id="@+id/country_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bkg_rectangle_brown"
+                android:cursorVisible="true"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="@+id/region_input"
+                app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
+                app:layout_constraintTop_toTopOf="@+id/title_country" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

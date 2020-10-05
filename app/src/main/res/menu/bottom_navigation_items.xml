@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/address_page"
+        android:title="Address"
+        android:icon="@drawable/ic_baseline_edit_location_24"/>
+    <item android:id="@+id/property_info_page"
+        android:title="Main informations"
+        android:icon="@drawable/ic_property_24"/>
+    <item android:id="@+id/pictures_page"
+        android:title="Pictures"
+        android:icon="@drawable/ic_round_add_photo_alternate_24"/>
+</menu>

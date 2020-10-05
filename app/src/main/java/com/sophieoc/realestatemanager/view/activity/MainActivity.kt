@@ -121,11 +121,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         //
     }
 
-    private fun <T> startNewActivity(activity: Class<T>) {
-        val intent = Intent(this, activity)
-        startActivity(intent)
-    }
-
     private fun signOut() {
         auth.signOut()
         finishAffinity()

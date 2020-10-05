@@ -67,4 +67,13 @@ data class Property(
             return property
         }
     }
+
+    override fun toString(): String {
+        return "id = $id / type = $type / price = $price / surface = $surface / beds = $numberOfBedrooms" +
+                " / baths = $numberOfBathrooms / description = $description / " +
+                "availability = ${availability.s} / " +
+                "address = ${address.toString()} / " +
+                "nbr of photos = ${photos.size}" +
+                "user_id = $userId"
+    }
 }

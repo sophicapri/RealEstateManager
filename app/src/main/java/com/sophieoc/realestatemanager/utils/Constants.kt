@@ -2,7 +2,7 @@ package com.sophieoc.realestatemanager.utils
 
 const val LAT_LNG_NOT_FOUND = "0.0,0.0"
 
-const val PROPERTY_KEY = "property_key"
+const val PROPERTY_ID = "property_key"
 
 const val ADD_PROPERTY_KEY = "add property fragment"
 

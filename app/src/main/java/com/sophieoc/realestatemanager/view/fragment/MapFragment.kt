@@ -21,7 +21,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -34,9 +33,9 @@ import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
+import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 
-@Suppress("SameParameterValue")
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private var propertyDetailView : View? = null
@@ -47,6 +46,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         refocus_btn.setOnClickListener {
             AppController.instance.currentLocation?.let { location -> focusMap(location) }
         }
+        mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -65,13 +65,13 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun startPropertyDetail(marker: Marker) {
         if (propertyDetailView == null){
             val intent = Intent(mainContext, PropertyDetailActivity::class.java)
-            intent.putExtra(PROPERTY_KEY, marker.tag.toString())
+            intent.putExtra(PROPERTY_ID, marker.tag.toString())
             mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
         } else {
             propertyDetailView?.visibility = VISIBLE
-            btn_map_size.text = "Réduire"
+            btn_map_size.text = "FULLSCREEN"
             val bundle = Bundle()
-            bundle.putString(PROPERTY_KEY, marker.tag.toString())
+            bundle.putString(PROPERTY_ID, marker.tag.toString())
             val propertyDetailFragment = PropertyDetailFragment()
             propertyDetailFragment.arguments = bundle
             mainContext.supportFragmentManager.beginTransaction()
@@ -85,10 +85,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             btn_map_size.setOnClickListener {
                 if (propertyDetailView?.visibility == VISIBLE) {
                     propertyDetailView?.visibility = GONE
-                    btn_map_size.text = "Réduire"
+                    btn_map_size.text = "REDUCE"
                 } else {
                     propertyDetailView?.visibility = VISIBLE
-                    btn_map_size.text = "Agrandir"
+                    btn_map_size.text = "FULLSCREEN"
                 }
             }
         } else if (propertyDetailView == null)

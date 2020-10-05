@@ -33,7 +33,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-
                 android:background="@drawable/shadow_collapsing_toolbar_bottom"
                 android:layout_gravity="bottom"/>
 

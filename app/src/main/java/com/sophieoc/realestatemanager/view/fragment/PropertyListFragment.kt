@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
-import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
-import com.sophieoc.realestatemanager.utils.RQ_CODE_ADD_PROPERTY
+import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
-import com.sophieoc.realestatemanager.view.activity.AddPropertyActivity
+import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import kotlinx.android.synthetic.main.fragment_property_list.*
 
@@ -30,26 +29,8 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         })
         configureRecyclerView(recycler_view_properties)
         fab_add_property.setOnClickListener {
-            showAddPropertyFragment()
+            mainContext.startNewActivity(EditOrAddPropertyActivity::class.java)
         }
-    }
-
-    private fun showAddPropertyFragment() {
-        val fragmentFrame = activity?.findViewById<View?>(R.id.frame_property_details)
-        when {
-            fragmentFrame != null -> showFragment()
-            else -> startActivity()
-        }
-    }
-
-    private fun showFragment() {
-        mainContext.supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_property_details, PropertyEditOrAddFragment()).commit()
-    }
-
-    private fun startActivity() {
-        val intent = Intent(mainContext, AddPropertyActivity::class.java)
-        mainContext.startActivityForResult(intent, RQ_CODE_ADD_PROPERTY)
     }
 
     fun configureRecyclerView(recyclerView: RecyclerView) {
@@ -63,11 +44,11 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         val propertyDetailView = activity?.findViewById<View?>(R.id.frame_property_details)
         if (propertyDetailView == null) {
             val intent = Intent(mainContext, PropertyDetailActivity::class.java)
-            intent.putExtra(PROPERTY_KEY, propertyId)
+            intent.putExtra(PROPERTY_ID, propertyId)
             mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
         } else {
             val bundle = Bundle()
-            bundle.putString(PROPERTY_KEY, propertyId)
+            bundle.putString(PROPERTY_ID, propertyId)
             val propertyDetailFragment = PropertyDetailFragment()
             propertyDetailFragment.arguments = bundle
             mainContext.supportFragmentManager.beginTransaction()

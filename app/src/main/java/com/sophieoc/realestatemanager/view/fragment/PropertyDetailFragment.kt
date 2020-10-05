@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,6 +19,7 @@ import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
+import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import kotlinx.android.synthetic.main.fragment_property_detail.*
@@ -35,15 +37,15 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         super.onResume()
         when {
             arguments != null -> getPropertyIdFromArgs(arguments)
-            mainContext.intent.hasExtra(PROPERTY_KEY) -> getPropertyIdFromIntent(mainContext.intent.extras)
+            mainContext.intent.hasExtra(PROPERTY_ID) -> getPropertyIdFromIntent(mainContext.intent.extras)
             else -> displayNoPropertyFragment()
         }
     }
 
     private fun getPropertyIdFromArgs(arguments: Bundle?) {
         try {
-            if (requireArguments().containsKey(PROPERTY_KEY)) {
-                val propertyId = arguments?.get(PROPERTY_KEY) as String
+            if (requireArguments().containsKey(PROPERTY_ID)) {
+                val propertyId = arguments?.get(PROPERTY_ID) as String
                 if (propertyId.isNotEmpty())
                     getProperty(propertyId)
             }
@@ -53,7 +55,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun getPropertyIdFromIntent(extras: Bundle?) {
-        val propertyId = extras?.get(PROPERTY_KEY) as String
+        val propertyId = extras?.get(PROPERTY_ID) as String
         getProperty(propertyId)
     }
 
@@ -90,19 +92,16 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         description.text = property.description
         configureRecyclerView(property.pointOfInterests)
         displayDate()
-        fab_edit_property.setOnClickListener { startEditPropertyFragment(property.id) }
+        fab_edit_property.setOnClickListener { startEditPropertyActivity(property.id) }
         property_detail_toolbar.setNavigationOnClickListener {
             mainContext.onBackPressed()
         }
     }
 
-    private fun startEditPropertyFragment(propertyId: String) {
-        val editPropertyFragment = PropertyEditOrAddFragment()
-        val bundle = Bundle()
-        editPropertyFragment.arguments = bundle.putString(PROPERTY_KEY, propertyId).let { bundle }
-        mainContext.supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_property_details, editPropertyFragment,
-                        editPropertyFragment.javaClass.simpleName).addToBackStack(null).commit()
+    private fun startEditPropertyActivity(propertyId: String) {
+        val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
+        intent.putExtra(PROPERTY_ID, propertyId)
+        startActivity(intent)
     }
 
     private fun pageChangeListener() {

@@ -9,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.utils.ADD_PROPERTY_KEY
-import com.sophieoc.realestatemanager.utils.PROPERTY_KEY
-import com.sophieoc.realestatemanager.utils.RQ_CODE_ADD_PROPERTY
+import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.view.fragment.*
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
@@ -43,6 +41,11 @@ abstract class BaseActivity : AppCompatActivity() {
         return getCurrentUser() != null
     }
 
+    fun <T> startNewActivity(activity: Class<T>) {
+        val intent = Intent(this, activity)
+        startActivity(intent)
+    }
+
     fun configurePropertyDetailFragment() {
         val propertyDetailView = findViewById<View?>(R.id.frame_property_details)
         var fragment = supportFragmentManager.findFragmentById(R.id.frame_property_details)
@@ -57,27 +60,17 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null
-                && data.hasExtra(PROPERTY_KEY))
-            intent.putExtra(PROPERTY_KEY, data.getStringExtra(PROPERTY_KEY))
-
-        if (requestCode == RQ_CODE_ADD_PROPERTY && resultCode == Activity.RESULT_OK && data != null
-                && data.hasExtra(ADD_PROPERTY_KEY)) {
-            intent.putExtra(ADD_PROPERTY_KEY, data.getBundleExtra(ADD_PROPERTY_KEY))
-            startAddPropertyFragment()
-        }
+                && data.hasExtra(PROPERTY_ID))
+            intent.putExtra(PROPERTY_ID, data.getStringExtra(PROPERTY_ID))
     }
 
-    private fun startAddPropertyFragment() {
-        val fm = supportFragmentManager.beginTransaction()
-        fm.replace(R.id.frame_property_details, PropertyEditOrAddFragment(),
-                PropertyEditOrAddFragment::class.java.simpleName).commit()
-    }
-
-    override fun onBackPressed() {
+  /*  override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         } else {
             super.onBackPressed()
         }
     }
+
+   */
 }

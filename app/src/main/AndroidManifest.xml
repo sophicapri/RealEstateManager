@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".AppController"
+        android:configChanges="keyboardHidden|orientation"
         android:theme="@style/AppTheme">
 
         <meta-data

@@ -8,15 +8,14 @@ import com.sophieoc.realestatemanager.base.BaseEditPropertyFragment
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import kotlinx.android.synthetic.main.fragment_add_pictures.*
-import kotlinx.android.synthetic.main.pictures_property_edit_format.view.*
 
 class AddPicturesFragment : BaseEditPropertyFragment(), PicturesAdapter.OnDeletePictureListener {
     private lateinit var adapter: PicturesAdapter
 
     override fun getLayout() = R.layout.fragment_add_pictures
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         bindViews()
         configureRecyclerView(updatedProperty.photos)
     }
@@ -31,13 +30,6 @@ class AddPicturesFragment : BaseEditPropertyFragment(), PicturesAdapter.OnDelete
         adapter = PicturesAdapter(Glide.with(this), this)
         adapter.updatePictures(ArrayList(photos))
         recycler_view_pictures.adapter = adapter
-    }
-
-    fun updatePictures() {
-        adapter.pictures.forEachIndexed { index, photo ->
-            photo.description = recycler_view_pictures[index].picture_description_input.text.toString()
-        }
-        updatedProperty.photos = adapter.pictures
     }
 
     override fun onDeleteClick(position: Int, pictures: ArrayList<Photo>) {

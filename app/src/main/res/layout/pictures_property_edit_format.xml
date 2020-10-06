@@ -39,6 +39,7 @@
         android:layout_marginEnd="16dp"
         android:paddingStart="3dp"
         android:paddingEnd="3dp"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         android:background="@drawable/bkg_rectangle_brown"
         app:layout_constraintBottom_toBottomOf="@+id/picture_property"
         app:layout_constraintEnd_toEndOf="parent"

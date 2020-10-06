@@ -12,7 +12,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Photo
 import kotlinx.android.synthetic.main.pictures_property_edit_format.view.*
 
-class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: OnDeletePictureListener):
+class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: OnDeletePictureListener) :
         RecyclerView.Adapter<PicturesAdapter.PicturesViewHolder>() {
     var pictures = ArrayList<Photo>()
 
@@ -32,13 +32,14 @@ class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: On
         notifyDataSetChanged()
     }
 
-    inner class PicturesViewHolder(itemView: View, onDeletePictureListener: OnDeletePictureListener) : RecyclerView.ViewHolder(itemView){
+    inner class PicturesViewHolder(itemView: View, onDeletePictureListener: OnDeletePictureListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(photo: Photo) {
             glide.load(photo.urlPhoto)
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.picture_property)
 
-            itemView.picture_description_input.text.insert(0, photo.description)
+            if (itemView.picture_description_input.text.isEmpty() && photo.description.isNotEmpty())
+                itemView.picture_description_input.text.insert(0, photo.description)
             itemView.picture_description_input.addTextChangedListener(getTextWatcher(photo))
         }
 
@@ -51,7 +52,7 @@ class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: On
         }
     }
 
-    private fun getTextWatcher(photo: Photo) = object : TextWatcher{
+    private fun getTextWatcher(photo: Photo) = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -61,7 +62,7 @@ class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: On
         }
     }
 
-    interface OnDeletePictureListener{
-        fun onDeleteClick(position : Int, pictures: ArrayList<Photo>)
+    interface OnDeletePictureListener {
+        fun onDeleteClick(position: Int, pictures: ArrayList<Photo>)
     }
 }

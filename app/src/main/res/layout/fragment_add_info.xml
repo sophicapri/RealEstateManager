@@ -48,6 +48,7 @@
         android:importantForAutofill="no"
         android:inputType="number"
         android:paddingStart="3dp"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         android:paddingEnd="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/title_price"
         app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
@@ -70,6 +71,7 @@
         android:text="Number of bedrooms:"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         app:layout_constraintStart_toStartOf="@+id/title_price"
         app:layout_constraintTop_toBottomOf="@+id/title_price" />
 
@@ -86,6 +88,7 @@
         android:inputType="number"
         android:paddingStart="3dp"
         android:paddingEnd="3dp"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
         app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
         app:layout_constraintStart_toEndOf="@+id/title_nbr_of_beds" />
@@ -121,6 +124,7 @@
         android:inputType="number"
         android:paddingStart="3dp"
         android:paddingEnd="3dp"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
         app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
         app:layout_constraintStart_toStartOf="@+id/nbr_of_beds_input" />
@@ -152,6 +156,7 @@
         android:background="@drawable/bkg_rectangle_brown"
         android:cursorVisible="true"
         android:gravity="end"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         android:importantForAutofill="no"
         android:inputType="number"
         android:paddingStart="3dp"
@@ -205,6 +210,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:imeOptions="flagNoExtractUi|flagNoEnterAction"
         android:background="@drawable/bkg_rectangle_dark"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/sqft"

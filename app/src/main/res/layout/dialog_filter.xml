@@ -86,6 +86,7 @@
             android:layout_marginStart="5dp"
             android:cursorVisible="true"
             android:inputType="number"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
             app:layout_constraintStart_toEndOf="@+id/ic_bed"
             app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" >
@@ -118,6 +119,7 @@
             android:layout_marginStart="5dp"
             android:cursorVisible="true"
             android:inputType="number"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
             app:layout_constraintStart_toEndOf="@+id/ic_bath"
             app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
@@ -322,6 +324,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:inputType="number"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
             app:layout_constraintStart_toEndOf="@+id/subtitle_nbr_of_pics"
             app:layout_constraintTop_toBottomOf="@+id/title_picture" >

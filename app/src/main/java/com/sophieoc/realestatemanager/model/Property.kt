@@ -32,7 +32,7 @@ data class Property(
 ) {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, -1, -1,
             -1, -1, "", PropertyAvailability.AVAILABLE, null, null,
-            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "")
+            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "not defined")
 
     companion object {
         fun fromContentValues(values: ContentValues): Property {

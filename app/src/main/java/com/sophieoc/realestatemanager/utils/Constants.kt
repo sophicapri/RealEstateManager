@@ -12,4 +12,6 @@ const val RQ_CODE_PROPERTY = 2304
 
 const val RQ_CODE_ADD_PROPERTY = 333
 
+const val PROPERTY_NOT_DEFINED = "not defined"
+
 const val POINT_OF_INTEREST = "point_of_interest"

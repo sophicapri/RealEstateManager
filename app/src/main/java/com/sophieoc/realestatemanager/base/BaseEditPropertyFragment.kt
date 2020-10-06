@@ -1,6 +1,7 @@
 package com.sophieoc.realestatemanager.base
 
 import android.os.Bundle
+import android.util.Log
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 
@@ -14,5 +15,11 @@ abstract class BaseEditPropertyFragment : BaseFragment(){
 
     companion object {
         var updatedProperty = Property()
+        const val TAG = "BaseEditFragment"
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: ")
     }
 }

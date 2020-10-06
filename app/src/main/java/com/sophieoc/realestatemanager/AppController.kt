@@ -14,7 +14,7 @@ class AppController: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        //deleteDatabase(RealEstateDatabase.DATABASE_NAME)
+       // deleteDatabase(RealEstateDatabase.DATABASE_NAME)
         PreferenceHelper.initPreferenceHelper(this)
         startKoin {
             androidLogger()

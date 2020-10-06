@@ -4,15 +4,24 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.database.Cursor
+import android.util.Log
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.model.Photo
+import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.provider.PropertyContentProvider
 import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.hamcrest.Matchers
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -24,6 +33,10 @@ import java.util.*
 class PropertyContentProviderTests {
     // FOR DATA
     private var contentResolver: ContentResolver? = null
+
+    companion object {
+        private const val DUMMY_USER_ID = 12345L
+    }
 
     @Before
     fun setUp() {
@@ -79,11 +92,8 @@ class PropertyContentProviderTests {
     private fun generateProperty(): ContentValues {
         val values = ContentValues()
         values.put("id", 42L)
-        values.put("surface", 1234)
         values.put("description", "This is a property")
         values.put("availability", Gson().toJson(PropertyAvailability.AVAILABLE))
-        values.put("dateOnMarket", DATE.time)
-        values.put("streetName", "Park Avenue")
         values.put("photos", Gson().toJson(listOf(Photo(), Photo())))
         values.put("userId", DUMMY_USER_ID.toString())
         return values
@@ -95,11 +105,5 @@ class PropertyContentProviderTests {
             val count = contentResolver?.delete(it, null, null)
             Assert.assertThat(count, Matchers.`is`(1))
         }
-    }
-
-    companion object {
-        // DATA SET FOR TEST
-        private const val DUMMY_USER_ID = 12345L
-        private val DATE: Date = Date()
     }
 }

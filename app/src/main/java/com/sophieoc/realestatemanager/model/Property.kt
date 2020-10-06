@@ -9,11 +9,7 @@ import com.sophieoc.realestatemanager.utils.PropertyType
 import java.util.*
 import kotlin.collections.ArrayList
 
-@Entity(tableName = "property",
-        foreignKeys = [ForeignKey(entity = User::class,
-                parentColumns = arrayOf("uid"),
-                childColumns = arrayOf("user_id"))],
-        indices = [Index(value = ["user_id"])])
+@Entity(tableName = "property")
 data class Property(
         @PrimaryKey var id: String,
         @ColumnInfo(name = "type") var type: PropertyType,

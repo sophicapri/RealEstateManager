@@ -140,12 +140,14 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
         notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
     }
 
-    override fun onBackPressed() {
+  /*  override fun onBackPressed() {
         if (fragmentPictures.isVisible || fragmentPropertyInfo.isVisible)
             bottom_navigation_bar.selectedItemId = R.id.address_page
         if (fragmentAddress.isVisible)
             super.onBackPressed()
     }
+
+   */
 
     override fun onDestroy() {
         super.onDestroy()

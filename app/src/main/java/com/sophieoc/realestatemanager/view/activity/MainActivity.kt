@@ -86,7 +86,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         alertBuilder.setCustomTitle(view)
                 .setView(R.layout.dialog_filter)
                 .setPositiveButton("ok", null)
-                .setNegativeButton("cancel", null)
+                .setNegativeButton("cancel") { dialog, _ -> onDismiss(dialog) }
                 .setOnDismissListener(this)
 
         filterDialog = alertBuilder.create()

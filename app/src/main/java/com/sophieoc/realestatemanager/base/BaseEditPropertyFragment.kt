@@ -17,9 +17,4 @@ abstract class BaseEditPropertyFragment : BaseFragment(){
         var updatedProperty = Property()
         const val TAG = "BaseEditFragment"
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy: ")
-    }
 }

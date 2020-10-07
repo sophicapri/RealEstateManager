@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
 
+import android.util.Log
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide

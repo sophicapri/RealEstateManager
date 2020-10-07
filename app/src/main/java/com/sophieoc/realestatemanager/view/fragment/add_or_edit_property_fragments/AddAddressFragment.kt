@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseEditPropertyFragment
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PROPERTY_NOT_DEFINED
 import kotlinx.android.synthetic.main.fragment_add_address.*
@@ -17,6 +18,8 @@ class AddAddressFragment : BaseEditPropertyFragment() {
         addPropertyActivity.intent.extras?.let{
             getPropertyId(it)
         }
+        if (addPropertyActivity.intent.extras == null)
+            updatedProperty = Property()
         setInputListeners()
         Log.d(TAG, "onResume: ")
     }

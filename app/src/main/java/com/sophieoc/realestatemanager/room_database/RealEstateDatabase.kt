@@ -10,7 +10,7 @@ import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
 
-@Database(entities = [User::class, Property::class], version = 6, exportSchema = false)
+@Database(entities = [User::class, Property::class], version = 8, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

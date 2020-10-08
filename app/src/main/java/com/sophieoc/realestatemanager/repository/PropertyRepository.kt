@@ -58,8 +58,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     fun getAllProperties(): LiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
         getPropertiesFromRoom(properties)
-        println("value = ${getPropertiesFromRoom(properties)}")
-        //getPropertiesFromFirestore(properties)
+        getPropertiesFromFirestore(properties)
         return properties
     }
 
@@ -86,9 +85,10 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     }
 
     fun updateAllProperties(mutableList: List<Property>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val id = propertyDao.upsert(mutableList[0])
-            println("value id = $id")
+        mutableList.forEach {
+            CoroutineScope(Dispatchers.IO).launch {
+                val id = propertyDao.upsert(it)
+            }
         }
     }
 
@@ -133,7 +133,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
 
         getFilteredPropertiesFromRoom(properties, propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
                 dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests)
-        //getFilteredPropertiesFromFirestore(properties)
+      //  getFilteredPropertiesFromFirestore(properties)
         return properties
     }
 
@@ -142,131 +142,13 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             nbrOfBath: Int?, propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?, priceMin: Int,
             priceMax: Int, surfaceMin: Int, surfaceMax: Int, pointOfInterests: String?,
     ) {
-        val queryPair = getQuery(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests)
-        val query = SimpleSQLiteQuery(queryPair.first)
-        println("${query.sql}")
-
         CoroutineScope(Dispatchers.IO).launch {
-            val propertyList = propertyDao.getFilteredList(query)
+           val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
+                   dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests, 2)
             withContext(Main) {
                 properties.postValue(propertyList)
-                println("property list = ")
             }
         }
-    }
-
-    private fun getQuery(propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?, priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int, pointOfInterests: String?): Pair<String, List<Any>> {
-        var queryString = String()
-        // List of bind parameters
-        val args = ArrayList<Any>()
-        var containsCondition = false
-
-        // Optional parts are added to query string and to args upon here
-        queryString += "SELECT * FROM PROPERTY";
-
-        propertyType?.let {
-            if (containsCondition) {
-                queryString += " AND";
-            } else {
-                queryString += " WHERE";
-                containsCondition = true;
-            }
-
-            queryString += " type = $it"
-            args.add(it)
-        }
-
-        nbrOfBed?.let {
-            if (containsCondition) {
-                queryString += " AND";
-            } else {
-                queryString += " WHERE";
-                containsCondition = true;
-            }
-
-            queryString += " number_of_bedrooms = $it"
-            args.add(it)
-        }
-
-        nbrOfBath?.let {
-            if (containsCondition) {
-                queryString += " AND";
-            } else {
-                queryString += " WHERE";
-                containsCondition = true;
-            }
-
-            queryString += " number_of_bathrooms = $it"
-            args.add(it)
-        }
-        propertyAvailability?.let {
-            if (containsCondition) {
-                queryString += " AND";
-            } else {
-                queryString += " WHERE";
-                containsCondition = true;
-            }
-
-            queryString += " availability = $it"
-            args.add(it)
-        }
-        dateOnMarket?.let {
-            if (containsCondition) {
-                queryString += " AND";
-            } else {
-                queryString += " WHERE";
-                containsCondition = true;
-            }
-
-            queryString += " date_on_market >= $it"
-            args.add(it)
-        }
-        dateSold?.let {
-            if (containsCondition) {
-                queryString += " AND";
-            } else {
-                queryString += " WHERE";
-                containsCondition = true;
-            }
-
-            queryString += " date_sold >= $it"
-            args.add(it)
-        }
-
-        // handle price
-        if (containsCondition) {
-            queryString += " AND";
-        } else {
-            queryString += " WHERE";
-            containsCondition = true;
-        }
-        queryString += " price > $priceMin AND price < $priceMax"
-
-        // surface
-        if (containsCondition) {
-            queryString += " AND";
-        } else {
-            queryString += " WHERE";
-            containsCondition = true;
-        }
-        queryString += " surface > $surfaceMin AND surface < $surfaceMax"
-
-        /*     pointOfInterests?. let {
-                 if (containsCondition) {
-                     queryString += " AND";
-                 } else {
-                     queryString += " WHERE";
-                     containsCondition = true;
-                 }
-
-                 queryString += " number_of_bedrooms = ? "
-                 args.add(it)
-             }
-
-         */
-        queryString += ";";
-        return Pair(queryString, args)
     }
 
     private fun getFilteredPropertiesFromFirestore(properties: MutableLiveData<List<Property>>): LiveData<List<Property>> {

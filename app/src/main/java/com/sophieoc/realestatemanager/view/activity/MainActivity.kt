@@ -160,14 +160,8 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
                     filterDateOnMarket, filterDateSold, filterPriceMin, filterPriceMax, filterSurfaceMin, filterSurfaceMax,
                     filterPointOfInterests).observe(this, {
                 it?.let {
-                    Log.d(TAG, "startSearch: size list ${it.size}")
-                    filterNbrOfPictures?.let { numberOfPictures ->
-                        fragmentList.updateList(updateListWithPictures(ArrayList(it), numberOfPictures))
-                    }
-                    if (filterNbrOfPictures == null) {
                         fragmentList.updateList(ArrayList(it))
                         Log.d(TAG, "startSearch: property list size = ${it.size}")
-                    }
                 }
                 if (it == null) {
                     Log.d(TAG, "startSearch: property list is null")

@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.room_database.dao
 import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.sophieoc.realestatemanager.model.Property
 
 
@@ -24,13 +25,13 @@ interface PropertyDao {
     }
 
     @Query("SELECT * FROM property")
-    fun getProperties(): LiveData<List<Property>>
+    fun getProperties(): List<Property>
 
     @Query("SELECT * FROM property")
     fun getPropertiesWithCursor(): Cursor
 
     @Query("SELECT * FROM property WHERE user_id = :userId")
-    fun getPropertiesWithCursorForUser(userId :String): Cursor
+    fun getPropertiesWithCursorForUser(userId: String): Cursor
 
     @Query("SELECT * FROM property WHERE id = :id")
     fun getPropertyById(id: String): LiveData<Property>
@@ -41,11 +42,6 @@ interface PropertyDao {
     @Query("DELETE FROM property")
     fun deleteAll(): Int
 
-    /*@Query("""SELECT * FROM property WHERE type = :type AND surface > :minSurface
-        AND surface < :maxSurface AND date_on_market < :dateOnMarket AND date_sold < :dateSold 
-        AND  """)
-    suspend fun getPropertiesFilteredBy(type: PropertyType,
-                                        minSurface: Int = 15, maxSurface: Int = 500,
-                                        dateOnMarket : Date, dateSold: Date, area)
-     */
+    @RawQuery(observedEntities = [Property::class])
+    fun getFilteredList(query: SupportSQLiteQuery): List<Property>
 }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
@@ -19,12 +20,14 @@ import kotlinx.android.synthetic.main.fragment_property_list.*
 
 open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
+    var properties = ArrayList<Property>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getProperties().observe(mainContext, Observer {
             if (it != null) {
-                adapter.updateList(ArrayList(it))
+                properties = ArrayList(it)
+                adapter.updateList(properties)
             }
         })
         configureRecyclerView(recycler_view_properties)
@@ -38,6 +41,15 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = PropertyListAdapter(this, Glide.with(this))
         recyclerView.adapter = adapter
+    }
+
+    fun updateList(filteredList: ArrayList<Property>){
+        adapter.updateList(filteredList)
+    }
+
+    fun resetFilter(){
+        adapter.updateList(properties)
+        // todo :hide search title
     }
 
     override fun onPropertyClick(propertyId: String) {

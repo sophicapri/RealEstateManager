@@ -127,12 +127,12 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
             priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int,
-            pointOfInterests: String?,
+            pointOfInterests: String?, nbrOfPictures : Int?
     ): MutableLiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
 
         getFilteredPropertiesFromRoom(properties, propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests)
+                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests, nbrOfPictures)
       //  getFilteredPropertiesFromFirestore(properties)
         return properties
     }
@@ -140,11 +140,11 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     private fun getFilteredPropertiesFromRoom(
             properties: MutableLiveData<List<Property>>, propertyType: String?, nbrOfBed: Int?,
             nbrOfBath: Int?, propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?, priceMin: Int,
-            priceMax: Int, surfaceMin: Int, surfaceMax: Int, pointOfInterests: String?,
+            priceMax: Int, surfaceMin: Int, surfaceMax: Int, pointOfInterests: String?, nbrOfPictures : Int?,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
            val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                   dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests, 2)
+                   dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests, nbrOfPictures)
             withContext(Main) {
                 properties.postValue(propertyList)
             }

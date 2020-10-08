@@ -10,16 +10,38 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/title_property_type"
+            android:id="@+id/area_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Area:"/>
+
+        <EditText
+            android:id="@+id/area_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:hint="Enter a city or a region"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/area_title"
+            app:layout_constraintTop_toBottomOf="@+id/area_title" >
+            <requestFocus/>
+        </EditText>
+        <TextView
+            android:id="@+id/title_property_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="24dp"
             android:text="Property type"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/area_input" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/type_chip_group"
@@ -65,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Number of bedrooms"
+            android:text="Bedrooms"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/type_chip_group"
             app:layout_constraintTop_toBottomOf="@+id/type_chip_group" />
@@ -74,23 +96,23 @@
             android:id="@+id/ic_bed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
             android:src="@drawable/ic_outline_king_bed_24"
-            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
-            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" />
-
+            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
+            app:layout_constraintStart_toEndOf="@+id/title_nbr_of_beds"
+            app:layout_constraintTop_toTopOf="@+id/title_nbr_of_beds" />
         <EditText
             android:id="@+id/nbr_of_beds_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:cursorVisible="true"
-            android:inputType="number"
+            android:layout_marginStart="5dp"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
-            app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
+            android:inputType="number"
+            android:hint="Enter a number"
+            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
             app:layout_constraintStart_toEndOf="@+id/ic_bed"
-            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" >
-        <requestFocus/>
+            app:layout_constraintTop_toTopOf="@+id/ic_bed">
         </EditText>
 
         <TextView
@@ -98,19 +120,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Number of bathrooms"
+            android:text="Bathrooms"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/ic_bed"
+            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
             app:layout_constraintTop_toBottomOf="@+id/ic_bed" />
 
         <ImageView
             android:id="@+id/ic_bath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
             android:src="@drawable/ic_baseline_bathtub_24"
-            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
-            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
+            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
+            app:layout_constraintStart_toEndOf="@+id/title_nbr_of_bath"
+            app:layout_constraintTop_toTopOf="@+id/title_nbr_of_bath" />
 
         <EditText
             android:id="@+id/nbr_of_bath_input"
@@ -118,21 +141,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:cursorVisible="true"
-            android:inputType="number"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+            android:inputType="number"
+            android:hint="Enter a number"
             app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
             app:layout_constraintStart_toEndOf="@+id/ic_bath"
-            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
+            app:layout_constraintTop_toTopOf="@+id/ic_bath" />
 
         <TextView
             android:id="@+id/title_property_availability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="15dp"
             android:text="Property availability"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/ic_bath"
+            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
             app:layout_constraintTop_toBottomOf="@+id/ic_bath" />
 
         <com.google.android.material.chip.ChipGroup

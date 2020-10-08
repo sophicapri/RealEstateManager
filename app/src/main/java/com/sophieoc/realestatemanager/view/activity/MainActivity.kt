@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,6 +22,8 @@ import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PropertyType
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_property_list.*
+import kotlinx.android.synthetic.main.results_for_search.*
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,15 +34,15 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     private var filterChipGroup: ChipGroup? = null
     private var filterPropertyType: String? = null
     private var filterNbrOfBed: Int? = null
-    private var filterNbrOfBath: Int? = 1
+    private var filterNbrOfBath: Int? = null
     private var filterPropertyAvailability: String? = null
     private var filterDateOnMarket: Date? = null
     private var filterDateSold: Date? = null
     private var filterPriceMin: Int = 0
     private var filterPriceMax: Int = 20000000
     private var filterSurfaceMin: Int = 0
-    private var filterSurfaceMax: Int = 300
-    private var filterNbrOfPictures: Int? = 1
+    private var filterSurfaceMax: Int = 500
+    private var filterNbrOfPictures: Int? = null
     private var filterPointOfInterests: String? = null
 
     companion object {
@@ -55,23 +58,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_list, fragmentList, fragmentList.javaClass.simpleName).commit()
         setSupportActionBar(my_toolbar)
-    }
-
-    fun testMethodForFiler() {
-        viewModel.getFilteredList(filterPropertyType, filterNbrOfBed, filterNbrOfBath, filterPropertyAvailability,
-                filterDateOnMarket, filterDateSold, filterPriceMin, filterPriceMax, filterSurfaceMin, filterSurfaceMax,
-                filterPointOfInterests).observe(this, {
-
-        })
-    }
-
-    private fun updateListWithPictures(properties: ArrayList<Property>, nbrOfPictures: Int): ArrayList<Property> {
-        properties.forEachIndexed { _, property ->
-            if (property.photos.size < nbrOfPictures)
-                properties.remove(property)
-        }
-        Log.d(TAG, "updateListWithPictures: ${properties.size}")
-        return properties
     }
 
     override fun onResume() {
@@ -123,7 +109,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         alertBuilder.setCustomTitle(view)
                 .setView(R.layout.dialog_filter)
                 .setPositiveButton("ok", null)
-                .setNegativeButton("cancel") { dialog, which -> dialog.dismiss() }
+                .setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
 
         filterDialog = alertBuilder.create()
@@ -137,7 +123,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     }
 
     private fun startSearch(dialog: DialogInterface?) {
-     //   if (dialog == filterDialog)
+        //   if (dialog == filterDialog)
         //dialog.findViewById<>()
 
         /*      filterPropertyType,
@@ -156,22 +142,31 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
          */
         //TODO : add progress bar
-            viewModel.getFilteredList(filterPropertyType, filterNbrOfBed, filterNbrOfBath, filterPropertyAvailability,
-                    filterDateOnMarket, filterDateSold, filterPriceMin, filterPriceMax, filterSurfaceMin, filterSurfaceMax,
-                    filterPointOfInterests).observe(this, {
-                it?.let {
-                        fragmentList.updateList(ArrayList(it))
-                        Log.d(TAG, "startSearch: property list size = ${it.size}")
-                }
-                if (it == null) {
-                    Log.d(TAG, "startSearch: property list is null")
-                }
-                dialog?.dismiss()
-            })
+        viewModel.getFilteredList(filterPropertyType, filterNbrOfBed, filterNbrOfBath, filterPropertyAvailability,
+                filterDateOnMarket, filterDateSold, filterPriceMin, filterPriceMax, filterSurfaceMin, filterSurfaceMax,
+                filterPointOfInterests, filterNbrOfPictures).observe(this, {
+            it?.let {
+                displayResultsText()
+                fragmentList.updateList(ArrayList(it))
+            }
+            if (it == null) {
+                Log.d(TAG, "startSearch: property list is null")
+            }
+            dialog?.dismiss()
+        })
+    }
+
+    private fun displayResultsText() {
+        results_search_container.visibility = View.VISIBLE
+        //data_searched.text = getTextToDisplay()
+        btn_reset_search.setOnClickListener {
+            fragmentList.resetFilter()
+            results_search_container.visibility = View.GONE
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        Log.d(TAG, "onDismiss: on Dismiss")
+        Log.d(TAG, "onDismiss")
         if (dialog === filterDialog) {
             filterDialog = null
             filterPropertyType = null
@@ -194,11 +189,11 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             val positiveButton = filterDialog?.getButton(AlertDialog.BUTTON_POSITIVE)
             positiveButton?.setOnClickListener {
                 startSearch(filterDialog)
-                //onFilterDialogPositiveButtonClick(filterDialog)
             }
             val negativeButton = filterDialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
-            negativeButton?.setOnClickListener { filterDialog?.dismiss() } }
+            negativeButton?.setOnClickListener { filterDialog?.dismiss() }
         }
+    }
 
     // -- Handle Filter -- //
     private fun showDatePickerDialog() {
@@ -218,17 +213,16 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         val dateView = filterDialog?.findViewById<Button>(R.id.select_date)
         dateView?.text = df.format(selectedDate)
         dateView?.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight))
-
-        //updateCurrentRoomsAvailabilityHandler(newDate)
-    }
-
-    private fun onFilterDialogPositiveButtonClick(filterDialog: AlertDialog?) {
-        //
+        //update(newDate)
     }
 
     private fun signOut() {
         auth.signOut()
         finishAffinity()
         startNewActivity(LoginActivity::class.java)
+    }
+
+    private fun getTextToDisplay(): String {
+        return ""
     }
 }

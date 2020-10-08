@@ -20,20 +20,22 @@ import kotlinx.android.synthetic.main.fragment_property_list.*
 
 open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
-    var properties = ArrayList<Property>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getProperties().observe(mainContext, Observer {
-            if (it != null) {
-                properties = ArrayList(it)
-                adapter.updateList(properties)
-            }
-        })
         configureRecyclerView(recycler_view_properties)
         fab_add_property.setOnClickListener {
             mainContext.startNewActivity(EditOrAddPropertyActivity::class.java)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getProperties().observe(mainContext, Observer {
+            if (it != null) {
+                adapter.updateList(ArrayList(it))
+            }
+        })
     }
 
     fun configureRecyclerView(recyclerView: RecyclerView) {
@@ -48,8 +50,7 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
     }
 
     fun resetFilter(){
-        adapter.updateList(properties)
-        // todo :hide search title
+        onResume()
     }
 
     override fun onPropertyClick(propertyId: String) {

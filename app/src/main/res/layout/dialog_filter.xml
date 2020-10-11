@@ -8,29 +8,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/area_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="10dp"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="Area:"/>
-
-        <EditText
-            android:id="@+id/area_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:hint="Enter a city or a region"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/area_title"
-            app:layout_constraintTop_toBottomOf="@+id/area_title" >
-            <requestFocus/>
-        </EditText>
         <TextView
             android:id="@+id/title_property_type"
             android:layout_width="wrap_content"
@@ -41,7 +18,7 @@
             android:text="Property type"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/area_input" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/type_chip_group"
@@ -109,21 +86,23 @@
             android:layout_marginStart="5dp"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:inputType="number"
-            android:hint="Enter a number"
             app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
             app:layout_constraintStart_toEndOf="@+id/ic_bed"
             app:layout_constraintTop_toTopOf="@+id/ic_bed">
+            <requestFocus/>
         </EditText>
 
         <TextView
             android:id="@+id/title_nbr_of_bath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Bathrooms"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
-            app:layout_constraintTop_toBottomOf="@+id/ic_bed" />
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintBottom_toBottomOf="@+id/nbr_of_beds_input"
+            app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
+            app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
+            app:layout_constraintTop_toTopOf="@+id/nbr_of_beds_input" />
 
         <ImageView
             android:id="@+id/ic_bath"
@@ -143,7 +122,6 @@
             android:cursorVisible="true"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:inputType="number"
-            android:hint="Enter a number"
             app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
             app:layout_constraintStart_toEndOf="@+id/ic_bath"
             app:layout_constraintTop_toTopOf="@+id/ic_bath" />
@@ -155,7 +133,7 @@
             android:layout_marginTop="15dp"
             android:text="Property availability"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
+            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
             app:layout_constraintTop_toBottomOf="@+id/ic_bath" />
 
         <com.google.android.material.chip.ChipGroup
@@ -201,6 +179,27 @@
             app:layout_constraintTop_toTopOf="@+id/title_date" />
 
         <TextView
+            android:id="@+id/area_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_date"
+            android:text="Area:"/>
+
+        <EditText
+            android:id="@+id/area_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:hint="Enter a city or a region"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/area_title"
+            app:layout_constraintTop_toBottomOf="@+id/area_title" />
+
+        <TextView
             android:id="@+id/title_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -208,7 +207,7 @@
             android:text="Price"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
-            app:layout_constraintTop_toBottomOf="@+id/title_date" />
+            app:layout_constraintTop_toBottomOf="@+id/area_input" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/range_slider_price"
@@ -369,17 +368,59 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Close to points of interests"
+            android:text="Close to: "
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_picture"
             app:layout_constraintTop_toBottomOf="@+id/subtitle_nbr_of_pics" />
 
-        <CheckBox
-            android:id="@+id/checkbox_point_of_interest"
+        <TextView
+            android:id="@+id/poi_park"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/title_point_of_interest"
-            app:layout_constraintEnd_toEndOf="@+id/checkbox_pictures"
-            app:layout_constraintTop_toTopOf="@+id/title_point_of_interest" />
+            android:text="Park"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/title_point_of_interest"
+            app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest" />
+
+        <CheckBox
+            android:id="@+id/checkbox_park"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/poi_park"
+            app:layout_constraintStart_toEndOf="@+id/poi_park"
+            app:layout_constraintTop_toTopOf="@+id/poi_park" />
+
+        <CheckBox
+            android:id="@+id/checkbox_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/poi_store"
+            app:layout_constraintStart_toEndOf="@+id/poi_store"
+            app:layout_constraintTop_toTopOf="@+id/poi_store" />
+
+        <CheckBox
+            android:id="@+id/checkbox_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/poi_school"
+            app:layout_constraintStart_toEndOf="@+id/poi_school"
+            app:layout_constraintTop_toTopOf="@+id/poi_school" />
+
+        <TextView
+            android:id="@+id/poi_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Store"
+            app:layout_constraintStart_toEndOf="@+id/checkbox_park"
+            app:layout_constraintTop_toTopOf="@+id/poi_park" />
+
+        <TextView
+            android:id="@+id/poi_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="School"
+            app:layout_constraintStart_toEndOf="@+id/checkbox_store"
+            app:layout_constraintTop_toTopOf="@+id/poi_store" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -3,7 +3,6 @@ package com.sophieoc.realestatemanager.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
@@ -14,12 +13,10 @@ import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
@@ -87,7 +84,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     fun updateAllProperties(mutableList: List<Property>) {
         mutableList.forEach {
             CoroutineScope(Dispatchers.IO).launch {
-                val id = propertyDao.upsert(it)
+                propertyDao.upsert(it)
             }
         }
     }
@@ -105,7 +102,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                     upsertInRoom(it)
                 }
             } else if (task.exception != null)
-                Log.e("TAG", "getUser " + task.exception!!.message)
+                Log.e("TAG", "getProperty " + task.exception!!.message)
         }
     }
 
@@ -114,8 +111,29 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             override fun onActive() {
                 super.onActive()
                 CoroutineScope(Dispatchers.IO).launch {
-                    val placeDetailsList = placeApi.getNearbyPlaces(location).placeDetails
+                    val parkList = placeApi.getNearbyParks(location).placeDetails
+                    val storeList = placeApi.getNearbyStores(location).placeDetails
+                    val schoolList = placeApi.getNearbySchools(location).placeDetails
                     withContext(Main) {
+                        val placeDetailsList = ArrayList<PlaceDetails>()
+                        parkList?.let {
+                            if (parkList.size >= 5)
+                                placeDetailsList.addAll(it.subList(0, 5))
+                            else
+                                placeDetailsList.addAll(it)
+                        }
+                        storeList?.let {
+                            if (it.size >= 5)
+                                placeDetailsList.addAll(it.subList(0, 5))
+                            else
+                                placeDetailsList.addAll(it)
+                        }
+                        schoolList?.let {
+                            if (it.size >= 5)
+                                placeDetailsList.addAll(it.subList(0, 5))
+                            else
+                                placeDetailsList.addAll(it)
+                        }
                         value = placeDetailsList
                     }
                 }
@@ -126,32 +144,17 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     fun getFilteredProperties(
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
-            priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int,
-            pointOfInterests: String?, nbrOfPictures : Int?
+            priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int, nbrOfPictures: Int?,
+            park: String?, school: String?, store: String?,
     ): MutableLiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
-
-        getFilteredPropertiesFromRoom(properties, propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests, nbrOfPictures)
-      //  getFilteredPropertiesFromFirestore(properties)
-        return properties
-    }
-
-    private fun getFilteredPropertiesFromRoom(
-            properties: MutableLiveData<List<Property>>, propertyType: String?, nbrOfBed: Int?,
-            nbrOfBath: Int?, propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?, priceMin: Int,
-            priceMax: Int, surfaceMin: Int, surfaceMax: Int, pointOfInterests: String?, nbrOfPictures : Int?,
-    ) {
         CoroutineScope(Dispatchers.IO).launch {
-           val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                   dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, pointOfInterests, nbrOfPictures)
+            val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
+                    dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store)
             withContext(Main) {
                 properties.postValue(propertyList)
             }
         }
-    }
-
-    private fun getFilteredPropertiesFromFirestore(properties: MutableLiveData<List<Property>>): LiveData<List<Property>> {
-        return MutableLiveData<List<Property>>()
+        return properties
     }
 }

@@ -19,8 +19,6 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.utils.PropertyType
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_property_list.*
 import kotlinx.android.synthetic.main.results_for_search.*
@@ -39,11 +37,13 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     private var filterDateOnMarket: Date? = null
     private var filterDateSold: Date? = null
     private var filterPriceMin: Int = 0
-    private var filterPriceMax: Int = 20000000
+    private var filterPriceMax: Int = 100000000
     private var filterSurfaceMin: Int = 0
     private var filterSurfaceMax: Int = 500
     private var filterNbrOfPictures: Int? = null
-    private var filterPointOfInterests: String? = null
+    private var filterPark: String? = null
+    private var filterSchool: String? = "school"
+    private var filterStore: String? = null
 
     companion object {
         const val TAG = "MainActivity"
@@ -126,25 +126,11 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         //   if (dialog == filterDialog)
         //dialog.findViewById<>()
 
-        /*      filterPropertyType,
-              filterNbrOfBed,
-              filterNbrOfBath,
-              filterPropertyAvailability,
-              filterDateOnMarket,
-              filterDateSold,
-              filterPriceMin,
-              filterPriceMax,
-              filterSurfaceMin,
-              filterSurfaceMax,
-              filterNbrOfPictures,
-              filterPointOfInterests
-
-
-         */
         //TODO : add progress bar
-        viewModel.getFilteredList(filterPropertyType, filterNbrOfBed, filterNbrOfBath, filterPropertyAvailability,
-                filterDateOnMarket, filterDateSold, filterPriceMin, filterPriceMax, filterSurfaceMin, filterSurfaceMax,
-                filterPointOfInterests, filterNbrOfPictures).observe(this, {
+        viewModel.getFilteredList(propertyType = filterPropertyType, nbrOfBed = filterNbrOfBed, nbrOfBath = filterNbrOfBath,
+                propertyAvailability = filterPropertyAvailability, dateOnMarket = filterDateOnMarket, dateSold = filterDateSold,
+                priceMin = filterPriceMin, priceMax = filterPriceMax, surfaceMin = filterSurfaceMin, surfaceMax = filterSurfaceMax,
+                nbrOfPictures = filterNbrOfPictures, park = filterPark, school = filterSchool, store = filterStore).observe(this, {
             it?.let {
                 displayResultsText()
                 fragmentList.updateList(ArrayList(it))
@@ -158,7 +144,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
     private fun displayResultsText() {
         results_search_container.visibility = View.VISIBLE
-        //data_searched.text = getTextToDisplay()
+        data_searched.text = getTextToDisplay()
         btn_reset_search.setOnClickListener {
             fragmentList.resetFilter()
             results_search_container.visibility = View.GONE
@@ -180,7 +166,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             filterSurfaceMin = 0
             filterSurfaceMax = 300
             filterNbrOfPictures = null
-            filterPointOfInterests = null
+            filterPark = null
         }
     }
 

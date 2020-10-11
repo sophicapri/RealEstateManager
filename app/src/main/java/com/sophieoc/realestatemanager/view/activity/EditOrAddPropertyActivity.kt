@@ -13,11 +13,9 @@ import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.base.BaseEditPropertyFragment
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.notification.NotificationHelper
-import com.sophieoc.realestatemanager.utils.LAT_LNG_NOT_FOUND
-import com.sophieoc.realestatemanager.utils.POINT_OF_INTEREST
-import com.sophieoc.realestatemanager.utils.PropertyAvailability
-import com.sophieoc.realestatemanager.utils.toStringFormat
+import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddAddressFragment
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
@@ -76,9 +74,9 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
     }
 
     private fun saveChanges(property: Property) {
-        // setDates(property)
+        setDates(property)
         if (property.pointOfInterests.isEmpty()) setPointOfInterestsAndSave(property)
-        // else saveProperty(property)
+        else saveProperty(property)
     }
 
     private fun setDates(property: Property) {
@@ -88,6 +86,7 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
     }
 
     private fun setPointOfInterestsAndSave(property: Property) {
+        Log.d(TAG, "setPointOfInterestsAndSave: here")
         val strLocation = property.address.toLatLng(this).toStringFormat()
         val location = Location(property.id)
         location.latitude = property.address.toLatLng(this).latitude
@@ -98,23 +97,43 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
                     if (placeDetailList.isNotEmpty()) {
                         val listPointOfInterest = ArrayList<PointOfInterest>()
                         placeDetailList.forEachIndexed { index, placeDetails ->
-                            if (placeDetails.types?.get(0) != POINT_OF_INTEREST) {
-                                val pointOfInterest = PointOfInterest()
-                                pointOfInterest.type = placeDetails.types?.get(0).toString().capitalize(Locale.ROOT).replace('_', ' ')
-                                pointOfInterest.name = placeDetails.name.toString()
-                                pointOfInterest.address = placeDetails.vicinity.toString()
-                                pointOfInterest.distance = placeDetails.getDistanceFrom(location)
-                                listPointOfInterest.add(pointOfInterest)
-                            }
+                            val pointOfInterest = setPointOfInterest(placeDetails, location)
+                            listPointOfInterest.add(pointOfInterest)
                             if ((index + 1) == placeDetailList.size) {
                                 property.pointOfInterests = listPointOfInterest
-                                //  saveProperty(property)
+                                saveProperty(property)
                             }
                         }
                     }
                 }
+                if (placeDetailList == null)
+                    Log.d(TAG, "setPointOfInterestsAndSave: list == null")
             })
+        } else
+            Log.d(TAG, "setPointOfInterestsAndSave: latlng not found")
+    }
+
+    private fun setPointOfInterest(placeDetails: PlaceDetails, location: Location) : PointOfInterest {
+        val position: Int
+        val pointOfInterest = PointOfInterest()
+        pointOfInterest.name = placeDetails.name.toString()
+        pointOfInterest.address = placeDetails.vicinity.toString()
+        pointOfInterest.distance = placeDetails.getDistanceFrom(location)
+        val placeTypes = placeDetails.types
+        if (placeTypes != null) {
+            position = if (placeTypes[0] != POINT_OF_INTEREST)
+                0
+            else
+                1
+            pointOfInterest.type = placeTypes[position].capitalize(Locale.ROOT).replace('_', ' ')
+            if (placeTypes.contains(PARK))
+                pointOfInterest.mainType = PARK
+            if (placeTypes.contains(SCHOOL))
+                pointOfInterest.mainType = SCHOOL
+            if (placeTypes.contains(STORE))
+                pointOfInterest.mainType = STORE
         }
+        return pointOfInterest
     }
 
     fun checkInputs() {
@@ -122,11 +141,11 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
     }
 
     private fun saveProperty(property: Property) {
-        Log.d(TAG, "saveProperty: property value = ${property.photos[1].description}")
+        Log.d(TAG, "saveProperty: property mainType = ${property.pointOfInterests[0].mainType}")
         //checkInputs()
         viewModel.upsertProperty(property).observe(this, Observer {
             it?.let {
-                //TODO : Add progress bar 06/10/2020
+                //TODO : Add progress bar
                 displayNotification()
                 onBackPressed()
             }
@@ -140,14 +159,14 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
         notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
     }
 
-  /*  override fun onBackPressed() {
-        if (fragmentPictures.isVisible || fragmentPropertyInfo.isVisible)
-            bottom_navigation_bar.selectedItemId = R.id.address_page
-        if (fragmentAddress.isVisible)
-            super.onBackPressed()
-    }
+    /*  override fun onBackPressed() {
+          if (fragmentPictures.isVisible || fragmentPropertyInfo.isVisible)
+              bottom_navigation_bar.selectedItemId = R.id.address_page
+          if (fragmentAddress.isVisible)
+              super.onBackPressed()
+      }
 
-   */
+     */
 
     override fun onDestroy() {
         super.onDestroy()

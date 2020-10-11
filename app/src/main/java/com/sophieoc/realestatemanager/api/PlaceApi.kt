@@ -11,4 +11,13 @@ interface PlaceApi {
     @GET("nearbysearch/json?rankby=distance")
     suspend fun getNearbyPlaces(@Query("location") location: String?): PlacesResult
 
+    @GET("nearbysearch/json?rankby=prominence&type=park&radius=2000")
+    suspend fun getNearbyParks(@Query("location") location: String?): PlacesResult
+
+    @GET("nearbysearch/json?rankby=prominence&type=store&radius=2000")
+    suspend fun getNearbyStores(@Query("location") location: String?): PlacesResult
+
+    @GET("nearbysearch/json?rankby=prominence&type=school&radius=2000")
+    suspend fun getNearbySchools(@Query("location") location: String?): PlacesResult
+
 }

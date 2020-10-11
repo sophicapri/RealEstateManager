@@ -42,8 +42,9 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     private var filterSurfaceMax: Int = 500
     private var filterNbrOfPictures: Int? = null
     private var filterPark: String? = null
-    private var filterSchool: String? = "school"
+    private var filterSchool: String? = null
     private var filterStore: String? = null
+    private var filterArea: String? = "Arpajon"
 
     companion object {
         const val TAG = "MainActivity"
@@ -130,7 +131,8 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         viewModel.getFilteredList(propertyType = filterPropertyType, nbrOfBed = filterNbrOfBed, nbrOfBath = filterNbrOfBath,
                 propertyAvailability = filterPropertyAvailability, dateOnMarket = filterDateOnMarket, dateSold = filterDateSold,
                 priceMin = filterPriceMin, priceMax = filterPriceMax, surfaceMin = filterSurfaceMin, surfaceMax = filterSurfaceMax,
-                nbrOfPictures = filterNbrOfPictures, park = filterPark, school = filterSchool, store = filterStore).observe(this, {
+                nbrOfPictures = filterNbrOfPictures, park = filterPark, school = filterSchool, store = filterStore, area = filterArea
+        ).observe(this, {
             it?.let {
                 displayResultsText()
                 fragmentList.updateList(ArrayList(it))
@@ -164,7 +166,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             filterPriceMin = 0
             filterPriceMax = 40000000
             filterSurfaceMin = 0
-            filterSurfaceMax = 300
+            filterSurfaceMax = 500
             filterNbrOfPictures = null
             filterPark = null
         }

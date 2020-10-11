@@ -21,7 +21,7 @@ data class Property(
         @ColumnInfo(name = "availability") var availability: PropertyAvailability,
         @ColumnInfo(name = "date_on_market") var dateOnMarket: Date?,
         @ColumnInfo(name = "date_sold") var dateSold: Date?,
-        @Embedded var address: Address,
+        @ColumnInfo(name = "address") var address: Address,
         @ColumnInfo(name = "photos") var photos: List<Photo>,
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
         @ColumnInfo(name = "user_id") var userId: String,

@@ -98,32 +98,28 @@
             android:layout_height="wrap_content"
             android:text="Bathrooms"
             android:textSize="16sp"
-            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintBottom_toBottomOf="@+id/nbr_of_beds_input"
-            app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
-            app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
+            app:layout_constraintEnd_toStartOf="@+id/ic_bath"
             app:layout_constraintTop_toTopOf="@+id/nbr_of_beds_input" />
 
         <ImageView
             android:id="@+id/ic_bath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:src="@drawable/ic_baseline_bathtub_24"
             app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
-            app:layout_constraintStart_toEndOf="@+id/title_nbr_of_bath"
+            app:layout_constraintEnd_toStartOf="@+id/nbr_of_bath_input"
             app:layout_constraintTop_toTopOf="@+id/title_nbr_of_bath" />
 
         <EditText
             android:id="@+id/nbr_of_bath_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:cursorVisible="true"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
-            app:layout_constraintStart_toEndOf="@+id/ic_bath"
+            app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
             app:layout_constraintTop_toTopOf="@+id/ic_bath" />
 
         <TextView

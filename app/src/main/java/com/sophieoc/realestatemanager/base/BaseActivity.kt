@@ -64,13 +64,11 @@ abstract class BaseActivity : AppCompatActivity() {
             intent.putExtra(PROPERTY_ID, data.getStringExtra(PROPERTY_ID))
     }
 
-  /*  override fun onBackPressed() {
+    override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         } else {
             super.onBackPressed()
         }
     }
-
-   */
 }

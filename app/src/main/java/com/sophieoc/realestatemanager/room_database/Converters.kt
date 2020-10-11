@@ -2,6 +2,7 @@ package com.sophieoc.realestatemanager.room_database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.sophieoc.realestatemanager.model.Address
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.User
@@ -24,12 +25,6 @@ class Converters {
     fun jsonToListPointOfInterest(value: String) = Gson().fromJson(value, Array<PointOfInterest>::class.java).toList()
 
     @TypeConverter
-    fun userToJson(value: User?) = Gson().toJson(value)
-
-    @TypeConverter
-    fun jsonToUser(value: String) = Gson().fromJson(value, User::class.java)
-
-    @TypeConverter
     fun enumToJson(value: PropertyType?): String = Gson().toJson(value)
 
     @TypeConverter
@@ -40,6 +35,12 @@ class Converters {
 
     @TypeConverter
     fun jsonToEnumPropertyAvailability(value: String): PropertyAvailability = Gson().fromJson(value, PropertyAvailability::class.java)
+
+    @TypeConverter
+    fun addressToJson(value: Address?): String = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToAddress(value: String): Address = Gson().fromJson(value, Address::class.java)
 
 
     @TypeConverter

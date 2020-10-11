@@ -28,9 +28,10 @@ class MyViewModel(private val userSource: UserRepository, private val propertySo
     fun getFilteredList(
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, propertyAvailability: String?,
             dateOnMarket: Date?, dateSold: Date?, priceMin: Int, priceMax: Int,
-            surfaceMin: Int, surfaceMax: Int, nbrOfPictures : Int?, park: String?, school: String?, store : String?
+            surfaceMin: Int, surfaceMax: Int, nbrOfPictures : Int?, park: String?, school: String?, store : String?,
+            area: String?
     ): LiveData<List<Property>> {
         return propertySource.getFilteredProperties(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store)
+                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store, area)
     }
 }

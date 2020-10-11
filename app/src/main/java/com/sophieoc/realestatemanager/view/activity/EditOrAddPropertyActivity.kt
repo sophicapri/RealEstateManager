@@ -141,8 +141,6 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
     }
 
     private fun saveProperty(property: Property) {
-        Log.d(TAG, "saveProperty: property mainType = ${property.pointOfInterests[0].mainType}")
-        //checkInputs()
         viewModel.upsertProperty(property).observe(this, Observer {
             it?.let {
                 //TODO : Add progress bar
@@ -158,15 +156,6 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
                 .getChannelNotification(getString(R.string.property_saved_successful))
         notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
     }
-
-    /*  override fun onBackPressed() {
-          if (fragmentPictures.isVisible || fragmentPropertyInfo.isVisible)
-              bottom_navigation_bar.selectedItemId = R.id.address_page
-          if (fragmentAddress.isVisible)
-              super.onBackPressed()
-      }
-
-     */
 
     override fun onDestroy() {
         super.onDestroy()

@@ -145,12 +145,12 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
             priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int, nbrOfPictures: Int?,
-            park: String?, school: String?, store: String?,
+            park: String?, school: String?, store: String?, area: String?
     ): MutableLiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
         CoroutineScope(Dispatchers.IO).launch {
             val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                    dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store)
+                    dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store, area)
             withContext(Main) {
                 properties.postValue(propertyList)
             }

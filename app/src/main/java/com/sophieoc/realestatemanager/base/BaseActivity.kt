@@ -28,10 +28,11 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         auth = FirebaseAuth.getInstance()
-        setContentView(getLayout())
+        getLayout().first?.let { setContentView(it)}
+        getLayout().second?.let { setContentView(it)}
     }
 
-    abstract fun getLayout(): Int
+    abstract fun getLayout(): Pair<Int?, View?>
 
     fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser

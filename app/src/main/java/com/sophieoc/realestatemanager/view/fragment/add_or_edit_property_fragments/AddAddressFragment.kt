@@ -1,31 +1,36 @@
 package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseEditPropertyFragment
+import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
-import com.sophieoc.realestatemanager.utils.PROPERTY_NOT_DEFINED
-import kotlinx.android.synthetic.main.fragment_add_address.*
+import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 
 
-class AddAddressFragment : BaseEditPropertyFragment() {
+class AddAddressFragment : BaseFragment(){
+    private lateinit var binding: FragmentAddAddressBinding
+    private lateinit var addPropertyActivity: EditOrAddPropertyActivity
 
-    override fun onResume() {
-        super.onResume()
-        addPropertyActivity.intent.extras?.let{
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        addPropertyActivity = (activity as EditOrAddPropertyActivity)
+        addPropertyActivity.intent.extras?.let {
             getPropertyId(it)
         }
         if (addPropertyActivity.intent.extras == null)
-            updatedProperty = Property()
-        setInputListeners()
-        Log.d(TAG, "onResume: ")
-    }
-
-    private fun setInputListeners() {
-        //
+            addPropertyActivity.propertyViewModel.property = Property()
     }
 
     private fun getPropertyId(extras: Bundle) {
@@ -38,29 +43,33 @@ class AddAddressFragment : BaseEditPropertyFragment() {
     private fun getProperty(propertyId: String) {
         viewModel.getPropertyById(propertyId).observe(addPropertyActivity, Observer {
             it?.let {
-                if (updatedProperty.userId == PROPERTY_NOT_DEFINED || (city_input.text.isEmpty() && it.address.city.isNotEmpty())) {
-                    updatedProperty = it
-                    bindInputs()
+                addPropertyActivity.propertyViewModel.property = it
+                val ft: FragmentTransaction = mainContext.supportFragmentManager.beginTransaction()
+                if (Build.VERSION.SDK_INT >= 26) {
+                    ft.setReorderingAllowed(false);
                 }
+                ft.detach(this).attach(this).commit();
             }
         })
     }
 
-    private fun bindInputs() {
-        street_nbr_input.text.insert(0, updatedProperty.address.streetNumber)
-        apartment_nbr_input.text.insert(0, updatedProperty.address.apartmentNumber)
-        street_name_input.text.insert(0, updatedProperty.address.streetName)
-        city_input.text.insert(0, updatedProperty.address.city)
-        postal_code_input.text.insert(0, updatedProperty.address.postalCode)
-        region_input.text.insert(0, updatedProperty.address.region)
-        country_input.text.insert(0, updatedProperty.address.country)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_add_address,
+                container,
+                false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.propertyViewModel = addPropertyActivity.propertyViewModel
+        return super.onCreateView(inflater, container, savedInstanceState)
+
     }
 
-    override fun getLayout(): Int {
-        return R.layout.fragment_add_address
+    override fun getLayout(): Pair<Nothing?, View> {
+        return Pair(null, binding.root)
     }
 
-    companion object{
+    companion object {
         const val TAG = "AddAddressFragment"
     }
 }

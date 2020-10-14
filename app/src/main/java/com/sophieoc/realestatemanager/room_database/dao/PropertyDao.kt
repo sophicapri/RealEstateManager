@@ -35,7 +35,7 @@ interface PropertyDao {
     fun getPropertiesWithCursorForUser(userId: String): Cursor
 
     @Query("SELECT * FROM property WHERE id = :id")
-    fun getPropertyById(id: String): LiveData<Property>
+    fun getPropertyById(id: String): Property
 
     @Query("DELETE FROM property WHERE id = :propertyId")
     fun deleteById(propertyId: String): Int

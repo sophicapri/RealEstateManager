@@ -23,11 +23,11 @@ interface UserDao {
 
     @Transaction
     @Query("SELECT * FROM users WHERE uid = :uid")
-    fun getUserWithPropertiesById(uid: String): LiveData<UserWithProperties>
+    fun getUserWithPropertiesById(uid: String): UserWithProperties
 
     @Transaction
     @Query("SELECT * FROM users")
-    fun getUsersWithProperties(): LiveData<List<UserWithProperties>>
+    fun getUsersWithProperties(): List<UserWithProperties>
 
     @Query("DELETE FROM users")
     suspend fun deleteUsers(): Int

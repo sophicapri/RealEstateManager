@@ -141,7 +141,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5F))
     }
 
-    override fun getLayout() = R.layout.fragment_map
+    override fun getLayout() = Pair(R.layout.fragment_map, null)
 
     private fun initMap() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?

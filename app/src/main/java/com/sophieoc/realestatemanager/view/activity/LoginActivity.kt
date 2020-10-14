@@ -16,9 +16,7 @@ class LoginActivity : BaseActivity() {
         const val RC_SIGN_IN = 123
     }
 
-    override fun getLayout(): Int {
-        return R.layout.activity_login
-    }
+    override fun getLayout() = Pair(R.layout.activity_login, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,7 +8,7 @@ import com.sophieoc.realestatemanager.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_user_properties.*
 
 class UserPropertiesFragment: PropertyListFragment() {
-    override fun getLayout() = R.layout.fragment_user_properties
+    override fun getLayout() = Pair(R.layout.fragment_user_properties, null)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.currentUser.observe(mainContext, Observer {

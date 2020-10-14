@@ -29,9 +29,9 @@ import java.util.*
 class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     var property: Property = Property()
     var map: GoogleMap? = null
-    var propertyMarker: MarkerOptions? = null
+    private var propertyMarker: MarkerOptions? = null
 
-    override fun getLayout() = R.layout.fragment_property_detail
+    override fun getLayout() = Pair(R.layout.fragment_property_detail, null)
 
     override fun onResume() {
         super.onResume()
@@ -154,7 +154,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     class NoPropertyClickedFragment : BaseFragment() {
-        override fun getLayout() = R.layout.no_property_clicked
+        override fun getLayout() = Pair(R.layout.no_property_clicked, null)
     }
 
     companion object {

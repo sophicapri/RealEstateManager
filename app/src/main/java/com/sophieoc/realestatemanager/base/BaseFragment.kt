@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.BaseObservable
 import androidx.fragment.app.Fragment
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment: Fragment()  {
     val viewModel by viewModel<MyViewModel>()
     lateinit var mainContext: BaseActivity
 
@@ -18,8 +19,11 @@ abstract class BaseFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getLayout(), container, false)
+        var view : View? = null
+        getLayout().first?.let { view = inflater.inflate(it, container, false) }
+        getLayout().second?.let { view = getLayout().second }
+        return view
     }
 
-    abstract fun getLayout(): Int
+    abstract fun getLayout(): Pair<Int?, View?>
 }

@@ -2,6 +2,9 @@ package com.sophieoc.realestatemanager.model
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import androidx.room.*
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
@@ -26,7 +29,7 @@ data class Property(
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
         @ColumnInfo(name = "user_id") var userId: String,
         @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size
-) {
+): BaseObservable() {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, -1, -1,
             -1, -1, "", PropertyAvailability.AVAILABLE, null, null,
             Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "not defined")

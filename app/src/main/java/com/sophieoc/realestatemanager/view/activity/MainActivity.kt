@@ -44,15 +44,13 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     private var filterPark: String? = null
     private var filterSchool: String? = null
     private var filterStore: String? = null
-    private var filterArea: String? = "Arpajon"
+    private var filterArea: String? = null
 
     companion object {
         const val TAG = "MainActivity"
     }
 
-    override fun getLayout(): Int {
-        return R.layout.activity_main
-    }
+    override fun getLayout() = Pair(R.layout.activity_main, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,7 +152,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        Log.d(TAG, "onDismiss")
         if (dialog === filterDialog) {
             filterDialog = null
             filterPropertyType = null

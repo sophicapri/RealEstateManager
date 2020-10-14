@@ -69,5 +69,5 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         }
     }
 
-    override fun getLayout() = R.layout.fragment_property_list
+    override fun getLayout() = Pair(R.layout.fragment_property_list, null)
 }

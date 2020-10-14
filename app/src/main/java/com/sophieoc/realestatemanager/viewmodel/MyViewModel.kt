@@ -12,6 +12,7 @@ import java.util.*
 
 class MyViewModel(private val userSource: UserRepository, private val propertySource: PropertyRepository) : ViewModel() {
     val currentUser = userSource.currentUser
+    //var property = Property()
 
     fun getUserById(uid: String): LiveData<UserWithProperties> = userSource.getUserWithProperties(uid)
 

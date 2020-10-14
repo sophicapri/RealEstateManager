@@ -25,14 +25,19 @@ class UserRepository(private val userDao: UserDao) {
 
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val user: MutableLiveData<UserWithProperties> = MutableLiveData()
-        user.postValue(getUserFromRoom(uid).value)
+        getUserFromRoom(uid, user)
         getUserFromFirestore(uid, user)
         return user
     }
 
     // ROOM
-    private fun getUserFromRoom(uid: String): LiveData<UserWithProperties> {
-        return userDao.getUserWithPropertiesById(uid)
+    private fun getUserFromRoom(uid: String, userMutable: MutableLiveData<UserWithProperties>) {
+        CoroutineScope(IO).launch {
+            val userWithProperties = userDao.getUserWithPropertiesById(uid)
+            withContext(Dispatchers.Main) {
+                userMutable.postValue(userWithProperties)
+            }
+        }
     }
 
     private fun upsertInRoom(user: User) {

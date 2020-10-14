@@ -8,9 +8,7 @@ import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 
 
 class PropertyDetailActivity : BaseActivity() {
-    override fun getLayout(): Int {
-        return R.layout.activity_property_detail
-    }
+    override fun getLayout() = Pair(R.layout.activity_property_detail, null)
 
     override fun onResume() {
         super.onResume()

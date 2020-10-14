@@ -7,7 +7,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 
 class UserPropertiesActivity : BaseActivity() {
-    override fun getLayout() = R.layout.activity_user_properties
+    override fun getLayout() = Pair(R.layout.activity_user_properties, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -11,9 +11,7 @@ class SplashScreenActivity : BaseActivity() {
         if (isCurrentUserLogged()) startMainActivity() else startLoginActivity()
     }
 
-    override fun getLayout(): Int {
-        return R.layout.activity_splash_screen
-    }
+    override fun getLayout() = Pair(R.layout.activity_splash_screen, null)
 
     private fun startLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)

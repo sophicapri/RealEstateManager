@@ -4,13 +4,15 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.core.app.NotificationCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
-import com.sophieoc.realestatemanager.base.BaseEditPropertyFragment
+import com.sophieoc.realestatemanager.databinding.ActivityEditAddPropertyBinding
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
@@ -19,16 +21,26 @@ import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddAddressFragment
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.activity_edit_add_property.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private var fragmentAddress: Fragment = AddAddressFragment()
     private var fragmentPropertyInfo: Fragment = AddPropertyInfoFragment()
     private var fragmentPictures: Fragment = AddPicturesFragment()
+    val propertyViewModel by viewModel<PropertyViewModel>()
 
-    override fun getLayout() = R.layout.activity_edit_add_property
+
+    override fun getLayout() = run {
+        val binding: ActivityEditAddPropertyBinding = DataBindingUtil
+            .setContentView(this, R.layout.activity_edit_add_property)
+        binding.propertyViewModel = propertyViewModel
+        Pair(null, binding.root)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +49,8 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
         }
         if (intent.extras == null) title_edit_create.text = "Add a property"
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        btn_save_property.setOnClickListener { saveChanges(BaseEditPropertyFragment.updatedProperty) }
-        bottom_navigation_bar.setOnNavigationItemSelectedListener(this::onNavigationItemSelected)
+        //btn_save_property.setOnClickListener { saveChanges(BaseEditPropertyFragment.updatedProperty) }
+        bottom_navigation_bar.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -73,7 +85,8 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
         return true
     }
 
-    private fun saveChanges(property: Property) {
+    fun saveChanges(view: View) {
+        val property = propertyViewModel.property
         setDates(property)
         if (property.pointOfInterests.isEmpty()) setPointOfInterestsAndSave(property)
         else saveProperty(property)
@@ -141,7 +154,8 @@ class EditOrAddPropertyActivity : BaseActivity(), NavigationView.OnNavigationIte
     }
 
     private fun saveProperty(property: Property) {
-        viewModel.upsertProperty(property).observe(this, Observer {
+        propertyViewModel.upsertProperty()
+        propertyViewModel.propertySaved.observe(this, Observer {
             it?.let {
                 //TODO : Add progress bar
                 displayNotification()

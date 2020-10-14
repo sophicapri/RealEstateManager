@@ -4,5 +4,5 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 
 class SettingsActivity : BaseActivity() {
-    override fun getLayout() = R.layout.activity_settings
+    override fun getLayout()= Pair(R.layout.activity_settings, null)
 }

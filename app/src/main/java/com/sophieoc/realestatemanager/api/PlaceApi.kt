@@ -8,9 +8,6 @@ import retrofit2.http.Query
 
 interface PlaceApi {
 
-    @GET("nearbysearch/json?rankby=distance")
-    suspend fun getNearbyPlaces(@Query("location") location: String?): PlacesResult
-
     @GET("nearbysearch/json?rankby=prominence&type=park&radius=2000")
     suspend fun getNearbyParks(@Query("location") location: String?): PlacesResult
 

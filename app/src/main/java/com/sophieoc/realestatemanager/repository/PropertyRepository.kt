@@ -47,7 +47,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
 
     fun getPropertyById(id: String): MutableLiveData<Property> {
         val property: MutableLiveData<Property> = MutableLiveData()
-        property.postValue(getPropertyFromRoom(id).value)
+        getPropertyFromRoom(id, property)
         getPropertyFromFirestore(id, property)
         return property
     }
@@ -81,7 +81,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         }
     }
 
-    fun updateAllProperties(mutableList: List<Property>) {
+    private fun updateAllProperties(mutableList: List<Property>) {
         mutableList.forEach {
             CoroutineScope(Dispatchers.IO).launch {
                 propertyDao.upsert(it)
@@ -89,8 +89,13 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         }
     }
 
-    private fun getPropertyFromRoom(id: String): LiveData<Property> {
-        return propertyDao.getPropertyById(id)
+    private fun getPropertyFromRoom(id: String, property: MutableLiveData<Property>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val propertyRoom = propertyDao.getPropertyById(id)
+            withContext(Main) {
+                property.postValue(propertyRoom)
+            }
+        }
     }
 
     private fun getPropertyFromFirestore(id: String, property: MutableLiveData<Property>) {

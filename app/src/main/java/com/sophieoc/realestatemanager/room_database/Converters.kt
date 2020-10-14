@@ -42,7 +42,6 @@ class Converters {
     @TypeConverter
     fun jsonToAddress(value: String): Address = Gson().fromJson(value, Address::class.java)
 
-
     @TypeConverter
     fun toDate(dateLong: Long?): Date? {
         return dateLong?.let { Date(it) }

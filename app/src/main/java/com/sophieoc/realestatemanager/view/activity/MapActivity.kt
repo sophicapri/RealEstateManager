@@ -12,7 +12,7 @@ import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import kotlinx.android.synthetic.main.fragment_map.*
 
 class MapActivity : BaseActivity() {
-    override fun getLayout() = R.layout.activity_map
+    override fun getLayout() = Pair(R.layout.activity_map, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

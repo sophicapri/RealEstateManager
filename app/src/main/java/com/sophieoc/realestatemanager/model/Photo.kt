@@ -1,13 +1,28 @@
 package com.sophieoc.realestatemanager.model
 
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 
 data class Photo(
         @ColumnInfo(name = "url_photo") val urlPhoto: String,
         @ColumnInfo(name = "description") var description: String,
 ){
-    constructor():this( "https://cdn.pixabay.com/photo/2016/11/18/17/46/architecture-1836070_1280.jpg","")
+    constructor():this( NO_IMAGE_AVAILABLE,"")
+
+    @BindingAdapter("imageUrl")
+    fun setImageUrl(imgView: ImageView, imgUrl: String?){
+        imgUrl?.let {
+            Glide.with(imgView.context)
+                    .load(it)
+                    .apply(RequestOptions().centerCrop())
+                    .into(imgView)
+        }
+    }
 }

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="propertyViewModel"
             type="com.sophieoc.realestatemanager.viewmodel.PropertyViewModel" />
     </data>
-
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,161 +22,211 @@
             android:id="@+id/title_property_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Property type:"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/title_country"
-            app:layout_constraintTop_toBottomOf="@+id/title_country" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/types_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:entries="@array/property_types"
             android:gravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/title_property_type"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title_property_type" />
 
         <TextView
             android:id="@+id/title_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Price:"
+            android:layout_marginTop="16dp"
+            android:text="@string/price_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_property_type"
-            app:layout_constraintTop_toBottomOf="@+id/title_property_type" />
+            app:layout_constraintTop_toBottomOf="@+id/types_spinner" />
 
         <EditText
             android:id="@+id/price_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bkg_rectangle_dark"
+            android:background="@drawable/bkg_rectangle_grey"
             android:cursorVisible="true"
-            android:gravity="end"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:importantForAutofill="no"
             android:inputType="number"
-            android:paddingStart="3dp"
-            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
-            android:paddingEnd="3dp"
-            app:layout_constraintBottom_toBottomOf="@+id/title_price"
-            app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
-            app:layout_constraintStart_toStartOf="@+id/country_input" />
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="36dp"
+            android:paddingBottom="10dp"
+            android:text="@={`` + propertyViewModel.property.price}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/title_price"
+            app:layout_constraintTop_toBottomOf="@+id/title_price" />
 
         <TextView
             android:id="@+id/ic_dollar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$"
+            android:layout_marginEnd="10dp"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/types_spinner"
-            app:layout_constraintTop_toTopOf="@+id/title_price" />
+            app:layout_constraintBottom_toBottomOf="@+id/price_input"
+            app:layout_constraintEnd_toEndOf="@id/price_input"
+            app:layout_constraintTop_toTopOf="@+id/price_input"
+            android:text="@string/ic_dollar" />
 
         <TextView
             android:id="@+id/title_nbr_of_beds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Number of bedrooms:"
+            android:layout_marginTop="16dp"
+            android:text="@string/number_of_bedrooms_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             app:layout_constraintStart_toStartOf="@+id/title_price"
-            app:layout_constraintTop_toBottomOf="@+id/title_price" />
+            app:layout_constraintTop_toBottomOf="@+id/price_input" />
 
         <EditText
             android:id="@+id/nbr_of_beds_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bkg_rectangle_brown"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bkg_rectangle_grey"
             android:cursorVisible="true"
-            android:gravity="end"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:importantForAutofill="no"
             android:inputType="number"
-            android:paddingStart="3dp"
-            android:paddingEnd="3dp"
-            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
-            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
-            app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
-            app:layout_constraintStart_toEndOf="@+id/title_nbr_of_beds" />
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="36dp"
+            android:paddingBottom="10dp"
+            android:text="@={`` + propertyViewModel.property.numberOfBedrooms}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" >
+            <requestFocus/>
+        </EditText>
 
         <ImageView
             android:id="@+id/ic_bed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_outline_king_bed_24"
+            app:layout_constraintBottom_toBottomOf="@+id/nbr_of_beds_input"
             app:layout_constraintEnd_toEndOf="@+id/ic_dollar"
-            app:layout_constraintTop_toTopOf="@+id/title_nbr_of_beds" />
+            app:layout_constraintTop_toTopOf="@+id/nbr_of_beds_input" />
 
         <TextView
             android:id="@+id/title_nbr_of_bath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="Number of bathrooms:"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
-            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds" />
+            app:layout_constraintTop_toBottomOf="@+id/nbr_of_beds_input" />
 
         <EditText
             android:id="@+id/nbr_of_bath_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bkg_rectangle_dark"
+            android:background="@drawable/bkg_rectangle_grey"
             android:cursorVisible="true"
-            android:gravity="end"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:importantForAutofill="no"
             android:inputType="number"
-            android:paddingStart="3dp"
-            android:paddingEnd="3dp"
-            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
-            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
-            app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
-            app:layout_constraintStart_toStartOf="@+id/nbr_of_beds_input" />
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="36dp"
+            android:paddingBottom="10dp"
+            android:text="@={`` + propertyViewModel.property.numberOfBathrooms}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/nbr_of_beds_input"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
 
         <ImageView
             android:id="@+id/ic_bath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_bathtub_24"
+            app:layout_constraintBottom_toBottomOf="@+id/nbr_of_bath_input"
             app:layout_constraintEnd_toEndOf="@+id/ic_bed"
-            app:layout_constraintTop_toTopOf="@+id/title_nbr_of_bath" />
+            app:layout_constraintTop_toTopOf="@+id/nbr_of_bath_input" />
+
+        <TextView
+            android:id="@+id/title_nbr_of_rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Number of rooms:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/title_price"
+            app:layout_constraintTop_toBottomOf="@+id/nbr_of_bath_input" />
+
+        <EditText
+            android:id="@+id/nbr_of_rooms_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bkg_rectangle_grey"
+            android:cursorVisible="true"
+            android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="36dp"
+            android:paddingBottom="10dp"
+            android:text="@={`` + propertyViewModel.property.numberOfRooms}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_rooms" />
+
+        <ImageView
+            android:id="@+id/ic_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_room"
+            app:layout_constraintBottom_toBottomOf="@+id/nbr_of_rooms_input"
+            app:layout_constraintEnd_toEndOf="@+id/ic_dollar"
+            app:layout_constraintTop_toTopOf="@+id/nbr_of_rooms_input"
+            app:tint="@color/grey" />
+
 
         <TextView
             android:id="@+id/title_surface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:text="Surface:"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
-            app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_bath" />
+            app:layout_constraintStart_toStartOf="@+id/title_nbr_of_rooms"
+            app:layout_constraintTop_toBottomOf="@+id/nbr_of_rooms_input" />
 
         <EditText
             android:id="@+id/surface_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bkg_rectangle_brown"
+            android:background="@drawable/bkg_rectangle_grey"
             android:cursorVisible="true"
-            android:gravity="end"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:importantForAutofill="no"
             android:inputType="number"
-            android:paddingStart="3dp"
-            android:paddingEnd="3dp"
-            app:layout_constraintBottom_toBottomOf="@+id/title_surface"
-            app:layout_constraintEnd_toStartOf="@+id/ic_dollar"
-            app:layout_constraintStart_toStartOf="@+id/price_input" />
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="36dp"
+            android:paddingBottom="10dp"
+            android:text="@={`` + propertyViewModel.property.surface}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/title_surface"
+            app:layout_constraintTop_toBottomOf="@+id/title_surface" />
 
         <TextView
             android:id="@+id/sqft"
@@ -179,52 +234,73 @@
             android:layout_height="wrap_content"
             android:text="sqft"
             app:layout_constraintBottom_toBottomOf="@+id/surface_input"
-            app:layout_constraintEnd_toEndOf="@+id/ic_bath" />
+            app:layout_constraintEnd_toEndOf="@+id/ic_bath"
+            app:layout_constraintTop_toTopOf="@+id/surface_input" />
 
         <TextView
             android:id="@+id/title_availability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:text="Availability:"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_surface"
-            app:layout_constraintTop_toBottomOf="@+id/title_surface" />
+            app:layout_constraintTop_toBottomOf="@+id/surface_input" />
+
+        <TextView
+            android:id="@+id/title_since"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/since"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_date"
+            app:layout_constraintEnd_toEndOf="@+id/title_availability"
+            app:layout_constraintTop_toTopOf="@+id/btn_date" />
+
+        <Button
+            android:id="@+id/btn_date"
+            style="@style/ButtonPositiveStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/click_to_select_a_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_availability" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/availability_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:entries="@array/property_availability"
             android:gravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/title_availability"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/types_spinner"
+            app:layout_constraintTop_toTopOf="@+id/title_availability" />
 
         <TextView
             android:id="@+id/title_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Description:"
+            android:layout_marginTop="16dp"
+            android:text="@string/description_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_availability"
-            app:layout_constraintTop_toBottomOf="@+id/title_availability" />
+            app:layout_constraintTop_toBottomOf="@+id/title_since" />
 
         <EditText
             android:id="@+id/description_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:background="@drawable/bkg_rectangle_grey"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
-            android:background="@drawable/bkg_rectangle_dark"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/sqft"
+            android:padding="10dp"
+            android:text="@={propertyViewModel.property.description}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title_description"
             app:layout_constraintTop_toBottomOf="@+id/title_description" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

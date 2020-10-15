@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter.PointOfInterestViewHolder
-import kotlinx.android.synthetic.main.point_of_interest_format.view.*
+import kotlinx.android.synthetic.main.item_point_of_interest.view.*
 
 class PointOfInterestAdapter(private val pointOfInterests: List<PointOfInterest>) : RecyclerView.Adapter<PointOfInterestViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PointOfInterestViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.point_of_interest_format, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_point_of_interest, parent, false)
         return PointOfInterestViewHolder(view)
     }
 

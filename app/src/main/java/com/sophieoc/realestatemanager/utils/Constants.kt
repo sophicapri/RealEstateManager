@@ -15,3 +15,5 @@ const val PARK = "park"
 const val SCHOOL = "school"
 
 const val STORE = "store"
+
+const val NO_IMAGE_AVAILABLE = "https://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/Assets/images/No_Image_Available.jpg"

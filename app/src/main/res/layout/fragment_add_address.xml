@@ -7,31 +7,27 @@
             name="propertyViewModel"
             type="com.sophieoc.realestatemanager.viewmodel.PropertyViewModel" />
     </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/title_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Location"
+                    android:text="Address"
+                    android:visibility="gone"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,29 +35,32 @@
                     android:id="@+id/title_street_nbr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="street n°:"
-                    app:layout_constraintStart_toStartOf="@+id/title_location"
-                    app:layout_constraintTop_toBottomOf="@+id/title_location" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Street n°:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/street_nbr_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/bkg_rectangle_brown"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
                     android:inputType="number"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@={propertyViewModel.property.address.streetNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_apartment_nbr"
-                    app:layout_constraintTop_toTopOf="@+id/title_street_nbr">
+                    app:layout_constraintStart_toStartOf="@+id/title_street_nbr"
+                    app:layout_constraintTop_toBottomOf="@+id/title_street_nbr">
+
                     <requestFocus />
                 </EditText>
 
@@ -69,8 +68,8 @@
                     android:id="@+id/title_apartment_nbr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="apartment n°:"
+                    android:layout_marginTop="10dp"
+                    android:text="Apartment n°:"
                     app:layout_constraintStart_toStartOf="@+id/title_street_nbr"
                     app:layout_constraintTop_toBottomOf="@+id/street_nbr_input" />
 
@@ -78,26 +77,27 @@
                     android:id="@+id/apartment_nbr_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:imeOptions="flagNoExtractUi|flagNoEnterAction"
-                    android:background="@drawable/bkg_rectangle_dark"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
-                    android:text="@={propertyViewModel.property.address.apartmentNumber}"
-                    android:importantForAutofill="no"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
                     android:freezesText="true"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+                    android:importantForAutofill="no"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@={propertyViewModel.property.address.apartmentNumber}"
                     app:layout_constraintEnd_toEndOf="@+id/street_nbr_input"
-                    app:layout_constraintStart_toEndOf="@+id/title_apartment_nbr"
-                    app:layout_constraintTop_toTopOf="@+id/title_apartment_nbr" />
+                    app:layout_constraintStart_toStartOf="@+id/title_apartment_nbr"
+                    app:layout_constraintTop_toBottomOf="@+id/title_apartment_nbr" />
 
                 <TextView
                     android:id="@+id/title_street_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="street name:"
+                    android:layout_marginTop="10dp"
+                    android:text="Street name:"
                     app:layout_constraintStart_toStartOf="@+id/title_apartment_nbr"
                     app:layout_constraintTop_toBottomOf="@+id/apartment_nbr_input" />
 
@@ -105,24 +105,26 @@
                     android:id="@+id/street_name_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bkg_rectangle_brown"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@={propertyViewModel.property.address.streetName}"
                     app:layout_constraintEnd_toEndOf="@+id/street_nbr_input"
-                    app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
-                    app:layout_constraintTop_toTopOf="@+id/title_street_name" />
+                    app:layout_constraintStart_toStartOf="@+id/title_street_name"
+                    app:layout_constraintTop_toBottomOf="@+id/title_street_name" />
 
                 <TextView
                     android:id="@+id/title_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="city:"
+                    android:layout_marginTop="10dp"
+                    android:text="City:"
                     app:layout_constraintStart_toStartOf="@+id/title_street_name"
                     app:layout_constraintTop_toBottomOf="@+id/street_name_input" />
 
@@ -130,25 +132,27 @@
                     android:id="@+id/city_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bkg_rectangle_dark"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
                     android:freezesText="true"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@={propertyViewModel.property.address.city}"
                     app:layout_constraintEnd_toEndOf="@+id/street_name_input"
-                    app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
-                    app:layout_constraintTop_toTopOf="@+id/title_city" />
+                    app:layout_constraintStart_toStartOf="@+id/title_city"
+                    app:layout_constraintTop_toBottomOf="@+id/title_city" />
 
                 <TextView
                     android:id="@+id/title_postal_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="postal code:"
+                    android:layout_marginTop="10dp"
+                    android:text="Postal code:"
                     app:layout_constraintStart_toStartOf="@+id/title_city"
                     app:layout_constraintTop_toBottomOf="@+id/city_input" />
 
@@ -156,25 +160,27 @@
                     android:id="@+id/postal_code_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bkg_rectangle_brown"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
                     android:inputType="number"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@={propertyViewModel.property.address.postalCode}"
-                    android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     app:layout_constraintEnd_toEndOf="@+id/city_input"
-                    app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
-                    app:layout_constraintTop_toTopOf="@+id/title_postal_code" />
+                    app:layout_constraintStart_toStartOf="@+id/title_postal_code"
+                    app:layout_constraintTop_toBottomOf="@+id/title_postal_code" />
 
                 <TextView
                     android:id="@+id/title_region"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="region:"
+                    android:layout_marginTop="10dp"
+                    android:text="Region:"
                     app:layout_constraintStart_toStartOf="@+id/title_postal_code"
                     app:layout_constraintTop_toBottomOf="@+id/postal_code_input" />
 
@@ -182,26 +188,28 @@
                     android:id="@+id/region_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bkg_rectangle_dark"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
                     android:inputType="number"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@={propertyViewModel.property.address.region}"
                     app:layout_constraintEnd_toEndOf="@+id/postal_code_input"
-                    app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
-                    app:layout_constraintTop_toTopOf="@+id/title_region" />
+                    app:layout_constraintStart_toStartOf="@+id/title_region"
+                    app:layout_constraintTop_toBottomOf="@+id/title_region" />
 
 
                 <TextView
                     android:id="@+id/title_country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="country:"
+                    android:layout_marginTop="10dp"
+                    android:text="Country:"
                     app:layout_constraintStart_toStartOf="@+id/title_region"
                     app:layout_constraintTop_toBottomOf="@+id/region_input" />
 
@@ -209,19 +217,20 @@
                     android:id="@+id/country_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bkg_rectangle_brown"
+                    android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
-                    android:gravity="end"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
                     android:inputType="number"
-                    android:paddingStart="3dp"
-                    android:paddingEnd="3dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@={propertyViewModel.property.address.country}"
                     app:layout_constraintEnd_toEndOf="@+id/region_input"
-                    app:layout_constraintStart_toStartOf="@+id/street_nbr_input"
-                    app:layout_constraintTop_toTopOf="@+id/title_country" />
+                    app:layout_constraintStart_toStartOf="@+id/title_country"
+                    app:layout_constraintTop_toBottomOf="@+id/title_country" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.formatToDollars
-import kotlinx.android.synthetic.main.list_properties_format.view.*
+import kotlinx.android.synthetic.main.item_property.view.*
 
 class PropertyListAdapter(
         private var onPropertyClickListener: OnPropertyClickListener,
@@ -18,7 +18,7 @@ class PropertyListAdapter(
     var propertyList: ArrayList<Property> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_properties_format, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_property, parent, false)
         return PropertyViewHolder(view, onPropertyClickListener)
     }
 
@@ -51,6 +51,7 @@ class PropertyListAdapter(
             itemView.price_property.text = property.price.formatToDollars()
             itemView.nbr_of_beds_input.text = property.numberOfBedrooms.toString()
             itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
+            itemView.rooms.text = property.numberOfRooms.toString()
             itemView.surface.text = property.surface.toString()
         }
     }

@@ -10,19 +10,19 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Photo
-import kotlinx.android.synthetic.main.pictures_property_edit_format.view.*
+import kotlinx.android.synthetic.main.item_edit_property.view.*
 
 class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: OnDeletePictureListener) :
         RecyclerView.Adapter<PicturesAdapter.PicturesViewHolder>() {
     var pictures = ArrayList<Photo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.pictures_property_edit_format, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_edit_property, parent, false)
         return PicturesViewHolder(view, onDeletePictureListener)
     }
 
     override fun onBindViewHolder(holder: PicturesViewHolder, position: Int) {
-        holder.bind(pictures[position])
+            holder.bind(pictures[position])
     }
 
     override fun getItemCount() = pictures.size
@@ -34,13 +34,15 @@ class PicturesAdapter(var glide: RequestManager, var onDeletePictureListener: On
 
     inner class PicturesViewHolder(itemView: View, onDeletePictureListener: OnDeletePictureListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(photo: Photo) {
-            glide.load(photo.urlPhoto)
+       /*     glide.load(photo.urlPhoto)
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.picture_property)
 
             if (itemView.picture_description_input.text.isEmpty() && photo.description.isNotEmpty())
                 itemView.picture_description_input.text.insert(0, photo.description)
             itemView.picture_description_input.addTextChangedListener(getTextWatcher(photo))
+        */
+
         }
 
         init {

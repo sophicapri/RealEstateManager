@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/textView"
@@ -32,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textStyle="italic"
-        android:text="House - 2 bedrooms - On market since last week - $1,500,000 to 2,000,000 - 3 pictures or more"
+        tools:text="House - 2 bedrooms - On market since last week - $1,500,000 to 2,000,000 - 3 pictures or more"
         app:layout_constraintEnd_toEndOf="@+id/btn_reset_search"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/btn_reset_search" />

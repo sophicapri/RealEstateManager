@@ -13,7 +13,6 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
@@ -85,7 +84,6 @@ class UserRepository(private val userDao: UserDao) {
             val email: String = firebaseUser.email ?: ""
             val currentUser = User(uid = uid, username = username, email = email, urlPhoto = urlPicture)
             upsertUser(currentUser)
-            PreferenceHelper.uid = uid
         }
     }
 

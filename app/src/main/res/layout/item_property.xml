@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/image_property_container"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="House in New York"
+        tools:text="House in New York"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/image_property_container"
         app:layout_constraintTop_toBottomOf="@+id/image_property_container" />
@@ -100,20 +101,44 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:src="@drawable/ic_size_24"
-        app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
-        app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
-        app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+        app:layout_constraintBottom_toBottomOf="@+id/ic_room"
+        app:layout_constraintStart_toEndOf="@+id/rooms"
+        app:layout_constraintTop_toTopOf="@+id/ic_room" />
 
     <TextView
         android:id="@+id/nbr_of_bath"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:text="1"
+        tools:text="1"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
         app:layout_constraintStart_toEndOf="@+id/ic_bath"
         app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+
+    <ImageView
+        android:id="@+id/ic_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/ic_room"
+        app:layout_constraintBottom_toBottomOf="@+id/nbr_of_bath"
+        app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
+        app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
+        app:tint="@color/grey" />
+
+    <TextView
+        android:id="@+id/rooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        tools:text="4"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_room"
+        app:layout_constraintStart_toEndOf="@+id/ic_room"
+        app:layout_constraintTop_toTopOf="@+id/ic_room" />
+
+
 
     <TextView
         android:id="@+id/surface"

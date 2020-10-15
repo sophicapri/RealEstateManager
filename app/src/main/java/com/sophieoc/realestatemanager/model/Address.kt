@@ -16,7 +16,7 @@ data class Address(
         @ColumnInfo(name = "region") var region: String,
         @ColumnInfo(name = "country") var country: String,
 ) {
-    constructor() : this("", "", "", "", "", "", "United States")
+    constructor() : this("", "", "", "", "", "", "")
 
     override fun toString(): String {
         val attributList = arrayOf(streetNumber, apartmentNumber, streetName, city, postalCode, region, country)

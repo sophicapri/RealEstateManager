@@ -48,6 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:itemCount="2"
-            tools:listitem="@layout/list_properties_format" />
+            tools:listitem="@layout/item_property" />
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

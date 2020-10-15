@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
-import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.Photo
+import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import kotlinx.android.synthetic.main.fragment_add_pictures.*
@@ -33,6 +33,8 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.propertyViewModel = addPropertyActivity.propertyViewModel
+        if (addPropertyActivity.activityRestarted)
+            binding.executePendingBindings()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -55,7 +57,8 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
         recycler_view_pictures.setHasFixedSize(true)
         recycler_view_pictures.layoutManager = LinearLayoutManager(context)
         adapter = PicturesAdapter(Glide.with(this), this)
-        adapter.updatePictures(ArrayList(photos))
+        if (photos[0].urlPhoto != NO_IMAGE_AVAILABLE)
+            adapter.updatePictures(ArrayList(photos))
         recycler_view_pictures.adapter = adapter
     }
 

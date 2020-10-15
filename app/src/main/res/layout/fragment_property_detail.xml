@@ -115,7 +115,7 @@
                 android:id="@+id/price_property"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2,222,500"
+                tools:text="2,222,500"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@id/ic_dollar"
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="House"
+                tools:text="House"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/price_property"
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="1"
+                tools:text="1"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
@@ -190,14 +190,36 @@
                 app:layout_constraintTop_toTopOf="@+id/ic_bath" />
 
             <ImageView
+                android:id="@+id/ic_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_room"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
+                app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/rooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="4"
+                android:layout_marginStart="5dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/ic_room"
+                app:layout_constraintTop_toTopOf="@id/ic_room"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_room"/>
+
+            <ImageView
                 android:id="@+id/ic_surface"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_size_24"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
-                app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
-                app:layout_constraintTop_toTopOf="@+id/ic_bath"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_room"
+                app:layout_constraintStart_toEndOf="@+id/rooms"
+                app:layout_constraintTop_toTopOf="@+id/ic_room"
                 app:tint="@color/white" />
 
             <TextView
@@ -205,7 +227,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="300"
+                tools:text="300"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
@@ -247,7 +269,7 @@
                 android:id="@+id/name_agent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Maria GONZALES"
+                tools:text="Maria GONZALES"
                 android:layout_marginEnd="10dp"
                 android:textColor="@android:color/secondary_text_light"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
@@ -326,7 +348,7 @@
                     android:scrollbarStyle="insideOverlay"
                     android:scrollbars="vertical"
                     tools:itemCount="2"
-                    tools:listitem="@layout/point_of_interest_format" />
+                    tools:listitem="@layout/item_point_of_interest" />
             </LinearLayout>
             <TextView
                 android:id="@+id/date_property"

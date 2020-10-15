@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/results_search_container"
         tools:itemCount="5"
-        tools:listitem="@layout/list_properties_format" />
+        tools:listitem="@layout/item_property" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_property"

@@ -2,15 +2,20 @@ package com.sophieoc.realestatemanager.model
 
 import android.content.ContentValues
 import android.util.Log
+import android.widget.EditText
+import android.widget.TextView
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.library.baseAdapters.BR
-import androidx.room.*
+import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 @Entity(tableName = "property")
 data class Property(
@@ -18,7 +23,8 @@ data class Property(
         @ColumnInfo(name = "type") var type: PropertyType,
         @ColumnInfo(name = "price") var price: Int,
         @ColumnInfo(name = "surface") var surface: Int,
-        @ColumnInfo(name = "number_of_bedrooms") var numberOfBedrooms: Int?,
+        @ColumnInfo(name = "number_of_rooms") var numberOfRooms: Int,
+        @ColumnInfo(name = "number_of_bedrooms") var numberOfBedrooms: Int,
         @ColumnInfo(name = "number_of_bathrooms") var numberOfBathrooms: Int,
         @ColumnInfo(name = "description") var description: String?,
         @ColumnInfo(name = "availability") var availability: PropertyAvailability,
@@ -28,11 +34,11 @@ data class Property(
         @ColumnInfo(name = "photos") var photos: List<Photo>,
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
         @ColumnInfo(name = "user_id") var userId: String,
-        @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size
+        @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size,
 ): BaseObservable() {
-    constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, -1, -1,
-            -1, -1, "", PropertyAvailability.AVAILABLE, null, null,
-            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "not defined")
+    constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, 0, 0,
+            0, 0, 0, "", PropertyAvailability.AVAILABLE, null, null,
+            Address(), arrayListOf(Photo()), ArrayList<PointOfInterest>(), "not defined")
 
     companion object {
         fun fromContentValues(values: ContentValues): Property {

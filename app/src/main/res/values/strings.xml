@@ -16,4 +16,14 @@
     <string name="for_sale">For sale</string>
     <string name="sold">Sold</string>
     <string name="property_saved_successful">Property saved successfully !</string>
+    <string name="empty_field">Please fill in this field !</string>
+    <string name="click_to_select_a_date">Click to select a date</string>
+    <string name="since">Since :</string>
+    <string name="description_title">Description:</string>
+    <string name="price_title">Price:</string>
+    <string name="ic_dollar">$</string>
+    <string name="number_of_bedrooms_title">Number of bedrooms:</string>
+    <string name="edit_property_title">Edit property</string>
+    <string name="add_property_title">Add a property</string>
+    <string name="cover_image">Cover</string>
 </resources>

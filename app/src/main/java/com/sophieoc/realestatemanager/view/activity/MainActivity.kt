@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.fragment_property_list.*
 import kotlinx.android.synthetic.main.results_for_search.*
 import java.text.DateFormat
@@ -182,7 +183,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
     // -- Handle Filter -- //
     private fun showDatePickerDialog() {
-        Locale.setDefault(Locale.FRANCE)
+        Locale.setDefault(Locale.US)
         val datePickerDialog = DatePickerDialog(this,
                 this, Calendar.getInstance()[Calendar.YEAR],
                 Calendar.getInstance()[Calendar.MONTH],
@@ -195,9 +196,8 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US)
         val selectedDate = GregorianCalendar(year, month, dayOfMonth).time
-        val dateView = filterDialog?.findViewById<Button>(R.id.select_date)
-        dateView?.text = df.format(selectedDate)
-        dateView?.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight))
+        select_date?.text = df.format(selectedDate)
+        select_date?.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight))
         //update(newDate)
     }
 

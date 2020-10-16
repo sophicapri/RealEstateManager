@@ -33,13 +33,6 @@ class AddAddressFragment : BaseFragment(){
         Log.d(TAG, "onCreate: ")
     }
 
-    override fun onResume() {
-        super.onResume()
-        if(addPropertyActivity.emptyFieldsInAddress){
-            addPropertyActivity.checkInputs(addPropertyActivity.propertyViewModel.property)
-        }
-    }
-
     private fun getPropertyId(extras: Bundle) {
         if (extras.containsKey(PROPERTY_ID)) {
             val propertyId = extras.get(PROPERTY_ID) as String
@@ -51,17 +44,19 @@ class AddAddressFragment : BaseFragment(){
         viewModel.getPropertyById(propertyId).observe(addPropertyActivity, Observer {
             it?.let {
                 addPropertyActivity.propertyViewModel.property = it
+                // to update the view
                 val ft: FragmentTransaction = mainContext.supportFragmentManager.beginTransaction()
                 if (Build.VERSION.SDK_INT >= 26) {
-                    ft.setReorderingAllowed(false);
+                    ft.setReorderingAllowed(false)
                 }
-                ft.detach(this).attach(this).commit();
+                ft.detach(this).attach(this)
+                        .detach(addPropertyActivity.fragmentPropertyInfo).attach(addPropertyActivity.fragmentPropertyInfo)
+                        .detach(addPropertyActivity.fragmentPictures).attach(addPropertyActivity.fragmentPictures).commit()
             }
         })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(TAG, "onCreateView: ")
         binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.fragment_add_address,
@@ -71,8 +66,13 @@ class AddAddressFragment : BaseFragment(){
         binding.propertyViewModel = addPropertyActivity.propertyViewModel
         if (addPropertyActivity.activityRestarted)
             binding.executePendingBindings()
+        Log.d(TAG, "onCreateView: ")
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: ")
     }
 
     override fun getLayout(): Pair<Nothing?, View> {

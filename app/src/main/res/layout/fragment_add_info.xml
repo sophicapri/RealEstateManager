@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
+      <variable
             name="propertyViewModel"
             type="com.sophieoc.realestatemanager.viewmodel.PropertyViewModel" />
     </data>
@@ -264,7 +263,17 @@
             android:layout_height="wrap_content"
             android:text="@string/click_to_select_a_date"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_availability" />
+            app:layout_constraintTop_toBottomOf="@+id/availability_spinner" />
+
+        <TextView
+            android:id="@+id/error_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/please_select_a_date"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_since" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/availability_spinner"

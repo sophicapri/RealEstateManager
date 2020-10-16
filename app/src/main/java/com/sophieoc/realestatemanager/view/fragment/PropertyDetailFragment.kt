@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -14,6 +15,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.PointOfInterest
@@ -115,9 +119,9 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun displayDate() {
         if (property.availability == PropertyAvailability.AVAILABLE)
-            property.dateOnMarket?.let { date_property.text = "On the market since ${it.format()}" }
+            property.dateOnMarket?.let { date_property.text = "On the market since ${it.toStringFormat()}" }
         else
-            property.dateSold?.let { date_property.text = "Sold since ${it.format()}" }
+            property.dateSold?.let { date_property.text = "Sold since ${it.toStringFormat()}" }
     }
 
     private fun showAgentInCharge(property: Property) {
@@ -147,10 +151,12 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private fun addMarkerAndZoom() {
         val latLng = property.address.toLatLng(mainContext)
         if (latLng.toString() != LAT_LNG_NOT_FOUND) {
+            map?.clear()
             propertyMarker = MarkerOptions().position(latLng)
             map?.addMarker(propertyMarker)
             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-        }
+        } else
+            view?.let { Snackbar.make(it, getString(R.string.cant_locate_property), LENGTH_LONG).show() }
     }
 
     class NoPropertyClickedFragment : BaseFragment() {

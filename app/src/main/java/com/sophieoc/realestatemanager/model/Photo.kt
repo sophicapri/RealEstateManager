@@ -13,16 +13,6 @@ import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 data class Photo(
         @ColumnInfo(name = "url_photo") val urlPhoto: String,
         @ColumnInfo(name = "description") var description: String,
-){
-    constructor():this( NO_IMAGE_AVAILABLE,"")
-
-    @BindingAdapter("imageUrl")
-    fun setImageUrl(imgView: ImageView, imgUrl: String?){
-        imgUrl?.let {
-            Glide.with(imgView.context)
-                    .load(it)
-                    .apply(RequestOptions().centerCrop())
-                    .into(imgView)
-        }
-    }
+) {
+    constructor() : this(NO_IMAGE_AVAILABLE, "")
 }

@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BaseObservable
 import androidx.fragment.app.Fragment
+import com.sophieoc.realestatemanager.utils.Utils
+import com.sophieoc.realestatemanager.utils.toDate
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 abstract class BaseFragment: Fragment()  {
     val viewModel by viewModel<MyViewModel>()
+    val today = Utils.todayDate.toDate()
     lateinit var mainContext: BaseActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {

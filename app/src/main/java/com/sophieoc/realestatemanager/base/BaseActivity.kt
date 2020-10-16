@@ -11,13 +11,20 @@ import com.google.firebase.auth.FirebaseUser
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
-import com.sophieoc.realestatemanager.view.fragment.*
+import com.sophieoc.realestatemanager.utils.Utils
+import com.sophieoc.realestatemanager.utils.toDate
+import com.sophieoc.realestatemanager.view.fragment.MapFragment
+import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
+import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
+import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
     lateinit var locationManager: LocationManager
     lateinit var auth: FirebaseAuth
+    val today = Utils.todayDate.toDate()
     val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
     val fragmentUser = UserPropertiesFragment()

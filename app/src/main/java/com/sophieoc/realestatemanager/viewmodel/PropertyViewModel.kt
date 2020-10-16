@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
+import java.io.Serializable
 
 class PropertyViewModel(private val propertySource: PropertyRepository) : ViewModel() {
     var property = Property()

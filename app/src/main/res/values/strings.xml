@@ -26,4 +26,10 @@
     <string name="edit_property_title">Edit property</string>
     <string name="add_property_title">Add a property</string>
     <string name="cover_image">Cover</string>
+    <string name="add_a_picture">Add a picture</string>
+    <string name="please_select_a_date"><u>Please select a date !</u></string>
+    <string name="cant_locate_property">Couldn\'t locate the property! Map may be inaccurate.</string>
+    <string name="address_title">Address</string>
+    <string name="main_informations_title">Main informations</string>
+    <string name="pictures_title">Pictures</string>
 </resources>

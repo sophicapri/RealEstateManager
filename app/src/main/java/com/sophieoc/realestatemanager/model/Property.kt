@@ -13,6 +13,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,7 +36,7 @@ data class Property(
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
         @ColumnInfo(name = "user_id") var userId: String,
         @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size,
-): BaseObservable() {
+)  {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, 0, 0,
             0, 0, 0, "", PropertyAvailability.AVAILABLE, null, null,
             Address(), arrayListOf(Photo()), ArrayList<PointOfInterest>(), "not defined")

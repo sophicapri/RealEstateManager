@@ -5,15 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import kotlinx.android.synthetic.main.fragment_add_pictures.*
@@ -32,38 +28,42 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
                 container,
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.propertyViewModel = addPropertyActivity.propertyViewModel
-        if (addPropertyActivity.activityRestarted)
+        if (addPropertyActivity.activityRestarted) {
             binding.executePendingBindings()
+        }
+        Log.d(TAG, "onCreateView: ")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: ")
         addPropertyActivity = (activity as EditOrAddPropertyActivity)
     }
 
     override fun onResume() {
         super.onResume()
         bindViews()
-        configureRecyclerView(addPropertyActivity.propertyViewModel.property.photos)
+        configureRecyclerView()
     }
 
     private fun bindViews() {
         btn_add_picture.setOnClickListener { }
     }
 
-    private fun configureRecyclerView(photos: List<Photo>) {
+    private fun configureRecyclerView() {
         recycler_view_pictures.setHasFixedSize(true)
-        recycler_view_pictures.layoutManager = LinearLayoutManager(context)
-        adapter = PicturesAdapter(Glide.with(this), this)
-        if (photos[0].urlPhoto != NO_IMAGE_AVAILABLE)
-            adapter.updatePictures(ArrayList(photos))
+        adapter = PicturesAdapter(this, addPropertyActivity.propertyViewModel)
         recycler_view_pictures.adapter = adapter
     }
 
-    override fun onDeleteClick(position: Int, pictures: ArrayList<Photo>) {
-        pictures.removeAt(position)
-        addPropertyActivity.propertyViewModel.property.photos = pictures
+    override fun onDeleteClick(position: Int, photos: List<Photo>) {
+        val photosArray : ArrayList<Photo> = ArrayList(photos)
+        photosArray.removeAt(position)
+        addPropertyActivity.propertyViewModel.property.photos = photosArray
+    }
+
+    companion object{
+        const val TAG = "AddPictures"
     }
 }

@@ -38,7 +38,12 @@ fun LatLng.toStringFormat(): String{
     return "$latitude,$longitude"
 }
 
-fun Date.format(): String {
+fun Date.toStringFormat(): String {
     val dateFormat: DateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
     return dateFormat.format(this)
+}
+
+fun String.toDate() : Date?{
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+    return formatter.parse(this)
 }

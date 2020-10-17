@@ -16,7 +16,7 @@ class MyViewModel(private val userSource: UserRepository, private val propertySo
 
     fun getUserById(uid: String): LiveData<UserWithProperties> = userSource.getUserWithProperties(uid)
 
-    fun updateUser(user: User) = userSource.upsertUser(user)
+    fun updateUser(user: User) = userSource.upsertUserInFirestore(user)
 
     fun upsertProperty(property: Property): LiveData<Property> = propertySource.upsert(property)
 

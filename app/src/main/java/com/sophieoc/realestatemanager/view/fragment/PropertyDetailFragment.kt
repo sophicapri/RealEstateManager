@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.sophieoc.realestatemanager.R
@@ -69,7 +69,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun getProperty(propertyId: String) {
-        viewModel.getPropertyById(propertyId).observe(mainContext, Observer {
+        viewModel.getPropertyById(propertyId).observe(mainContext, {
             it?.let {
                 property = it
                 map?.let { addMarkerAndZoom() }
@@ -97,15 +97,21 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         configureRecyclerView(property.pointOfInterests)
         displayDate()
         fab_edit_property.setOnClickListener { startEditPropertyActivity(property.id) }
-        property_detail_toolbar.setNavigationOnClickListener {
+        property_detail_toolbar?.setNavigationOnClickListener {
             mainContext.onBackPressed()
         }
     }
 
     private fun startEditPropertyActivity(propertyId: String) {
-        val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
-        intent.putExtra(PROPERTY_ID, propertyId)
-        startActivity(intent)
+        if (Utils.isConnectionAvailable(mainContext)) {
+            val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
+            intent.putExtra(PROPERTY_ID, propertyId)
+            startActivity(intent)
+            PreferenceHelper.internetAvailable = false
+        } else {
+            Toast.makeText(mainContext, getString(R.string.edit_add_unavailable), Toast.LENGTH_LONG).show()
+            PreferenceHelper.internetAvailable = false
+        }
     }
 
     private fun pageChangeListener() {
@@ -118,14 +124,12 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun displayDate() {
-        if (property.availability == PropertyAvailability.AVAILABLE)
-            property.dateOnMarket?.let { date_property.text = "On the market since ${it.toStringFormat()}" }
-        else
-            property.dateSold?.let { date_property.text = "Sold since ${it.toStringFormat()}" }
+            property.dateOnMarket?.let { date_on_market.text = getString(R.string.on_the_market_since, it.toStringFormat())}
+            property.dateSold?.let { date_sold.text = getString(R.string.sold_since, it.toStringFormat())}
     }
 
     private fun showAgentInCharge(property: Property) {
-        viewModel.getUserById(property.userId).observe(this, Observer {
+        viewModel.getUserById(property.userId).observe(this, {
             it?.let {
                 Glide.with(this)
                         .load(it.user.urlPhoto)

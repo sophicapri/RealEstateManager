@@ -102,7 +102,7 @@
         android:layout_marginStart="20dp"
         android:src="@drawable/ic_size_24"
         app:layout_constraintBottom_toBottomOf="@+id/ic_room"
-        app:layout_constraintStart_toEndOf="@+id/rooms"
+        app:layout_constraintStart_toEndOf="@+id/nbr_of_rooms"
         app:layout_constraintTop_toTopOf="@+id/ic_room" />
 
     <TextView
@@ -128,7 +128,7 @@
         app:tint="@color/grey" />
 
     <TextView
-        android:id="@+id/rooms"
+        android:id="@+id/nbr_of_rooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"

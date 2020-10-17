@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:background="@color/translucent_light_top"
             android:src="@drawable/ic_sharp_delete_forever_24"
+            app:tint="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/picture_property"
             app:layout_constraintTop_toTopOf="@+id/picture_property" />
 
@@ -68,7 +69,8 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:textColor="@color/colorSecondary"
-            android:text="Set as cover"
+            android:text="@string/set_as_cover"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/picture_property"
             app:layout_constraintStart_toStartOf="@+id/picture_description_input" />
     </androidx.constraintlayout.widget.ConstraintLayout>

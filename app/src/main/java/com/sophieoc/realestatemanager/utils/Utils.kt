@@ -1,7 +1,11 @@
 package com.sophieoc.realestatemanager.utils
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.net.wifi.WifiManager
+import android.os.Build
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,9 +46,24 @@ object Utils {
      * @param context
      * @return
      */
-    //TODO: chercher comment verifier la connexion 4G/ données mobiles
     fun isInternetAvailable(context: Context): Boolean {
         val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         return wifi.isWifiEnabled
+    }
+
+    /**
+    *   Improved check for internet connection
+    */
+    fun isConnectionAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val isConnected: Boolean
+        isConnected = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            networkInfo != null && networkInfo.isConnectedOrConnecting
+        } else {
+            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        }
+        return isConnected
     }
 }

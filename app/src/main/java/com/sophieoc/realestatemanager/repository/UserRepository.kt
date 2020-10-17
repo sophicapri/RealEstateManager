@@ -1,7 +1,6 @@
 package com.sophieoc.realestatemanager.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +12,7 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
@@ -25,7 +25,8 @@ class UserRepository(private val userDao: UserDao) {
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val user: MutableLiveData<UserWithProperties> = MutableLiveData()
         getUserFromRoom(uid, user)
-        getUserFromFirestore(uid, user)
+        if (PreferenceHelper.internetAvailable)
+            getUserFromFirestore(uid, user)
         return user
     }
 
@@ -83,11 +84,11 @@ class UserRepository(private val userDao: UserDao) {
             val username: String = firebaseUser.displayName ?: ""
             val email: String = firebaseUser.email ?: ""
             val currentUser = User(uid = uid, username = username, email = email, urlPhoto = urlPicture)
-            upsertUser(currentUser)
+            upsertUserInFirestore(currentUser)
         }
     }
 
-    fun upsertUser(user: User) {
+    fun upsertUserInFirestore(user: User) {
         userCollectionRef.document(user.uid).get().addOnCompleteListener { task: Task<DocumentSnapshot?> ->
             if (task.isSuccessful) {
                 if (task.result != null)

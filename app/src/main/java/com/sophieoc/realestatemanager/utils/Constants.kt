@@ -16,4 +16,8 @@ const val SCHOOL = "school"
 
 const val STORE = "store"
 
-const val NO_IMAGE_AVAILABLE = "https://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/Assets/images/No_Image_Available.jpg"
+const val NO_IMAGE_AVAILABLE = "https://www.immobilier-lagrandemotte.com/wp-content/themes/realestate-7/images/no-image.png"
+
+const val RC_PERMISSION_PHOTO =  444
+
+const val RC_SELECT_PHOTO = 333

@@ -1,18 +1,20 @@
 package com.sophieoc.realestatemanager.base
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.utils.PROPERTY_ID
-import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
-import com.sophieoc.realestatemanager.utils.Utils
-import com.sophieoc.realestatemanager.utils.toDate
+import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
@@ -37,6 +39,16 @@ abstract class BaseActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         getLayout().first?.let { setContentView(it)}
         getLayout().second?.let { setContentView(it)}
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!Utils.isConnectionAvailable(this)){
+            Snackbar.make(window.decorView.findViewById(android.R.id.content)
+                    , getString(R.string.internet_unavailable), BaseTransientBottomBar.LENGTH_INDEFINITE).show()
+            PreferenceHelper.internetAvailable = false
+        } else
+            PreferenceHelper.internetAvailable = true
     }
 
     abstract fun getLayout(): Pair<Int?, View?>

@@ -10,6 +10,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -19,6 +21,8 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.fragment_property_list.*
@@ -81,7 +85,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.map_view -> startNewActivity(MapActivity::class.java)
+            R.id.map_view -> startMapActivity()
             R.id.user_properties -> startNewActivity(UserPropertiesActivity::class.java)
             R.id.settings -> startNewActivity(SettingsActivity::class.java)
             R.id.sign_out -> signOut()
@@ -200,6 +204,17 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         select_date?.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight))
         //update(newDate)
     }
+
+    private fun startMapActivity() {
+        if (Utils.isConnectionAvailable(this)) {
+            startNewActivity(MapActivity::class.java)
+            PreferenceHelper.internetAvailable = true
+        }else {
+            Toast.makeText(this, getString(R.string.map_unavailable), LENGTH_LONG).show()
+            PreferenceHelper.internetAvailable = false
+        }
+    }
+
 
     private fun signOut() {
         auth.signOut()

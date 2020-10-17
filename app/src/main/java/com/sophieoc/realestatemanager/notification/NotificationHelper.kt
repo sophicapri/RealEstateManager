@@ -26,8 +26,7 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
 
     fun getChannelNotification(message: String?): NotificationCompat.Builder {
         return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-                .setContentTitle(getString(R.string.app_name))
-                .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+                .setContentTitle(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setAutoCancel(true)

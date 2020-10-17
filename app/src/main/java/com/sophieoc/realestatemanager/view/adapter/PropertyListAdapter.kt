@@ -51,7 +51,7 @@ class PropertyListAdapter(
             itemView.price_property.text = property.price.formatToDollars()
             itemView.nbr_of_beds_input.text = property.numberOfBedrooms.toString()
             itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
-            itemView.rooms.text = property.numberOfRooms.toString()
+            itemView.nbr_of_rooms.text = property.numberOfRooms.toString()
             itemView.surface.text = property.surface.toString()
         }
     }

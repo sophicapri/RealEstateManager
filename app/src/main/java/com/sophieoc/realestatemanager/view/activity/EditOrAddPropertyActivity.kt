@@ -9,12 +9,15 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
@@ -76,7 +79,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
 
     override fun onResume() {
         super.onResume()
-        if (!activityRestarted) {
+        if (!activityRestarted && !fragmentAddress.isAdded) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.add(R.id.frame_add_property, fragmentAddress, fragmentAddress::class.java.simpleName)
                     .add(R.id.frame_add_property, fragmentPropertyInfo, fragmentPropertyInfo::class.java.simpleName)
@@ -112,11 +115,17 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     }
 
     fun saveChanges(view: View) {
-        if (checkInputs()) {
-            getCurrentUser()?.let { propertyViewModel.property.userId = it.uid }
-            updatePointOfInterestsAndSave(propertyViewModel.property)
-        } else
-            showAlertDialog()
+        if (Utils.isConnectionAvailable(this)) {
+            PreferenceHelper.internetAvailable = false
+            if (checkInputs()) {
+                getCurrentUser()?.let { propertyViewModel.property.userId = it.uid }
+                updatePointOfInterestsAndSave(propertyViewModel.property)
+            } else
+                showAlertDialog()
+        }  else {
+        Toast.makeText(this, getString(R.string.cant_save_property), Toast.LENGTH_LONG).show()
+        PreferenceHelper.internetAvailable = false
+        }
     }
 
     private fun updatePointOfInterestsAndSave(property: Property) {
@@ -170,14 +179,14 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     }
 
     private fun saveProperty() {
-        propertyViewModel.upsertProperty()
-        propertyViewModel.propertySaved.observe(this, Observer {
-            it?.let {
-                //TODO : Add progress bar
-                displayNotification()
-                onBackPressed()
-            }
-        })
+            propertyViewModel.upsertProperty()
+            propertyViewModel.propertySaved.observe(this, Observer {
+                it?.let {
+                    //TODO : Add progress bar
+                    displayNotification()
+                    onBackPressed()
+                }
+            })
     }
 
     private fun checkInputs(): Boolean {
@@ -242,7 +251,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         message += "."
 
         AlertDialog.Builder(this)
-                .setTitle("Empty fields!")
+                .setTitle("Oops! You forgot to add some infos!")
                 .setMessage(message)
                 .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)

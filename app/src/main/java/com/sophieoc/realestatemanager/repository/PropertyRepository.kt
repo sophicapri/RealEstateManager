@@ -13,6 +13,8 @@ import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.Utils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import java.util.*
@@ -27,13 +29,13 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         propertyCollectionRef.document(property.id).get().addOnCompleteListener(OnCompleteListener { propertyIdTask: Task<DocumentSnapshot?> ->
             if (propertyIdTask.isSuccessful) {
                 if (propertyIdTask.result != null) propertyCollectionRef.document(property.id).set(property)
-                        .addOnCompleteListener(OnCompleteListener { propertyCreationTask: Task<Void?> ->
+                        .addOnCompleteListener { propertyCreationTask: Task<Void?> ->
                             if (propertyCreationTask.isSuccessful) {
                                 propertyToCreate.postValue(property)
                                 upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
                                 Log.e("TAG", " createProperty: " + propertyCreationTask.exception?.message)
-                        })
+                        }
             } else if (propertyIdTask.exception != null) Log.e("TAG", " createProperty: " + propertyIdTask.exception?.message)
         })
         return propertyToCreate
@@ -48,14 +50,16 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     fun getPropertyById(id: String): MutableLiveData<Property> {
         val property: MutableLiveData<Property> = MutableLiveData()
         getPropertyFromRoom(id, property)
-        getPropertyFromFirestore(id, property)
+        if (PreferenceHelper.internetAvailable)
+            getPropertyFromFirestore(id, property)
         return property
     }
 
     fun getAllProperties(): LiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
         getPropertiesFromRoom(properties)
-        getPropertiesFromFirestore(properties)
+        if (PreferenceHelper.internetAvailable)
+            getPropertiesFromFirestore(properties)
         return properties
     }
 
@@ -150,7 +154,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
             priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int, nbrOfPictures: Int?,
-            park: String?, school: String?, store: String?, area: String?
+            park: String?, school: String?, store: String?, area: String?,
     ): MutableLiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
         CoroutineScope(Dispatchers.IO).launch {

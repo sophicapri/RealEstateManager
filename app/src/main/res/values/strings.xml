@@ -32,4 +32,15 @@
     <string name="address_title">Address</string>
     <string name="main_informations_title">Main informations</string>
     <string name="pictures_title">Pictures</string>
+    <string name="no_image_selected">No image has been selected</string>
+    <string name="set_as_cover"><u>Set as cover</u></string>
+    <string name="internet_unavailable">Offline mode</string>
+    <string name="point_of_interests_title">Point of interests</string>
+    <string name="on_the_market_since">"On the market since %s"</string>
+    <string name="sold_since">"Sold since %s"</string>
+    <string name="cant_save_property">Can\'t save property due to loss of internet connection!</string>
+    <string name="edit_add_unavailable">Edit/Add property unavailable without internet connection</string>
+    <string name="load_picture_unable">Unable to load picture due to loss of internet connection</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="map_unavailable">Map unavailable without internet connection</string>
 </resources>

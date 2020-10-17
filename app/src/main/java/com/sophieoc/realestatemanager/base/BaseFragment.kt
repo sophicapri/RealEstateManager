@@ -6,6 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BaseObservable
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
+import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.utils.toDate
 import com.sophieoc.realestatemanager.viewmodel.MyViewModel
@@ -27,6 +31,15 @@ abstract class BaseFragment: Fragment()  {
         getLayout().first?.let { view = inflater.inflate(it, container, false) }
         getLayout().second?.let { view = getLayout().second }
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!Utils.isConnectionAvailable(mainContext)){
+            view?.let { Snackbar.make(it, getString(R.string.internet_unavailable), BaseTransientBottomBar.LENGTH_INDEFINITE).show() }
+            PreferenceHelper.internetAvailable = false
+        } else
+            PreferenceHelper.internetAvailable = true
     }
 
     abstract fun getLayout(): Pair<Int?, View?>

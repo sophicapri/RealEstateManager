@@ -27,7 +27,9 @@ import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.fragment_property_detail.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,6 +38,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     var property: Property = Property()
     var map: GoogleMap? = null
     private var propertyMarker: MarkerOptions? = null
+    val propertyViewModel by viewModel<PropertyViewModel>()
 
     override fun getLayout() = Pair(R.layout.fragment_property_detail, null)
 
@@ -71,7 +74,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun getProperty(propertyId: String) {
-        viewModel.getPropertyById(propertyId).observe(mainContext, {
+        propertyViewModel.getPropertyById(propertyId).observe(mainContext, {
             it?.let {
                 property = it
                 map?.let { addMarkerAndZoom() }
@@ -88,7 +91,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             arrayListOf(Photo(NO_IMAGE_AVAILABLE, ""))
         view_pager.adapter = SliderAdapter(listPhotos, Glide.with(this))
         pageChangeListener()
-        spring_dots_indicator.setViewPager2(view_pager)
+        if (property.photos.isNotEmpty()) spring_dots_indicator.setViewPager2(view_pager)
         if (property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
         property_availability.text = property.availability.s.toUpperCase(Locale.ROOT)
         price_property.text = property.price.formatToDollars()

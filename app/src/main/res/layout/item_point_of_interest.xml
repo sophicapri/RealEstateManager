@@ -2,11 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="2dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryLight">
 
     <ImageView
         android:id="@+id/imageView"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_navigate_next_24"
@@ -17,7 +21,7 @@
         android:id="@+id/type_and_name_poi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Doctor: ..."
+        tools:text="Doctor: ..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@id/imageView" />
@@ -26,7 +30,7 @@
         android:id="@+id/address_poi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="19 Park Avenue, Manhattan"
+        tools:text="19 Park Avenue, Manhattan"
         android:textColor="@android:color/secondary_text_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/type_and_name_poi"
@@ -36,10 +40,20 @@
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="65m away"
-        android:textColor="@color/lighterGrey"
-        android:textStyle="italic"
         android:layout_marginEnd="4dp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_poi" />
+        app:layout_constraintTop_toBottomOf="@+id/address_poi"
+        tools:text="65m away" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="2dp"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/distance" />
 </androidx.constraintlayout.widget.ConstraintLayout>

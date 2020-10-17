@@ -107,8 +107,8 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
         alertBuilder.setCustomTitle(view)
                 .setView(binding.root)
-                .setPositiveButton("OK", null)
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.ok_btn), null)
+                .setNegativeButton(getString(R.string.cancel).toUpperCase()) { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
 
         binding.selectDate.setOnClickListener { showDatePickerDialog() }

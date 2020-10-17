@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
 import java.io.Serializable
@@ -23,4 +24,10 @@ class PropertyViewModel(private val propertySource: PropertyRepository) : ViewMo
         property.nbrOfPictures = property.photos.size
         _propertyToUpsert.value = property
     }
+
+    fun getPointOfInterests(location: String): LiveData<List<PlaceDetails>> = propertySource.getNearbyPointOfInterests(location)
+
+    fun getPropertyById(propertyId: String): LiveData<Property> = propertySource.getPropertyById(propertyId)
+
+    fun getProperties(): LiveData<List<Property>> = propertySource.getAllProperties()
 }

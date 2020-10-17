@@ -107,6 +107,7 @@ dependencies {
     // PageIndicatorView
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 
+    implementation "androidx.multidex:multidex:2.0.1"
 }
 repositories {
     mavenCentral()

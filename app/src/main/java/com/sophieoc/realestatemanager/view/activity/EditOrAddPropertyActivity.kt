@@ -134,7 +134,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         location.latitude = property.address.toLatLng(this).latitude
         location.longitude = property.address.toLatLng(this).longitude
         if (strLocation != LAT_LNG_NOT_FOUND) {
-            viewModel.getPointOfInterests(strLocation).observe(this, { placeDetailList ->
+            propertyViewModel.getPointOfInterests(strLocation).observe(this, { placeDetailList ->
                 placeDetailList?.let {
                     if (placeDetailList.isNotEmpty()) {
                         val listPointOfInterest = ArrayList<PointOfInterest>()

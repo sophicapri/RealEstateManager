@@ -12,29 +12,9 @@ import java.util.*
 
 class MyViewModel(private val userSource: UserRepository, private val propertySource: PropertyRepository) : ViewModel() {
     val currentUser = userSource.currentUser
-    //var property = Property()
 
     fun getUserById(uid: String): LiveData<UserWithProperties> = userSource.getUserWithProperties(uid)
 
     fun updateUser(user: User) = userSource.upsertUserInFirestore(user)
 
-    fun upsertProperty(property: Property): LiveData<Property> = propertySource.upsert(property)
-
-    fun getPropertyById(propertyId: String): LiveData<Property> = propertySource.getPropertyById(propertyId)
-
-    fun getProperties(): LiveData<List<Property>> = propertySource.getAllProperties()
-
-    fun getPointOfInterests(location: String): LiveData<List<PlaceDetails>> = propertySource.getNearbyPointOfInterests(location)
-
- /*   fun getFilteredList(
-            propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, propertyAvailability: String?,
-            dateOnMarket: Date?, dateSold: Date?, priceMin: Int, priceMax: Int,
-            surfaceMin: Int, surfaceMax: Int, nbrOfPictures : Int?, park: String?, school: String?, store : String?,
-            area: String?
-    ): LiveData<List<Property>> {
-        return propertySource.getFilteredProperties(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
-                dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store, area)
-    }
-
-  */
 }

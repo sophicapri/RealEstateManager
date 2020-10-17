@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="350dp">
+        android:layout_height="500dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -107,23 +107,23 @@
                 android:id="@+id/price_property"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="2,222,500"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@id/ic_dollar"
-                app:layout_constraintTop_toTopOf="@+id/ic_dollar" />
+                app:layout_constraintTop_toTopOf="@+id/ic_dollar"
+                tools:text="2,222,500" />
 
             <TextView
                 android:id="@+id/type_property"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                tools:text="House"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/price_property"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/price_property" />
+                app:layout_constraintTop_toTopOf="@+id/price_property"
+                tools:text="House" />
 
             <TextView
                 android:id="@+id/address_property"
@@ -174,19 +174,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                tools:text="1"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
                 app:layout_constraintStart_toEndOf="@+id/ic_bath"
-                app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+                app:layout_constraintTop_toTopOf="@+id/ic_bath"
+                tools:text="1" />
 
             <ImageView
                 android:id="@+id/ic_room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_room"
                 android:layout_marginStart="16dp"
+                android:src="@drawable/ic_room"
                 app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
                 app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
                 app:tint="@color/white" />
@@ -195,13 +195,13 @@
                 android:id="@+id/nbr_of_rooms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="4"
                 android:layout_marginStart="5dp"
+                android:textColor="@color/white"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_room"
                 app:layout_constraintStart_toEndOf="@id/ic_room"
                 app:layout_constraintTop_toTopOf="@id/ic_room"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_room"/>
+                tools:text="4" />
 
             <ImageView
                 android:id="@+id/ic_surface"
@@ -219,11 +219,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                tools:text="300"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
-                app:layout_constraintStart_toEndOf="@+id/ic_surface" />
+                app:layout_constraintStart_toEndOf="@+id/ic_surface"
+                tools:text="300" />
 
             <TextView
                 android:id="@+id/sqft"
@@ -238,8 +238,8 @@
 
             <ImageView
                 android:id="@+id/ic_profile_picture"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_profile_no_pic"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
@@ -251,9 +251,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="Agent"
+                android:text="@string/agent"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/name_agent"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                 app:layout_constraintStart_toEndOf="@+id/ic_profile_picture"
                 app:layout_constraintTop_toTopOf="@+id/ic_profile_picture" />
 
@@ -261,19 +262,18 @@
                 android:id="@+id/name_agent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Maria GONZALES"
                 android:layout_marginEnd="10dp"
                 android:textColor="@android:color/secondary_text_light"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                 app:layout_constraintEnd_toStartOf="@+id/map"
                 app:layout_constraintStart_toStartOf="@+id/title_agent"
-                app:layout_constraintTop_toBottomOf="@+id/title_agent" />
+                app:layout_constraintTop_toBottomOf="@+id/title_agent"
+                tools:text="Maria GONZALES" />
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="16dp"
                 app:cameraZoom="13"
@@ -322,7 +322,7 @@
             <LinearLayout
                 android:id="@+id/recycler_view_container"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="400dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="16dp"
@@ -349,27 +349,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
-                tools:text="On the market since 20/07/2020"
                 android:textColor="@color/white"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler_view_container" />
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_container"
+                tools:text="On the market since 20/07/2020" />
 
             <TextView
                 android:id="@+id/date_sold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
-                tools:text="Sold on 20/07/2020"
                 android:textColor="@color/white"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_on_market" />
+                app:layout_constraintTop_toBottomOf="@id/date_on_market"
+                tools:text="Sold on 20/07/2020" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

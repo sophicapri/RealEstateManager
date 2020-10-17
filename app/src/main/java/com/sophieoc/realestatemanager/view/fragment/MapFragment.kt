@@ -33,12 +33,15 @@ import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private var propertyDetailView : View? = null
+    val propertyViewModel by viewModel<PropertyViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
@@ -164,7 +167,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun initMarkers() {
-        viewModel.getProperties().observe(mainContext, Observer { propertyList ->
+        propertyViewModel.getProperties().observe(mainContext, Observer { propertyList ->
             if (propertyList != null)
                 for (property in propertyList) {
                     if (property.address.toString().isNotEmpty()) {

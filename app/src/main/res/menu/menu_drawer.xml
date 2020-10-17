@@ -5,20 +5,20 @@
 
         <item
             android:id="@+id/map_view"
-            android:title="Map"
+            android:title="@string/map"
             android:icon="@drawable/ic_baseline_map_24"/>
 
         <item
             android:id="@+id/user_properties"
-            android:title="My properties"
+            android:title="@string/my_properties"
             android:icon="@drawable/ic_property_24"/>
 
         <item android:id="@+id/settings"
-            android:title="Settings"
+            android:title="@string/settings"
             android:icon="@drawable/ic_outline_settings_24"/>
         <item
             android:id="@+id/sign_out"
-            android:title="Sign out"
+            android:title="@string/sign_out"
             android:icon="@drawable/ic_power_settings_new_white_24"/>
 
 </menu>

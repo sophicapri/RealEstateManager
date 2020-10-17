@@ -18,6 +18,8 @@ import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AddAddressFragment : BaseFragment(){
@@ -41,7 +43,7 @@ class AddAddressFragment : BaseFragment(){
     }
 
     private fun getProperty(propertyId: String) {
-        viewModel.getPropertyById(propertyId).observe(addPropertyActivity, Observer {
+        addPropertyActivity.propertyViewModel.getPropertyById(propertyId).observe(addPropertyActivity, {
             it?.let {
                 addPropertyActivity.propertyViewModel.property = it
                 // to update the view

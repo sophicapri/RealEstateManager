@@ -17,11 +17,15 @@ import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.fragment_property_list.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
+    val propertyViewModel by viewModel<PropertyViewModel>()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +47,7 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
 
     override fun onResume() {
         super.onResume()
-        viewModel.getProperties().observe(mainContext, {
+        propertyViewModel.getProperties().observe(mainContext, {
             if (it != null) {
                 adapter.updateList(ArrayList(it))
             }

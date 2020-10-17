@@ -3,7 +3,7 @@ package com.sophieoc.realestatemanager.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -11,10 +11,12 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
-import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
+import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
+import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import kotlinx.android.synthetic.main.fragment_property_list.*
 
 
@@ -25,13 +27,23 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView(recycler_view_properties)
         fab_add_property.setOnClickListener {
+            startAddPropertyActivity()
+        }
+    }
+
+    private fun startAddPropertyActivity() {
+        if (Utils.isConnectionAvailable(mainContext)) {
             mainContext.startNewActivity(EditOrAddPropertyActivity::class.java)
+            PreferenceHelper.internetAvailable = true
+        } else {
+            Toast.makeText(mainContext, getString(R.string.edit_add_unavailable), Toast.LENGTH_LONG).show()
+            PreferenceHelper.internetAvailable = false
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getProperties().observe(mainContext, Observer {
+        viewModel.getProperties().observe(mainContext, {
             if (it != null) {
                 adapter.updateList(ArrayList(it))
             }

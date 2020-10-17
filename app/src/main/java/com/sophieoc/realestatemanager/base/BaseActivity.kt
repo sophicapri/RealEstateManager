@@ -10,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -43,9 +44,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        checkConnection()
+    }
+
+    fun checkConnection() {
         if (!Utils.isConnectionAvailable(this)){
             Snackbar.make(window.decorView.findViewById(android.R.id.content)
-                    , getString(R.string.internet_unavailable), BaseTransientBottomBar.LENGTH_INDEFINITE).show()
+                    , getString(R.string.internet_unavailable), LENGTH_SHORT).show()
             PreferenceHelper.internetAvailable = false
         } else
             PreferenceHelper.internetAvailable = true

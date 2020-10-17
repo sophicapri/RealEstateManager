@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
@@ -28,6 +29,7 @@ import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import kotlinx.android.synthetic.main.fragment_property_detail.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
@@ -81,7 +83,10 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun bindViews(property: Property) {
-        view_pager.adapter = SliderAdapter(property.photos, Glide.with(this))
+        val listPhotos = if (property.photos.isNotEmpty()) property.photos
+        else
+            arrayListOf(Photo(NO_IMAGE_AVAILABLE, ""))
+        view_pager.adapter = SliderAdapter(listPhotos, Glide.with(this))
         pageChangeListener()
         spring_dots_indicator.setViewPager2(view_pager)
         if (property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
@@ -107,7 +112,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
             intent.putExtra(PROPERTY_ID, propertyId)
             startActivity(intent)
-            PreferenceHelper.internetAvailable = false
+            PreferenceHelper.internetAvailable = true
         } else {
             Toast.makeText(mainContext, getString(R.string.edit_add_unavailable), Toast.LENGTH_LONG).show()
             PreferenceHelper.internetAvailable = false
@@ -118,7 +123,8 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                pic_description.text = property.photos[position].description
+                if (property.photos.isNotEmpty())
+                    pic_description.text = property.photos[position].description
             }
         })
     }

@@ -35,11 +35,7 @@ abstract class BaseFragment: Fragment()  {
 
     override fun onResume() {
         super.onResume()
-        if (!Utils.isConnectionAvailable(mainContext)){
-            view?.let { Snackbar.make(it, getString(R.string.internet_unavailable), BaseTransientBottomBar.LENGTH_INDEFINITE).show() }
-            PreferenceHelper.internetAvailable = false
-        } else
-            PreferenceHelper.internetAvailable = true
+        mainContext.checkConnection()
     }
 
     abstract fun getLayout(): Pair<Int?, View?>

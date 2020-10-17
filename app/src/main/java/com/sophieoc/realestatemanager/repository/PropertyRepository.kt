@@ -5,15 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
+import com.google.firebase.firestore.core.OrderBy
 import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.TIMESTAMP
 import com.sophieoc.realestatemanager.utils.Utils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -34,7 +33,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                                 propertyToCreate.postValue(property)
                                 upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
-                                Log.e("TAG", " createProperty: " + propertyCreationTask.exception?.message)
+                                Log.e(TAG, " createProperty: " + propertyCreationTask.exception?.message)
                         }
             } else if (propertyIdTask.exception != null) Log.e("TAG", " createProperty: " + propertyIdTask.exception?.message)
         })
@@ -73,7 +72,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     }
 
     private fun getPropertiesFromFirestore(properties: MutableLiveData<List<Property>>) {
-        propertyCollectionRef.get().addOnCompleteListener { task: Task<QuerySnapshot> ->
+        propertyCollectionRef.orderBy(TIMESTAMP, Query.Direction.DESCENDING).get().addOnCompleteListener { task: Task<QuerySnapshot> ->
             if (task.isSuccessful) {
                 val propertyResult = task.result?.toObjects(Property::class.java)
                 propertyResult?.let {
@@ -81,7 +80,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                     updateAllProperties(it.toList())
                 }
             } else if (task.exception != null)
-                Log.e("TAG", "getUserPropertiesById " + task.exception!!.message)
+                Log.e(TAG, "getUserPropertiesById " + task.exception!!.message)
         }
     }
 
@@ -111,7 +110,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                     upsertInRoom(it)
                 }
             } else if (task.exception != null)
-                Log.e("TAG", "getProperty " + task.exception!!.message)
+                Log.e(TAG, "getProperty " + task.exception!!.message)
         }
     }
 
@@ -125,12 +124,6 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                     val schoolList = placeApi.getNearbySchools(location).placeDetails
                     withContext(Main) {
                         val placeDetailsList = ArrayList<PlaceDetails>()
-                        parkList?.let {
-                            if (parkList.size >= 5)
-                                placeDetailsList.addAll(it.subList(0, 5))
-                            else
-                                placeDetailsList.addAll(it)
-                        }
                         storeList?.let {
                             if (it.size >= 5)
                                 placeDetailsList.addAll(it.subList(0, 5))
@@ -143,6 +136,12 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                             else
                                 placeDetailsList.addAll(it)
                         }
+                        parkList?.let {
+                            if (parkList.size >= 5)
+                                placeDetailsList.addAll(it.subList(0, 5))
+                            else
+                                placeDetailsList.addAll(it)
+                        }
                         value = placeDetailsList
                     }
                 }
@@ -151,19 +150,23 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     }
 
     fun getFilteredProperties(
-            propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?,
+            propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, nbrOfRooms: Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
             priceMin: Int, priceMax: Int, surfaceMin: Int, surfaceMax: Int, nbrOfPictures: Int?,
             park: String?, school: String?, store: String?, area: String?,
     ): MutableLiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
         CoroutineScope(Dispatchers.IO).launch {
-            val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, propertyAvailability,
+            val propertyList = propertyDao.getFilteredList(propertyType, nbrOfBed, nbrOfBath, nbrOfRooms, propertyAvailability,
                     dateOnMarket, dateSold, priceMin, priceMax, surfaceMin, surfaceMax, nbrOfPictures, park, school, store, area)
             withContext(Main) {
                 properties.postValue(propertyList)
             }
         }
         return properties
+    }
+
+    companion object{
+        const val TAG = "PropertyRepository"
     }
 }

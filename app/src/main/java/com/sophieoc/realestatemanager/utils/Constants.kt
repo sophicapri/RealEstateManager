@@ -21,3 +21,7 @@ const val NO_IMAGE_AVAILABLE = "https://www.immobilier-lagrandemotte.com/wp-cont
 const val RC_PERMISSION_PHOTO =  444
 
 const val RC_SELECT_PHOTO = 333
+
+const val TIMESTAMP = "timestamp"
+
+const val MINIMUM_PICTURES = 1

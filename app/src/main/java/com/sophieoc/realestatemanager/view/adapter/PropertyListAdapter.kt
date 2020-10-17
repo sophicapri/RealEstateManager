@@ -8,6 +8,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 import com.sophieoc.realestatemanager.utils.formatToDollars
 import kotlinx.android.synthetic.main.item_property.view.*
 
@@ -43,8 +44,10 @@ class PropertyListAdapter(
         }
 
         fun bind(property: Property) {
-            if (property.photos.isNotEmpty())
-            glide.load(property.photos[0].urlPhoto)
+            val photo = if(property.photos.isNotEmpty()) property.photos[0].urlPhoto
+            else
+                NO_IMAGE_AVAILABLE
+            glide.load(photo)
                     .apply(RequestOptions().centerCrop())
                     .into(itemView.image_property)
             itemView.type_and_city.text = "${property.type.s} in ${property.address.city}"

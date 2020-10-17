@@ -30,7 +30,7 @@ class PicturesAdapter(var onDeletePictureListener: OnDeletePictureListener, var 
     }
 
     override fun getItemCount(): Int {
-        return if (propertyViewModel.property.photos[0].urlPhoto != NO_IMAGE_AVAILABLE)
+        return if (propertyViewModel.property.photos.isNotEmpty())
             propertyViewModel.property.photos.size
         else
             0
@@ -51,12 +51,10 @@ class PicturesAdapter(var onDeletePictureListener: OnDeletePictureListener, var 
                 onSetAsCoverListener.onSetAsCoverClick(adapterPosition, ArrayList(propertyViewModel.property.photos))
                 notifyDataSetChanged()
             }
-           // binding.pictureDescriptionInput.addTextChangedListener(getTextWatcher())
         }
 
         init {
             binding.deletePicture.setOnClickListener {
-                // TODO: add alertDialog to confirm action
                 onDeletePictureListener.onDeleteClick(adapterPosition, ArrayList(propertyViewModel.property.photos))
                 notifyDataSetChanged()
             }

@@ -43,4 +43,16 @@
     <string name="load_picture_unable">Unable to load picture due to loss of internet connection</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="map_unavailable">Map unavailable without internet connection</string>
+    <string name="sqft">sqft</string>
+    <string name="property_picture">property picture</string>
+    <string name="city_region_or_postal_code">City, region or postal code</string>
+    <string name="area_title">Area:</string>
+    <string name="number_of_bathrooms_title">Number of bathrooms:</string>
+    <string name="property_availability_title">Property availability</string>
+    <string name="number_of_rooms_title">Number of rooms:</string>
+    <string name="click_to_choose_a_date">Click to choose a date</string>
+    <string name="dollar_value">"$ %s"</string>
+    <string name="sqft_value">%d sqft</string>
+    <string name="surface_title">Surface</string>
+    <string name="country_title">Country:</string>
 </resources>

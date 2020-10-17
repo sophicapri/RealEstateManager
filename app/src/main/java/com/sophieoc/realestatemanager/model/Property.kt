@@ -36,10 +36,11 @@ data class Property(
         @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
         @ColumnInfo(name = "user_id") var userId: String,
         @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size,
+        @ColumnInfo(name = "timestamp") val timestamp: Long = Date().time
 )  {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, 0, 0,
             0, 0, 0, "", PropertyAvailability.AVAILABLE, null, null,
-            Address(), arrayListOf(Photo()), ArrayList<PointOfInterest>(), "not defined")
+            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "not defined")
 
     companion object {
         fun fromContentValues(values: ContentValues): Property {
@@ -69,8 +70,6 @@ data class Property(
             if (values.containsKey("pointOfInterests")) property.pointOfInterests = Gson().fromJson(
                     values.getAsString("pointOfInterests"), Array<PointOfInterest>::class.java).toList()
             if (values.containsKey("userId")) property.userId = values.getAsString("userId")
-
-            Log.d("TESTS:", "fromContentValues: $property")
             return property
         }
     }

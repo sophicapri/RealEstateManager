@@ -20,6 +20,7 @@ class PropertyViewModel(private val propertySource: PropertyRepository) : ViewMo
     }
 
     fun upsertProperty() {
+        property.nbrOfPictures = property.photos.size
         _propertyToUpsert.value = property
     }
 }

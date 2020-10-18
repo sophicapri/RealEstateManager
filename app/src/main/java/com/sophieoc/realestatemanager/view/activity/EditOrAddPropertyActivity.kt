@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -16,13 +15,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityEditAddPropertyBinding
-import com.sophieoc.realestatemanager.model.Address
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
@@ -35,7 +30,6 @@ import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.activity_edit_add_property.*
 import kotlinx.android.synthetic.main.fragment_add_address.*
 import kotlinx.android.synthetic.main.fragment_add_info.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 import java.lang.NullPointerException
@@ -44,12 +38,12 @@ import kotlin.collections.ArrayList
 
 
 class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
-    var fragmentAddress: Fragment = AddAddressFragment()
+    private var fragmentAddress: Fragment = AddAddressFragment()
     var fragmentPropertyInfo: Fragment = AddPropertyInfoFragment()
     var fragmentPictures: Fragment = AddPicturesFragment()
     var activityRestarted = false
-    var emptyFieldsInAddress = false
-    var emptyFieldsInMainInfo = false
+    private var emptyFieldsInAddress = false
+    private var emptyFieldsInMainInfo = false
     lateinit var binding: ActivityEditAddPropertyBinding
     val propertyViewModel by viewModel<PropertyViewModel>()
 
@@ -65,7 +59,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         if (intent.extras == null) title_edit_create.text = getString(R.string.add_property_title)
         toolbar.setNavigationOnClickListener { onBackPressed() }
         bottom_navigation_bar.setOnNavigationItemSelectedListener(this)
-        bottom_navigation_bar.setBackgroundColor(ContextCompat.getColor(this,R.color.translucent_scrim_top_center))
+        bottom_navigation_bar.setBackgroundColor(ContextCompat.getColor(this, R.color.translucent_scrim_top_center))
         super.onCreate(savedInstanceState)
     }
 
@@ -117,15 +111,23 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     fun saveChanges(view: View) {
         if (Utils.isConnectionAvailable(this)) {
             PreferenceHelper.internetAvailable = false
+            checkDates()
             if (checkInputs()) {
                 getCurrentUser()?.let { propertyViewModel.property.userId = it.uid }
                 updatePointOfInterestsAndSave(propertyViewModel.property)
             } else
                 showAlertDialog()
-        }  else {
-        Toast.makeText(this, getString(R.string.cant_save_property), Toast.LENGTH_LONG).show()
-        PreferenceHelper.internetAvailable = false
+        } else {
+            Toast.makeText(this, getString(R.string.cant_save_property), Toast.LENGTH_LONG).show()
+            PreferenceHelper.internetAvailable = false
         }
+    }
+
+    private fun checkDates() {
+        if(propertyViewModel.property.availability == PropertyAvailability.AVAILABLE)
+            propertyViewModel.property.dateSold = null
+        else
+            propertyViewModel.property.dateOnMarket = null
     }
 
     private fun updatePointOfInterestsAndSave(property: Property) {
@@ -179,14 +181,14 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     }
 
     private fun saveProperty() {
-            propertyViewModel.upsertProperty()
-            propertyViewModel.propertySaved.observe(this, Observer {
-                it?.let {
-                    //TODO : Add progress bar
-                    displayNotification()
-                    onBackPressed()
-                }
-            })
+        propertyViewModel.upsertProperty()
+        propertyViewModel.propertySaved.observe(this, Observer {
+            it?.let {
+                //TODO : Add progress bar
+                displayNotification()
+                onBackPressed()
+            }
+        })
     }
 
     private fun checkInputs(): Boolean {
@@ -213,7 +215,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
                 emptyFieldsInMainInfo = true
                 return false
             }
-        } catch (e: NullPointerException){
+        } catch (e: NullPointerException) {
             Log.d(TAG, "checkMainInfoPage: ${e.stackTrace}")
         }
         return true

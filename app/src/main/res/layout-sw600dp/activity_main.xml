@@ -32,13 +32,13 @@
                 android:id="@+id/frame_property_list"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="40"/>
+                android:layout_weight="45"/>
 
             <FrameLayout
                 android:id="@+id/frame_property_details"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="60"/>
+                android:layout_weight="55"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView

@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.widget.Toast
 
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
@@ -25,19 +26,20 @@ import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.fragment_property_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     var property: Property = Property()
-    var map: GoogleMap? = null
+    private var map: GoogleMap? = null
     private var propertyMarker: MarkerOptions? = null
+    private var latLngProperty = LatLng(0.0,0.0)
     val propertyViewModel by viewModel<PropertyViewModel>()
 
     override fun getLayout() = Pair(R.layout.fragment_property_detail, null)
@@ -81,7 +83,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
                 bindViews(it)
             }
         })
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
     }
 
@@ -92,7 +94,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         view_pager.adapter = SliderAdapter(listPhotos, Glide.with(this))
         pageChangeListener()
         if (property.photos.isNotEmpty()) spring_dots_indicator.setViewPager2(view_pager)
-        if (property.photos.size == 1) spring_dots_indicator.visibility = View.GONE
+        if (property.photos.size == 1) spring_dots_indicator.visibility = GONE
         property_availability.text = property.availability.s.toUpperCase(Locale.ROOT)
         price_property.text = property.price.formatToDollars()
         type_property.text = property.type.s
@@ -108,6 +110,15 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         property_detail_toolbar?.setNavigationOnClickListener {
             mainContext.onBackPressed()
         }
+        btn_map_fullscreen.setOnClickListener { startMapActivity() }
+    }
+
+    private fun startMapActivity() {
+        val intent = Intent(mainContext, MapActivity::class.java)
+        intent.putExtra(LATITUDE_PROPERTY, latLngProperty.latitude)
+        intent.putExtra(LONGITUDE_PROPERTY, latLngProperty.longitude)
+        intent.putExtra(PROPERTY_ID, property.id)
+        startActivity(intent)
     }
 
     private fun startEditPropertyActivity(propertyId: String) {
@@ -133,8 +144,13 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun displayDate() {
-            property.dateOnMarket?.let { date_on_market.text = getString(R.string.on_the_market_since, it.toStringFormat())}
-            property.dateSold?.let { date_sold.text = getString(R.string.sold_since, it.toStringFormat())}
+        if (property.dateOnMarket != null) {
+            date_on_market.text = getString(R.string.on_the_market_since, property.dateOnMarket?.toStringFormat())
+            date_sold.visibility = GONE
+        }else {
+            date_sold.text = getString(R.string.sold_since, property.dateSold?.toStringFormat())
+            date_on_market.visibility = GONE
+        }
     }
 
     private fun showAgentInCharge(property: Property) {
@@ -162,12 +178,13 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun addMarkerAndZoom() {
-        val latLng = property.address.toLatLng(mainContext)
-        if (latLng.toString() != LAT_LNG_NOT_FOUND) {
+        latLngProperty = property.address.toLatLng(mainContext)
+        if (latLngProperty.toString() != LAT_LNG_NOT_FOUND) {
             map?.clear()
-            propertyMarker = MarkerOptions().position(latLng)
+            propertyMarker = MarkerOptions().position(latLngProperty)
+                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
             map?.addMarker(propertyMarker)
-            map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+            map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngProperty, 17f))
         } else
             view?.let { Snackbar.make(it, getString(R.string.cant_locate_property), LENGTH_LONG).show() }
     }

@@ -49,7 +49,6 @@
     <string name="area_title">Area:</string>
     <string name="number_of_bathrooms_title">Number of bathrooms:</string>
     <string name="property_availability_title">Property availability</string>
-    <string name="number_of_rooms_title">Number of rooms:</string>
     <string name="click_to_choose_a_date">Click to choose a date</string>
     <string name="dollar_value">"$ %s"</string>
     <string name="sqft_value">%d sqft</string>
@@ -61,4 +60,9 @@
     <string name="my_properties">My properties</string>
     <string name="map">Map</string>
     <string name="agent">Agent</string>
+    <string name="property_type_title">Property type:</string>
+    <string name="description_title_no_dot">Description</string>
+    <string name="close_map">Close</string>
+    <string name="reduce_map">REDUCE</string>
+    <string name="number_of_rooms_title">Number of rooms:</string>
 </resources>

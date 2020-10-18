@@ -46,9 +46,4 @@ data class Address(
         }
         return latLng
     }
-
-    companion object {
-        const val STREET_NAME_POSITION = 2
-        const val POSTAL_CODE_POSITION = 4
-    }
 }

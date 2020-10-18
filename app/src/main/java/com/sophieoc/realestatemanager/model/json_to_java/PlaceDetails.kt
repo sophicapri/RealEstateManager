@@ -106,8 +106,8 @@ class PlaceDetails {
 
     fun getDistanceFrom(propertyLocation: Location?): Int {
         val location = Location(name)
-        location.latitude = geometry?.location?.lat!!
-        location.longitude = geometry?.location?.lng!!
+        geometry?.location?.lat?.let {  location.latitude = it }
+        geometry?.location?.lng?.let { location.longitude = it }
         return location.distanceTo(propertyLocation).toInt()
     }
 }

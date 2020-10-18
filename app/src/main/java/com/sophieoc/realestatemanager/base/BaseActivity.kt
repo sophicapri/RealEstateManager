@@ -78,7 +78,7 @@ abstract class BaseActivity : AppCompatActivity() {
         if (fragment == null && propertyDetailView != null) {
             fragment = fragmentPropertyDetail
             val fm = supportFragmentManager.beginTransaction()
-            fm.add(R.id.frame_property_details, fragment, fragment::class.java.simpleName).addToBackStack(null).commit()
+            fm.add(R.id.frame_property_details, fragment, fragment::class.java.simpleName).commit()
         }
     }
 

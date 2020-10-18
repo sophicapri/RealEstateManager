@@ -69,6 +69,7 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         onResume()
     }
 
+    //todo : handle fragment change
     override fun onPropertyClick(propertyId: String) {
         val propertyDetailView = activity?.findViewById<View?>(R.id.frame_property_details)
         if (propertyDetailView == null) {

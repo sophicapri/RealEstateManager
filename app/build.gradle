@@ -18,6 +18,10 @@ android {
         resValue "string", 'API_KEY', API_KEY
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+         vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {

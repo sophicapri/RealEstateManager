@@ -4,6 +4,10 @@ const val LAT_LNG_NOT_FOUND = "0.0,0.0"
 
 const val PROPERTY_ID = "property_key"
 
+const val LATITUDE_PROPERTY = "lat"
+
+const val LONGITUDE_PROPERTY = "lng"
+
 const val RQ_CODE_PROPERTY = 2304
 
 const val PROPERTY_NOT_DEFINED = "not defined"

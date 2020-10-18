@@ -9,8 +9,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class AppController: Application() {
-    var currentLocation: Location? = null
-
     override fun onCreate() {
         super.onCreate()
         instance = this

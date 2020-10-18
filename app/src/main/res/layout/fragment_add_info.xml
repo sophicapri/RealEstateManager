@@ -21,7 +21,7 @@
             android:id="@+id/title_property_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Property type:"
+            android:text="@string/property_type_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
             android:entries="@array/property_types"
             android:gravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/title_property_type"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/title_property_type"
             app:layout_constraintTop_toTopOf="@+id/title_property_type" />
 
         <TextView
@@ -113,7 +113,7 @@
             android:id="@+id/ic_bed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_outline_king_bed_24"
+            app:srcCompat="@drawable/ic_outline_king_bed_24"
             app:layout_constraintBottom_toBottomOf="@+id/nbr_of_beds_input"
             app:layout_constraintEnd_toEndOf="@+id/ic_dollar"
             app:layout_constraintTop_toTopOf="@+id/nbr_of_beds_input" />
@@ -152,7 +152,7 @@
             android:id="@+id/ic_bath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_bathtub_24"
+            app:srcCompat="@drawable/ic_baseline_bathtub_24"
             app:layout_constraintBottom_toBottomOf="@+id/nbr_of_bath_input"
             app:layout_constraintEnd_toEndOf="@+id/ic_bed"
             app:layout_constraintTop_toTopOf="@+id/nbr_of_bath_input" />
@@ -162,7 +162,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Number of rooms:"
+            android:text="@string/number_of_rooms_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_price"
@@ -191,7 +191,7 @@
             android:id="@+id/ic_room"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_room"
+            app:srcCompat="@drawable/ic_room"
             app:layout_constraintBottom_toBottomOf="@+id/nbr_of_rooms_input"
             app:layout_constraintEnd_toEndOf="@+id/ic_dollar"
             app:layout_constraintTop_toTopOf="@+id/nbr_of_rooms_input"
@@ -262,7 +262,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/click_to_select_a_date"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/availability_spinner"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="@+id/availability_spinner"
             app:layout_constraintTop_toBottomOf="@+id/availability_spinner" />
 
         <TextView
@@ -272,7 +274,8 @@
             android:text="@string/please_select_a_date"
             android:textColor="@color/red"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btn_date"
+            app:layout_constraintStart_toStartOf="@+id/btn_date"
             app:layout_constraintTop_toBottomOf="@+id/title_since" />
 
         <androidx.appcompat.widget.AppCompatSpinner
@@ -283,6 +286,7 @@
             android:gravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/title_availability"
             app:layout_constraintEnd_toEndOf="@+id/types_spinner"
+            app:layout_constraintStart_toEndOf="@+id/title_property_type"
             app:layout_constraintTop_toTopOf="@+id/title_availability" />
 
         <TextView

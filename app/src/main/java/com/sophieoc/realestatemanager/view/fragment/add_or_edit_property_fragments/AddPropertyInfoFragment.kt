@@ -71,10 +71,13 @@ class AddPropertyInfoFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
         btn_date.text = df.format(selectedDate)
         error_date.visibility = View.GONE
         btn_date?.setTextColor(ContextCompat.getColor(mainContext, R.color.colorPrimaryLight))
-        if (addPropertyActivity.propertyViewModel.property.availability == PropertyAvailability.AVAILABLE)
+        if (addPropertyActivity.propertyViewModel.property.availability == PropertyAvailability.AVAILABLE) {
             addPropertyActivity.propertyViewModel.property.dateOnMarket = selectedDate
-        else
+            addPropertyActivity.propertyViewModel.property.dateSold = null
+        }else {
             addPropertyActivity.propertyViewModel.property.dateSold = selectedDate
+            addPropertyActivity.propertyViewModel.property.dateOnMarket = null
+        }
     }
 
     private fun bindViews() {

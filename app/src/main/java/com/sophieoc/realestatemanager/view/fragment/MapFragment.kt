@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
-import com.sophieoc.realestatemanager.AppController
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
@@ -40,14 +39,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
-    private var propertyDetailView : View? = null
+    private var propertyDetailView: View? = null
+    private lateinit var currentLocation: Location
     val propertyViewModel by viewModel<PropertyViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener {
-            AppController.instance.currentLocation?.let { location -> focusMap(location) }
+            focusMap(currentLocation)
         }
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
@@ -61,18 +61,20 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             if (marker != null)
                 startPropertyDetail(marker)
         }
+        if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(LONGITUDE_PROPERTY))
+            getLocationFromIntent()?.let { it -> focusMap(it) }
         fetchLastLocation()
         initMarkers()
     }
 
     private fun startPropertyDetail(marker: Marker) {
-        if (propertyDetailView == null){
+        if (propertyDetailView == null) {
             val intent = Intent(mainContext, PropertyDetailActivity::class.java)
             intent.putExtra(PROPERTY_ID, marker.tag.toString())
             mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
         } else {
             propertyDetailView?.visibility = VISIBLE
-            btn_map_size.text = "FULLSCREEN"
+            btn_map_size.text = getString(R.string.fullscreen)
             val bundle = Bundle()
             bundle.putString(PROPERTY_ID, marker.tag.toString())
             val propertyDetailFragment = PropertyDetailFragment()
@@ -88,10 +90,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             btn_map_size.setOnClickListener {
                 if (propertyDetailView?.visibility == VISIBLE) {
                     propertyDetailView?.visibility = GONE
-                    btn_map_size.text = "REDUCE"
+                    btn_map_size.text = getString(R.string.reduce_map)
                 } else {
                     propertyDetailView?.visibility = VISIBLE
-                    btn_map_size.text = "FULLSCREEN"
+                    btn_map_size.text = getString(R.string.fullscreen)
                 }
             }
         } else if (propertyDetailView == null)
@@ -101,7 +103,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         handleMapSize()
-        fetchLastLocation()
     }
 
     private fun fetchLastLocation() {
@@ -116,9 +117,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             if (getLocationTask.isSuccessful) {
                 val currentLocation = getLocationTask.result
                 if (currentLocation != null) {
-                    focusMap(currentLocation)
-                    //Init the current location for the entire app
-                    AppController.instance.currentLocation = currentLocation
+                    this.currentLocation = currentLocation
+                    if (getLocationFromIntent() == null)
+                        focusMap(currentLocation)
                 }
             } else {
                 Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
@@ -131,10 +132,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             AlertDialog.Builder(mainContext)
                     .setMessage(R.string.gps_network_not_enabled)
                     .setPositiveButton(R.string.open_location_settings) { _, _ ->
-                        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Companion.REQUEST_CODE_LOCATION)
+                        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_LOCATION)
                     }
-                    .setNegativeButton(R.string.
-                    cancel, null)
+                    .setNegativeButton(R.string.cancel, null)
                     .show()
         }
     }
@@ -147,16 +147,16 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun getLayout() = Pair(R.layout.fragment_map, null)
 
     private fun initMap() {
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
     }
 
     @SuppressLint("MissingPermission")
-   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE && grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
-                map.isMyLocationEnabled = true
-                fetchLastLocation()
-        }else
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            map.isMyLocationEnabled = true
+            fetchLastLocation()
+        } else
             Log.d(TAG, "onRequestPermissionsResult: refused")
     }
 
@@ -178,9 +178,22 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                                     .icon(R.drawable.ic_baseline_house_24.toBitmap(resources)))
                             marker.tag = property.id
                         }
+
                     }
                 }
         })
+    }
+
+
+    private fun getLocationFromIntent(): Location? {
+        val extras = mainContext.intent.extras
+        val lat = extras?.get(LATITUDE_PROPERTY) as Double?
+        val lng = extras?.get(LONGITUDE_PROPERTY) as Double?
+        val location = Location("")
+        lat?.let {  location.latitude = it }
+        lng?.let {  location.longitude = it }
+        lat?.let { return location }
+        return null
     }
 
     companion object {

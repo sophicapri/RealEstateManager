@@ -29,3 +29,5 @@ const val RC_SELECT_PHOTO = 333
 const val TIMESTAMP = "timestamp"
 
 const val MINIMUM_PICTURES = 1
+
+const val USER_ID = "user id"

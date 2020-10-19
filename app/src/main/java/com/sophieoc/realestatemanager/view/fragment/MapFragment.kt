@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.view.fragment
 
+import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -108,7 +109,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private fun fetchLastLocation() {
         val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext)
         if (context?.let { ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) } != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE)
+            //ActivityCompat.requestPermissions(arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE)
+            ActivityCompat.requestPermissions(mainContext, arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE)
             return
         }
         checkLocationEnabled()

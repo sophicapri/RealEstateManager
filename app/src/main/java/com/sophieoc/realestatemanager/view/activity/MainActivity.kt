@@ -7,10 +7,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.DatePicker
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -18,21 +22,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.slider.RangeSlider
-import com.google.android.material.slider.Slider
+import com.google.gson.Gson
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.DialogFilterBinding
 import com.sophieoc.realestatemanager.model.EntriesFilter
+import com.sophieoc.realestatemanager.model.User
+import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.FilterViewModel
+import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.fragment_property_list.*
 import kotlinx.android.synthetic.main.results_for_search.*
-import org.koin.android.ext.android.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.DateFormat
 import java.util.*
@@ -42,6 +49,7 @@ import kotlin.collections.ArrayList
 class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
     private var filterDialog: AlertDialog? = null
     private val filterViewModel by viewModel<FilterViewModel>()
+    private val userViewModel by viewModel<UserViewModel>()
     lateinit var binding: DialogFilterBinding
 
     companion object {
@@ -74,6 +82,21 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         navigation_view?.setNavigationItemSelectedListener(this)
+        val drawerView: View = navigation_view.getHeaderView(0)
+        val profilePic = drawerView.findViewById<ImageView>(R.id.profile_picture)
+        val username = drawerView.findViewById<TextView>(R.id.username)
+        val email = drawerView.findViewById<TextView>(R.id.email_user)
+        userViewModel.currentUser.observe(this, {
+            it?.let {
+                val user = it.user
+                Glide.with(profilePic.context)
+                        .load(user.urlPhoto)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(profilePic)
+                username.text = user.username
+                email.text = user.email
+            }
+        })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -199,11 +222,11 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             filterViewModel.entries.nbrOfPictures = MINIMUM_PICTURES
         if (binding.nbrOfPicInput.text.toString().isNotEmpty())
             filterViewModel.entries.nbrOfPictures = binding.nbrOfPicInput.text.toString().trim().toInt()
-        if(binding.checkboxPark.isChecked)
+        if (binding.checkboxPark.isChecked)
             filterViewModel.entries.park = PARK
-        if(binding.checkboxStore.isChecked)
+        if (binding.checkboxStore.isChecked)
             filterViewModel.entries.store = STORE
-        if(binding.checkboxSchool.isChecked)
+        if (binding.checkboxSchool.isChecked)
             filterViewModel.entries.school = SCHOOL
     }
 

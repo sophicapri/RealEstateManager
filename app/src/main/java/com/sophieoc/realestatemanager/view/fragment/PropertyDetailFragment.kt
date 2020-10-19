@@ -3,7 +3,6 @@ package com.sophieoc.realestatemanager.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.View.GONE
 import android.widget.Toast
 
@@ -30,6 +29,7 @@ import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_property_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -41,6 +41,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private var propertyMarker: MarkerOptions? = null
     private var latLngProperty = LatLng(0.0,0.0)
     val propertyViewModel by viewModel<PropertyViewModel>()
+    val userViewModel by viewModel<UserViewModel>()
 
     override fun getLayout() = Pair(R.layout.fragment_property_detail, null)
 
@@ -101,6 +102,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         address_property.text = property.address.toString()
         nbr_of_beds_input.text = property.numberOfBedrooms.toString()
         nbr_of_bath.text = property.numberOfBathrooms.toString()
+        nbr_of_rooms.text = property.numberOfRooms.toString()
         surface.text = property.surface.toString()
         showAgentInCharge(property)
         description.text = property.description
@@ -154,13 +156,13 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun showAgentInCharge(property: Property) {
-        viewModel.getUserById(property.userId).observe(this, {
+        userViewModel.getUserById(property.userId).observe(this, {
             it?.let {
                 Glide.with(this)
                         .load(it.user.urlPhoto)
                         .apply(RequestOptions.circleCropTransform())
                         .into(ic_profile_picture)
-                name_agent.text = it.user.username
+                username.text = it.user.username
             }
         })
     }

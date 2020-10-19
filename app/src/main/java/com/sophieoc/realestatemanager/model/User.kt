@@ -11,5 +11,5 @@ data class User(
         @ColumnInfo(name = "email") var email: String,
         @ColumnInfo(name = "url_photo") var urlPhoto: String
 ) {
-    constructor() : this("idDefault","", "", "todo : add default pic link")
+    constructor() : this("","", "", "https://i.ibb.co/dL8H9D9/ic-default.png")
 }

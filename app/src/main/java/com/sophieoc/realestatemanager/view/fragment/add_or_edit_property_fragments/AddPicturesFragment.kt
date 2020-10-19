@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
 
+import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
@@ -15,9 +16,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
@@ -37,7 +35,7 @@ import kotlin.collections.ArrayList
 class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListener, PicturesAdapter.OnSetAsCoverListener {
     lateinit var binding: FragmentAddPicturesBinding
     private lateinit var adapter: PicturesAdapter
-    private lateinit var addPropertyActivity: EditOrAddPropertyActivity
+    private lateinit var rootActivity: EditOrAddPropertyActivity
 
     override fun getLayout(): Pair<Nothing?, View> = Pair(null, binding.root)
 
@@ -48,17 +46,15 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
                 container,
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
-        if (addPropertyActivity.activityRestarted) {
+        if (rootActivity.activityRestarted) {
             binding.executePendingBindings()
         }
-        Log.d(TAG, "onCreateView: ")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ")
-        addPropertyActivity = (activity as EditOrAddPropertyActivity)
+        rootActivity = (activity as EditOrAddPropertyActivity)
     }
 
     override fun onResume() {
@@ -73,7 +69,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
 
     private fun addPhoto() {
         if (context?.let { ActivityCompat.checkSelfPermission(it, READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
+            ActivityCompat.requestPermissions(mainContext, arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
             return
         }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -82,13 +78,13 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
 
     private fun configureRecyclerView() {
         recycler_view_pictures.setHasFixedSize(true)
-        adapter = PicturesAdapter(this, this, addPropertyActivity.propertyViewModel)
+        adapter = PicturesAdapter(this, this, rootActivity.propertyViewModel)
         recycler_view_pictures.adapter = adapter
     }
 
     override fun onDeleteClick(position: Int, photos: ArrayList<Photo>) {
         photos.removeAt(position)
-        addPropertyActivity.propertyViewModel.property.photos = photos
+        rootActivity.propertyViewModel.property.photos = photos
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -114,7 +110,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
     }
 
     private fun saveImage(data: Uri) {
-        val arrayPhoto = ArrayList(addPropertyActivity.propertyViewModel.property.photos)
+        val arrayPhoto = ArrayList(rootActivity.propertyViewModel.property.photos)
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
         if (Utils.isConnectionAvailable(mainContext)) {
@@ -123,7 +119,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
                             val pathImage = uri.toString()
                             arrayPhoto.add(Photo(pathImage, ""))
-                            addPropertyActivity.propertyViewModel.property.photos = arrayPhoto
+                            rootActivity.propertyViewModel.property.photos = arrayPhoto
                             adapter.notifyDataSetChanged()
                         }
                     }
@@ -132,15 +128,6 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
             Toast.makeText(mainContext, getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
             PreferenceHelper.internetAvailable = false
         }
-
-   /*    val arrayPhoto = ArrayList(addPropertyActivity.propertyViewModel.property.photos)
-        data.path?.let {
-            Log.d(TAG, "saveImage: path = $it")
-            arrayPhoto.add(Photo(data, ""))
-            addPropertyActivity.propertyViewModel.property.photos = arrayPhoto
-        }
-
-    */
     }
 
     companion object {
@@ -151,6 +138,6 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
         val photoToMove = photos[position]
         photos.remove(photoToMove)
         photos.add(0, photoToMove)
-        addPropertyActivity.propertyViewModel.property.photos = photos
+        rootActivity.propertyViewModel.property.photos = photos
     }
 }

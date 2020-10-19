@@ -1,15 +1,11 @@
 package com.sophieoc.realestatemanager.base
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -20,19 +16,14 @@ import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
 import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
-import com.sophieoc.realestatemanager.viewmodel.MyViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
     lateinit var locationManager: LocationManager
     lateinit var auth: FirebaseAuth
-    val today = Utils.todayDate.toDate()
     val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
     val fragmentUser = UserPropertiesFragment()
     val fragmentPropertyDetail = PropertyDetailFragment()
-    val viewModel by viewModel<MyViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +41,7 @@ abstract class BaseActivity : AppCompatActivity() {
     fun checkConnection() {
         if (!Utils.isConnectionAvailable(this)){
             Snackbar.make(window.decorView.findViewById(android.R.id.content)
-                    , getString(R.string.internet_unavailable), LENGTH_SHORT).show()
+                    , getString(R.string.offline_mode_on), LENGTH_SHORT).show()
             PreferenceHelper.internetAvailable = false
         } else
             PreferenceHelper.internetAvailable = true

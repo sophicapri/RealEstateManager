@@ -259,12 +259,12 @@
                 android:layout_marginStart="5dp"
                 android:text="Agent"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/name_agent"
+                app:layout_constraintBottom_toTopOf="@+id/username"
                 app:layout_constraintStart_toEndOf="@+id/ic_profile_picture"
                 app:layout_constraintTop_toTopOf="@+id/ic_profile_picture" />
 
             <TextView
-                android:id="@+id/name_agent"
+                android:id="@+id/username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 tools:text="Maria GONZALES"

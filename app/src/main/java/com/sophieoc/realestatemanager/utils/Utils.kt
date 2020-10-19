@@ -3,7 +3,6 @@ package com.sophieoc.realestatemanager.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import java.text.DateFormat

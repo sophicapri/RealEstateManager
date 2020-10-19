@@ -10,8 +10,8 @@ import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
 import com.sophieoc.realestatemanager.viewmodel.FilterViewModel
-import com.sophieoc.realestatemanager.viewmodel.MyViewModel
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -62,14 +62,14 @@ val repositoryModule = module {
 val viewModelModule = module {
     // Specific viewModel pattern to tell Koin how to build ViewModel
     viewModel {
-        MyViewModel(get(), get())
-    }
-
-    viewModel {
         PropertyViewModel(get())
     }
 
     viewModel {
         FilterViewModel(get())
+    }
+
+    viewModel {
+        UserViewModel(get())
     }
 }

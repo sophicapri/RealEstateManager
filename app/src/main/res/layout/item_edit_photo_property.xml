@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/translucent_light_top"
-            android:src="@drawable/ic_sharp_delete_forever_24"
+            app:srcCompat="@drawable/ic_sharp_delete_forever_24"
             app:tint="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/picture_property"
             app:layout_constraintTop_toTopOf="@+id/picture_property" />

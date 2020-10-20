@@ -1,12 +1,12 @@
 package com.sophieoc.realestatemanager.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.databinding.ItemPropertyBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 import com.sophieoc.realestatemanager.utils.formatToDollars
@@ -19,8 +19,10 @@ class PropertyListAdapter(
     var propertyList: ArrayList<Property> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_property, parent, false)
-        return PropertyViewHolder(view, onPropertyClickListener)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemBinding: ItemPropertyBinding = ItemPropertyBinding.inflate(layoutInflater, parent, false)
+        itemBinding.executePendingBindings()
+        return PropertyViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
@@ -36,7 +38,7 @@ class PropertyListAdapter(
         notifyDataSetChanged()
     }
 
-    inner class PropertyViewHolder(itemView: View, onPropertyClickListener: OnPropertyClickListener) : RecyclerView.ViewHolder(itemView) {
+    inner class PropertyViewHolder(val binding: ItemPropertyBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
                 onPropertyClickListener.onPropertyClick(propertyList[adapterPosition].id)
@@ -44,18 +46,7 @@ class PropertyListAdapter(
         }
 
         fun bind(property: Property) {
-            val photo = if(property.photos.isNotEmpty()) property.photos[0].urlPhoto
-            else
-                NO_IMAGE_AVAILABLE
-            glide.load(photo)
-                    .apply(RequestOptions().centerCrop())
-                    .into(itemView.image_property)
-            itemView.type_and_city.text = "${property.type.s} in ${property.address.city}"
-            itemView.price_property.text = property.price.formatToDollars()
-            itemView.nbr_of_beds_input.text = property.numberOfBedrooms.toString()
-            itemView.nbr_of_bath.text = property.numberOfBathrooms.toString()
-            itemView.nbr_of_rooms.text = property.numberOfRooms.toString()
-            itemView.surface.text = property.surface.toString()
+            binding.property = property
         }
     }
 

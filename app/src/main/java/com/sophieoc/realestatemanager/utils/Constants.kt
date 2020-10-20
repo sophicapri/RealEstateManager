@@ -10,8 +10,6 @@ const val LONGITUDE_PROPERTY = "lng"
 
 const val RQ_CODE_PROPERTY = 2304
 
-const val PROPERTY_NOT_DEFINED = "not defined"
-
 const val POINT_OF_INTEREST = "point_of_interest"
 
 const val PARK = "park"

@@ -113,7 +113,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
             PreferenceHelper.internetAvailable = false
             checkDates()
             if (checkInputs()) {
-                getCurrentUser()?.let { propertyViewModel.property.userId = it.uid }
+                propertyViewModel.property.userId = PreferenceHelper.currentUserId
                 updatePointOfInterestsAndSave(propertyViewModel.property)
             } else
                 showAlertDialog()

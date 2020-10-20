@@ -32,6 +32,9 @@ object Utils {
      * Conversion de la date d'aujourd'hui en un format plus approprié
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      * @return
+     *
+     *
+     *  format de la date avant modification -> "yyyy/MM/dd"
      */
     val todayDate: String
         get() {

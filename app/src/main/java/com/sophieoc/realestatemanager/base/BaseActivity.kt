@@ -47,12 +47,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun getLayout(): Pair<Int?, View?>
 
-    fun getCurrentUser(): FirebaseUser? {
-        return auth.currentUser
-    }
-
     fun isCurrentUserLogged(): Boolean {
-        return getCurrentUser() != null
+        return auth.currentUser != null
     }
 
     fun <T> startNewActivity(activity: Class<T>) {

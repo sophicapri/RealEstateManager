@@ -84,7 +84,7 @@ class UserRepository(private val userDao: UserDao) {
             val email: String = firebaseUser.email ?: ""
             val user = User(uid = uid, username = username, email = email, urlPhoto = urlPicture)
             val currentUser = UserWithProperties(user, ArrayList())
-
+            PreferenceHelper.currentUserId = uid
             upsertUser(currentUser)
         }
     }

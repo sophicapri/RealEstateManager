@@ -92,6 +92,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
                         .into(profilePic)
                 username.text = user.username
                 email.text = user.email
+                PreferenceHelper.currentUserId = user.uid
             }
         })
     }

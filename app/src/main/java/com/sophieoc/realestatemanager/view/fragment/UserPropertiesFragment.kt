@@ -11,22 +11,23 @@ import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_properties.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserPropertiesFragment: PropertyListFragment() {
+class UserPropertiesFragment : PropertyListFragment() {
     private val userViewModel by viewModel<UserViewModel>()
     override fun getLayout() = Pair(R.layout.fragment_user_properties, null)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (mainContext.intent.hasExtra(USER_ID)){
+        if (mainContext.intent.hasExtra(USER_ID)) {
             val id = mainContext.intent.extras?.get(USER_ID) as String
             userViewModel.getUserById(id).observe(mainContext, {
                 if (it != null) initView(it)
+                my_toolbar.title = getString(R.string.agent_properties, it.user.username)
             })
         }
         userViewModel.currentUser.observe(mainContext, {
             if (it != null) initView(it)
+            my_toolbar.title = getString(R.string.my_properties)
         })
         configureRecyclerView(recycler_view_user_properties)
-
     }
 
     private fun initView(it: UserWithProperties) {
@@ -35,5 +36,6 @@ class UserPropertiesFragment: PropertyListFragment() {
                 .load(it.user.urlPhoto)
                 .apply(RequestOptions.circleCropTransform())
                 .into(ic_profile_picture)
+
     }
 }

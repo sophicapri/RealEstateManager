@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -32,8 +33,9 @@ import java.util.*
 
 class SettingsActivity : BaseActivity() {
     private val userViewModel by viewModel<UserViewModel>()
-    private var currentUser: UserWithProperties? = null
+    private lateinit var currentUser: UserWithProperties
     private lateinit var binding: ActivitySettingsBinding
+    private var dataChanged = false
     override fun getLayout() = Pair(null, binding.root)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +44,9 @@ class SettingsActivity : BaseActivity() {
         binding.lifecycleOwner = this
         userViewModel.userUpdated.observe(this, { it ->
             if (it != null) {
-                currentUser?.let {
+                if (dataChanged) {
                     Toast.makeText(this, getString(R.string.changes_saved), Toast.LENGTH_LONG).show()
+                    dataChanged = false
                 }
                 currentUser = it
             }
@@ -56,17 +59,24 @@ class SettingsActivity : BaseActivity() {
         binding.editUsernameContainer.visibility = VISIBLE
         showSoftKeyboard(binding.editTextUsername)
         binding.editTextUsername.requestFocus()
-        currentUser?.let { binding.editTextUsername.setSelection(it.user.username.length) }
+        binding.editTextUsername.setSelection(currentUser.user.username.length)
+        binding.editTextUsername.setOnKeyListener { _, keyCode, keyEvent ->
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                saveUsername(null)
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
     }
 
-    fun saveUsername(view: View) {
+    fun saveUsername(view: View?) {
         val editTextUsername = binding.editUsernameContainer.edit_text_username
         if (editTextUsername.text.toString().isNotEmpty()) {
-            currentUser?.user?.username = editTextUsername.text.toString()
+            currentUser.user.username = editTextUsername.text.toString()
             binding.editUsernameContainer.visibility = GONE
             hideSoftKeyboard(binding.editTextUsername)
-            currentUser?.let { userViewModel.updateUser(it) }
-            currentUser = null
+            dataChanged = true
+            userViewModel.updateUser(currentUser)
         } else
             editTextUsername.error = getString(R.string.empty_field)
     }
@@ -116,9 +126,9 @@ class SettingsActivity : BaseActivity() {
                     .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
                             val pathImage = uri.toString()
-                            currentUser?.user?.urlPhoto = pathImage
-                            currentUser?.let { userViewModel.updateUser(it) }
-                            currentUser = null
+                            currentUser.user.urlPhoto = pathImage
+                            dataChanged = true
+                            userViewModel.updateUser(currentUser)
                         }
                     }
             PreferenceHelper.internetAvailable = true

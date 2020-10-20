@@ -91,7 +91,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private fun bindViews(property: Property) {
         val listPhotos = if (property.photos.isNotEmpty()) property.photos
         else
-            arrayListOf(Photo(NO_IMAGE_AVAILABLE, ""))
+            arrayListOf(Photo(NO_IMAGE_AVAILABLE_PROPERTY, ""))
         view_pager.adapter = SliderAdapter(listPhotos, Glide.with(this))
         pageChangeListener()
         if (property.photos.isNotEmpty()) spring_dots_indicator.setViewPager2(view_pager)

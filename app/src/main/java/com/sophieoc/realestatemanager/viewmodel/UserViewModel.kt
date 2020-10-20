@@ -9,10 +9,11 @@ import com.sophieoc.realestatemanager.repository.UserRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
 
 class UserViewModel(private val userSource: UserRepository) : ViewModel() {
-    var currentUser : LiveData<UserWithProperties> = userSource.currentUser
-    private val _userToUpdate: MutableLiveData<UserWithProperties> = MutableLiveData()
-    val userUpdated: LiveData<UserWithProperties> = Transformations.switchMap(_userToUpdate) {
-        if (_userToUpdate.value != null)
+    private var _currentUser = userSource.currentUser
+    val currentUser : LiveData<UserWithProperties>
+        get() = _currentUser
+    val userUpdated: LiveData<UserWithProperties> = Transformations.switchMap(_currentUser) {
+        if (_currentUser.value != null)
             userSource.upsertUser(it)
         else
             AbsentLiveData.create()
@@ -21,6 +22,6 @@ class UserViewModel(private val userSource: UserRepository) : ViewModel() {
     fun getUserById(uid: String): LiveData<UserWithProperties> = userSource.getUserWithProperties(uid)
 
     fun updateUser(user: UserWithProperties) {
-        _userToUpdate.value = user
+        _currentUser.value = user
     }
 }

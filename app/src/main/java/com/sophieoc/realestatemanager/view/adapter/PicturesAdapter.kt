@@ -2,7 +2,6 @@ package com.sophieoc.realestatemanager.view.adapter
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.databinding.ItemEditPhotoPropertyBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 
 

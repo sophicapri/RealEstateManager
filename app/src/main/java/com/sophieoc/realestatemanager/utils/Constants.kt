@@ -18,7 +18,9 @@ const val SCHOOL = "school"
 
 const val STORE = "store"
 
-const val NO_IMAGE_AVAILABLE = "https://www.immobilier-lagrandemotte.com/wp-content/themes/realestate-7/images/no-image.png"
+const val NO_IMAGE_AVAILABLE_PROPERTY = "https://www.immobilier-lagrandemotte.com/wp-content/themes/realestate-7/images/no-image.png"
+
+const val NO_IMAGE_AVAILABLE_USER = "https://i.ibb.co/dL8H9D9/ic-default.png"
 
 const val RC_PERMISSION_PHOTO =  444
 

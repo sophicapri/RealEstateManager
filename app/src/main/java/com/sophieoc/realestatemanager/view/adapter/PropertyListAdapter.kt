@@ -3,14 +3,8 @@ package com.sophieoc.realestatemanager.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.RequestOptions
-import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.ItemPropertyBinding
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE
-import com.sophieoc.realestatemanager.utils.formatToDollars
-import kotlinx.android.synthetic.main.item_property.view.*
 
 class PropertyListAdapter(
         private var onPropertyClickListener: OnPropertyClickListener)

@@ -26,6 +26,7 @@ class UserPropertiesFragment: PropertyListFragment() {
             if (it != null) initView(it)
         })
         configureRecyclerView(recycler_view_user_properties)
+
     }
 
     private fun initView(it: UserWithProperties) {

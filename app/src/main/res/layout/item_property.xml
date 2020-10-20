@@ -34,8 +34,17 @@
                 android:layout_height="200dp"
                 app:propertyImageUrl="@{property.photos[0]}"
                 android:contentDescription="@string/property_picture" />
-        </androidx.cardview.widget.CardView>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="SOLD"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:text="@{property.availability.s.toUpperCase()}"
+                android:background="@color/lighterGrey"
+                android:layout_gravity="end"/>
+        </androidx.cardview.widget.CardView>
         <TextView
             android:id="@+id/type_and_city"
             android:layout_width="wrap_content"

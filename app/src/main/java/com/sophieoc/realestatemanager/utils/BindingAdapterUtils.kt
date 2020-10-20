@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.utils
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -21,7 +22,7 @@ fun ImageView.bindImageUrl(imageUrl: String?) {
 
     Glide.with(this.context)
             .load(url)
-            .apply(RequestOptions().centerCrop())
+            .apply(RequestOptions().circleCrop())
             .into(this)
 }
 
@@ -43,4 +44,11 @@ fun ImageView.bindPropertyImage(photo: Photo?) {
 @BindingAdapter("dollarFormat")
 fun TextView.formatIntToDollar(price: Int) {
     this.text = price.formatToDollars()
+}
+
+@BindingAdapter("collapsingToolbarTitle")
+fun Toolbar.bindCollapsingToolbarTitle(title: String?){
+    title?.let {
+        this.title = it
+    }
 }

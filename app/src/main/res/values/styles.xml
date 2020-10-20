@@ -12,16 +12,6 @@
         <item name="android:textColor">@android:color/secondary_text_light</item>
     </style>
 
- <!--   <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    -->
-
- <!--   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" /> -->
-
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
         <item name="android:windowFullscreen">true</item>
@@ -88,6 +78,6 @@
 
     <style name="expandedToolbarTitleColor" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:textColor">@color/white</item>
-
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

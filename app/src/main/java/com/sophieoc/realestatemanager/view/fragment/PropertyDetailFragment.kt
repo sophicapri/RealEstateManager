@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
+import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
@@ -156,15 +158,30 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun showAgentInCharge(property: Property) {
-        userViewModel.getUserById(property.userId).observe(this, {
-            it?.let {
+        userViewModel.getUserById(property.userId).observe(this, { agent ->
+            agent?.let {
                 Glide.with(this)
                         .load(it.user.urlPhoto)
                         .apply(RequestOptions.circleCropTransform())
                         .into(ic_profile_picture)
-                username.text = it.user.username
+                username.text = getString(R.string.underline, it.user.username)
+                ic_profile_picture.setOnClickListener { _ -> startUserActivity(it.user.uid) }
+                username.setOnClickListener { _ -> startUserActivity(it.user.uid) }
+                title_agent.setOnClickListener { _ -> startUserActivity(it.user.uid) }
+                userViewModel.currentUser.observe(mainContext, { loggedUser ->
+                    loggedUser?.let{
+                        if (loggedUser.user.uid != agent.user.uid) fab_edit_property.visibility = GONE
+                        else fab_edit_property.visibility = VISIBLE
+                    }
+                })
             }
         })
+    }
+
+    private fun startUserActivity(uid: String) {
+        val intent = Intent(mainContext, UserPropertiesActivity::class.java)
+        intent.putExtra(USER_ID, uid)
+        startActivity(intent)
     }
 
     private fun configureRecyclerView(pointOfInterests: List<PointOfInterest>) {

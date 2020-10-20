@@ -59,7 +59,6 @@
     <string name="sign_out">Sign out</string>
     <string name="settings">Settings</string>
     <string name="map">Map</string>
-    <string name="agent">Agent</string>
     <string name="property_type_title">Property type:</string>
     <string name="description_title_no_dot">Description</string>
     <string name="close_map">Close</string>
@@ -74,4 +73,6 @@
     <string name="property_in_city">"%1$s in %2$s"</string>
     <string name="my_properties">My properties</string>
     <string name="agent_properties">"%s's properties"</string>
+    <string name="agent_title">Agent</string>
+    <string name="underline"><u>%s</u></string>
 </resources>

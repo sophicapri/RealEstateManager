@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/filter_button"
-        android:icon="@drawable/ic_filter_24"
+        android:icon="@drawable/ic_baseline_search_24"
         app:showAsAction="ifRoom"
-        android:title="Filter search">
+        android:title="@string/filter_search_description">
     </item>
 </menu>

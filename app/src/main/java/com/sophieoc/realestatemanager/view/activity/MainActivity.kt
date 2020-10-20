@@ -27,13 +27,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.slider.RangeSlider
-import com.google.gson.Gson
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.DialogFilterBinding
 import com.sophieoc.realestatemanager.model.EntriesFilter
-import com.sophieoc.realestatemanager.model.User
-import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.FilterViewModel
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel

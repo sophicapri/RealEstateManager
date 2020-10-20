@@ -50,7 +50,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             if (mapActivity.isLocationEnabled())
             focusMap(currentLocation)
         }
-        Log.d(TAG, "onViewCreated: ")
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
 

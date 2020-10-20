@@ -70,4 +70,6 @@
     <string name="unknown_error">Unknown error</string>
     <string name="changes_saved">Changes saved successfully</string>
     <string name="touch_to_update">Touch to update</string>
+    <string name="property_type_title_dialog">Property type</string>
+    <string name="filter_search_description">Filter search</string>
 </resources>

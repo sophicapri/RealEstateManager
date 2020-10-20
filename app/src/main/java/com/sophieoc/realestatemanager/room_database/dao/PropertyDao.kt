@@ -61,6 +61,6 @@ interface PropertyDao {
     fun getFilteredList(
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, nbrOfRooms : Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
-            priceMin: Int, priceMax: Int?, surfaceMin: Int, surfaceMax: Int?,
+            priceMin: Int?, priceMax: Int?, surfaceMin: Int?, surfaceMax: Int?,
             nbrOfPictures: Int?, park: String?, school: String?, store: String?, area: String?): List<Property>
 }

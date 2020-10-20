@@ -47,6 +47,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener { _ ->
+            if (mapActivity.isLocationEnabled())
             focusMap(currentLocation)
         }
         Log.d(TAG, "onViewCreated: ")

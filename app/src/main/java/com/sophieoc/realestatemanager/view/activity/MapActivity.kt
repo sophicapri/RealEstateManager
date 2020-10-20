@@ -30,15 +30,9 @@ class MapActivity : BaseActivity() {
                 .replace(R.id.frame_map, fragmentMap, fragmentMap.javaClass.simpleName).commit()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(MainActivity.TAG, "onRestart: ")
-    }
-
     override fun onResume() {
         super.onResume()
         configurePropertyDetailFragment()
-        Log.d(TAG, "onResume: ")
     }
 
     fun isLocationEnabled(): Boolean {
@@ -51,7 +45,7 @@ class MapActivity : BaseActivity() {
                     .setMessage(R.string.gps_network_not_enabled)
                     .setPositiveButton(R.string.open_location_settings) { _, _ ->
                         startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_LOCATION)}
-                    .setNegativeButton(R.string.cancel, null)
+                    .setNegativeButton(R.string.ignore, null)
                     .show()
             return false
         }

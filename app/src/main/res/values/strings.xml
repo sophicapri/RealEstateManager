@@ -75,4 +75,5 @@
     <string name="agent_properties">"%s's properties"</string>
     <string name="agent_title">Agent</string>
     <string name="underline"><u>%s</u></string>
+    <string name="no_properties_in_db">No properties were found in the database. You can add one by clicking on the plus button below.</string>
 </resources>

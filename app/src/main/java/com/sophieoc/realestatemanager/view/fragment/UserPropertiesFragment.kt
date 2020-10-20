@@ -24,11 +24,7 @@ class UserPropertiesFragment : PropertyListFragment() {
     private lateinit var binding : FragmentUserPropertiesBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_user_properties,
-                container,
-                false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_properties, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }

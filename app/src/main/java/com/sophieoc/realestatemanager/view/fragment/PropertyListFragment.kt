@@ -2,13 +2,19 @@ package com.sophieoc.realestatemanager.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
@@ -25,29 +31,25 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
     val propertyViewModel by viewModel<PropertyViewModel>()
+    private lateinit var binding: FragmentPropertyListBinding
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_property_list, container, true)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureRecyclerView(recycler_view_properties)
-        fab_add_property.setOnClickListener {
-            startAddPropertyActivity()
-        }
+        configureRecyclerView(binding.recyclerViewProperties)
         propertyViewModel.getProperties().observe(mainContext, {
             if (it != null) {
-                adapter.updateList(ArrayList(it))
+                if (it.isNotEmpty()) {
+                    adapter.updateList(ArrayList(it))
+                    binding.noPropertiesInDb.visibility = GONE
+                }else
+                    binding.noPropertiesInDb.visibility = VISIBLE
             }
         })
-    }
-
-    private fun startAddPropertyActivity() {
-        if (Utils.isConnectionAvailable(mainContext)) {
-            mainContext.startNewActivity(EditOrAddPropertyActivity::class.java)
-            PreferenceHelper.internetAvailable = true
-        } else {
-            Toast.makeText(mainContext, getString(R.string.edit_add_unavailable), Toast.LENGTH_LONG).show()
-            PreferenceHelper.internetAvailable = false
-        }
     }
 
     fun configureRecyclerView(recyclerView: RecyclerView) {

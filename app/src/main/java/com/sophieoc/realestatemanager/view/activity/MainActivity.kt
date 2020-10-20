@@ -293,6 +293,10 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         }
     }
 
+    fun startAddPropertyActivity(view: View) {
+        startNewActivity(EditOrAddPropertyActivity::class.java)
+    }
+
 
     private fun signOut() {
         auth.signOut()

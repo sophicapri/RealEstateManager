@@ -45,10 +45,3 @@ fun ImageView.bindPropertyImage(photo: Photo?) {
 fun TextView.formatIntToDollar(price: Int) {
     this.text = price.formatToDollars()
 }
-
-@BindingAdapter("collapsingToolbarTitle")
-fun Toolbar.bindCollapsingToolbarTitle(title: String?){
-    title?.let {
-        this.title = it
-    }
-}

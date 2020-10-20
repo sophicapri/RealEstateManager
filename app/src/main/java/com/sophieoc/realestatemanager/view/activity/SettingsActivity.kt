@@ -37,7 +37,7 @@ class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userViewModel.currentUser.observe(this, {
-            if (it != null) updateUI(it)
+            //if (it != null) updateUI(it)
         })
         profile_picture.setOnClickListener { addPhoto() }
         username.setOnClickListener { editUsername() }
@@ -127,7 +127,7 @@ class SettingsActivity : BaseActivity() {
     private fun updateUser(user: UserWithProperties) {
         userViewModel.userUpdated.observe(this, {
             if (it != null) {
-                updateUI(it)
+               // updateUI(it)
                 Toast.makeText(this, getString(R.string.changes_saved), Toast.LENGTH_LONG).show()
             }
         })

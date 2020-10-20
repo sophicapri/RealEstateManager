@@ -13,9 +13,8 @@ import com.sophieoc.realestatemanager.utils.formatToDollars
 import kotlinx.android.synthetic.main.item_property.view.*
 
 class PropertyListAdapter(
-        private var onPropertyClickListener: OnPropertyClickListener,
-        var glide: RequestManager,
-) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
+        private var onPropertyClickListener: OnPropertyClickListener)
+    : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
     var propertyList: ArrayList<Property> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {

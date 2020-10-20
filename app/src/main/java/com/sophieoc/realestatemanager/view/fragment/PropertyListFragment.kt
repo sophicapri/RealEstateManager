@@ -33,6 +33,11 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         fab_add_property.setOnClickListener {
             startAddPropertyActivity()
         }
+        propertyViewModel.getProperties().observe(mainContext, {
+            if (it != null) {
+                adapter.updateList(ArrayList(it))
+            }
+        })
     }
 
     private fun startAddPropertyActivity() {
@@ -45,19 +50,10 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        propertyViewModel.getProperties().observe(mainContext, {
-            if (it != null) {
-                adapter.updateList(ArrayList(it))
-            }
-        })
-    }
-
     fun configureRecyclerView(recyclerView: RecyclerView) {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = PropertyListAdapter(this, Glide.with(this))
+        adapter = PropertyListAdapter(this)
         recyclerView.adapter = adapter
     }
 

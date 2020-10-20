@@ -18,7 +18,6 @@ import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
 import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
 
 abstract class BaseActivity : AppCompatActivity() {
-    lateinit var locationManager: LocationManager
     lateinit var auth: FirebaseAuth
     val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
@@ -27,7 +26,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         auth = FirebaseAuth.getInstance()
         getLayout().first?.let { setContentView(it)}
         getLayout().second?.let { setContentView(it)}

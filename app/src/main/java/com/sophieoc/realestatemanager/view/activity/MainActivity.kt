@@ -53,7 +53,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     lateinit var binding: DialogFilterBinding
 
     companion object {
-        const val TAG = "MainActivityLog"
+        const val TAG = "LogMainActivity"
     }
 
     override fun getLayout() = Pair(R.layout.activity_main, null)

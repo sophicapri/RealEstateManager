@@ -28,7 +28,6 @@ class UserRepository(private val userDao: UserDao) {
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val user: MutableLiveData<UserWithProperties> = MutableLiveData()
         getUserFromRoom(uid, user)
-        Log.d(TAG, "getUserWithProperties: uid = $")
         if (PreferenceHelper.internetAvailable)
             getUserFromFirestore(uid, user)
         return user
@@ -70,7 +69,6 @@ class UserRepository(private val userDao: UserDao) {
         propertyCollectionRef.whereEqualTo("userId", uid).get().addOnCompleteListener { task: Task<QuerySnapshot> ->
             if (task.isSuccessful)
                 task.result?.toObjects(Property::class.java)?.let {
-                    Log.e(TAG, "getUserPropertiesFromFirestore: uid = $uid list = ${it.size}, user = ${Gson().toJson(user)}")
                     userMutable.postValue(UserWithProperties(user, it))
                 }
             else if (task.exception != null)

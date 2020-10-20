@@ -1,23 +1,15 @@
 package com.sophieoc.realestatemanager.view.fragment
 
-import android.Manifest
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,6 +24,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
+import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.activity_map.*
@@ -39,33 +32,41 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
-    private lateinit var map: GoogleMap
+    private var map: GoogleMap? = null
     private var propertyDetailView: View? = null
     private lateinit var currentLocation: Location
+    lateinit var mapActivity: MapActivity
     val propertyViewModel by viewModel<PropertyViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mapActivity = requireActivity() as MapActivity
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
-        refocus_btn.setOnClickListener {
+        refocus_btn.setOnClickListener { _ ->
             focusMap(currentLocation)
         }
+        Log.d(TAG, "onViewCreated: ")
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        map.uiSettings.isZoomGesturesEnabled = true
-        map.uiSettings.isMyLocationButtonEnabled = false
-        map.uiSettings.isMapToolbarEnabled = false
-        map.setOnInfoWindowClickListener { marker: Marker? ->
-            if (marker != null)
-                startPropertyDetail(marker)
+        googleMap.uiSettings.isZoomGesturesEnabled = true
+        googleMap.uiSettings.isMyLocationButtonEnabled = false
+        googleMap.uiSettings.isMapToolbarEnabled = false
+        googleMap.setOnInfoWindowClickListener { marker: Marker? ->
+            if (marker != null) startPropertyDetail(marker)
         }
+        map = googleMap
         if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(LONGITUDE_PROPERTY))
             getLocationFromIntent()?.let { it -> focusMap(it) }
         fetchLastLocation()
         initMarkers()
+        Log.d(TAG, "onMapReady: ")
     }
 
     private fun startPropertyDetail(marker: Marker) {
@@ -104,46 +105,40 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         handleMapSize()
-    }
-
-    private fun fetchLastLocation() {
-        val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext)
-        if (context?.let { ActivityCompat.checkSelfPermission(it, ACCESS_FINE_LOCATION) } != PackageManager.PERMISSION_GRANTED) {
-            //ActivityCompat.requestPermissions(arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE)
-            ActivityCompat.requestPermissions(mainContext, arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE)
-            return
-        }
-        checkLocationEnabled()
-        val task: Task<Location?> = fusedLocationProviderClient.lastLocation
-        task.addOnCompleteListener { getLocationTask: Task<Location?> ->
-            if (getLocationTask.isSuccessful) {
-                val currentLocation = getLocationTask.result
-                if (currentLocation != null) {
-                    this.currentLocation = currentLocation
-                    if (getLocationFromIntent() == null)
-                        focusMap(currentLocation)
-                }
-            } else {
-                Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
+        map?.let {
+            if (!it.isMyLocationEnabled && mapActivity.isLocationEnabled()) {
+                fetchLastLocation()
             }
         }
     }
 
-    private fun checkLocationEnabled() {
-        if (!mainContext.locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            AlertDialog.Builder(mainContext)
-                    .setMessage(R.string.gps_network_not_enabled)
-                    .setPositiveButton(R.string.open_location_settings) { _, _ ->
-                        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), REQUEST_CODE_LOCATION)
+    @SuppressLint("MissingPermission")
+    fun fetchLastLocation() {
+        if (mapActivity.isLocationEnabled()) {
+            map?.isMyLocationEnabled = true
+            val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mapActivity)
+            val task: Task<Location?> = fusedLocationProviderClient.lastLocation
+            task.addOnCompleteListener { getLocationTask: Task<Location?> ->
+                if (getLocationTask.isSuccessful) {
+                    val currentLocation = getLocationTask.result
+                    if (currentLocation != null) {
+                        this.currentLocation = currentLocation
+                        if (getLocationFromIntent() == null)
+                            focusMap(currentLocation)
+                    } else {
+                        // add progress bar // -> update view after location enabled
+                        mapActivity.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
                     }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+                }else {
+                    Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
     private fun focusMap(currentLocation: Location) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5F))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5F))
     }
 
     override fun getLayout() = Pair(R.layout.fragment_map, null)
@@ -153,32 +148,17 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            map.isMyLocationEnabled = true
-            fetchLastLocation()
-        } else
-            Log.d(TAG, "onRequestPermissionsResult: refused")
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_LOCATION && resultCode == Activity.RESULT_OK
-                && mainContext.locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            fetchLastLocation()
-    }
-
     private fun initMarkers() {
-        propertyViewModel.getProperties().observe(mainContext, Observer { propertyList ->
+        propertyViewModel.getProperties().observe(mapActivity, { propertyList ->
             if (propertyList != null)
                 for (property in propertyList) {
                     if (property.address.toString().isNotEmpty()) {
-                        val latLng = property.address.toLatLng(mainContext)
+                        val latLng = property.address.toLatLng(mapActivity)
                         if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
-                            val marker: Marker = map.addMarker(MarkerOptions().title(property.type.toString())
+                            val marker: Marker? = map?.addMarker(MarkerOptions().title(property.type.toString())
                                     .position(latLng)
                                     .icon(R.drawable.ic_baseline_house_24.toBitmap(resources)))
-                            marker.tag = property.id
+                            marker?.tag = property.id
                         }
 
                     }
@@ -192,14 +172,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         val lat = extras?.get(LATITUDE_PROPERTY) as Double?
         val lng = extras?.get(LONGITUDE_PROPERTY) as Double?
         val location = Location("")
-        lat?.let {  location.latitude = it }
-        lng?.let {  location.longitude = it }
+        lat?.let { location.latitude = it }
+        lng?.let { location.longitude = it }
         lat?.let { return location }
         return null
-    }
-
-    companion object {
-        const val REQUEST_CODE_LOCATION = 321
-        const val REQUEST_CODE = 123
     }
 }

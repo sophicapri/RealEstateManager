@@ -3,7 +3,6 @@ package com.sophieoc.realestatemanager.view.fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -35,20 +34,16 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
     private var propertyDetailView: View? = null
     private lateinit var currentLocation: Location
-    lateinit var mapActivity: MapActivity
     val propertyViewModel by viewModel<PropertyViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mapActivity = requireActivity() as MapActivity
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener { _ ->
-            if (mapActivity.isLocationEnabled())
-            focusMap(currentLocation)
+            if (mainContext.isLocationEnabled()) {
+               // focusMap(currentLocation)
+                fetchLastLocation()
+            }
         }
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
@@ -64,7 +59,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         map = googleMap
         if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(LONGITUDE_PROPERTY))
             getLocationFromIntent()?.let { it -> focusMap(it) }
-        fetchLastLocation()
         initMarkers()
         Log.d(TAG, "onMapReady: ")
     }
@@ -105,29 +99,25 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         handleMapSize()
-        map?.let {
-            if (!it.isMyLocationEnabled && mapActivity.isLocationEnabled()) {
-                fetchLastLocation()
-            }
-        }
+        if (getLocationFromIntent() == null)
+        fetchLastLocation()
     }
 
     @SuppressLint("MissingPermission")
     fun fetchLastLocation() {
-        if (mapActivity.isLocationEnabled()) {
+        if (mainContext.isLocationEnabled()) {
             map?.isMyLocationEnabled = true
-            val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mapActivity)
+            val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext)
             val task: Task<Location?> = fusedLocationProviderClient.lastLocation
             task.addOnCompleteListener { getLocationTask: Task<Location?> ->
                 if (getLocationTask.isSuccessful) {
                     val currentLocation = getLocationTask.result
                     if (currentLocation != null) {
                         this.currentLocation = currentLocation
-                        if (getLocationFromIntent() == null)
-                            focusMap(currentLocation)
+                        focusMap(currentLocation)
                     } else {
                         // add progress bar // -> update view after location enabled
-                        mapActivity.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
+                        mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
                     }
                 }else {
                     Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
@@ -147,11 +137,11 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun initMarkers() {
-        propertyViewModel.getProperties().observe(mapActivity, { propertyList ->
+        propertyViewModel.getProperties().observe(mainContext, { propertyList ->
             if (propertyList != null)
                 for (property in propertyList) {
                     if (property.address.toString().isNotEmpty()) {
-                        val latLng = property.address.toLatLng(mapActivity)
+                        val latLng = property.address.toLatLng(mainContext)
                         if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
                             val marker: Marker? = map?.addMarker(MarkerOptions().title(property.type.toString())
                                     .position(latLng)

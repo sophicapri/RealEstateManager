@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.PointOfInterest
+import com.sophieoc.realestatemanager.utils.formatToDollarsOrMeters
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter.PointOfInterestViewHolder
 import kotlinx.android.synthetic.main.item_point_of_interest.view.*
 
@@ -24,9 +25,10 @@ class PointOfInterestAdapter(private val pointOfInterests: List<PointOfInterest>
 
     inner class PointOfInterestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(pointOfInterest: PointOfInterest) {
-            itemView.type_and_name_poi.text = "${pointOfInterest.type}: ${pointOfInterest.name} "
+            itemView.type_and_name_poi.text = itemView.context.getString(R.string.poi_type_name,
+                    pointOfInterest.type, pointOfInterest.name )
             itemView.address_poi.text = pointOfInterest.address
-            itemView.distance.text = "${pointOfInterest.distance}m away"
+            itemView.distance.text = itemView.context.getString(R.string.distance_format, pointOfInterest.distance.formatToDollarsOrMeters())
 
         }
     }

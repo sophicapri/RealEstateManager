@@ -17,7 +17,7 @@ class PicturesAdapter(var onDeletePictureListener: OnDeletePictureListener, var 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val itemBinding: ItemEditPhotoPropertyBinding = ItemEditPhotoPropertyBinding.inflate(layoutInflater, parent, false)
+        val itemBinding = ItemEditPhotoPropertyBinding.inflate(layoutInflater, parent, false)
         itemBinding.executePendingBindings()
         return PicturesViewHolder(itemBinding)
     }

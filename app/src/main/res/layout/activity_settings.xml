@@ -21,7 +21,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/ic_baseline_arrow_white_24"
             app:title="Settings"
-            android:onClick="onBackPressed"
             app:titleTextColor="@color/white" />
 
         <ImageView

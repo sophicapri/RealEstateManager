@@ -1,402 +1,454 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
+    <data>
+        <import type="android.view.View"/>
+        <import type="java.util.Locale"/>
+        <import type="com.sophieoc.realestatemanager.utils.ExtensionsKt"/>
+        <variable
+            name="viewPagerForSpringDots"
+            type="androidx.viewpager2.widget.ViewPager2"/>
+        <variable
+            name="pictureDescription"
+            type="android.widget.TextView" />
+        <variable
+            name="user"
+            type="com.sophieoc.realestatemanager.model.User" />
+        <variable
+            name="userViewModel"
+            type="com.sophieoc.realestatemanager.viewmodel.UserViewModel" />
+        <variable
+            name="property"
+            type="com.sophieoc.realestatemanager.model.Property" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="350dp">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/shadow_collapsing_toolbar"
-                app:layout_collapseMode="pin" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/shadow_collapsing_toolbar_bottom"
-                android:layout_gravity="bottom"/>
-
-            <TextView
-                android:id="@+id/pic_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="25dp"
-                tools:text="Front of the house"
-                app:layout_collapseMode="parallax"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/property_detail_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_baseline_arrow_white_24" />
-
-            <TextView
-                android:id="@+id/property_availability"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                tools:text="SOLD"
-                app:layout_collapseMode="pin"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-            <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
-                android:id="@+id/spring_dots_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="10dp"
-                app:dampingRatio="0.5"
-                app:dotsColor="@color/white"
-                app:layout_collapseMode="parallax"
-                app:dotsSize="10dp"
-                app:dotsSpacing="3dp"
-                app:dotsStrokeColor="@color/white"
-                app:dotsStrokeWidth="1dp"
-                app:layout_constraintBottom_toBottomOf="@+id/view_pager"
-                app:layout_constraintEnd_toEndOf="@+id/view_pager"
-                app:layout_constraintStart_toStartOf="@+id/view_pager"
-                app:stiffness="300" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/ic_dollar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:text="$ "
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/price_property"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2,222,500"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@id/ic_dollar"
-                app:layout_constraintTop_toTopOf="@+id/ic_dollar" />
-
-            <TextView
-                android:id="@+id/type_property"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                tools:text="House"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/price_property"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/price_property" />
-
-            <TextView
-                android:id="@+id/address_property"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="720 Grager Ave, Manhattan 10320"
-                android:textColor="@android:color/secondary_text_light"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/type_property"
-                app:layout_constraintStart_toStartOf="@+id/ic_dollar"
-                app:layout_constraintTop_toBottomOf="@+id/price_property" />
-
-            <ImageView
-                android:id="@+id/ic_bed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:srcCompat="@drawable/ic_outline_king_bed_24"
-                app:layout_constraintStart_toStartOf="@+id/address_property"
-                app:layout_constraintTop_toBottomOf="@+id/address_property"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/nbr_of_beds_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                tools:text="2"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
-                app:layout_constraintStart_toEndOf="@+id/ic_bed"
-                app:layout_constraintTop_toTopOf="@+id/ic_bed" />
-
-            <ImageView
-                android:id="@+id/ic_bath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:srcCompat="@drawable/ic_baseline_bathtub_24"
-                app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
-                app:layout_constraintTop_toTopOf="@+id/ic_bed"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/nbr_of_bath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                tools:text="1"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
-                app:layout_constraintStart_toEndOf="@+id/ic_bath"
-                app:layout_constraintTop_toTopOf="@+id/ic_bath" />
-
-            <ImageView
-                android:id="@+id/ic_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_room"
-                android:layout_marginStart="16dp"
-                app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
-                app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/nbr_of_rooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="4"
-                android:layout_marginStart="5dp"
-                android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@id/ic_room"
-                app:layout_constraintTop_toTopOf="@id/ic_room"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_room"/>
-
-            <ImageView
-                android:id="@+id/ic_surface"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:srcCompat="@drawable/ic_size_24"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_room"
-                app:layout_constraintStart_toEndOf="@+id/nbr_of_rooms"
-                app:layout_constraintTop_toTopOf="@+id/ic_room"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/surface"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                tools:text="300"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
-                app:layout_constraintStart_toEndOf="@+id/ic_surface" />
-
-            <TextView
-                android:id="@+id/sqft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/sqft"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/surface"
-                app:layout_constraintStart_toEndOf="@+id/surface" />
-
-            <ImageView
-                android:id="@+id/ic_profile_picture"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_profile_no_pic"
-                app:layout_constraintBottom_toBottomOf="@+id/map_container"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/map_container" />
-
-            <TextView
-                android:id="@+id/title_agent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/agent_title"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/username"
-                app:layout_constraintStart_toEndOf="@+id/ic_profile_picture"
-                app:layout_constraintTop_toTopOf="@+id/ic_profile_picture" />
-
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                tools:text="Maria GONZALES"
-                android:clickable="true"
-                android:layout_marginEnd="10dp"
-                android:textColor="@android:color/secondary_text_light"
-                app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
-                app:layout_constraintEnd_toStartOf="@+id/map_container"
-                app:layout_constraintStart_toStartOf="@+id/title_agent"
-                app:layout_constraintTop_toBottomOf="@+id/title_agent"
-                android:focusable="true" />
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/map_container"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="16dp"
-                app:cameraZoom="13"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sqft"
-                app:liteMode="true"
-                app:mapType="normal"/>
-
-            <ImageButton
-                android:id="@+id/btn_map_fullscreen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/map_container"
-                app:layout_constraintTop_toTopOf="@+id/map_container"
-                app:srcCompat="@drawable/ic_baseline_fullscreen_24" />
-
-            <TextView
-                android:id="@+id/title_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/description_title_no_dot"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map_container" />
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="16dp"
-                tools:text="Some text and some text here over there and some more text"
-                android:textColor="@android:color/secondary_text_light"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_description" />
-
-            <TextView
-                android:id="@+id/title_point_of_interest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/point_of_interests_title"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description" />
-
-            <LinearLayout
-                android:id="@+id/recycler_view_container"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/background_rectangle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_point_of_interest"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    app:adapter="@{property.photos}"
+                    app:pageChangeListener="@{property.photos}"
+                    app:bindToView="@{pictureDescription}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbarSize="2dp"
-                    android:scrollbarStyle="insideOverlay"
-                    android:scrollbars="vertical"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/item_point_of_interest" />
-            </LinearLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/date_on_market"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                tools:text="On the market since 20/07/2020"
-                android:textColor="@color/white"
-                android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler_view_container" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@drawable/shadow_collapsing_toolbar"
+                    app:layout_collapseMode="pin" />
 
-            <TextView
-                android:id="@+id/date_sold"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/shadow_collapsing_toolbar_bottom"
+                    android:layout_gravity="bottom" />
+
+                <TextView
+                    android:id="@+id/pic_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginBottom="25dp"
+                    tools:text="Front of the house"
+                    app:layout_collapseMode="parallax"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/property_detail_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/ic_baseline_arrow_white_24" />
+
+                <TextView
+                    android:id="@+id/property_availability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@{property.availability.s.toUpperCase(Locale.ROOT)}"
+                    tools:text="SOLD"
+                    app:layout_collapseMode="pin"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+                    android:id="@+id/spring_dots_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginBottom="10dp"
+                    app:dampingRatio="0.5"
+                    android:visibility="@{property.photos.size() &lt;= 1 ? View.GONE : View.VISIBLE }"
+                    app:setViewPager="@{viewPagerForSpringDots}"
+                    app:dotsColor="@color/white"
+                    app:layout_collapseMode="parallax"
+                    app:dotsSize="10dp"
+                    app:dotsSpacing="3dp"
+                    app:dotsStrokeColor="@color/white"
+                    app:dotsStrokeWidth="1dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+                    app:layout_constraintEnd_toEndOf="@+id/view_pager"
+                    app:layout_constraintStart_toStartOf="@+id/view_pager"
+                    app:stiffness="300" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="30dp"
-                tools:text="Sold on 20/07/2020"
-                android:textColor="@color/white"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_on_market" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_edit_property"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        app:srcCompat="@drawable/ic_baseline_edit_24"
-        android:theme="@style/MyFABWhite"
-        app:layout_anchor="@id/container"
-        app:layout_anchorGravity="end|bottom"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/ic_dollar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/ic_dollar"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/price_property"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="2,222,500"
+                    app:dollarFormat="@{property.price}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/ic_dollar"
+                    app:layout_constraintTop_toTopOf="@+id/ic_dollar" />
+
+                <TextView
+                    android:id="@+id/type_property"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    tools:text="House"
+                    android:text="@{property.type.s}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/price_property"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/price_property" />
+
+                <TextView
+                    android:id="@+id/address_property"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="720 Grager Ave, Manhattan 10320"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="16sp"
+                    android:text="@{property.address.toString()}"
+                    app:layout_constraintEnd_toEndOf="@+id/type_property"
+                    app:layout_constraintStart_toStartOf="@+id/ic_dollar"
+                    app:layout_constraintTop_toBottomOf="@+id/price_property" />
+
+                <ImageView
+                    android:id="@+id/ic_bed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:srcCompat="@drawable/ic_outline_king_bed_24"
+                    app:layout_constraintStart_toStartOf="@+id/address_property"
+                    app:layout_constraintTop_toBottomOf="@+id/address_property"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/nbr_of_beds_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    tools:text="2"
+                    android:text="@{String.valueOf(property.numberOfBedrooms)}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
+                    app:layout_constraintStart_toEndOf="@+id/ic_bed"
+                    app:layout_constraintTop_toTopOf="@+id/ic_bed" />
+
+                <ImageView
+                    android:id="@+id/ic_bath"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/ic_baseline_bathtub_24"
+                    app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
+                    app:layout_constraintTop_toTopOf="@+id/ic_bed"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/nbr_of_bath"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    tools:text="1"
+                    android:text="@{String.valueOf(property.numberOfBathrooms)}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
+                    app:layout_constraintStart_toEndOf="@+id/ic_bath"
+                    app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+
+                <ImageView
+                    android:id="@+id/ic_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_room"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
+                    app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/nbr_of_rooms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="4"
+                    android:text="@{String.valueOf(property.numberOfRooms)}"
+                    android:layout_marginStart="5dp"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/ic_room"
+                    app:layout_constraintTop_toTopOf="@id/ic_room"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_room" />
+
+                <ImageView
+                    android:id="@+id/ic_surface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/ic_size_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_room"
+                    app:layout_constraintStart_toEndOf="@+id/nbr_of_rooms"
+                    app:layout_constraintTop_toTopOf="@+id/ic_room"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/surface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    tools:text="300"
+                    android:text="@{String.valueOf(property.surface)}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
+                    app:layout_constraintStart_toEndOf="@+id/ic_surface" />
+
+                <TextView
+                    android:id="@+id/sqft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/sqft"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/surface"
+                    app:layout_constraintStart_toEndOf="@+id/surface" />
+
+                <ImageView
+                    android:id="@+id/ic_profile_picture"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:imageUrl="@{user.urlPhoto}"
+                    android:onClick="startUserActivity"
+                    android:layout_marginStart="16dp"
+                    tools:src="@drawable/ic_profile_no_pic"
+                    app:layout_constraintBottom_toBottomOf="@+id/map_container"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/map_container" />
+
+                <TextView
+                    android:id="@+id/title_agent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/agent_title"
+                    android:textColor="@color/white"
+                    android:onClick="startUserActivity"
+                    app:layout_constraintBottom_toTopOf="@+id/username"
+                    app:layout_constraintStart_toEndOf="@+id/ic_profile_picture"
+                    app:layout_constraintTop_toTopOf="@+id/ic_profile_picture" />
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="Maria GONZALES"
+                    android:clickable="true"
+                    android:onClick="startUserActivity"
+                    android:text="@{user.username}"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@android:color/secondary_text_light"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
+                    app:layout_constraintEnd_toStartOf="@+id/map_container"
+                    app:layout_constraintStart_toStartOf="@+id/title_agent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_agent"
+                    android:focusable="true" />
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/map_container"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="16dp"
+                    app:cameraZoom="13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sqft"
+                    app:liteMode="true"
+                    app:mapType="normal" />
+
+                <ImageButton
+                    android:id="@+id/btn_map_fullscreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:onClick="startMapActivity"
+                    app:layout_constraintEnd_toEndOf="@+id/map_container"
+                    app:layout_constraintTop_toTopOf="@+id/map_container"
+                    app:srcCompat="@drawable/ic_baseline_fullscreen_24" />
+
+                <TextView
+                    android:id="@+id/title_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/description_title_no_dot"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/map_container" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="16dp"
+                    tools:text="Some text and some text here over there and some more text"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="16sp"
+                    android:text="@{property.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title_description" />
+
+                <TextView
+                    android:id="@+id/title_point_of_interest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/point_of_interests_title"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/description" />
+
+                <LinearLayout
+                    android:id="@+id/recycler_view_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/background_rectangle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_point_of_interest"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:fadeScrollbars="false"
+                        android:scrollbarSize="2dp"
+                        android:scrollbarStyle="insideOverlay"
+                        android:scrollbars="vertical"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_point_of_interest" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/date_on_market"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    tools:text="On the market since 20/07/2020"
+                    android:textColor="@color/white"
+                    android:textStyle="italic"
+                    android:text="@{String.format(@string/on_the_market_since, ExtensionsKt.toStringFormat(property.dateOnMarket))}"
+                    android:visibility="@{property.dateOnMarket == null ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_container" />
+
+                <TextView
+                    android:id="@+id/date_sold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="30dp"
+                    tools:text="Sold on 20/07/2020"
+                    android:textColor="@color/white"
+                    android:text="@{String.format(@string/sold_since, ExtensionsKt.toStringFormat(property.dateSold))}"
+                    android:visibility="@{property.dateSold == null ? View.GONE : View.VISIBLE}"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/date_on_market" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_edit_property"
+            app:checkUser="@{user.uid}"
+            app:withCurrentUser="@{userViewModel.currentUser.user.uid}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:onClick="startEditPropertyActivity"
+            app:srcCompat="@drawable/ic_baseline_edit_24"
+            android:theme="@style/MyFABWhite"
+            app:layout_anchor="@id/container"
+            app:layout_anchorGravity="end|bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

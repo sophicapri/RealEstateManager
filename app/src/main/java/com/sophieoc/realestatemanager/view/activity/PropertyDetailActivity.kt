@@ -28,4 +28,16 @@ class PropertyDetailActivity : BaseActivity() {
         }
         finish()
     }
+
+    fun startMapActivity(view: View) {
+        fragmentPropertyDetail.startMapActivity()
+    }
+
+    fun startEditPropertyActivity(view: View){
+        fragmentPropertyDetail.startEditPropertyActivity()
+    }
+
+    fun startUserActivity(view: View) {
+        fragmentPropertyDetail.startUserActivity()
+    }
 }

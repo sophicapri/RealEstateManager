@@ -51,7 +51,7 @@ class SettingsActivity : BaseActivity() {
                 currentUser = it
             }
         })
-        Log.d(TAG, "onCreate: ")
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
         super.onCreate(savedInstanceState)
     }
 
@@ -153,11 +153,6 @@ class SettingsActivity : BaseActivity() {
     private fun hideSoftKeyboard(view: View) {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-
-    fun onBackPressed(view: View) {
-        onBackPressed()
     }
 
     companion object {

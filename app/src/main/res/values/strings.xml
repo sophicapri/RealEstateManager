@@ -74,6 +74,9 @@
     <string name="my_properties">My properties</string>
     <string name="agent_properties">"%s's properties"</string>
     <string name="agent_title">Agent</string>
-    <string name="underline"><u>%s</u></string>
+    <string name="underline">"<u>%s</u>"</string>
     <string name="no_properties_in_db">No properties were found in the database. You can add one by clicking on the plus button below.</string>
+    <string name="image_property_description">image property</string>
+    <string name="poi_type_name">"%1$s: %2$s"</string>
+    <string name="distance_format">"%sm away"</string>
 </resources>

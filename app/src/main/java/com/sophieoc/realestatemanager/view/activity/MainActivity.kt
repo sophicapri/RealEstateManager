@@ -141,8 +141,8 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         }
         binding.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
         binding.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
-        binding.minPrice.text = getString(R.string.dollar_value, binding.rangeSliderPrice.values.first().toInt().formatToDollars())
-        binding.maxPrice.text = getString(R.string.dollar_value, binding.rangeSliderPrice.values.last().toInt().formatToDollars())
+        binding.minPrice.text = getString(R.string.dollar_value, binding.rangeSliderPrice.values.first().toInt().formatToDollarsOrMeters())
+        binding.maxPrice.text = getString(R.string.dollar_value, binding.rangeSliderPrice.values.last().toInt().formatToDollarsOrMeters())
         binding.minSurface.text = getString(R.string.sqft_value, binding.rangeSliderSurface.values.first().toInt())
         binding.maxSurface.text = getString(R.string.sqft_value, binding.rangeSliderSurface.values.last().toInt())
         binding.nbrOfPicInput.addTextChangedListener(getTextWatcher())
@@ -153,9 +153,9 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
     private fun getPriceSliderListener() = RangeSlider.OnChangeListener { slider, value, _ ->
         if (slider.activeThumbIndex == 0)
-            binding.minPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollars())
+            binding.minPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollarsOrMeters())
         else
-            binding.maxPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollars())
+            binding.maxPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollarsOrMeters())
     }
 
     private fun getSurfaceSliderListener() = RangeSlider.OnChangeListener { slider, value, _ ->

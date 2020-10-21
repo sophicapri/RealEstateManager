@@ -30,20 +30,21 @@ fun Int.toBitmap(resources: Resources?): BitmapDescriptor? {
     return BitmapDescriptorFactory.fromBitmap(bitmap)
 }
 
-fun Int.formatToDollars(): String? {
+fun Int.formatToDollarsOrMeters(): String? {
     return NumberFormat.getNumberInstance(Locale.US).format(this)
 }
 
-fun LatLng.toStringFormat(): String{
+fun LatLng.toStringFormat(): String {
     return "$latitude,$longitude"
 }
 
-fun Date.toStringFormat(): String {
+fun Date?.toStringFormat(): String {
     val dateFormat: DateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
-    return dateFormat.format(this)
+    this?.let { return dateFormat.format(this) }
+    return ""
 }
 
-fun String.toDate() : Date?{
+fun String.toDate(): Date? {
     val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
     return formatter.parse(this)
 }

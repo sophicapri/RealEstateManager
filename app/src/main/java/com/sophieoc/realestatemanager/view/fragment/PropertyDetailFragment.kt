@@ -3,14 +3,12 @@ package com.sophieoc.realestatemanager.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,31 +19,34 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
-import com.sophieoc.realestatemanager.model.Photo
+import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
 import com.sophieoc.realestatemanager.model.PointOfInterest
-import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
-import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.fragment_property_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 
 class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
-    var property: Property = Property()
     private var map: GoogleMap? = null
     private var propertyMarker: MarkerOptions? = null
-    private var latLngProperty = LatLng(0.0,0.0)
-    val propertyViewModel by viewModel<PropertyViewModel>()
-    val userViewModel by viewModel<UserViewModel>()
+    private var latLngProperty = LatLng(0.0, 0.0)
+    private val propertyViewModel by viewModel<PropertyViewModel>()
+    private val userViewModel by viewModel<UserViewModel>()
+    lateinit var binding: FragmentPropertyDetailBinding
 
-    override fun getLayout() = Pair(R.layout.fragment_property_detail, null)
+    override fun getLayout() = Pair(null, binding.root)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_detail, container, false)
+        binding.userViewModel = userViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
+    }
 
     override fun onResume() {
         super.onResume()
@@ -54,6 +55,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             mainContext.intent.hasExtra(PROPERTY_ID) -> getPropertyIdFromIntent(mainContext.intent.extras)
             else -> displayNoPropertyFragment()
         }
+        initMap()
     }
 
     private fun getPropertyIdFromArgs(arguments: Bundle?) {
@@ -81,54 +83,48 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private fun getProperty(propertyId: String) {
         propertyViewModel.getPropertyById(propertyId).observe(mainContext, {
             it?.let {
-                property = it
+                binding.property = it
+                binding.notifyChange()
                 map?.let { addMarkerAndZoom() }
-                bindViews(it)
+                bindViews()
             }
         })
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
     }
 
-    private fun bindViews(property: Property) {
-        val listPhotos = if (property.photos.isNotEmpty()) property.photos
-        else
-            arrayListOf(Photo(NO_IMAGE_AVAILABLE_PROPERTY, ""))
-        view_pager.adapter = SliderAdapter(listPhotos, Glide.with(this))
-        pageChangeListener()
-        if (property.photos.isNotEmpty()) spring_dots_indicator.setViewPager2(view_pager)
-        if (property.photos.size == 1) spring_dots_indicator.visibility = GONE
-        property_availability.text = property.availability.s.toUpperCase(Locale.ROOT)
-        price_property.text = property.price.formatToDollars()
-        type_property.text = property.type.s
-        address_property.text = property.address.toString()
-        nbr_of_beds_input.text = property.numberOfBedrooms.toString()
-        nbr_of_bath.text = property.numberOfBathrooms.toString()
-        nbr_of_rooms.text = property.numberOfRooms.toString()
-        surface.text = property.surface.toString()
-        showAgentInCharge(property)
-        description.text = property.description
-        configureRecyclerView(property.pointOfInterests)
-        displayDate()
-        fab_edit_property.setOnClickListener { startEditPropertyActivity(property.id) }
-        property_detail_toolbar?.setNavigationOnClickListener {
-            mainContext.onBackPressed()
+    // add progress bar
+    private fun initMap() {
+        if (mainContext.isLocationEnabled()) {
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
+            mapFragment?.getMapAsync(this)
         }
-        btn_map_fullscreen.setOnClickListener { startMapActivity() }
     }
 
-    private fun startMapActivity() {
+    private fun bindViews() {
+        binding.pictureDescription = binding.picDescription
+        binding.viewPagerForSpringDots = binding.viewPager
+        binding.propertyDetailToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
+        binding.property?.let {
+            configureRecyclerView(it.pointOfInterests)
+            userViewModel.getUserById(it.userId).observe(this, { agent ->
+                agent?.let {
+                    binding.user = agent.user
+                }
+            })
+        }
+    }
+
+    fun startMapActivity() {
         val intent = Intent(mainContext, MapActivity::class.java)
         intent.putExtra(LATITUDE_PROPERTY, latLngProperty.latitude)
         intent.putExtra(LONGITUDE_PROPERTY, latLngProperty.longitude)
-        intent.putExtra(PROPERTY_ID, property.id)
+        intent.putExtra(PROPERTY_ID, binding.property?.id)
         startActivity(intent)
     }
 
-    private fun startEditPropertyActivity(propertyId: String) {
+    fun startEditPropertyActivity() {
         if (Utils.isConnectionAvailable(mainContext)) {
             val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
-            intent.putExtra(PROPERTY_ID, propertyId)
+            intent.putExtra(PROPERTY_ID, binding.property?.id)
             startActivity(intent)
             PreferenceHelper.internetAvailable = true
         } else {
@@ -137,67 +133,27 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    private fun pageChangeListener() {
-        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                if (property.photos.isNotEmpty())
-                    pic_description.text = property.photos[position].description
-            }
-        })
-    }
-
-    private fun displayDate() {
-        if (property.dateOnMarket != null) {
-            date_on_market.text = getString(R.string.on_the_market_since, property.dateOnMarket?.toStringFormat())
-            date_sold.visibility = GONE
-        }else {
-            date_sold.text = getString(R.string.sold_since, property.dateSold?.toStringFormat())
-            date_on_market.visibility = GONE
-        }
-    }
-
-    private fun showAgentInCharge(property: Property) {
-        userViewModel.getUserById(property.userId).observe(this, { agent ->
-            agent?.let {
-                Glide.with(this)
-                        .load(it.user.urlPhoto)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(ic_profile_picture)
-                username.text = getString(R.string.underline, it.user.username)
-                ic_profile_picture.setOnClickListener { _ -> startUserActivity(it.user.uid) }
-                username.setOnClickListener { _ -> startUserActivity(it.user.uid) }
-                title_agent.setOnClickListener { _ -> startUserActivity(it.user.uid) }
-                userViewModel.currentUser.observe(mainContext, { loggedUser ->
-                    loggedUser?.let{
-                        if (loggedUser.user.uid != agent.user.uid) fab_edit_property.visibility = GONE
-                        else fab_edit_property.visibility = VISIBLE
-                    }
-                })
-            }
-        })
-    }
-
-    private fun startUserActivity(uid: String) {
+    fun startUserActivity() {
         val intent = Intent(mainContext, UserPropertiesActivity::class.java)
-        intent.putExtra(USER_ID, uid)
+        intent.putExtra(USER_ID, binding.property?.userId)
         startActivity(intent)
     }
 
     private fun configureRecyclerView(pointOfInterests: List<PointOfInterest>) {
-        recycler_view_point_of_interest.setHasFixedSize(true)
-        recycler_view_point_of_interest.layoutManager = LinearLayoutManager(context)
-        recycler_view_point_of_interest.adapter = PointOfInterestAdapter(pointOfInterests)
+        val recyclerView = binding.recyclerViewPointOfInterest
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = PointOfInterestAdapter(pointOfInterests)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        if (property.address.toString().isNotEmpty() && propertyMarker == null)
+        if (propertyMarker == null)
             addMarkerAndZoom()
     }
 
     private fun addMarkerAndZoom() {
-        latLngProperty = property.address.toLatLng(mainContext)
+        binding.property?.let { latLngProperty = it.address.toLatLng(mainContext) }
         if (latLngProperty.toString() != LAT_LNG_NOT_FOUND) {
             map?.clear()
             propertyMarker = MarkerOptions().position(latLngProperty)

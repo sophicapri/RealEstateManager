@@ -25,6 +25,7 @@ import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
 import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
+import kotlinx.android.synthetic.main.fragment_property_detail.view.*
 
 abstract class BaseActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
@@ -67,10 +68,22 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun startMapActivity(view: View) {
+        fragmentPropertyDetail.startMapActivity()
+    }
+
+    fun startEditPropertyActivity(view: View){
+        Log.d(TAG, "startEditPropertyActivity: activity = ${callingActivity?.className}  ")
+        fragmentPropertyDetail.startEditPropertyActivity()
+    }
+
+    fun startUserActivity(view: View) {
+        fragmentPropertyDetail.startUserActivity()
+    }
+
     fun configurePropertyDetailFragment() {
         val propertyDetailView = findViewById<View?>(R.id.frame_property_details)
         var fragment = supportFragmentManager.findFragmentById(R.id.frame_property_details)
-
         if (fragment == null && propertyDetailView != null) {
             fragment = fragmentPropertyDetail
             val fm = supportFragmentManager.beginTransaction()
@@ -121,5 +134,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 Log.d(MapActivity.TAG, "onRequestPermissionsResult: granted")
             } else
                 Log.d(MapActivity.TAG, "onRequestPermissionsResult: refused")
+    }
+
+    companion object{
+        const val TAG = "LogBaseActivity"
     }
 }

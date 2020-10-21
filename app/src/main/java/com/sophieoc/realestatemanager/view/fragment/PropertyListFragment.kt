@@ -2,6 +2,7 @@ package com.sophieoc.realestatemanager.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -24,12 +25,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
-    val propertyViewModel by viewModel<PropertyViewModel>()
+    private val propertyViewModel by viewModel<PropertyViewModel>()
     private lateinit var binding: FragmentPropertyListBinding
 
+    companion object{
+        const val TAG = "LogPropertyListFragment"
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_property_list, container, true)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_property_list, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,7 +44,7 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
                 if (it.isNotEmpty()) {
                     adapter.updateList(ArrayList(it))
                     binding.noPropertiesInDb.visibility = GONE
-                }else
+                } else
                     binding.noPropertiesInDb.visibility = VISIBLE
             }
         })
@@ -77,5 +81,5 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         }
     }
 
-    override fun getLayout() = Pair(R.layout.fragment_property_list, null)
+    override fun getLayout() = Pair(null, binding.root)
 }

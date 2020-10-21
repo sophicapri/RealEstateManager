@@ -20,10 +20,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
+import com.sophieoc.realestatemanager.databinding.NoPropertyClickedBinding
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
+import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
@@ -77,7 +79,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun displayNoPropertyFragment() {
         mainContext.supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_property_details, NoPropertyClickedFragment()).commit()
+                .replace(R.id.frame_property_details, NoPropertyClickedFragment(), NoPropertyClickedFragment()::class.java.simpleName).commit()
     }
 
     private fun getProperty(propertyId: String) {
@@ -103,9 +105,14 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         binding.pictureDescription = binding.picDescription
         binding.viewPagerForSpringDots = binding.viewPager
         binding.propertyDetailToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
+        binding.icProfilePicture.setOnClickListener { startUserActivity() }
+        binding.username.setOnClickListener { startUserActivity() }
+        binding.titleAgent.setOnClickListener { startUserActivity() }
+        binding.fabEditProperty.setOnClickListener { startEditPropertyActivity() }
+        binding.btnMapFullscreen.setOnClickListener { startMapActivity() }
         binding.property?.let {
             configureRecyclerView(it.pointOfInterests)
-            userViewModel.getUserById(it.userId).observe(this, { agent ->
+            userViewModel.getUserById(it.userId).observe(mainContext, { agent ->
                 agent?.let {
                     binding.user = agent.user
                 }
@@ -165,7 +172,13 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     class NoPropertyClickedFragment : BaseFragment() {
-        override fun getLayout() = Pair(R.layout.no_property_clicked, null)
+        private lateinit var binding : NoPropertyClickedBinding
+
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            binding = DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)
+            return binding.root
+        }
+        override fun getLayout() = Pair(null, binding.root)
     }
 
     companion object {

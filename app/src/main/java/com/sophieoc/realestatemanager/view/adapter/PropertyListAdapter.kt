@@ -14,7 +14,6 @@ class PropertyListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemBinding: ItemPropertyBinding = ItemPropertyBinding.inflate(layoutInflater, parent, false)
-        itemBinding.executePendingBindings()
         return PropertyViewHolder(itemBinding)
     }
 
@@ -33,7 +32,7 @@ class PropertyListAdapter(
 
     inner class PropertyViewHolder(val binding: ItemPropertyBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            itemView.setOnClickListener {
+            binding.propertyItem.setOnClickListener {
                 onPropertyClickListener.onPropertyClick(propertyList[adapterPosition].id)
             }
         }

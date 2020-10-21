@@ -79,4 +79,5 @@
     <string name="image_property_description">image property</string>
     <string name="poi_type_name">"%1$s: %2$s"</string>
     <string name="distance_format">"%sm away"</string>
+    <string name="click_on_a_property_to_open_details">Click on a property\nto open details</string>
 </resources>

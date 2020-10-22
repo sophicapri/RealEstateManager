@@ -1,9 +1,7 @@
 package com.sophieoc.realestatemanager.room_database.dao
 
 import android.database.Cursor
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.sophieoc.realestatemanager.model.Property
 import java.util.*
 

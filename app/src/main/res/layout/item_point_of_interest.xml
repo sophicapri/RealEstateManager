@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_baseline_navigate_next_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/icon_separator_point_of_interest" />
 
     <TextView
         android:id="@+id/type_and_name_poi"

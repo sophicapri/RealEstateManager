@@ -6,16 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.core.OrderBy
 import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.TIMESTAMP
-import com.sophieoc.realestatemanager.utils.Utils
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,7 +26,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
 
     fun upsert(property: Property): MutableLiveData<Property> {
         val propertyToCreate: MutableLiveData<Property> = MutableLiveData<Property>()
-        propertyCollectionRef.document(property.id).get().addOnCompleteListener(OnCompleteListener { propertyIdTask: Task<DocumentSnapshot?> ->
+        propertyCollectionRef.document(property.id).get().addOnCompleteListener { propertyIdTask: Task<DocumentSnapshot?> ->
             if (propertyIdTask.isSuccessful) {
                 if (propertyIdTask.result != null) propertyCollectionRef.document(property.id).set(property)
                         .addOnCompleteListener { propertyCreationTask: Task<Void?> ->
@@ -36,7 +37,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
                                 Log.e(TAG, " createProperty: " + propertyCreationTask.exception?.message)
                         }
             } else if (propertyIdTask.exception != null) Log.e("TAG", " createProperty: " + propertyIdTask.exception?.message)
-        })
+        }
         return propertyToCreate
     }
 

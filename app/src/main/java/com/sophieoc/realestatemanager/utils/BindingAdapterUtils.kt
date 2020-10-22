@@ -1,6 +1,5 @@
 package com.sophieoc.realestatemanager.utils
 
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

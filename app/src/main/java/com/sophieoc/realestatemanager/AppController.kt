@@ -1,9 +1,6 @@
 package com.sophieoc.realestatemanager
 
 import android.app.Application
-import android.location.Location
-import com.sophieoc.realestatemanager.model.UserWithProperties
-import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

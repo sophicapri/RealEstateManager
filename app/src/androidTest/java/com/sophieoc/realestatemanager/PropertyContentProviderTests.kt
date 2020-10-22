@@ -4,29 +4,19 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.database.Cursor
-import android.util.Log
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.provider.PropertyContentProvider
 import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.hamcrest.Matchers
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)

@@ -20,7 +20,7 @@ abstract class RealEstateDatabase : RoomDatabase() {
         // For Singleton instantiation
         @Volatile
         private var instance: RealEstateDatabase? = null
-        const val DATABASE_NAME = "RealEstate.db"
+        private const val DATABASE_NAME = "RealEstate.db"
 
         fun getInstance(context: Context): RealEstateDatabase {
             return instance ?: synchronized(this) {

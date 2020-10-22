@@ -35,7 +35,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_toStartOf="@+id/btn_save_property"
                     android:gravity="center"
-                    android:text="Add a property"
+                    android:text="@string/add_a_property_title"
                     android:textColor="@color/white" />
 
                 <ImageButton
@@ -45,8 +45,9 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:onClick="saveChanges"
-                    android:src="@drawable/ic_baseline_save_24"
-                    app:tint="@color/white" />
+                    app:srcCompat="@drawable/ic_baseline_save_24"
+                    app:tint="@color/white"
+                    android:contentDescription="@string/save_property_btn" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 

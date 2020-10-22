@@ -183,7 +183,8 @@
                     app:layout_constraintStart_toStartOf="@+id/address_property"
                     app:layout_constraintTop_toBottomOf="@+id/address_property"
                     app:srcCompat="@drawable/ic_outline_king_bed_24"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/bed_icon" />
 
                 <TextView
                     android:id="@+id/nbr_of_beds_input"
@@ -206,7 +207,8 @@
                     app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
                     app:layout_constraintTop_toTopOf="@+id/ic_bed"
                     app:srcCompat="@drawable/ic_baseline_bathtub_24"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/bath_icon" />
 
                 <TextView
                     android:id="@+id/nbr_of_bath"
@@ -229,7 +231,8 @@
                     app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
                     app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
                     app:srcCompat="@drawable/ic_room"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/room_icon" />
 
                 <TextView
                     android:id="@+id/nbr_of_rooms"
@@ -253,7 +256,8 @@
                     app:layout_constraintStart_toEndOf="@+id/nbr_of_rooms"
                     app:layout_constraintTop_toTopOf="@+id/ic_room"
                     app:srcCompat="@drawable/ic_size_24"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/surface_icon" />
 
                 <TextView
                     android:id="@+id/surface"
@@ -287,7 +291,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/map_container"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/map_container"
-                    tools:src="@drawable/ic_profile_no_pic" />
+                    tools:src="@drawable/ic_profile_no_pic"
+                    android:contentDescription="@string/profile_picture" />
 
                 <TextView
                     android:id="@+id/title_agent"
@@ -335,7 +340,8 @@
                     android:background="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/map_container"
                     app:layout_constraintTop_toTopOf="@+id/map_container"
-                    app:srcCompat="@drawable/ic_baseline_fullscreen_24" />
+                    app:srcCompat="@drawable/ic_baseline_fullscreen_24"
+                    android:contentDescription="@string/set_map_fullscreen" />
 
                 <TextView
                     android:id="@+id/title_description"

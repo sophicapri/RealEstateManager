@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.view.activity
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.DialogInterface
@@ -120,6 +121,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         return true
     }
 
+    @SuppressLint("InflateParams")
     private fun showFilterDialog() {
         val alertBuilder = AlertDialog.Builder(this, R.style.Dialog)
         val inflater = layoutInflater
@@ -129,7 +131,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         alertBuilder.setCustomTitle(view)
                 .setView(binding.root)
                 .setPositiveButton(getString(R.string.ok_btn), null)
-                .setNegativeButton(getString(R.string.cancel).toUpperCase()) { dialog, _ -> dialog.dismiss() }
+                .setNegativeButton(getString(R.string.cancel).toUpperCase(Locale.ROOT)) { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
 
         binding.selectDate.setOnClickListener { showDatePickerDialog() }
@@ -233,7 +235,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         data_searched.text = getTextToDisplay()
         btn_reset_search.setOnClickListener {
             fragmentList.resetFilter()
-            results_search_container.visibility = View.GONE
+            results_search_container.visibility = GONE
         }
     }
 

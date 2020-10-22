@@ -13,7 +13,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
@@ -31,8 +30,6 @@ import kotlinx.android.synthetic.main.activity_edit_add_property.*
 import kotlinx.android.synthetic.main.fragment_add_address.*
 import kotlinx.android.synthetic.main.fragment_add_info.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.Serializable
-import java.lang.NullPointerException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -182,7 +179,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
 
     private fun saveProperty() {
         propertyViewModel.upsertProperty()
-        propertyViewModel.propertySaved.observe(this, Observer {
+        propertyViewModel.propertySaved.observe(this, {
             it?.let {
                 //TODO : Add progress bar
                 displayNotification()

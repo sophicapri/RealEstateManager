@@ -31,7 +31,8 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     app:imageUrl="@{user.urlPhoto}"
-                    tools:srcCompat="@drawable/ic_profile_no_pic" />
+                    tools:srcCompat="@drawable/ic_profile_no_pic"
+                    android:contentDescription="@string/profile_picture" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/my_toolbar"

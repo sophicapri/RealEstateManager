@@ -1,6 +1,5 @@
 package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
 
-import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK

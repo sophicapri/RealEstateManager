@@ -16,16 +16,17 @@ import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.utils.*
+import com.sophieoc.realestatemanager.utils.PROPERTY_ID
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
+import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
 import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
-import kotlinx.android.synthetic.main.fragment_property_detail.view.*
 
 abstract class BaseActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth

@@ -15,7 +15,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/app_logo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/google_sign_in_btn"
@@ -32,12 +33,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="16dp"
-            android:contentDescription="google logo"
+            android:contentDescription="@string/google_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/fui_ic_googleg_color_24dp" />
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign in with Google"
+            android:text="@string/sign_in_with_google"
             style="@style/DrawerStyle"
             android:textColor="@color/common_google_signin_btn_text_light_default"
             android:textStyle="bold"

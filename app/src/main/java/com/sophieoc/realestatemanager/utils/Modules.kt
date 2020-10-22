@@ -1,7 +1,6 @@
 package com.sophieoc.realestatemanager.utils
 
 import android.app.Application
-import androidx.room.Room
 import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.api.PlaceService
 import com.sophieoc.realestatemanager.repository.PropertyRepository

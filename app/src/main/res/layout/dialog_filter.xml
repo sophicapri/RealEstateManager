@@ -80,7 +80,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
                 app:layout_constraintStart_toStartOf="@+id/ic_bath"
                 app:layout_constraintTop_toTopOf="@+id/title_nbr_of_beds"
-                app:srcCompat="@drawable/ic_outline_king_bed_24" />
+                app:srcCompat="@drawable/ic_outline_king_bed_24"
+                android:contentDescription="@string/bed_icon" />
 
             <EditText
                 android:id="@+id/nbr_of_beds_input"
@@ -92,7 +93,9 @@
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
                 app:layout_constraintStart_toEndOf="@+id/ic_bed"
-                app:layout_constraintTop_toTopOf="@+id/ic_bed"/>
+                app:layout_constraintTop_toTopOf="@+id/ic_bed"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/title_nbr_of_bath"
@@ -112,7 +115,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
                 app:layout_constraintStart_toEndOf="@+id/title_nbr_of_bath"
                 app:layout_constraintTop_toTopOf="@+id/title_nbr_of_bath"
-                app:srcCompat="@drawable/ic_baseline_bathtub_24" />
+                app:srcCompat="@drawable/ic_baseline_bathtub_24"
+                android:contentDescription="@string/bath_icon" />
 
             <EditText
                 android:id="@+id/nbr_of_bath_input"
@@ -124,7 +128,9 @@
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
                 app:layout_constraintStart_toEndOf="@+id/ic_bath"
-                app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+                app:layout_constraintTop_toTopOf="@+id/ic_bath"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/nbr_of_rooms_title"
@@ -147,7 +153,8 @@
                 app:layout_constraintStart_toStartOf="@+id/ic_bath"
                 app:layout_constraintTop_toTopOf="@+id/nbr_of_rooms_title"
                 app:srcCompat="@drawable/ic_room"
-                app:tint="@color/grey" />
+                app:tint="@color/grey"
+                android:contentDescription="@string/room_icon" />
 
             <EditText
                 android:id="@+id/nbr_of_rooms_input"
@@ -156,7 +163,10 @@
                 android:layout_marginStart="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_room"
                 app:layout_constraintStart_toEndOf="@+id/ic_room"
-                app:layout_constraintTop_toTopOf="@+id/ic_room" />
+                app:layout_constraintTop_toTopOf="@+id/ic_room"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor"
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/title_property_availability"
@@ -196,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
-                android:text="since :"
+                android:text="@string/since"
                 app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
                 app:layout_constraintTop_toBottomOf="@+id/availability_chip_group" />
 
@@ -220,7 +230,8 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/select_date"
                 app:layout_constraintStart_toEndOf="@+id/select_date"
-                app:layout_constraintTop_toBottomOf="@+id/availability_chip_group" />
+                app:layout_constraintTop_toBottomOf="@+id/availability_chip_group"
+                android:contentDescription="@string/delete_date" />
 
             <TextView
                 android:id="@+id/area_title"
@@ -241,7 +252,9 @@
                 android:hint="@string/city_region_or_postal_code"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/area_title"
-                app:layout_constraintTop_toBottomOf="@+id/area_title" />
+                app:layout_constraintTop_toBottomOf="@+id/area_title"
+                android:importantForAutofill="no"
+                android:inputType="text" />
 
             <TextView
                 android:id="@+id/title_price"
@@ -354,7 +367,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="With pictures"
+                android:text="@string/with_pictures"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/range_slider_surface"
                 app:layout_constraintTop_toBottomOf="@+id/min_surface" />
@@ -373,7 +386,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
-                android:text="at least:"
+                android:text="@string/at_least"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintStart_toStartOf="@+id/title_picture"
                 app:layout_constraintTop_toBottomOf="@+id/title_picture" />
@@ -387,14 +400,16 @@
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
                 app:layout_constraintStart_toEndOf="@+id/subtitle_nbr_of_pics"
-                app:layout_constraintTop_toBottomOf="@+id/title_picture" />
+                app:layout_constraintTop_toBottomOf="@+id/title_picture"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/text_view_pictures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="pictures"
+                android:text="@string/pictures"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
                 app:layout_constraintStart_toEndOf="@+id/nbr_of_pic_input"
@@ -405,7 +420,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Close to: "
+                android:text="@string/close_to"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/title_picture"
                 app:layout_constraintTop_toBottomOf="@+id/subtitle_nbr_of_pics" />
@@ -415,7 +430,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Park"
+                android:text="@string/park"
                 app:layout_constraintStart_toStartOf="@+id/title_point_of_interest"
                 app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest" />
 
@@ -447,7 +462,7 @@
                 android:id="@+id/poi_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Store"
+                android:text="@string/store"
                 app:layout_constraintStart_toEndOf="@+id/checkbox_park"
                 app:layout_constraintTop_toTopOf="@+id/poi_park" />
 
@@ -455,7 +470,7 @@
                 android:id="@+id/poi_school"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="School"
+                android:text="@string/school"
                 app:layout_constraintStart_toEndOf="@+id/checkbox_store"
                 app:layout_constraintTop_toTopOf="@+id/poi_store" />
 

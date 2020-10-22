@@ -3,7 +3,6 @@ package com.sophieoc.realestatemanager.model.json_to_java
 import android.location.Location
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.sophieoc.realestatemanager.AppController
 
 class PlaceDetails {
     @SerializedName("address_components")

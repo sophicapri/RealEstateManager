@@ -34,7 +34,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:src="@drawable/ic_profile_no_pic" />
+            tools:src="@drawable/ic_profile_no_pic"
+            android:contentDescription="@string/profile_picture" />
 
         <TextView
             android:id="@+id/touch_to_update_pic"

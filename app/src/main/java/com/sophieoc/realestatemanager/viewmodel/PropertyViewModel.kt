@@ -8,7 +8,6 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
-import java.io.Serializable
 
 class PropertyViewModel(private val propertySource: PropertyRepository) : ViewModel() {
     var property = Property()

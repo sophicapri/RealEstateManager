@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sophieoc.realestatemanager">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -36,12 +37,12 @@
         <activity android:name=".view.activity.PropertyDetailActivity" />
         <activity android:name=".view.activity.EditOrAddPropertyActivity" />
         <activity android:name=".view.activity.SettingsActivity" />
-        <!-- <activity android:name=".view.activity.SplashScreenActivity" /> -->
 
         <provider
             android:authorities="com.sophieoc.realestatemanager.provider"
             android:name=".provider.PropertyContentProvider"
-            android:exported="true" />
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 </application>
 
     </manifest>

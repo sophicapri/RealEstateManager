@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class PropertyContentProvider() : ContentProvider() {
+class PropertyContentProvider : ContentProvider() {
     override fun onCreate(): Boolean {
         return true
     }
@@ -26,11 +26,9 @@ class PropertyContentProvider() : ContentProvider() {
            try {
                userId = ContentUris.parseId(uri)
                cursor = RealEstateDatabase.getInstance(it).propertyDao().getPropertiesWithCursorForUser(userId.toString())
-               Log.d("TESTS:", "query: try")
            }
            catch (e: NumberFormatException){
                cursor = RealEstateDatabase.getInstance(it).propertyDao().getPropertiesWithCursor()
-               Log.d("TESTS:", "query: try NOT SUCCESFULL");
            }
             cursor?.setNotificationUri(it.contentResolver, uri)
             return cursor
@@ -48,7 +46,6 @@ class PropertyContentProvider() : ContentProvider() {
             CoroutineScope(Dispatchers.IO).launch {
                 if (values != null) {
                     id = RealEstateDatabase.getInstance(it).propertyDao().upsert(Property.fromContentValues(values))
-                    println("TESTS: insert: id value = $id ")
                 } else
                 if (id != 0L)
                     it.contentResolver?.notifyChange(uri, null)

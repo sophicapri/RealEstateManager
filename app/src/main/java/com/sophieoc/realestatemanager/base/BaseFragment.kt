@@ -4,16 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BaseObservable
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
-import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.utils.toDate
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 abstract class BaseFragment: Fragment()  {
     val today = Utils.todayDate.toDate()

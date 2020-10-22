@@ -42,7 +42,7 @@ class SettingsActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
         binding.userViewModel = userViewModel
         binding.lifecycleOwner = this
-        userViewModel.userUpdated.observe(this, { it ->
+        userViewModel.userUpdated.observe(this, {
             if (it != null) {
                 if (dataChanged) {
                     Toast.makeText(this, getString(R.string.changes_saved), Toast.LENGTH_LONG).show()

@@ -1,22 +1,15 @@
 package com.sophieoc.realestatemanager.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.sophieoc.realestatemanager.BR
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentUserPropertiesBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.USER_ID
-import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddAddressFragment
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.activity_edit_add_property.*
-import kotlinx.android.synthetic.main.fragment_user_properties.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserPropertiesFragment : PropertyListFragment() {

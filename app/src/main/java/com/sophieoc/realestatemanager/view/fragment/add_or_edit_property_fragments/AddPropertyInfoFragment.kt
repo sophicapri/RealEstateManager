@@ -8,14 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Button
 import android.widget.DatePicker
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.databinding.FragmentAddInfoBinding
-import com.sophieoc.realestatemanager.utils.*
+import com.sophieoc.realestatemanager.utils.PropertyAvailability
+import com.sophieoc.realestatemanager.utils.PropertyType
+import com.sophieoc.realestatemanager.utils.toStringFormat
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import kotlinx.android.synthetic.main.fragment_add_info.*
 import java.text.DateFormat

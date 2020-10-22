@@ -1,19 +1,12 @@
 package com.sophieoc.realestatemanager.model
 
 import android.content.ContentValues
-import android.util.Log
-import android.widget.EditText
-import android.widget.TextView
-import androidx.databinding.BaseObservable
-import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
-import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -78,7 +71,7 @@ data class Property(
         return "id = $id / type = $type / price = $price / surface = $surface / beds = $numberOfBedrooms" +
                 " / baths = $numberOfBathrooms / description = $description / " +
                 "availability = ${availability.s} / " +
-                "address = ${address.toString()} / " +
+                "address = $address / " +
                 "nbr of photos = ${photos.size}" +
                 "user_id = $userId"
     }

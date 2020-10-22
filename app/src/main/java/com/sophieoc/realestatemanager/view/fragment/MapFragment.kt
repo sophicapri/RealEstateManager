@@ -23,7 +23,6 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
-import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.activity_map.*
@@ -39,9 +38,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
-        refocus_btn.setOnClickListener { _ ->
+        refocus_btn.setOnClickListener {
             if (mainContext.isLocationEnabled()) {
-               // focusMap(currentLocation)
                 fetchLastLocation()
             }
         }

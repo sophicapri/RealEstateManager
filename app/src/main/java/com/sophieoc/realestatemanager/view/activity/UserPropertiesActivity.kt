@@ -1,8 +1,6 @@
 package com.sophieoc.realestatemanager.view.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.lifecycle.Observer
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 

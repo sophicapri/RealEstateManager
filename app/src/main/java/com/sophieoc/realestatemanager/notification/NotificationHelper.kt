@@ -30,7 +30,7 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_logo_no_text)
+                .setSmallIcon(R.drawable.ic_notification_icon)
     }
 
     companion object {

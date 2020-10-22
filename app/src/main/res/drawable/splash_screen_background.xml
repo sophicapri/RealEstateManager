@@ -4,13 +4,10 @@
     android:layout_height="match_parent">
 
     <item android:drawable="@drawable/gradient_white"/>
-
     <!-- Set the Background Image-->
-
-    <item
-        android:gravity="center">
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/ic_logo_no_white" />
+    <item android:gravity="center">
+        <selector >
+            <item android:drawable="@drawable/ic_app_logo_with_text"/>
+        </selector>
     </item>
 </layer-list>

@@ -48,7 +48,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     private var filterDialog: AlertDialog? = null
     private val filterViewModel by viewModel<FilterViewModel>()
     private val userViewModel by viewModel<UserViewModel>()
-    lateinit var binding: DialogFilterBinding
+    lateinit var bindingFilter: DialogFilterBinding
 
     companion object {
         const val TAG = "LogMainActivity"
@@ -127,27 +127,27 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         val inflater = layoutInflater
         val view = inflater.inflate(R.layout.title_filter_dialog, null)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
+        bindingFilter = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
         alertBuilder.setCustomTitle(view)
-                .setView(binding.root)
+                .setView(bindingFilter.root)
                 .setPositiveButton(getString(R.string.ok_btn), null)
                 .setNegativeButton(getString(R.string.cancel).toUpperCase(Locale.ROOT)) { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
 
-        binding.selectDate.setOnClickListener { showDatePickerDialog() }
-        binding.btnDeleteDate.setOnClickListener {
-            binding.selectDate.text = getString(R.string.click_to_select_a_date)
+        bindingFilter.selectDate.setOnClickListener { showDatePickerDialog() }
+        bindingFilter.btnDeleteDate.setOnClickListener {
+            bindingFilter.selectDate.text = getString(R.string.click_to_select_a_date)
             filterViewModel.entries.dateOnMarket = null
             filterViewModel.entries.dateSold = null
-            binding.btnDeleteDate.visibility = GONE
+            bindingFilter.btnDeleteDate.visibility = GONE
         }
-        binding.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
-        binding.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
-        binding.minPrice.text = getString(R.string.dollar_value, binding.rangeSliderPrice.values.first().toInt().formatToDollarsOrMeters())
-        binding.maxPrice.text = getString(R.string.dollar_value, binding.rangeSliderPrice.values.last().toInt().formatToDollarsOrMeters())
-        binding.minSurface.text = getString(R.string.sqft_value, binding.rangeSliderSurface.values.first().toInt())
-        binding.maxSurface.text = getString(R.string.sqft_value, binding.rangeSliderSurface.values.last().toInt())
-        binding.nbrOfPicInput.addTextChangedListener(getTextWatcher())
+        bindingFilter.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
+        bindingFilter.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
+        bindingFilter.minPrice.text = getString(R.string.dollar_value, bindingFilter.rangeSliderPrice.values.first().toInt().formatToDollarsOrMeters())
+        bindingFilter.maxPrice.text = getString(R.string.dollar_value, bindingFilter.rangeSliderPrice.values.last().toInt().formatToDollarsOrMeters())
+        bindingFilter.minSurface.text = getString(R.string.sqft_value, bindingFilter.rangeSliderSurface.values.first().toInt())
+        bindingFilter.maxSurface.text = getString(R.string.sqft_value, bindingFilter.rangeSliderSurface.values.last().toInt())
+        bindingFilter.nbrOfPicInput.addTextChangedListener(getTextWatcher())
         filterDialog = alertBuilder.create()
         filterDialog?.setOnShowListener(this)
         filterDialog?.show()
@@ -155,16 +155,16 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
     private fun getPriceSliderListener() = RangeSlider.OnChangeListener { slider, value, _ ->
         if (slider.activeThumbIndex == 0)
-            binding.minPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollarsOrMeters())
+            bindingFilter.minPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollarsOrMeters())
         else
-            binding.maxPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollarsOrMeters())
+            bindingFilter.maxPrice.text = getString(R.string.dollar_value, value.toInt().formatToDollarsOrMeters())
     }
 
     private fun getSurfaceSliderListener() = RangeSlider.OnChangeListener { slider, value, _ ->
         if (slider.activeThumbIndex == 0)
-            binding.minSurface.text = getString(R.string.sqft_value, value.toInt())
+            bindingFilter.minSurface.text = getString(R.string.sqft_value, value.toInt())
         else
-            binding.maxSurface.text = getString(R.string.sqft_value, value.toInt())
+            bindingFilter.maxSurface.text = getString(R.string.sqft_value, value.toInt())
     }
 
     private fun getTextWatcher() = object : TextWatcher {
@@ -176,18 +176,21 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
         override fun afterTextChanged(s: Editable?) {
             if (!s.isNullOrBlank())
-                binding.checkboxPictures.isChecked = true
+                bindingFilter.checkboxPictures.isChecked = true
         }
 
     }
 
     private fun startSearch(dialog: DialogInterface?) {
         getEntries()
+        displayResultsText()
         filterViewModel.startSearch()
         filterViewModel.resultSearch.observe(this, {
             it?.let {
-                displayResultsText()
                 fragmentList.updateList(ArrayList(it))
+                if (it.isEmpty()) no_properties_found.visibility = VISIBLE
+                else no_properties_found.visibility = GONE
+                filterViewModel.entries = EntriesFilter()
             }
             if (it == null) {
                 Log.d(TAG, "startSearch: property list is null")
@@ -197,36 +200,34 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     }
 
     private fun getEntries() {
-        val chipType = filterDialog?.findViewById<Chip>(binding.typeChipGroup.checkedChipId)
+        val chipType = filterDialog?.findViewById<Chip>(bindingFilter.typeChipGroup.checkedChipId)
         chipType?.let { filterViewModel.entries.propertyType = it.text.toString() }
-        if (binding.nbrOfBedsInput.text.toString().isNotEmpty())
-            filterViewModel.entries.nbrOfBed = binding.nbrOfBedsInput.text.toString().toInt()
-        if (binding.nbrOfBathInput.text.toString().isNotEmpty())
-            filterViewModel.entries.nbrOfBath = binding.nbrOfBathInput.text.toString().toInt()
-        if (binding.nbrOfRoomsInput.text.toString().isNotEmpty())
-            filterViewModel.entries.nbrOfRoom = binding.nbrOfRoomsInput.text.toString().toInt()
-        val chipAvailability = filterDialog?.findViewById<Chip>(binding.availabilityChipGroup.checkedChipId)
+        if (bindingFilter.nbrOfBedsInput.text.toString().isNotEmpty())
+            filterViewModel.entries.nbrOfBed = bindingFilter.nbrOfBedsInput.text.toString().toInt()
+        if (bindingFilter.nbrOfBathInput.text.toString().isNotEmpty())
+            filterViewModel.entries.nbrOfBath = bindingFilter.nbrOfBathInput.text.toString().toInt()
+        if (bindingFilter.nbrOfRoomsInput.text.toString().isNotEmpty())
+            filterViewModel.entries.nbrOfRoom = bindingFilter.nbrOfRoomsInput.text.toString().toInt()
+        val chipAvailability = filterDialog?.findViewById<Chip>(bindingFilter.availabilityChipGroup.checkedChipId)
         chipAvailability?.let {
-            if (it.id == R.id.for_sale)
-                filterViewModel.entries.propertyAvailability = PropertyAvailability.AVAILABLE.toString()
-            else
-                filterViewModel.entries.propertyAvailability = it.text.toString()
+            if (it.id == R.id.for_sale) filterViewModel.entries.propertyAvailability = PropertyAvailability.AVAILABLE.toString()
+            else filterViewModel.entries.propertyAvailability = it.text.toString()
         }
-        if (binding.areaInput.text.toString().isNotEmpty())
-            filterViewModel.entries.area = binding.areaInput.text.toString().trim()
-        filterViewModel.entries.priceMin = binding.rangeSliderPrice.values.first().toInt()
-        filterViewModel.entries.priceMax = binding.rangeSliderPrice.values.last().toInt()
-        filterViewModel.entries.surfaceMin = binding.rangeSliderSurface.values.first().toInt()
-        filterViewModel.entries.surfaceMax = binding.rangeSliderSurface.values.last().toInt()
-        if (binding.checkboxPictures.isChecked)
+        if (bindingFilter.areaInput.text.toString().isNotEmpty())
+            filterViewModel.entries.area = bindingFilter.areaInput.text.toString().trim()
+        filterViewModel.entries.priceMin = bindingFilter.rangeSliderPrice.values.first().toInt()
+        filterViewModel.entries.priceMax = bindingFilter.rangeSliderPrice.values.last().toInt()
+        filterViewModel.entries.surfaceMin = bindingFilter.rangeSliderSurface.values.first().toInt()
+        filterViewModel.entries.surfaceMax = bindingFilter.rangeSliderSurface.values.last().toInt()
+        if (bindingFilter.checkboxPictures.isChecked)
             filterViewModel.entries.nbrOfPictures = MINIMUM_PICTURES
-        if (binding.nbrOfPicInput.text.toString().isNotEmpty())
-            filterViewModel.entries.nbrOfPictures = binding.nbrOfPicInput.text.toString().trim().toInt()
-        if (binding.checkboxPark.isChecked)
+        if (bindingFilter.nbrOfPicInput.text.toString().isNotEmpty())
+            filterViewModel.entries.nbrOfPictures = bindingFilter.nbrOfPicInput.text.toString().trim().toInt()
+        if (bindingFilter.checkboxPark.isChecked)
             filterViewModel.entries.park = PARK
-        if (binding.checkboxStore.isChecked)
+        if (bindingFilter.checkboxStore.isChecked)
             filterViewModel.entries.store = STORE
-        if (binding.checkboxSchool.isChecked)
+        if (bindingFilter.checkboxSchool.isChecked)
             filterViewModel.entries.school = SCHOOL
     }
 
@@ -242,7 +243,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     override fun onDismiss(dialog: DialogInterface) {
         if (dialog === filterDialog) {
             filterDialog = null
-            filterViewModel.entries = EntriesFilter()
         }
     }
 
@@ -271,18 +271,18 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US)
         val selectedDate = GregorianCalendar(year, month, dayOfMonth).time
-        binding.selectDate.text = df.format(selectedDate)
-        binding.selectDate.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight))
-        binding.btnDeleteDate.visibility = VISIBLE
-        val chip = filterDialog?.findViewById<Chip>(binding.availabilityChipGroup.checkedChipId)
+        bindingFilter.selectDate.text = df.format(selectedDate)
+        bindingFilter.selectDate.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight))
+        bindingFilter.btnDeleteDate.visibility = VISIBLE
+        val chip = filterDialog?.findViewById<Chip>(bindingFilter.availabilityChipGroup.checkedChipId)
         if (chip != null) {
-            if (chip.id == R.id.for_sale)
+            if (chip.id == R.id.for_sale) {
                 filterViewModel.entries.dateOnMarket = selectedDate
-            else
+            } else
                 filterViewModel.entries.dateSold = selectedDate
         } else {
             filterViewModel.entries.dateOnMarket = selectedDate
-            binding.availabilityChipGroup.check(R.id.for_sale)
+            bindingFilter.availabilityChipGroup.check(R.id.for_sale)
         }
     }
 
@@ -300,7 +300,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         startNewActivity(EditOrAddPropertyActivity::class.java)
     }
 
-
     private fun signOut() {
         auth.signOut()
         finishAffinity()
@@ -308,6 +307,39 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     }
 
     private fun getTextToDisplay(): String {
-        return ""
+        val entries = filterViewModel.entries
+        var msg = ""
+        entries.propertyType?.let { msg += "$it - " }
+        entries.nbrOfRoom?.let { msg += getString(R.string.nbr_of_room_filter, it) }
+        entries.nbrOfBed?.let { msg += getString(R.string.nbr_of_bed_filter, it) }
+        entries.nbrOfBath?.let { msg += getString(R.string.nbr_of_bath_filter, it) }
+        entries.propertyAvailability?.let {
+            msg += if (it == PropertyAvailability.AVAILABLE.name) "${PropertyAvailability.AVAILABLE.s} "
+            else "${PropertyAvailability.SOLD.s} "
+            entries.dateOnMarket?.let { date -> msg += getString(R.string.since_date, date.toStringFormat()) }
+            entries.dateSold?.let { date -> msg += getString(R.string.since_date, date.toStringFormat()) }
+            msg += "- "
+        }
+        entries.area?.let { msg += "$it - " }
+        if (entries.priceMin != null && entries.priceMax != null) {
+            msg += getString(R.string.price_between, entries.priceMin?.formatToDollarsOrMeters(), entries.priceMax?.formatToDollarsOrMeters())
+        }
+        if (entries.surfaceMin != null && entries.surfaceMax != null) {
+            msg += getString(R.string.sqft_between, entries.surfaceMin, entries.surfaceMax)
+        }
+        entries.nbrOfPictures?.let { msg += getString(R.string.with_x_pictures, it) }
+        if (entries.park != null || entries.store != null || entries.school != null) {
+            msg += getString(R.string.close_to_poi)
+            entries.park?.let { msg += it }
+            entries.store?.let {
+                msg += if (entries.park != null) ", $it"
+                else it
+            }
+            entries.school?.let {
+                msg += if (entries.park != null) ", $it"
+                else it
+            }
+        }
+        return msg
     }
 }

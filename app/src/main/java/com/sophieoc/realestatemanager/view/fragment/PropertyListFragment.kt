@@ -38,6 +38,10 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView(binding.recyclerViewProperties)
+        getPropertiesList()
+    }
+
+    private fun getPropertiesList() {
         propertyViewModel.getProperties().observe(mainContext, {
             if (it != null) {
                 if (it.isNotEmpty()) {
@@ -61,7 +65,7 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
     }
 
     fun resetFilter(){
-        onResume()
+        getPropertiesList()
     }
 
     override fun onPropertyClick(propertyId: String) {

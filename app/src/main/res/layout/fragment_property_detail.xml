@@ -285,8 +285,8 @@
 
                 <ImageView
                     android:id="@+id/ic_profile_picture"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     app:imageUrl="@{user.urlPhoto}"
                     android:layout_marginStart="16dp"
                     tools:src="@drawable/ic_profile_no_pic"
@@ -301,8 +301,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/agent_title"
+                    app:layout_constraintVertical_bias="0.4"
                     android:textColor="@color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/username"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                     app:layout_constraintStart_toEndOf="@+id/ic_profile_picture"
                     app:layout_constraintTop_toTopOf="@+id/ic_profile_picture" />
 
@@ -310,16 +311,15 @@
                     android:id="@+id/username"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    tools:text="Maria GONZALES"
-                    android:clickable="true"
-                    android:text="@{user.username}"
                     android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@{user.username}"
                     android:textColor="@android:color/secondary_text_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                     app:layout_constraintEnd_toStartOf="@+id/map_container"
                     app:layout_constraintStart_toStartOf="@+id/title_agent"
                     app:layout_constraintTop_toBottomOf="@+id/title_agent"
-                    android:focusable="true" />
+                    tools:text="Maria GONZALES" />
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/map_container"

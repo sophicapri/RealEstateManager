@@ -108,7 +108,16 @@
     <string name="set_map_fullscreen">set map fullscreen</string>
     <string name="delete_picture">delete picture</string>
     <string name="icon_separator_point_of_interest">icon separator point of interest</string>
-    <string name="results_for">Results for:</string>
+    <string name="results_for">Results for properties:</string>
     <string name="reset_filter">RESET</string>
     <string name="search_title">Search</string>
+    <string name="since_date">"since %s "</string>
+    <string name="price_between">"From $%1$s and $%2$s - "</string>
+    <string name="sqft_between">"From %1$d to %2$d sqft - "</string>
+    <string name="with_x_pictures">"With at least %d pictures - "</string>
+    <string name="close_to_poi">"Close to "</string>
+    <string name="nbr_of_room_filter">"%d room(s) - "</string>
+    <string name="nbr_of_bed_filter">"%d bedroom(s) - "</string>
+    <string name="nbr_of_bath_filter">"%d bathroom(s) - "</string>
+    <string name="no_properties_found_matching">No properties found matching</string>
 </resources>

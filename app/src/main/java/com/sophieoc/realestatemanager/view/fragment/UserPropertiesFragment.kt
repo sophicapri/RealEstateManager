@@ -39,12 +39,13 @@ class UserPropertiesFragment : PropertyListFragment() {
 
     private fun initView(it: UserWithProperties) {
         binding.user = it.user
+        binding.myToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
         configureRecyclerView(binding.recyclerViewUserProperties)
         adapter.updateList(ArrayList(it.properties))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //override to not call super.onViewCreated in PropertyListFragment
+        //Override to not call super.onViewCreated in PropertyListFragment
     }
     
     companion object{

@@ -12,7 +12,6 @@ import com.sophieoc.realestatemanager.utils.AbsentLiveData
 class FilterViewModel (private val propertySource: PropertyRepository): ViewModel() {
     var entries = EntriesFilter()
     private val _entriesToSearch: MutableLiveData<EntriesFilter> = MutableLiveData()
-    private var filterActive = false
     val resultSearch: LiveData<List<Property>> = Transformations.switchMap(_entriesToSearch) {
         if (_entriesToSearch.value != null) {
             propertySource.getFilteredProperties(
@@ -27,6 +26,5 @@ class FilterViewModel (private val propertySource: PropertyRepository): ViewMode
 
     fun startSearch() {
         _entriesToSearch.value = entries
-        filterActive = true
     }
 }

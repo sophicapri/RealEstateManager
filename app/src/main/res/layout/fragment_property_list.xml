@@ -27,6 +27,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/results_search_container"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_property" />
+
+            <TextView
+                android:id="@+id/no_properties_found"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintVertical_bias="0.3"
+                android:text="@string/no_properties_found_matching"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/results_search_container" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

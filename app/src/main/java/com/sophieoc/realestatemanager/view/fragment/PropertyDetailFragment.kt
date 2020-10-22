@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -46,6 +47,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_detail, container, false)
         binding.userViewModel = userViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.progressBar.visibility = VISIBLE
         return binding.root
     }
 
@@ -79,13 +81,13 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private fun displayNoPropertyFragment() {
         mainContext.supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_property_details, NoPropertyClickedFragment(), NoPropertyClickedFragment()::class.java.simpleName).commit()
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun getProperty(propertyId: String) {
         propertyViewModel.getPropertyById(propertyId).observe(mainContext, {
             it?.let {
                 binding.property = it
-                binding.notifyChange()
                 map?.let { addMarkerAndZoom() }
                 bindViews()
             }
@@ -114,6 +116,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             userViewModel.getUserById(it.userId).observe(mainContext, { agent ->
                 agent?.let {
                     binding.user = agent.user
+                    binding.progressBar.visibility = View.GONE
                 }
             })
         }

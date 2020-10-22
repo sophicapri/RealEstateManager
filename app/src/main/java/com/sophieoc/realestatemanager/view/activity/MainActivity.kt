@@ -236,6 +236,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         data_searched.text = getTextToDisplay()
         btn_reset_search.setOnClickListener {
             fragmentList.resetFilter()
+            no_properties_found.visibility = GONE
             results_search_container.visibility = GONE
         }
     }

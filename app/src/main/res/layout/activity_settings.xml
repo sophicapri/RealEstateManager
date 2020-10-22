@@ -53,15 +53,13 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            tools:text="Maria GONZALES"
+            android:layout_marginStart="16dp"
             android:onClick="editUsername"
             android:text="@{userViewModel.currentUser.user.username}"
             app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
-            app:layout_constraintEnd_toStartOf="@+id/profile_picture"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/profile_picture" />
+            app:layout_constraintTop_toTopOf="@+id/profile_picture"
+            tools:text="Maria GONZALES" />
 
         <TextView
             android:id="@+id/touch_to_update_username"
@@ -132,5 +130,16 @@
                 app:srcCompat="@drawable/ic_close_black_24dp" />
         </LinearLayout>
         <!-- END EDIT USERNAME-->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

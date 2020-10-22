@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -110,6 +111,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
             PreferenceHelper.internetAvailable = false
             checkDates()
             if (checkInputs()) {
+                binding.progressBar.visibility = VISIBLE
                 propertyViewModel.property.userId = PreferenceHelper.currentUserId
                 updatePointOfInterestsAndSave(propertyViewModel.property)
             } else
@@ -181,17 +183,15 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         propertyViewModel.upsertProperty()
         propertyViewModel.propertySaved.observe(this, {
             it?.let {
-                //TODO : Add progress bar
-                displayNotification()
                 onBackPressed()
+                binding.progressBar.visibility = GONE
+                displayNotification()
             }
         })
     }
 
     private fun checkInputs(): Boolean {
-        var valid = checkAddressPage(propertyViewModel.property)
-        valid = checkMainInfoPage(propertyViewModel.property)
-        return valid
+        return checkAddressPage(propertyViewModel.property).also { checkMainInfoPage(propertyViewModel.property) }
     }
 
     private fun checkMainInfoPage(property: Property): Boolean {

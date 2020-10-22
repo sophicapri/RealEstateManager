@@ -44,6 +44,7 @@ class SettingsActivity : BaseActivity() {
         binding.lifecycleOwner = this
         userViewModel.userUpdated.observe(this, {
             if (it != null) {
+                binding.progressBar.visibility = GONE
                 if (dataChanged) {
                     Toast.makeText(this, getString(R.string.changes_saved), Toast.LENGTH_LONG).show()
                     dataChanged = false
@@ -72,6 +73,7 @@ class SettingsActivity : BaseActivity() {
     fun saveUsername(view: View?) {
         val editTextUsername = binding.editUsernameContainer.edit_text_username
         if (editTextUsername.text.toString().isNotEmpty()) {
+            binding.progressBar.visibility = VISIBLE
             currentUser.user.username = editTextUsername.text.toString()
             binding.editUsernameContainer.visibility = GONE
             hideSoftKeyboard(binding.editTextUsername)
@@ -136,11 +138,6 @@ class SettingsActivity : BaseActivity() {
             Toast.makeText(this, getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
             PreferenceHelper.internetAvailable = false
         }
-    }
-
-    // todo: add progress bar
-    private fun updateUser(user: UserWithProperties) {
-
     }
 
     private fun showSoftKeyboard(view: View) {

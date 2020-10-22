@@ -38,7 +38,7 @@
                     android:text="@string/add_a_property_title"
                     android:textColor="@color/white" />
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_save_property"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="60dp"
@@ -57,6 +57,17 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_bar"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="@+id/frame_add_property"
+            app:layout_constraintEnd_toEndOf="@+id/frame_add_property"
+            app:layout_constraintStart_toStartOf="@+id/frame_add_property"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

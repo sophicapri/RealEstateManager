@@ -5,7 +5,6 @@ import android.content.ContentUris
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import android.util.Log
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
 import kotlinx.coroutines.CoroutineScope

@@ -73,15 +73,6 @@ abstract class BaseActivity : AppCompatActivity() {
         fragmentPropertyDetail.startMapActivity()
     }
 
-    fun startEditPropertyActivity(view: View){
-        Log.d(TAG, "startEditPropertyActivity: activity = ${callingActivity?.className}  ")
-        fragmentPropertyDetail.startEditPropertyActivity()
-    }
-
-    fun startUserActivity(view: View) {
-        fragmentPropertyDetail.startUserActivity()
-    }
-
     fun configurePropertyDetailFragment() {
         val propertyDetailView = findViewById<View?>(R.id.frame_property_details)
         var fragment = supportFragmentManager.findFragmentById(R.id.frame_property_details)

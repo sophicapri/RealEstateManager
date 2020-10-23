@@ -126,14 +126,20 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         val alertBuilder = AlertDialog.Builder(this, R.style.Dialog)
         val inflater = layoutInflater
         val view = inflater.inflate(R.layout.title_filter_dialog, null)
-
+        filterViewModel.entries = EntriesFilter()
         bindingFilter = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
+        bindFilterViews()
         alertBuilder.setCustomTitle(view)
                 .setView(bindingFilter.root)
                 .setPositiveButton(getString(R.string.ok_btn), null)
                 .setNegativeButton(getString(R.string.cancel).toUpperCase(Locale.ROOT)) { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
+        filterDialog = alertBuilder.create()
+        filterDialog?.setOnShowListener(this)
+        filterDialog?.show()
+    }
 
+    private fun bindFilterViews() {
         bindingFilter.selectDate.setOnClickListener { showDatePickerDialog() }
         bindingFilter.btnDeleteDate.setOnClickListener {
             bindingFilter.selectDate.text = getString(R.string.click_to_select_a_date)
@@ -148,9 +154,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         bindingFilter.minSurface.text = getString(R.string.sqft_value, bindingFilter.rangeSliderSurface.values.first().toInt())
         bindingFilter.maxSurface.text = getString(R.string.sqft_value, bindingFilter.rangeSliderSurface.values.last().toInt())
         bindingFilter.nbrOfPicInput.addTextChangedListener(getTextWatcher())
-        filterDialog = alertBuilder.create()
-        filterDialog?.setOnShowListener(this)
-        filterDialog?.show()
     }
 
     private fun getPriceSliderListener() = RangeSlider.OnChangeListener { slider, value, _ ->
@@ -181,22 +184,11 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
 
     }
 
-    private fun startSearch(dialog: DialogInterface?) {
+    private fun startSearch() {
         getEntries()
         displayResultsText()
         filterViewModel.startSearch()
-        filterViewModel.resultSearch.observe(this, {
-            it?.let {
-                fragmentList.updateList(ArrayList(it))
-                if (it.isEmpty()) no_properties_found.visibility = VISIBLE
-                else no_properties_found.visibility = GONE
-                filterViewModel.entries = EntriesFilter()
-            }
-            if (it == null) {
-                Log.d(TAG, "startSearch: property list is null")
-            }
-            dialog?.dismiss()
-        })
+        displayResults()
     }
 
     private fun getEntries() {
@@ -241,6 +233,20 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         }
     }
 
+    fun displayResults() {
+        filterViewModel.resultSearch.observe(this, {
+            it?.let {
+                fragmentList.updateList(ArrayList(it))
+                if (it.isEmpty()) no_properties_found.visibility = VISIBLE
+                else no_properties_found.visibility = GONE
+            }
+            if (it == null) {
+                Log.d(TAG, "startSearch: property list is null")
+            }
+            filterDialog?.dismiss()
+        })
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
         if (dialog === filterDialog) {
             filterDialog = null
@@ -251,7 +257,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         if (filterDialog != null) {
             val positiveButton = filterDialog?.getButton(AlertDialog.BUTTON_POSITIVE)
             positiveButton?.setOnClickListener {
-                startSearch(filterDialog)
+                startSearch()
             }
             val negativeButton = filterDialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
             negativeButton?.setOnClickListener { filterDialog?.dismiss() }

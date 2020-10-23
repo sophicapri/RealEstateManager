@@ -16,9 +16,11 @@ import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
+import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import kotlinx.android.synthetic.main.fragment_property_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -39,6 +41,13 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView(binding.recyclerViewProperties)
         getPropertiesList()
+        binding.swipeRefreshView.setOnRefreshListener {
+            if (results_search_container.visibility == VISIBLE) {
+                (mainContext as MainActivity).displayResults()
+            } else
+                getPropertiesList()
+            binding.swipeRefreshView.isRefreshing = false
+        }
     }
 
     private fun getPropertiesList() {

@@ -52,7 +52,8 @@ class PropertyContentProviderTests {
         // TEST
         Assert.assertThat(cursor, Matchers.notNullValue())
         Assert.assertThat(cursor?.count, Matchers.`is`(expectedCount))
-        Assert.assertThat(cursor?.moveToFirst(), Matchers.`is`(true))
+        // moveToLast() because the properties are in descending order)
+        Assert.assertThat(cursor?.moveToLast(), Matchers.`is`(true))
         Assert.assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("description")), Matchers.`is`("This is a property"))
         Assert.assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("availability")), Matchers.`is`(Gson().toJson(PropertyAvailability.AVAILABLE)))
         Assert.assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("photos")), Matchers.`is`(Gson().toJson(listOf(Photo(), Photo()))))

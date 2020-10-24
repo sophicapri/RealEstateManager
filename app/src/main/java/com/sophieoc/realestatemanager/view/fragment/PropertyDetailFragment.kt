@@ -130,8 +130,8 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         startActivity(intent)
     }
 
-    fun startEditPropertyActivity() {
-        if (Utils.isConnectionAvailable(mainContext)) {
+    private fun startEditPropertyActivity() {
+        if (Utils.isInternetAvailable(mainContext)) {
             val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
             intent.putExtra(PROPERTY_ID, binding.property?.id)
             startActivity(intent)
@@ -142,7 +142,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    fun startUserActivity() {
+    private fun startUserActivity() {
         val intent = Intent(mainContext, UserPropertiesActivity::class.java)
         intent.putExtra(USER_ID, binding.property?.userId)
         startActivity(intent)

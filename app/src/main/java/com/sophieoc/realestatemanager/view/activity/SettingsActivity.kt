@@ -123,7 +123,7 @@ class SettingsActivity : BaseActivity() {
     private fun saveImage(data: Uri) {
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
-        if (Utils.isConnectionAvailable(this)) {
+        if (Utils.isInternetAvailable(this)) {
             imageRef.putFile(data)
                     .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->

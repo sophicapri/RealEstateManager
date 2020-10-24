@@ -6,7 +6,7 @@ import org.junit.Test
 import java.util.*
 import kotlin.math.roundToInt
 
-class UtilsTest {
+class UtilsUnitTest {
     @Test
     fun todayDatePattern_isCorrect() {
         val todayDate = Calendar.getInstance()

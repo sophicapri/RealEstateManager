@@ -294,7 +294,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     }
 
     private fun startMapActivity() {
-        if (Utils.isConnectionAvailable(this)) {
+        if (Utils.isInternetAvailable(this)) {
             startNewActivity(MapActivity::class.java)
             PreferenceHelper.internetAvailable = true
         } else {

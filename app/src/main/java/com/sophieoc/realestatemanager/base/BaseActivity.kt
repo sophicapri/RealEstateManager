@@ -50,7 +50,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun checkConnection() {
-        if (!Utils.isConnectionAvailable(this)){
+        if (!Utils.isInternetAvailable(this)){
             Snackbar.make(window.decorView.findViewById(android.R.id.content)
                     , getString(R.string.offline_mode_on), LENGTH_SHORT).show()
             PreferenceHelper.internetAvailable = false

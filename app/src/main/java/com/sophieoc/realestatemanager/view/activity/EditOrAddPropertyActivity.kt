@@ -107,7 +107,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     }
 
     fun saveChanges(view: View) {
-        if (Utils.isConnectionAvailable(this)) {
+        if (Utils.isInternetAvailable(this)) {
             PreferenceHelper.internetAvailable = false
             checkDates()
             if (checkInputs()) {

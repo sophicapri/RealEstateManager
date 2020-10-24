@@ -112,7 +112,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
         val arrayPhoto = ArrayList(rootActivity.propertyViewModel.property.photos)
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
-        if (Utils.isConnectionAvailable(mainContext)) {
+        if (Utils.isInternetAvailable(mainContext)) {
             imageRef.putFile(data)
                     .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->

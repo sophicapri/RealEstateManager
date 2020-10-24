@@ -3,7 +3,6 @@ package com.sophieoc.realestatemanager.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.wifi.WifiManager
 import android.os.Build
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -45,18 +44,19 @@ object Utils {
     /**
      * Vérification de la connexion réseau
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-     * @param context
+     * @param
      * @return
      */
-    fun isInternetAvailable(context: Context): Boolean {
+  /*  fun isInternetAvailable(context: Context): Boolean {
         val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         return wifi.isWifiEnabled
     }
 
+   */
     /**
     *   Improved check for internet connection
     */
-    fun isConnectionAvailable(context: Context): Boolean {
+    fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val isConnected: Boolean
         isConnected = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {

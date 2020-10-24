@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/picture_property"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16sp"
             app:propertyImageUrl="@{photo}"
@@ -53,8 +53,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:paddingStart="3dp"
-            android:paddingEnd="3dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@={photo.description}"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:background="@drawable/bkg_rectangle_grey"

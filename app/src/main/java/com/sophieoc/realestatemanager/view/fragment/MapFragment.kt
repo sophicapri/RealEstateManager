@@ -23,6 +23,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
+import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import kotlinx.android.synthetic.main.activity_map.*
@@ -43,6 +44,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 fetchLastLocation()
             }
         }
+        Log.d(TAG, "onViewCreated: ")
+        progressBar.visibility = VISIBLE
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
 
@@ -56,9 +59,12 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         }
         map = googleMap
         if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(LONGITUDE_PROPERTY))
-            getLocationFromIntent()?.let { it -> focusMap(it) }
+            getLocationFromIntent()?.let { it -> focusMap(it)
+                progressBar.visibility = GONE
+            }
         initMarkers()
-        Log.d(TAG, "onMapReady: ")
+        if (mainContext.isLocationEnabled())
+            map?.isMyLocationEnabled = true
     }
 
     private fun startPropertyDetail(marker: Marker) {
@@ -98,24 +104,32 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         super.onResume()
         handleMapSize()
         if (getLocationFromIntent() == null)
-        fetchLastLocation()
+            fetchLastLocation()
+        Log.d(TAG, "onResume: ")
     }
 
     @SuppressLint("MissingPermission")
     fun fetchLastLocation() {
         if (mainContext.isLocationEnabled()) {
             map?.isMyLocationEnabled = true
-            val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext)
+            val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext as MapActivity)
             val task: Task<Location?> = fusedLocationProviderClient.lastLocation
             task.addOnCompleteListener { getLocationTask: Task<Location?> ->
                 if (getLocationTask.isSuccessful) {
                     val currentLocation = getLocationTask.result
-                    if (currentLocation != null) {
+                    if (currentLocation != null && currentLocation.longitude != 0.0 && currentLocation.longitude != 0.0) {
                         this.currentLocation = currentLocation
                         focusMap(currentLocation)
+                        progressBar.visibility = GONE
                     } else {
-                        // add progress bar // -> update view after location enabled
-                        mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
+                        // -> update view after location enabled
+                        val intent = Intent(mainContext, MapActivity::class.java)
+                        if (getLocationFromIntent() != null){
+                            intent.putExtra(LATITUDE_PROPERTY, mainContext.intent.extras?.get(LATITUDE_PROPERTY) as Double)
+                            intent.putExtra(LONGITUDE_PROPERTY, mainContext.intent.extras?.get(LONGITUDE_PROPERTY) as Double)
+                        }
+                        mainContext.finish()
+                        startActivity(intent)
                     }
                 }else {
                     Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()

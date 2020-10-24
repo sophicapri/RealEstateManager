@@ -131,6 +131,7 @@ class SettingsActivity : BaseActivity() {
                             currentUser.user.urlPhoto = pathImage
                             dataChanged = true
                             userViewModel.updateUser(currentUser)
+                            binding.progressBar.visibility = VISIBLE
                         }
                     }
             PreferenceHelper.internetAvailable = true

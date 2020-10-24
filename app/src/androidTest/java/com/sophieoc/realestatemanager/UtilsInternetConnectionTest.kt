@@ -84,7 +84,7 @@ class UtilsInternetConnectionTest {
         // enable wifi
         device.executeShellCommand(CMD_ENABLE_WIFI)
         Thread.sleep(5000)
-        // check that there is internet
+        // check that there is internet (possibly increase Thread.sleep time if an error comes up below)
         assertThat(Utils.isInternetAvailable(context), Matchers.`is`(true))
     }
 }

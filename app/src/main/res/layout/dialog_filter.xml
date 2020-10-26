@@ -2,8 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-    </data>
+
+    <data></data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,9 +17,9 @@
                 android:id="@+id/title_property_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_24"
                 android:text="@string/property_type_title_dialog"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -28,9 +29,9 @@
                 android:id="@+id/type_chip_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_default"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title_property_type"
                 app:singleSelection="true">
@@ -67,7 +68,7 @@
                 android:id="@+id/title_nbr_of_beds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/margin_default"
                 android:text="@string/number_of_bedrooms_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/type_chip_group"
@@ -75,33 +76,33 @@
 
             <ImageView
                 android:id="@+id/ic_bed"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
+                android:contentDescription="@string/bed_icon"
                 app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
                 app:layout_constraintStart_toStartOf="@+id/ic_bath"
                 app:layout_constraintTop_toTopOf="@+id/title_nbr_of_beds"
-                app:srcCompat="@drawable/ic_outline_king_bed_24"
-                android:contentDescription="@string/bed_icon" />
+                app:srcCompat="@drawable/ic_outline_king_bed_24" />
 
             <EditText
                 android:id="@+id/nbr_of_beds_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/margin_5"
                 android:cursorVisible="true"
                 android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+                android:importantForAutofill="no"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
                 app:layout_constraintStart_toEndOf="@+id/ic_bed"
                 app:layout_constraintTop_toTopOf="@+id/ic_bed"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/title_nbr_of_bath"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/margin_default"
                 android:text="@string/number_of_bathrooms_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
@@ -109,70 +110,70 @@
 
             <ImageView
                 android:id="@+id/ic_bath"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
+                android:layout_marginStart="@dimen/margin_5"
+                android:contentDescription="@string/bath_icon"
                 app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
                 app:layout_constraintStart_toEndOf="@+id/title_nbr_of_bath"
                 app:layout_constraintTop_toTopOf="@+id/title_nbr_of_bath"
-                app:srcCompat="@drawable/ic_baseline_bathtub_24"
-                android:contentDescription="@string/bath_icon" />
+                app:srcCompat="@drawable/ic_baseline_bathtub_24" />
 
             <EditText
                 android:id="@+id/nbr_of_bath_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/margin_5"
                 android:cursorVisible="true"
                 android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+                android:importantForAutofill="no"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
                 app:layout_constraintStart_toEndOf="@+id/ic_bath"
                 app:layout_constraintTop_toTopOf="@+id/ic_bath"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/nbr_of_rooms_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/number_of_rooms_title"
                 android:textSize="16sp"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/type_chip_group"
                 app:layout_constraintBottom_toTopOf="@+id/title_nbr_of_beds"
-                app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath" />
+                app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
+                app:layout_constraintTop_toBottomOf="@id/type_chip_group" />
 
             <ImageView
                 android:id="@+id/ic_room"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
                 android:layout_marginTop="1dp"
+                android:contentDescription="@string/room_icon"
                 app:layout_constraintBottom_toBottomOf="@+id/nbr_of_rooms_title"
                 app:layout_constraintStart_toEndOf="@+id/nbr_of_rooms_title"
                 app:layout_constraintStart_toStartOf="@+id/ic_bath"
                 app:layout_constraintTop_toTopOf="@+id/nbr_of_rooms_title"
                 app:srcCompat="@drawable/ic_room"
-                app:tint="@color/grey"
-                android:contentDescription="@string/room_icon" />
+                app:tint="@color/grey" />
 
             <EditText
                 android:id="@+id/nbr_of_rooms_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/margin_5"
+                android:importantForAutofill="no"
+                android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_room"
                 app:layout_constraintStart_toEndOf="@+id/ic_room"
                 app:layout_constraintTop_toTopOf="@+id/ic_room"
-                android:importantForAutofill="no"
-                tools:ignore="LabelFor"
-                android:inputType="number" />
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/title_property_availability"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/property_availability_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/title_nbr_of_bath"
@@ -182,7 +183,7 @@
                 android:id="@+id/availability_chip_group"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/margin_default"
                 app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
                 app:layout_constraintStart_toStartOf="@+id/type_chip_group"
                 app:layout_constraintTop_toBottomOf="@+id/title_property_availability"
@@ -204,7 +205,7 @@
                 android:id="@+id/title_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginTop="4dp"
                 android:text="@string/since"
                 app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
@@ -214,7 +215,7 @@
                 android:id="@+id/select_date"
                 style="@style/ButtonPositiveStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/margin_40"
                 android:text="@string/click_to_choose_a_date"
                 app:layout_constraintBottom_toBottomOf="@+id/title_date"
                 app:layout_constraintStart_toEndOf="@+id/title_date"
@@ -224,21 +225,21 @@
                 android:id="@+id/btn_delete_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="5dp"
-                app:srcCompat="@drawable/ic_close_black_24dp"
+                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:contentDescription="@string/delete_date"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/select_date"
                 app:layout_constraintStart_toEndOf="@+id/select_date"
                 app:layout_constraintTop_toBottomOf="@+id/availability_chip_group"
-                android:contentDescription="@string/delete_date" />
+                app:srcCompat="@drawable/ic_close_black_24dp" />
 
             <TextView
                 android:id="@+id/area_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/area_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -248,19 +249,19 @@
                 android:id="@+id/area_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/margin_default"
                 android:hint="@string/city_region_or_postal_code"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/area_title"
-                app:layout_constraintTop_toBottomOf="@+id/area_title"
-                android:importantForAutofill="no"
-                android:inputType="text" />
+                app:layout_constraintTop_toBottomOf="@+id/area_title" />
 
             <TextView
                 android:id="@+id/title_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/price_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
@@ -288,12 +289,12 @@
                 android:id="@+id/min_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/margin_default"
                 android:background="@drawable/bkg_rectangle_grey"
-                android:padding="10dp"
-                app:layout_constraintHorizontal_bias="0"
+                android:padding="@dimen/margin_10"
                 android:text="@string/dollar_value"
                 app:layout_constraintEnd_toStartOf="@+id/max_price"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@+id/range_slider_price"
                 app:layout_constraintTop_toBottomOf="@+id/range_slider_price"
                 tools:text="$ 0" />
@@ -304,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bkg_rectangle_grey"
-                android:padding="10dp"
+                android:padding="@dimen/margin_10"
                 android:text="@string/dollar_value"
                 app:layout_constraintEnd_toEndOf="@+id/range_slider_price"
                 app:layout_constraintTop_toBottomOf="@+id/range_slider_price"
@@ -314,7 +315,7 @@
                 android:id="@+id/title_surface"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/surface_title"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/availability_chip_group"
@@ -342,31 +343,31 @@
                 android:id="@+id/min_surface"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/margin_default"
                 android:background="@drawable/bkg_rectangle_grey"
-               android:padding="10dp"
-                tools:text="0 sqft"
+                android:padding="@dimen/margin_10"
                 android:text="@string/sqft_value"
                 app:layout_constraintStart_toStartOf="@+id/range_slider_surface"
-                app:layout_constraintTop_toBottomOf="@+id/range_slider_surface" />
+                app:layout_constraintTop_toBottomOf="@+id/range_slider_surface"
+                tools:text="0 sqft" />
 
             <TextView
                 android:id="@+id/max_surface"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/margin_default"
                 android:background="@drawable/bkg_rectangle_grey"
-                android:padding="10dp"
-                tools:text="400 sqft"
+                android:padding="@dimen/margin_10"
                 android:text="@string/sqft_value"
                 app:layout_constraintEnd_toEndOf="@+id/range_slider_surface"
-                app:layout_constraintTop_toBottomOf="@+id/range_slider_surface" />
+                app:layout_constraintTop_toBottomOf="@+id/range_slider_surface"
+                tools:text="400 sqft" />
 
             <TextView
                 android:id="@+id/title_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:text="@string/with_pictures"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/range_slider_surface"
@@ -384,8 +385,8 @@
                 android:id="@+id/subtitle_nbr_of_pics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/at_least"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintStart_toStartOf="@+id/title_picture"
@@ -395,20 +396,20 @@
                 android:id="@+id/nbr_of_pic_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/margin_10"
                 android:imeOptions="flagNoExtractUi|flagNoEnterAction"
+                android:importantForAutofill="no"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
                 app:layout_constraintStart_toEndOf="@+id/subtitle_nbr_of_pics"
                 app:layout_constraintTop_toBottomOf="@+id/title_picture"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/text_view_pictures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/margin_10"
                 android:text="@string/pictures"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
@@ -419,7 +420,7 @@
                 android:id="@+id/title_point_of_interest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/margin_default"
                 android:text="@string/close_to"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/title_picture"
@@ -429,7 +430,7 @@
                 android:id="@+id/poi_park"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/margin_5"
                 android:text="@string/park"
                 app:layout_constraintStart_toStartOf="@+id/title_point_of_interest"
                 app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest" />

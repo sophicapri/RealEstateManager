@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_ic_property_edit">200dp</dimen>
+    <dimen name="size_ic_property_in_list">350dp</dimen>
+    <dimen name="app_bar_property">400dp</dimen>
+    <dimen name="size_ic_user_in_property">100dp</dimen>
+    <dimen name="size_map_in_property">200dp</dimen>
+    <dimen name="size_poi">300dp</dimen>
+</resources>

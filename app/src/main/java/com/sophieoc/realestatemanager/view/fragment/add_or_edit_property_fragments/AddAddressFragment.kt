@@ -25,7 +25,6 @@ class AddAddressFragment : BaseFragment(){
         addPropertyActivity.intent.extras?.let {
             getPropertyId(it)
         }
-        Log.d(TAG, "onCreate: ")
     }
 
     private fun getPropertyId(extras: Bundle) {

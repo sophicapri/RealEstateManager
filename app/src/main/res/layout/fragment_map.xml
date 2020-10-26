@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:text="@string/fullscreen"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginEnd="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -32,10 +32,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="@dimen/margin_default"
         android:theme="@style/MyFAB"
         app:layout_anchorGravity="end|bottom"
         app:srcCompat="@drawable/ic_baseline_my_location_24"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="@dimen/margin_default" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

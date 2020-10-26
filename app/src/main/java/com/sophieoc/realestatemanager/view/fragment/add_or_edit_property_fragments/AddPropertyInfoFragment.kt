@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.DatePicker
@@ -43,7 +44,6 @@ class AddPropertyInfoFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.propertyViewModel = addPropertyActivity.propertyViewModel
-        Log.d(TAG, "onCreateView: ")
         if (addPropertyActivity.activityRestarted)
             binding.executePendingBindings()
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -52,7 +52,6 @@ class AddPropertyInfoFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
     override fun onResume() {
         super.onResume()
         bindViews()
-        Log.d(TAG, "onResume: ")
     }
 
     private fun showDatePickerDialog() {
@@ -77,14 +76,20 @@ class AddPropertyInfoFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
             addPropertyActivity.propertyViewModel.property.dateSold = null
         }else {
             addPropertyActivity.propertyViewModel.property.dateSold = selectedDate
-          //  addPropertyActivity.propertyViewModel.property.dateOnMarket = null
         }
     }
 
     private fun bindViews() {
         val property = addPropertyActivity.propertyViewModel.property
-        types_spinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
-        types_spinner.onItemSelectedListener = getOnTypeSelectedListener()
+        if (addPropertyActivity.intent.extras != null) {
+            types_spinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
+            types_spinner.onItemSelectedListener = getOnTypeSelectedListener()
+            for_sale_text_view.visibility = GONE
+        } else {
+            property.availability = PropertyAvailability.AVAILABLE
+            for_sale_text_view.visibility = VISIBLE
+            types_spinner.visibility = INVISIBLE
+        }
         availability_spinner.setSelection(getSpinnerPosition(property.availability.s, R.array.property_availability))
         availability_spinner.onItemSelectedListener = getOnAvailabilitySelectedListener()
         btn_date.setOnClickListener { showDatePickerDialog() }

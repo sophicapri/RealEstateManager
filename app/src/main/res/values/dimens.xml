@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_login_page">32dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_end_info">36dp</dimen>
+    <dimen name="size_ic_drawer_nav">60dp</dimen>
+    <dimen name="height_drawer">200dp</dimen>
+    <dimen name="size_app_bar_user">250dp</dimen>
+    <dimen name="size_ic_profile_user">100dp</dimen>
+    <dimen name="size_ic_property_edit">120dp</dimen>
+    <dimen name="size_ic_property_in_list">200dp</dimen>
+    <dimen name="app_bar_property">350dp</dimen>
+    <dimen name="size_ic_user_in_property">80dp</dimen>
+    <dimen name="size_map_in_property">150dp</dimen>
+    <dimen name="size_poi">250dp</dimen>
+</resources>

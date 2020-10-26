@@ -29,7 +29,7 @@
                 android:id="@+id/recycler_view_properties"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-            tools:itemCount="5"
+                tools:itemCount="5"
                 tools:listitem="@layout/item_property" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_margin="30dp"
+                android:layout_margin="@dimen/margin_24"
                 android:text="@string/no_properties_in_db"
                 app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +68,7 @@
             android:id="@+id/fab_add_property"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/margin_default"
             app:srcCompat="@drawable/ic_add_24"
             android:theme="@style/MyFAB"
             android:onClick="startAddPropertyActivity"

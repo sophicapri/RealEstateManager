@@ -32,7 +32,7 @@
             app:imageUrl="@{userViewModel.currentUser.user.urlPhoto}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:src="@drawable/ic_profile_no_pic"
             android:contentDescription="@string/profile_picture" />
@@ -58,7 +58,9 @@
             android:onClick="editUsername"
             android:text="@{userViewModel.currentUser.user.username}"
             app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
+            app:layout_constraintEnd_toStartOf="@+id/profile_picture"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintTop_toTopOf="@+id/profile_picture"
             tools:text="Maria GONZALES" />
 

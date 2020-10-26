@@ -77,7 +77,7 @@ class AddPropertyInfoFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
             addPropertyActivity.propertyViewModel.property.dateSold = null
         }else {
             addPropertyActivity.propertyViewModel.property.dateSold = selectedDate
-            addPropertyActivity.propertyViewModel.property.dateOnMarket = null
+          //  addPropertyActivity.propertyViewModel.property.dateOnMarket = null
         }
     }
 

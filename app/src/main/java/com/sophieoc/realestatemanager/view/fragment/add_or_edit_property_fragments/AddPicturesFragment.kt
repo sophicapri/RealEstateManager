@@ -11,6 +11,8 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -68,7 +70,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
 
     private fun addPhoto() {
         if (context?.let { ActivityCompat.checkSelfPermission(it, READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mainContext, arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
+            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
             return
         }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -109,6 +111,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
     }
 
     private fun saveImage(data: Uri) {
+        progressBar.visibility = VISIBLE
         val arrayPhoto = ArrayList(rootActivity.propertyViewModel.property.photos)
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
@@ -120,6 +123,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
                             arrayPhoto.add(Photo(pathImage, ""))
                             rootActivity.propertyViewModel.property.photos = arrayPhoto
                             adapter.notifyDataSetChanged()
+                            progressBar.visibility = GONE
                         }
                     }
             PreferenceHelper.internetAvailable = true

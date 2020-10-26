@@ -153,7 +153,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
                     Log.d(TAG, "setPointOfInterestsAndSave: list == null")
             })
         } else
-            Log.d(TAG, "setPointOfInterestsAndSave: latlng not found")
+            Log.d(TAG, "setPointOfInterestsAndSave: latLng not found")
     }
 
     private fun setPointOfInterest(placeDetails: PlaceDetails, location: Location): PointOfInterest {

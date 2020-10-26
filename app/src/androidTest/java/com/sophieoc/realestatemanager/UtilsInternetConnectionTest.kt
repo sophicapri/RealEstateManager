@@ -56,7 +56,7 @@ class UtilsInternetConnectionTest {
         )
     }
 
-    /**  This test will work on emulators that can access mobile data
+    /**  This test will pass on emulators that can access mobile data
     *  (not Genymotion emulators for example) and on real devices only.
     */
     @Test

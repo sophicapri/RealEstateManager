@@ -4,21 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
-        <import type="java.util.Locale"/>
-        <import type="com.sophieoc.realestatemanager.utils.ExtensionsKt"/>
+
+        <import type="android.view.View" />
+
+        <import type="java.util.Locale" />
+
+        <import type="com.sophieoc.realestatemanager.utils.ExtensionsKt" />
+
         <variable
             name="viewPagerForSpringDots"
-            type="androidx.viewpager2.widget.ViewPager2"/>
+            type="androidx.viewpager2.widget.ViewPager2" />
+
         <variable
             name="pictureDescription"
             type="android.widget.TextView" />
+
         <variable
             name="user"
             type="com.sophieoc.realestatemanager.model.User" />
+
         <variable
             name="userViewModel"
             type="com.sophieoc.realestatemanager.viewmodel.UserViewModel" />
+
         <variable
             name="property"
             type="com.sophieoc.realestatemanager.model.Property" />
@@ -40,14 +48,14 @@
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager"
-                    app:adapter="@{property.photos}"
-                    app:pageChangeListener="@{property.photos}"
-                    app:bindToView="@{pictureDescription}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:adapter="@{property.photos}"
+                    app:bindToView="@{pictureDescription}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:pageChangeListener="@{property.photos}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -58,20 +66,20 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:background="@drawable/shadow_collapsing_toolbar_bottom"
-                    android:layout_gravity="bottom" />
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/shadow_collapsing_toolbar_bottom" />
 
                 <TextView
                     android:id="@+id/pic_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_gravity="center|bottom"
                     android:layout_marginBottom="25dp"
-                    tools:text="Front of the house"
-                    app:layout_collapseMode="parallax"
+                    android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:layout_collapseMode="parallax"
+                    tools:text="Front of the house" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/property_detail_toolbar"
@@ -88,10 +96,10 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="15dp"
                     android:text="@{property.availability.s.toUpperCase(Locale.ROOT)}"
-                    tools:text="SOLD"
-                    app:layout_collapseMode="pin"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:layout_collapseMode="pin"
+                    tools:text="SOLD" />
 
                 <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
                     android:id="@+id/spring_dots_indicator"
@@ -99,18 +107,18 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|bottom"
                     android:layout_marginBottom="10dp"
-                    app:dampingRatio="0.5"
                     android:visibility="@{property.photos.size() &lt;= 1 ? View.GONE : View.VISIBLE }"
-                    app:setViewPager="@{viewPagerForSpringDots}"
+                    app:dampingRatio="0.5"
                     app:dotsColor="@color/white"
-                    app:layout_collapseMode="parallax"
                     app:dotsSize="10dp"
                     app:dotsSpacing="3dp"
                     app:dotsStrokeColor="@color/white"
                     app:dotsStrokeWidth="1dp"
+                    app:layout_collapseMode="parallax"
                     app:layout_constraintBottom_toBottomOf="@+id/view_pager"
                     app:layout_constraintEnd_toEndOf="@+id/view_pager"
                     app:layout_constraintStart_toStartOf="@+id/view_pager"
+                    app:setViewPager="@{viewPagerForSpringDots}"
                     app:stiffness="300" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -143,134 +151,134 @@
                     android:id="@+id/price_property"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="2,222,500"
-                    app:dollarFormat="@{property.price}"
                     android:textColor="@color/white"
                     android:textSize="18sp"
+                    app:dollarFormat="@{property.price}"
                     app:layout_constraintStart_toEndOf="@id/ic_dollar"
-                    app:layout_constraintTop_toTopOf="@+id/ic_dollar" />
+                    app:layout_constraintTop_toTopOf="@+id/ic_dollar"
+                    tools:text="2,222,500" />
 
                 <TextView
                     android:id="@+id/type_property"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    tools:text="House"
                     android:text="@{property.type.s}"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/price_property"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/price_property" />
+                    app:layout_constraintTop_toTopOf="@+id/price_property"
+                    tools:text="House" />
 
                 <TextView
                     android:id="@+id/address_property"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    tools:text="720 Grager Ave, Manhattan 10320"
+                    android:text="@{property.address.toString()}"
                     android:textColor="@android:color/secondary_text_light"
                     android:textSize="16sp"
-                    android:text="@{property.address.toString()}"
                     app:layout_constraintEnd_toEndOf="@+id/type_property"
                     app:layout_constraintStart_toStartOf="@+id/ic_dollar"
-                    app:layout_constraintTop_toBottomOf="@+id/price_property" />
+                    app:layout_constraintTop_toBottomOf="@+id/price_property"
+                    tools:text="720 Grager Ave, Manhattan 10320" />
 
                 <ImageView
                     android:id="@+id/ic_bed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    app:srcCompat="@drawable/ic_outline_king_bed_24"
+                    android:contentDescription="@string/bed_icon"
                     app:layout_constraintStart_toStartOf="@+id/address_property"
                     app:layout_constraintTop_toBottomOf="@+id/address_property"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/bed_icon" />
+                    app:srcCompat="@drawable/ic_outline_king_bed_24"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/nbr_of_beds_input"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    tools:text="2"
                     android:text="@{String.valueOf(property.numberOfBedrooms)}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
                     app:layout_constraintStart_toEndOf="@+id/ic_bed"
-                    app:layout_constraintTop_toTopOf="@+id/ic_bed" />
+                    app:layout_constraintTop_toTopOf="@+id/ic_bed"
+                    tools:text="2" />
 
                 <ImageView
                     android:id="@+id/ic_bath"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    app:srcCompat="@drawable/ic_baseline_bathtub_24"
+                    android:contentDescription="@string/bath_icon"
                     app:layout_constraintStart_toEndOf="@+id/nbr_of_beds_input"
                     app:layout_constraintTop_toTopOf="@+id/ic_bed"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/bath_icon" />
+                    app:srcCompat="@drawable/ic_baseline_bathtub_24"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/nbr_of_bath"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    tools:text="1"
                     android:text="@{String.valueOf(property.numberOfBathrooms)}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
                     app:layout_constraintStart_toEndOf="@+id/ic_bath"
-                    app:layout_constraintTop_toTopOf="@+id/ic_bath" />
+                    app:layout_constraintTop_toTopOf="@+id/ic_bath"
+                    tools:text="1" />
 
                 <ImageView
                     android:id="@+id/ic_room"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_room"
                     android:layout_marginStart="16dp"
+                    android:contentDescription="@string/room_icon"
                     app:layout_constraintStart_toEndOf="@+id/nbr_of_bath"
                     app:layout_constraintTop_toTopOf="@+id/nbr_of_bath"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/room_icon" />
+                    app:srcCompat="@drawable/ic_room"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/nbr_of_rooms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="4"
-                    android:text="@{String.valueOf(property.numberOfRooms)}"
                     android:layout_marginStart="5dp"
+                    android:text="@{String.valueOf(property.numberOfRooms)}"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_room"
                     app:layout_constraintStart_toEndOf="@id/ic_room"
                     app:layout_constraintTop_toTopOf="@id/ic_room"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/ic_room" />
+                    tools:text="4" />
 
                 <ImageView
                     android:id="@+id/ic_surface"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    app:srcCompat="@drawable/ic_size_24"
+                    android:contentDescription="@string/surface_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_room"
                     app:layout_constraintStart_toEndOf="@+id/nbr_of_rooms"
                     app:layout_constraintTop_toTopOf="@+id/ic_room"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/surface_icon" />
+                    app:srcCompat="@drawable/ic_size_24"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/surface"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    tools:text="300"
                     android:text="@{String.valueOf(property.surface)}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_surface"
-                    app:layout_constraintStart_toEndOf="@+id/ic_surface" />
+                    app:layout_constraintStart_toEndOf="@+id/ic_surface"
+                    tools:text="300" />
 
                 <TextView
                     android:id="@+id/sqft"
@@ -287,13 +295,13 @@
                     android:id="@+id/ic_profile_picture"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    app:imageUrl="@{user.urlPhoto}"
                     android:layout_marginStart="16dp"
-                    tools:src="@drawable/ic_profile_no_pic"
+                    android:contentDescription="@string/profile_picture"
+                    app:imageUrl="@{user.urlPhoto}"
                     app:layout_constraintBottom_toBottomOf="@+id/map_container"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/map_container"
-                    android:contentDescription="@string/profile_picture" />
+                    tools:src="@drawable/ic_profile_no_pic" />
 
                 <TextView
                     android:id="@+id/title_agent"
@@ -301,11 +309,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/agent_title"
-                    app:layout_constraintVertical_bias="0.4"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                     app:layout_constraintStart_toEndOf="@+id/ic_profile_picture"
-                    app:layout_constraintTop_toTopOf="@+id/ic_profile_picture" />
+                    app:layout_constraintTop_toTopOf="@+id/ic_profile_picture"
+                    app:layout_constraintVertical_bias="0.4" />
 
                 <TextView
                     android:id="@+id/username"
@@ -339,10 +347,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:contentDescription="@string/set_map_fullscreen"
                     app:layout_constraintEnd_toEndOf="@+id/map_container"
                     app:layout_constraintTop_toTopOf="@+id/map_container"
-                    app:srcCompat="@drawable/ic_baseline_fullscreen_24"
-                    android:contentDescription="@string/set_map_fullscreen" />
+                    app:srcCompat="@drawable/ic_baseline_fullscreen_24" />
 
                 <TextView
                     android:id="@+id/title_description"
@@ -362,13 +370,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="16dp"
-                    tools:text="Some text and some text here over there and some more text"
+                    android:text="@{property.description}"
                     android:textColor="@android:color/secondary_text_light"
                     android:textSize="16sp"
-                    android:text="@{property.description}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_description" />
+                    app:layout_constraintTop_toBottomOf="@id/title_description"
+                    tools:text="Some text and some text here over there and some more text" />
 
                 <TextView
                     android:id="@+id/title_point_of_interest"
@@ -412,31 +420,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="16dp"
-                    tools:text="On the market since 20/07/2020"
+                    android:text="@{String.format(@string/on_the_market_since, ExtensionsKt.toStringFormat(property.dateOnMarket))}"
                     android:textColor="@color/white"
                     android:textStyle="italic"
-                    android:text="@{String.format(@string/on_the_market_since, ExtensionsKt.toStringFormat(property.dateOnMarket))}"
-                    android:visibility="@{property.dateOnMarket == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_view_container" />
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_container"
+                    tools:text="On the market since 20/07/2020" />
 
                 <TextView
                     android:id="@+id/date_sold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
-                    tools:text="Sold on 20/07/2020"
-                    android:textColor="@color/white"
                     android:text="@{String.format(@string/sold_since, ExtensionsKt.toStringFormat(property.dateSold))}"
-                    android:visibility="@{property.dateSold == null ? View.GONE : View.VISIBLE}"
+                    android:textColor="@color/white"
                     android:textStyle="italic"
+                    android:visibility="@{property.dateSold == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/date_on_market" />
+                    app:layout_constraintTop_toBottomOf="@id/date_on_market"
+                    tools:text="Sold on 20/07/2020" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -450,15 +457,15 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_edit_property"
-            app:checkUser="@{user.uid}"
-            app:withCurrentUser="@{userViewModel.currentUser.user.uid}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_baseline_edit_24"
             android:theme="@style/MyFABWhite"
+            android:visibility="gone"
+            app:checkUser="@{user.uid}"
             app:layout_anchor="@id/container"
-            app:layout_anchorGravity="end|bottom" />
+            app:layout_anchorGravity="end|bottom"
+            app:srcCompat="@drawable/ic_baseline_edit_24"
+            app:withCurrentUser="@{userViewModel.currentUser.user.uid}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

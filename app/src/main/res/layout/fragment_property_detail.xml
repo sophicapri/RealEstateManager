@@ -424,7 +424,6 @@
                     android:text="@{String.format(@string/on_the_market_since, ExtensionsKt.toStringFormat(property.dateOnMarket))}"
                     android:textColor="@color/white"
                     android:textStyle="italic"
-                    android:visibility="@{property.dateOnMarket == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recycler_view_container"

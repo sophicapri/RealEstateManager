@@ -32,6 +32,7 @@ class PropertyViewModelTest {
         viewModel = PropertyViewModel(propertySource)
         property.description = "Amazing flat !"
         viewModel.property = property
+
     }
 
     @Test

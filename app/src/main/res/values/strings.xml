@@ -120,4 +120,5 @@
     <string name="nbr_of_bed_filter">"%d bedroom(s) - "</string>
     <string name="nbr_of_bath_filter">"%d bathroom(s) - "</string>
     <string name="no_properties_found_matching">No properties found matching</string>
+    <string name="optional">(optional)</string>
 </resources>

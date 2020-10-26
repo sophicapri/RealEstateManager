@@ -71,7 +71,6 @@
             android:layout_margin="@dimen/margin_default"
             app:srcCompat="@drawable/ic_add_24"
             android:theme="@style/MyFAB"
-            android:onClick="startAddPropertyActivity"
             android:layout_gravity="end|bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

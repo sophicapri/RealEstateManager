@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentUserPropertiesBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.USER_ID
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,8 +25,10 @@ class UserPropertiesFragment : PropertyListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (mainContext.intent.hasExtra(USER_ID)) {
-            val id = mainContext.intent.extras?.get(USER_ID) as String
+        var id = ""
+        if (mainContext.intent.hasExtra(USER_ID))
+             id = mainContext.intent.extras?.get(USER_ID) as String
+        if (id.isNotEmpty() && id != PreferenceHelper.currentUserId) {
             userViewModel.getUserById(id).observe(mainContext, {
                 if (it != null) initView(it)
                 binding.myToolbar.title = mainContext.getString(R.string.agent_properties, it.user.username)

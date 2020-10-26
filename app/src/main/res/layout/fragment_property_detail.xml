@@ -81,12 +81,8 @@
                     app:layout_collapseMode="parallax"
                     tools:text="Front of the house" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/property_detail_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:navigationIcon="@drawable/ic_baseline_arrow_white_24" />
+                <include android:id="@+id/property_detail_toolbar"
+                    layout="@layout/toolbar_property_detail"/>
 
                 <TextView
                     android:id="@+id/property_availability"

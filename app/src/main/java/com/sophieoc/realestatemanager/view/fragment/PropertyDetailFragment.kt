@@ -30,6 +30,7 @@ import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
+import kotlinx.android.synthetic.main.toolbar_property_detail.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -105,7 +106,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
     private fun bindViews() {
         binding.pictureDescription = binding.picDescription
         binding.viewPagerForSpringDots = binding.viewPager
-        binding.propertyDetailToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
+        binding.propertyDetailToolbar.property_detail_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
         binding.icProfilePicture.setOnClickListener { startUserActivity() }
         binding.username.setOnClickListener { startUserActivity() }
         binding.titleAgent.setOnClickListener { startUserActivity() }

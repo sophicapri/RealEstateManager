@@ -16,6 +16,7 @@ import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
+import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
@@ -24,7 +25,8 @@ import kotlinx.android.synthetic.main.fragment_property_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
+open class
+PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
     private val propertyViewModel by viewModel<PropertyViewModel>()
     private lateinit var binding: FragmentPropertyListBinding
@@ -47,6 +49,9 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
             } else
                 getPropertiesList()
             binding.swipeRefreshView.isRefreshing = false
+        }
+        binding.fabAddProperty.setOnClickListener {
+            (mainContext as MainActivity).startNewActivity(EditOrAddPropertyActivity::class.java)
         }
     }
 

@@ -240,9 +240,8 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
                 if (it.isEmpty()) no_properties_found.visibility = VISIBLE
                 else no_properties_found.visibility = GONE
             }
-            if (it == null) {
+            if (it == null)
                 Log.d(TAG, "startSearch: property list is null")
-            }
             filterDialog?.dismiss()
         })
     }
@@ -304,7 +303,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     }
 
     fun startAddPropertyActivity(view: View) {
-        startNewActivity(EditOrAddPropertyActivity::class.java)
+
     }
 
     private fun signOut() {

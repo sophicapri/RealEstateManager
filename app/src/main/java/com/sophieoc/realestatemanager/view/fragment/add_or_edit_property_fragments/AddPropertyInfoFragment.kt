@@ -81,17 +81,17 @@ class AddPropertyInfoFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
 
     private fun bindViews() {
         val property = addPropertyActivity.propertyViewModel.property
+        types_spinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
+        types_spinner.onItemSelectedListener = getOnTypeSelectedListener()
         if (addPropertyActivity.intent.extras != null) {
-            types_spinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
-            types_spinner.onItemSelectedListener = getOnTypeSelectedListener()
+            availability_spinner.setSelection(getSpinnerPosition(property.availability.s, R.array.property_availability))
+            availability_spinner.onItemSelectedListener = getOnAvailabilitySelectedListener()
             for_sale_text_view.visibility = GONE
         } else {
             property.availability = PropertyAvailability.AVAILABLE
             for_sale_text_view.visibility = VISIBLE
-            types_spinner.visibility = INVISIBLE
+            availability_spinner.visibility = INVISIBLE
         }
-        availability_spinner.setSelection(getSpinnerPosition(property.availability.s, R.array.property_availability))
-        availability_spinner.onItemSelectedListener = getOnAvailabilitySelectedListener()
         btn_date.setOnClickListener { showDatePickerDialog() }
         btn_date.text = getString(R.string.click_to_select_a_date)
         property.dateSold?.let {  btn_date.text = it.toStringFormat()}

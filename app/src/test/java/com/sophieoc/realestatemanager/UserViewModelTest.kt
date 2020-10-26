@@ -1,3 +1,5 @@
 package com.sophieoc.realestatemanager
 
-class UserViewModelTest
+class UserViewModelTest{
+
+}

@@ -6,7 +6,6 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Rule
@@ -17,7 +16,7 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class PropertyViewModelTest {
     private lateinit var viewModel : PropertyViewModel
-    private var property = spyk<Property>()
+    private var property = Property()
     private lateinit var propertySource : PropertyRepository
 
     companion object{

@@ -29,7 +29,7 @@ class UtilsUnitTest {
     @Test
     fun convertEuroToDollar_isCorrect() {
         val euro = (10..999).random()
-        val valueExpected = (euro * 1.154).roundToInt()
+        val valueExpected = (euro * 1.188).roundToInt()
         val result = Utils.convertEuroToDollar(euro)
         Assert.assertEquals(valueExpected, result)
     }

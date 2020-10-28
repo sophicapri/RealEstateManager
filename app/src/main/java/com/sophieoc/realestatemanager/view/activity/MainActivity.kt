@@ -84,6 +84,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         val profilePic = drawerView.findViewById<ImageView>(R.id.profile_picture)
         val username = drawerView.findViewById<TextView>(R.id.username)
         val email = drawerView.findViewById<TextView>(R.id.email_user)
+
         userViewModel.currentUser.observe(this, {
             it?.let {
                 val user = it.user
@@ -300,10 +301,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             Toast.makeText(this, getString(R.string.map_unavailable), LENGTH_LONG).show()
             PreferenceHelper.internetAvailable = false
         }
-    }
-
-    fun startAddPropertyActivity(view: View) {
-
     }
 
     private fun signOut() {

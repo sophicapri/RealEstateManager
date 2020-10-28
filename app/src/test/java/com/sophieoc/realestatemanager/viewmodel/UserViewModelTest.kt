@@ -13,9 +13,9 @@ import org.junit.Rule
 import org.junit.Test
 
 class UserViewModelTest {
-    private lateinit var viewModel : UserViewModel
-    private lateinit var userSource : UserRepository
-    private val user = User("42", "Dummy user","","")
+    private lateinit var viewModel: UserViewModel
+    private lateinit var userSource: UserRepository
+    private val user = User("42", "Dummy user", "", "")
     private var userWithProperties = UserWithProperties(user, ArrayList())
     private val userMutable = MutableLiveData(mockk<UserWithProperties>())
 
@@ -25,17 +25,15 @@ class UserViewModelTest {
     @Before
     fun setUp() {
         userSource = mockk()
-        every {  userSource.currentUser } returns userMutable
+        every { userSource.currentUser } returns userMutable
         viewModel = UserViewModel(userSource)
     }
 
     @Test
     fun `get user by id with success`() {
         userMutable.value = userWithProperties
-        val id = user.uid
-        every {  userSource.getUserWithProperties(id) } returns userMutable
-        viewModel.getUserById(id).observeForever {
-            //check if the user received is the same as the one expected
+        every { userSource.getUserWithProperties(any()) } returns userMutable
+        viewModel.getUserById(String()).observeForever {
             assertSame(userMutable.value, it)
             assertSame(userMutable.value?.user?.uid, it.user.uid)
         }
@@ -45,16 +43,17 @@ class UserViewModelTest {
     fun `get current user with success`() {
         userMutable.value = userWithProperties
         viewModel.currentUser.observeForever {
-                assertSame(userMutable.value, it)
-                assertSame(userMutable.value?.user?.uid, it.user.uid)
+            assertSame(userMutable.value, it)
+            assertSame(userMutable.value?.user?.uid, it.user.uid)
         }
     }
 
     @Test
     fun `update user with success`() {
-        userWithProperties.user.username = "New name user"
+        val userMutable = MutableLiveData(mockk<UserWithProperties>())
         userMutable.value = userWithProperties
-        viewModel.currentUser.observeForever {
+        every { userSource.upsertUser(any()) } returns userMutable
+        viewModel.userUpdated.observeForever {
             assertSame(userMutable.value, it)
             assertSame(userMutable.value?.user?.username, it.user.username)
         }

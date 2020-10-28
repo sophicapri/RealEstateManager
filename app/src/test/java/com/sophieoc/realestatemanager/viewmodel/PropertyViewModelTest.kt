@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -19,9 +20,6 @@ class PropertyViewModelTest {
     private var property = Property()
     private lateinit var propertySource : PropertyRepository
 
-    companion object{
-        const val PROPERTY_ID = "23"
-    }
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
@@ -29,18 +27,13 @@ class PropertyViewModelTest {
     fun setup(){
         propertySource = mockk()
         viewModel = PropertyViewModel(propertySource)
-        property.description = "Amazing flat !"
-        viewModel.property = property
-
     }
 
     @Test
     fun `insert property with success`() {
         val propertyMutable = MutableLiveData(mockk<Property>())
         propertyMutable.value = property
-        //insert property
-        viewModel.upsertProperty()
-        every {  propertySource.upsert(property) } returns propertyMutable
+        every {  propertySource.upsert(any()) } returns propertyMutable
         viewModel.propertySaved.observeForever {
             //check if the property received is the same as the one sent
             assertSame(propertyMutable.value, it)
@@ -51,12 +44,8 @@ class PropertyViewModelTest {
     fun `update property with success`() {
         val propertyMutable = MutableLiveData(mockk<Property>())
         propertyMutable.value = property
-        //modify property
-        property.description = "Great stuff!"
-        viewModel.upsertProperty()
-        every { propertySource.upsert(property) } returns propertyMutable
+        every { propertySource.upsert(any()) } returns propertyMutable
         viewModel.propertySaved.observeForever {
-            //check if the description has been changed
             assertSame(propertyMutable.value, it)
             assertSame(propertyMutable.value?.description, it.description)
         }
@@ -66,11 +55,8 @@ class PropertyViewModelTest {
     fun `get property by id with success`() {
         val propertyMutable = MutableLiveData(mockk<Property>())
         propertyMutable.value = property
-        property.id = PROPERTY_ID
-        //insertProperty
-        viewModel.upsertProperty()
-        every { propertySource.getPropertyById(PROPERTY_ID) } returns propertyMutable
-        viewModel.getPropertyById(PROPERTY_ID).observeForever {
+        every { propertySource.getPropertyById(any()) } returns propertyMutable
+        viewModel.getPropertyById(String()).observeForever {
             //check if the description has been changed
             assertSame(propertyMutable.value, it)
             assertSame(propertyMutable.value?.description, it.description)
@@ -80,12 +66,7 @@ class PropertyViewModelTest {
     @Test
     fun `get all properties with success`() {
         val propertiesMutable = MutableLiveData(mockk<List<Property>>())
-        val listProperties = arrayListOf(property, Property())
-        propertiesMutable.value = listProperties
-        // adding the two properties
-        viewModel.upsertProperty()
-        viewModel.property = Property()
-        viewModel.upsertProperty()
+        propertiesMutable.value = arrayListOf(property, Property())
         every { propertySource.getAllProperties()} returns propertiesMutable
         viewModel.getProperties().observeForever {
             //check if the list is the same
@@ -97,6 +78,11 @@ class PropertyViewModelTest {
 
     @Test
     fun `get nearby point of interests with success`() {
-        //TODO: use MockWebServer
+        val pointOfInterests = MutableLiveData(mockk<List<PlaceDetails>>())
+        pointOfInterests.value = arrayListOf(PlaceDetails())
+        every { propertySource.getNearbyPointOfInterests(any())} returns pointOfInterests
+        viewModel.getPointOfInterests(String()).observeForever{
+            assertSame(pointOfInterests.value, it)
+        }
     }
 }

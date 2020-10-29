@@ -17,7 +17,6 @@ abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun propertyDao(): PropertyDao
 
     companion object {
-        // For Singleton instantiation
         @Volatile
         private var instance: RealEstateDatabase? = null
         private const val DATABASE_NAME = "RealEstate.db"

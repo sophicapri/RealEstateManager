@@ -2,7 +2,6 @@ package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragme
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,13 +59,7 @@ class AddAddressFragment : BaseFragment(){
         binding.propertyViewModel = addPropertyActivity.propertyViewModel
         if (addPropertyActivity.activityRestarted)
             binding.executePendingBindings()
-        Log.d(TAG, "onCreateView: ")
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume: ")
     }
 
     override fun getLayout(): Pair<Nothing?, View> {

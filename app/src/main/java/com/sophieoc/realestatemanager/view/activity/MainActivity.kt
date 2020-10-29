@@ -50,10 +50,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
     private val userViewModel by viewModel<UserViewModel>()
     lateinit var bindingFilter: DialogFilterBinding
 
-    companion object {
-        const val TAG = "LogMainActivity"
-    }
-
     override fun getLayout() = Pair(R.layout.activity_main, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,7 +178,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             if (!s.isNullOrBlank())
                 bindingFilter.checkboxPictures.isChecked = true
         }
-
     }
 
     private fun startSearch() {
@@ -247,20 +242,18 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         })
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        if (dialog === filterDialog) {
-            filterDialog = null
-        }
-    }
-
     override fun onShow(dialogInterface: DialogInterface?) {
         if (filterDialog != null) {
             val positiveButton = filterDialog?.getButton(AlertDialog.BUTTON_POSITIVE)
-            positiveButton?.setOnClickListener {
-                startSearch()
-            }
+            positiveButton?.setOnClickListener { startSearch() }
             val negativeButton = filterDialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
             negativeButton?.setOnClickListener { filterDialog?.dismiss() }
+        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        if (dialog === filterDialog) {
+            filterDialog = null
         }
     }
 
@@ -303,12 +296,6 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         }
     }
 
-    private fun signOut() {
-        auth.signOut()
-        finishAffinity()
-        startNewActivity(LoginActivity::class.java)
-    }
-
     private fun getTextToDisplay(): String {
         val entries = filterViewModel.entries
         var msg = ""
@@ -344,5 +331,15 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             }
         }
         return msg
+    }
+
+    private fun signOut() {
+        auth.signOut()
+        finishAffinity()
+        startNewActivity(LoginActivity::class.java)
+    }
+
+    companion object {
+        const val TAG = "LogMainActivity"
     }
 }

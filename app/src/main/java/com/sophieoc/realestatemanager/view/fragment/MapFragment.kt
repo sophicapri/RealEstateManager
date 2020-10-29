@@ -40,9 +40,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener {
-            if (mainContext.isLocationEnabled()) {
+            if (PreferenceHelper.locationEnabled) {
                 fetchLastLocation()
-            }
+            } else
+                mainContext.checkLocationEnabled()
         }
         Log.d(TAG, "onViewCreated: ")
         progressBar.visibility = VISIBLE
@@ -63,8 +64,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 progressBar.visibility = GONE
             }
         initMarkers()
-        if (mainContext.isLocationEnabled())
+        if (PreferenceHelper.locationEnabled)
             map?.isMyLocationEnabled = true
+        progressBar.visibility = GONE
     }
 
     private fun startPropertyDetail(marker: Marker) {
@@ -103,15 +105,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         handleMapSize()
+        mainContext.checkLocationEnabled()
         if (getLocationFromIntent() == null)
             fetchLastLocation()
-        Log.d(TAG, "onResume: ")
     }
 
     @SuppressLint("MissingPermission")
     fun fetchLastLocation() {
-        if (mainContext.isLocationEnabled()) {
-            map?.isMyLocationEnabled = true
+        if (PreferenceHelper.locationEnabled) {
             val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext as MapActivity)
             val task: Task<Location?> = fusedLocationProviderClient.lastLocation
             task.addOnCompleteListener { getLocationTask: Task<Location?> ->
@@ -120,7 +121,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     if (currentLocation != null && currentLocation.longitude != 0.0 && currentLocation.longitude != 0.0) {
                         this.currentLocation = currentLocation
                         focusMap(currentLocation)
-                        progressBar.visibility = GONE
+                      //  progressBar.visibility = GONE
                     } else {
                         // -> update view after location enabled
                         val intent = Intent(mainContext, MapActivity::class.java)
@@ -135,7 +136,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        } else
+            mainContext.checkLocationEnabled()
     }
 
     private fun focusMap(currentLocation: Location) {

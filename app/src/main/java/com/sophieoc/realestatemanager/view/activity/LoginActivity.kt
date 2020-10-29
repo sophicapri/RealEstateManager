@@ -25,7 +25,6 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // change to google button
         google_sign_in_btn.setOnClickListener { startSignInWithGoogle()}
     }
 
@@ -46,9 +45,10 @@ class LoginActivity : BaseActivity() {
     private fun handleResponseAfterSignIn(requestCode: Int, resultCode: Int, data: Intent?) {
         val response: IdpResponse? = IdpResponse.fromResultIntent(data)
         if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) { // SUCCESS
+            if (resultCode == RESULT_OK) {
                 userViewModel.currentUser.observe(this, {
-                    startMainActivity()
+                    startNewActivity(MainActivity::class.java)
+                    finish()
                 })
             } else {
                     if (response?.error?.errorCode == ErrorCodes.NO_NETWORK) {
@@ -58,11 +58,5 @@ class LoginActivity : BaseActivity() {
                     }
             }
         }
-    }
-
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

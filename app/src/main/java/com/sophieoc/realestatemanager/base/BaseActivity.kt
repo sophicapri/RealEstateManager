@@ -44,6 +44,8 @@ abstract class BaseActivity : AppCompatActivity() {
         getLayout().second?.let { setContentView(it)}
     }
 
+    abstract fun getLayout(): Pair<Int?, View?>
+
     override fun onResume() {
         super.onResume()
         checkConnection()
@@ -57,8 +59,6 @@ abstract class BaseActivity : AppCompatActivity() {
         } else
             PreferenceHelper.internetAvailable = true
     }
-
-    abstract fun getLayout(): Pair<Int?, View?>
 
     fun isCurrentUserLogged(): Boolean {
         return auth.currentUser != null
@@ -93,18 +93,11 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    fun isLocationEnabled(): Boolean {
+    fun checkLocationEnabled() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MapActivity.REQUEST_CODE)
-            return false
+            PreferenceHelper.locationEnabled = false
+            return
         }
         if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             AlertDialog.Builder(this)
@@ -113,9 +106,10 @@ abstract class BaseActivity : AppCompatActivity() {
                         startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), MapActivity.REQUEST_CODE_LOCATION)}
                     .setNegativeButton(R.string.ignore, null)
                     .show()
-            return false
+            PreferenceHelper.locationEnabled = false
+            return
         }
-        return true
+        PreferenceHelper.locationEnabled = true
     }
 
     @SuppressLint("MissingPermission")
@@ -126,6 +120,14 @@ abstract class BaseActivity : AppCompatActivity() {
                 Log.d(MapActivity.TAG, "onRequestPermissionsResult: granted")
             } else
                 Log.d(MapActivity.TAG, "onRequestPermissionsResult: refused")
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     companion object{

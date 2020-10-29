@@ -97,10 +97,11 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
 
     // add progress bar
     private fun initMap() {
-        if (mainContext.isLocationEnabled()) {
+        if (PreferenceHelper.locationEnabled) {
             val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
             mapFragment?.getMapAsync(this)
-        }
+        } else
+            mainContext.checkLocationEnabled()
     }
 
     private fun bindViews() {

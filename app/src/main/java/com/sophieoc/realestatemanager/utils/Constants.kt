@@ -31,3 +31,7 @@ const val TIMESTAMP = "timestamp"
 const val MINIMUM_PICTURES = 1
 
 const val USER_ID = "user id"
+
+const val USERS_PATH = "users"
+
+const val PROPERTIES_PATH = "properties"

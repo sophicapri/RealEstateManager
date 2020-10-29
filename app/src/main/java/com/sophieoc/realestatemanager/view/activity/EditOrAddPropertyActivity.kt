@@ -45,10 +45,12 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     lateinit var binding: ActivityEditAddPropertyBinding
     val propertyViewModel by viewModel<PropertyViewModel>()
 
-
-    override fun getLayout() = Pair(null, binding.root)
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        bindViews()
+        super.onCreate(savedInstanceState)
+    }
+
+    private fun bindViews() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_add_property)
         binding.propertyViewModel = propertyViewModel
         intent.extras?.let {
@@ -58,7 +60,6 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         toolbar.setNavigationOnClickListener { onBackPressed() }
         bottom_navigation_bar.setOnNavigationItemSelectedListener(this)
         bottom_navigation_bar.setBackgroundColor(ContextCompat.getColor(this, R.color.translucent_scrim_top_center))
-        super.onCreate(savedInstanceState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -236,23 +237,22 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         return true
     }
 
-
     private fun showAlertDialog() {
-        var message = "Please fill in the fields "
+        var message = getString(R.string.fill_in_missing_fields)
         if (emptyFieldsInAddress) {
-            message += "in Address page "
+            message += getString(R.string.in_address_page)
         }
         if (emptyFieldsInMainInfo) {
             if (emptyFieldsInAddress)
-                message += "and "
-            message += "in Main Informations page"
+                message += getString(R.string.and)
+            message += getString(R.string.in_main_info_page)
         }
         message += "."
 
         AlertDialog.Builder(this)
-                .setTitle("Oops! You forgot to add some infos!")
+                .setTitle(getString(R.string.forgot_info_title))
                 .setMessage(message)
-                .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.ok_btn)) { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
                 .create().show()
     }
@@ -273,6 +273,8 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         super.onDestroy()
         activityRestarted = false
     }
+
+    override fun getLayout() = Pair(null, binding.root)
 
     companion object {
         const val TAG = "AddPropertyActivity"

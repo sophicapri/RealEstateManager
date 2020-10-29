@@ -12,7 +12,9 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
+import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.USERS_PATH
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +23,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class UserRepository(private val userDao: UserDao) {
-    private val userCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("users")
-    private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
+    private val userCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(USERS_PATH)
+    private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(PROPERTIES_PATH)
     private val firebaseUser = FirebaseAuth.getInstance().currentUser
     val currentUser = getUserWithProperties(getUserId())
 

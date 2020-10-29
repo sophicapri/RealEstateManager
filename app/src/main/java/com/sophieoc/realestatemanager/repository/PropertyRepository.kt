@@ -9,6 +9,7 @@ import com.sophieoc.realestatemanager.api.PlaceApi
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
+import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.TIMESTAMP
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +22,7 @@ import kotlin.collections.ArrayList
 
 
 class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
-    private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection("properties")
+    private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(PROPERTIES_PATH)
 
     fun upsert(property: Property): MutableLiveData<Property> {
         val propertyToCreate: MutableLiveData<Property> = MutableLiveData<Property>()

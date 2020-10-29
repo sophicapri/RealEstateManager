@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -22,7 +21,6 @@ import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
@@ -45,7 +43,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             } else
                 mainContext.checkLocationEnabled()
         }
-        Log.d(TAG, "onViewCreated: ")
         progressBar.visibility = VISIBLE
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
@@ -66,7 +63,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         initMarkers()
         if (PreferenceHelper.locationEnabled)
             map?.isMyLocationEnabled = true
-        progressBar.visibility = GONE
+        else
+            progressBar.visibility = GONE
     }
 
     private fun startPropertyDetail(marker: Marker) {
@@ -121,23 +119,16 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                     if (currentLocation != null && currentLocation.longitude != 0.0 && currentLocation.longitude != 0.0) {
                         this.currentLocation = currentLocation
                         focusMap(currentLocation)
-                      //  progressBar.visibility = GONE
+                        progressBar.visibility = GONE
                     } else {
                         // -> update view after location enabled
-                        val intent = Intent(mainContext, MapActivity::class.java)
-                        if (getLocationFromIntent() != null){
-                            intent.putExtra(LATITUDE_PROPERTY, mainContext.intent.extras?.get(LATITUDE_PROPERTY) as Double)
-                            intent.putExtra(LONGITUDE_PROPERTY, mainContext.intent.extras?.get(LONGITUDE_PROPERTY) as Double)
-                        }
-                        mainContext.finish()
-                        startActivity(intent)
+                        mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
                     }
                 }else {
                     Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
                 }
             }
-        } else
-            mainContext.checkLocationEnabled()
+        }
     }
 
     private fun focusMap(currentLocation: Location) {

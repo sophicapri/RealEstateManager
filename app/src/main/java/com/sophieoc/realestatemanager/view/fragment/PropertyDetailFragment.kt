@@ -59,6 +59,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             mainContext.intent.hasExtra(PROPERTY_ID) -> getPropertyIdFromIntent(mainContext.intent.extras)
             else -> displayNoPropertyFragment()
         }
+        mainContext.checkLocationEnabled()
         initMap()
     }
 
@@ -100,8 +101,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
         if (PreferenceHelper.locationEnabled) {
             val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
             mapFragment?.getMapAsync(this)
-        } else
-            mainContext.checkLocationEnabled()
+        }
     }
 
     private fun bindViews() {

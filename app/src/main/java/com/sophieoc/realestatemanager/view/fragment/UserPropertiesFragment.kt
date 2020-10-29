@@ -48,7 +48,8 @@ class UserPropertiesFragment : PropertyListFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //Override to not call super.onViewCreated in PropertyListFragment
+        //Override to not call super.onViewCreated in PropertyListFragment.kt
+        // do not delete
     }
     
     companion object{

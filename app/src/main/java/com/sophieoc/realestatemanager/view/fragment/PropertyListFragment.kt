@@ -25,17 +25,13 @@ import kotlinx.android.synthetic.main.fragment_property_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-open class
-PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
+open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
     private val propertyViewModel by viewModel<PropertyViewModel>()
     private lateinit var binding: FragmentPropertyListBinding
 
-    companion object{
-        const val TAG = "LogPropertyListFragment"
-    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_property_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_list, container, false)
         return binding.root
     }
 
@@ -74,11 +70,11 @@ PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListen
         recyclerView.adapter = adapter
     }
 
-    fun updateList(filteredList: ArrayList<Property>){
+    fun updateList(filteredList: ArrayList<Property>) {
         adapter.updateList(filteredList)
     }
 
-    fun resetFilter(){
+    fun resetFilter() {
         getPropertiesList()
     }
 
@@ -99,4 +95,8 @@ PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListen
     }
 
     override fun getLayout() = Pair(null, binding.root)
+
+    companion object {
+        const val TAG = "LogPropertyListFragment"
+    }
 }

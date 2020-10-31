@@ -159,15 +159,6 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         }
     }
 
-    private fun showAddressErrorDialog() {
-        AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_cant_locate_address))
-                .setMessage(getString(R.string.address_not_found))
-                .setPositiveButton(getString(R.string.edit_address_btn)) { _, _ -> showFragment(fragmentAddress) }
-                .setNegativeButton(getString(R.string.ignore_btn)) { dialog, _ -> dialog.dismiss() }
-                .create().show()
-    }
-
     private fun setPointOfInterest(placeDetails: PlaceDetails, location: Location): PointOfInterest {
         val position: Int
         val pointOfInterest = PointOfInterest()
@@ -278,6 +269,15 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         val nb: NotificationCompat.Builder = notificationHelper
                 .getChannelNotification(getString(R.string.property_saved_successful))
         notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
+    }
+
+    private fun showAddressErrorDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_cant_locate_address))
+                .setMessage(getString(R.string.address_not_found))
+                .setPositiveButton(getString(R.string.edit_address_btn)) { _, _ -> showFragment(fragmentAddress) }
+                .setNegativeButton(getString(R.string.ignore_btn)) { dialog, _ -> dialog.dismiss() }
+                .create().show()
     }
 
     override fun onDestroy() {

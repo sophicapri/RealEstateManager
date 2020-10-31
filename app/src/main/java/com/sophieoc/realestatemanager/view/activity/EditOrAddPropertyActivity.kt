@@ -153,8 +153,19 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
                 if (placeDetailList == null)
                     Log.d(TAG, "setPointOfInterestsAndSave: list == null")
             })
-        } else
+        } else {
             Log.d(TAG, "setPointOfInterestsAndSave: latLng not found")
+            showAddressErrorDialog()
+        }
+    }
+
+    private fun showAddressErrorDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_cant_locate_address))
+                .setMessage(getString(R.string.address_not_found))
+                .setPositiveButton(getString(R.string.edit_address_btn)) { _, _ -> showFragment(fragmentAddress) }
+                .setNegativeButton(getString(R.string.ignore_btn)) { dialog, _ -> dialog.dismiss() }
+                .create().show()
     }
 
     private fun setPointOfInterest(placeDetails: PlaceDetails, location: Location): PointOfInterest {

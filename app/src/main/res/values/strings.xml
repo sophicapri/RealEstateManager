@@ -126,4 +126,8 @@
     <string name="in_address_page">"in Address page "</string>
     <string name="in_main_info_page">"in Main Informations page"</string>
     <string name="and">"and "</string>
+    <string name="title_cant_locate_address">Error: Could not locate the address</string>
+    <string name="edit_address_btn">Edit address</string>
+    <string name="ignore_btn">Ignore</string>
+    <string name="address_not_found">"The address entered doesn't match any location. You can either leave it that way* or check the address for any mistake.\n\n*The property won't be shown accurately on the map."</string>
 </resources>

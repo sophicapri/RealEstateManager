@@ -3,12 +3,14 @@ package com.sophieoc.realestatemanager.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,15 +27,19 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkLocationEnabled()
         google_sign_in_btn.setOnClickListener { startSignInWithGoogle()}
     }
 
     private fun startSignInWithGoogle() {
-        startActivityForResult(AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build()))
-                .setIsSmartLockEnabled(false, true)
-                .build(), RC_SIGN_IN)
+        if (PreferenceHelper.locationEnabled) {
+            startActivityForResult(AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build()))
+                    .setIsSmartLockEnabled(false, true)
+                    .build(), RC_SIGN_IN)
+        } else
+            Toast.makeText(this, getString(R.string.please_connect_to_internet), LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

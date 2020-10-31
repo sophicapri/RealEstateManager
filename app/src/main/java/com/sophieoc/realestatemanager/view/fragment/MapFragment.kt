@@ -47,6 +47,14 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        handleMapSize()
+        mainContext.checkLocationEnabled()
+        if (getLocationFromIntent() == null)
+            fetchLastLocation()
+    }
+
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.uiSettings.isZoomGesturesEnabled = true
@@ -98,14 +106,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             }
         } else if (propertyDetailView == null)
             btn_map_size.visibility = GONE
-    }
-
-    override fun onResume() {
-        super.onResume()
-        handleMapSize()
-        mainContext.checkLocationEnabled()
-        if (getLocationFromIntent() == null)
-            fetchLastLocation()
     }
 
     @SuppressLint("MissingPermission")

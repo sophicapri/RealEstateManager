@@ -6,22 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 
 
-class AddAddressFragment : BaseFragment(){
+class AddAddressFragment : Fragment(){
     private lateinit var binding: FragmentAddAddressBinding
-    private lateinit var addPropertyActivity: EditOrAddPropertyActivity
+    private lateinit var rootActivity: EditOrAddPropertyActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addPropertyActivity = (activity as EditOrAddPropertyActivity)
-        addPropertyActivity.intent.extras?.let {
+        rootActivity = (activity as EditOrAddPropertyActivity)
+        rootActivity.intent.extras?.let {
             getPropertyId(it)
         }
     }
@@ -34,17 +34,17 @@ class AddAddressFragment : BaseFragment(){
     }
 
     private fun getProperty(propertyId: String) {
-        addPropertyActivity.propertyViewModel.getPropertyById(propertyId).observe(addPropertyActivity, {
+        rootActivity.propertyViewModel.getPropertyById(propertyId).observe(rootActivity, {
             it?.let {
-                addPropertyActivity.propertyViewModel.property = it
+                rootActivity.propertyViewModel.property = it
                 // to update the view
-                val ft: FragmentTransaction = mainContext.supportFragmentManager.beginTransaction()
+                val ft: FragmentTransaction = rootActivity.supportFragmentManager.beginTransaction()
                 if (Build.VERSION.SDK_INT >= 26) {
                     ft.setReorderingAllowed(false)
                 }
                 ft.detach(this).attach(this)
-                        .detach(addPropertyActivity.fragmentPropertyInfo).attach(addPropertyActivity.fragmentPropertyInfo)
-                        .detach(addPropertyActivity.fragmentPictures).attach(addPropertyActivity.fragmentPictures).commit()
+                        .detach(rootActivity.fragmentPropertyInfo).attach(rootActivity.fragmentPropertyInfo)
+                        .detach(rootActivity.fragmentPictures).attach(rootActivity.fragmentPictures).commit()
             }
         })
     }
@@ -56,14 +56,10 @@ class AddAddressFragment : BaseFragment(){
                 container,
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.propertyViewModel = addPropertyActivity.propertyViewModel
-        if (addPropertyActivity.activityRestarted)
+        binding.propertyViewModel = rootActivity.propertyViewModel
+        if (rootActivity.activityRestarted)
             binding.executePendingBindings()
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun getLayout(): Pair<Nothing?, View> {
-        return Pair(null, binding.root)
+        return binding.root
     }
 
     companion object {

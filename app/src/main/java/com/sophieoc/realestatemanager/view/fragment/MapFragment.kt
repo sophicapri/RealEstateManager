@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,7 +22,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
@@ -28,13 +31,19 @@ import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MapFragment : BaseFragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback {
+    private lateinit var mainContext : BaseActivity
     private var map: GoogleMap? = null
     private var propertyDetailView: View? = null
     private lateinit var currentLocation: Location
     val propertyViewModel by viewModel<PropertyViewModel>()
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_map, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        mainContext = activity as BaseActivity
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener {
@@ -49,8 +58,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        handleMapSize()
+        mainContext.checkConnection()
         mainContext.checkLocationEnabled()
+        handleMapSize()
         if (getLocationFromIntent() == null)
             fetchLastLocation()
     }
@@ -159,7 +169,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         })
     }
 
-
     private fun getLocationFromIntent(): Location? {
         val extras = mainContext.intent.extras
         val lat = extras?.get(LATITUDE_PROPERTY) as Double?
@@ -170,6 +179,4 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         lat?.let { return location }
         return null
     }
-
-    override fun getLayout() = Pair(R.layout.fragment_map, null)
 }

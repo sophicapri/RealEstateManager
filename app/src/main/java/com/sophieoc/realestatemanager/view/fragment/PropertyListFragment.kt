@@ -8,10 +8,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
@@ -25,10 +26,16 @@ import kotlinx.android.synthetic.main.fragment_property_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnPropertyClickListener {
+open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var adapter: PropertyListAdapter
+    lateinit var mainContext : BaseActivity
     private val propertyViewModel by viewModel<PropertyViewModel>()
     private lateinit var binding: FragmentPropertyListBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainContext = activity as BaseActivity
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_list, container, false)
@@ -49,6 +56,11 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
         binding.fabAddProperty.setOnClickListener {
             (mainContext as MainActivity).startNewActivity(EditOrAddPropertyActivity::class.java)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainContext.checkConnection()
     }
 
     private fun getPropertiesList() {
@@ -92,11 +104,5 @@ open class PropertyListFragment : BaseFragment(), PropertyListAdapter.OnProperty
             mainContext.supportFragmentManager.beginTransaction()
                     .replace(R.id.frame_property_details, propertyDetailFragment).commit()
         }
-    }
-
-    override fun getLayout() = Pair(null, binding.root)
-
-    companion object {
-        const val TAG = "LogPropertyListFragment"
     }
 }

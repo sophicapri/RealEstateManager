@@ -17,10 +17,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseFragment
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
@@ -33,12 +33,15 @@ import kotlinx.android.synthetic.main.fragment_add_pictures.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListener, PicturesAdapter.OnSetAsCoverListener {
+class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener, PicturesAdapter.OnSetAsCoverListener {
     lateinit var binding: FragmentAddPicturesBinding
     private lateinit var adapter: PicturesAdapter
     private lateinit var rootActivity: EditOrAddPropertyActivity
 
-    override fun getLayout(): Pair<Nothing?, View> = Pair(null, binding.root)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        rootActivity = (activity as EditOrAddPropertyActivity)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
@@ -50,16 +53,12 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
         if (rootActivity.activityRestarted) {
             binding.executePendingBindings()
         }
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        rootActivity = (activity as EditOrAddPropertyActivity)
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+        rootActivity.checkConnection()
         bindViews()
         configureRecyclerView()
     }
@@ -105,7 +104,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
             if (resultCode == RESULT_OK) {
                 data?.let { it -> it.data?.let { saveImage(it) } }
             } else {
-                Toast.makeText(mainContext, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+                Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -115,7 +114,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
         val arrayPhoto = ArrayList(rootActivity.propertyViewModel.property.photos)
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
-        if (Utils.isInternetAvailable(mainContext)) {
+        if (Utils.isInternetAvailable(rootActivity)) {
             imageRef.putFile(data)
                     .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
@@ -128,7 +127,7 @@ class AddPicturesFragment : BaseFragment(), PicturesAdapter.OnDeletePictureListe
                     }
             PreferenceHelper.internetAvailable = true
         } else {
-            Toast.makeText(mainContext, getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
+            Toast.makeText(rootActivity, getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
             PreferenceHelper.internetAvailable = false
         }
     }

@@ -9,6 +9,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,7 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseFragment
+import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
 import com.sophieoc.realestatemanager.databinding.NoPropertyClickedBinding
 import com.sophieoc.realestatemanager.model.PointOfInterest
@@ -34,15 +35,19 @@ import kotlinx.android.synthetic.main.toolbar_property_detail.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
+class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
+    private lateinit var mainContext : BaseActivity
     private var propertyMarker: MarkerOptions? = null
     private var latLngProperty = LatLng(0.0, 0.0)
     private val propertyViewModel by viewModel<PropertyViewModel>()
     private val userViewModel by viewModel<UserViewModel>()
     lateinit var binding: FragmentPropertyDetailBinding
 
-    override fun getLayout() = Pair(null, binding.root)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainContext = activity as BaseActivity
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_detail, container, false)
@@ -59,6 +64,7 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             mainContext.intent.hasExtra(PROPERTY_ID) -> getPropertyIdFromIntent(mainContext.intent.extras)
             else -> displayNoPropertyFragment()
         }
+        mainContext.checkConnection()
         mainContext.checkLocationEnabled()
         initMap()
     }
@@ -174,14 +180,13 @@ class PropertyDetailFragment : BaseFragment(), OnMapReadyCallback {
             view?.let { Snackbar.make(it, getString(R.string.cant_locate_property), LENGTH_LONG).show() }
     }
 
-    class NoPropertyClickedFragment : BaseFragment() {
+    class NoPropertyClickedFragment : Fragment() {
         private lateinit var binding : NoPropertyClickedBinding
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             binding = DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)
             return binding.root
         }
-        override fun getLayout() = Pair(null, binding.root)
     }
 
     companion object {

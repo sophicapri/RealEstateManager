@@ -132,14 +132,14 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         }
     }
 
-    companion object {
-        const val TAG = "AddPictures"
-    }
-
     override fun onSetAsCoverClick(position: Int, photos: ArrayList<Photo>) {
         val photoToMove = photos[position]
         photos.remove(photoToMove)
         photos.add(0, photoToMove)
         rootActivity.propertyViewModel.property.photos = photos
+    }
+
+    companion object {
+        const val TAG = "AddPictures"
     }
 }

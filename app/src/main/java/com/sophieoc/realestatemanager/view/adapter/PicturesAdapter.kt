@@ -1,7 +1,5 @@
 package com.sophieoc.realestatemanager.view.adapter
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -55,16 +53,6 @@ class PicturesAdapter(var onDeletePictureListener: OnDeletePictureListener, var 
             binding.deletePicture.setOnClickListener {
                 onDeletePictureListener.onDeleteClick(adapterPosition, ArrayList(propertyViewModel.property.photos))
                 notifyDataSetChanged()
-            }
-        }
-
-        private fun getTextWatcher() = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                propertyViewModel.property.photos[adapterPosition].description = s.toString()
             }
         }
     }

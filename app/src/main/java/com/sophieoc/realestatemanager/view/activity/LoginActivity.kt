@@ -27,7 +27,6 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkLocationEnabled()
         google_sign_in_btn.setOnClickListener { startSignInWithGoogle()}
     }
 

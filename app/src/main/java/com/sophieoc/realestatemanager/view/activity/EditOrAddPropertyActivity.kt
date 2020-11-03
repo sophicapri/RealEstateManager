@@ -79,7 +79,6 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
                     .add(R.id.frame_add_property, fragmentPictures, fragmentPictures::class.java.simpleName)
                     .hide(fragmentPropertyInfo).hide(fragmentPictures).commit()
         }
-        Log.d(TAG, "onResume: ")
     }
 
     override fun onRestart() {

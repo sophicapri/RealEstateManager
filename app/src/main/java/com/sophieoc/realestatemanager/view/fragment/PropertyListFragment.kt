@@ -45,12 +45,12 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView(binding.recyclerViewProperties)
-        getAndDisplayPropertiesList()
+        getAndUpdatePropertiesList()
         binding.swipeRefreshView.setOnRefreshListener {
             if (results_search_container.visibility == VISIBLE) {
                 (mainContext as MainActivity).displayResults()
             } else
-                getAndDisplayPropertiesList()
+                getAndUpdatePropertiesList()
             binding.swipeRefreshView.isRefreshing = false
         }
         binding.fabAddProperty.setOnClickListener {
@@ -63,7 +63,7 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
         mainContext.checkConnection()
     }
 
-    private fun getAndDisplayPropertiesList() {
+    private fun getAndUpdatePropertiesList() {
         propertyViewModel.getProperties().observe(mainContext, {
             if (it != null) {
                 if (it.isNotEmpty()) {
@@ -87,7 +87,7 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
     }
 
     fun resetFilter() {
-        getAndDisplayPropertiesList()
+        getAndUpdatePropertiesList()
     }
 
     override fun onPropertyClick(propertyId: String) {

@@ -193,7 +193,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     }
 
     private fun checkInputs(): Boolean {
-        return checkAddressPage(propertyViewModel.property).also { checkMainInfoPage(propertyViewModel.property) }
+        return checkAddressPage(propertyViewModel.property).and(checkMainInfoPage(propertyViewModel.property))
     }
 
     private fun checkMainInfoPage(property: Property): Boolean {

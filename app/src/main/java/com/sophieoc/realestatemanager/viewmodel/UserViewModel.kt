@@ -8,7 +8,7 @@ import com.sophieoc.realestatemanager.repository.UserRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
 
 class UserViewModel(private val userSource: UserRepository) : ViewModel() {
-    private var _currentUser = userSource.currentUser
+    private var _currentUser = userSource.getCurrentUser()
     val currentUser : LiveData<UserWithProperties>
         get() = _currentUser
     val userUpdated: LiveData<UserWithProperties> = Transformations.switchMap(_currentUser) {

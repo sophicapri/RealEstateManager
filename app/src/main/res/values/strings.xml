@@ -123,9 +123,9 @@
     <string name="optional">(optional)</string>
     <string name="forgot_info_title">"Oops! You forgot to add some informations!"</string>
     <string name="fill_in_missing_fields">"Please fill in the fields "</string>
-    <string name="in_address_page">"in Address page "</string>
+    <string name="in_address_page">"in Address page"</string>
     <string name="in_main_info_page">"in Main Informations page"</string>
-    <string name="and">"and "</string>
+    <string name="and">" and "</string>
     <string name="title_cant_locate_address">Error: Could not locate the address</string>
     <string name="edit_address_btn">Edit address</string>
     <string name="ignore_btn">Ignore</string>

@@ -19,7 +19,7 @@ abstract class RealEstateDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var instance: RealEstateDatabase? = null
-        private const val DATABASE_NAME = "RealEstate.db"
+        const val DATABASE_NAME = "RealEstate.db"
 
         fun getInstance(context: Context): RealEstateDatabase {
             return instance ?: synchronized(this) {

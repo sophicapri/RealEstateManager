@@ -42,14 +42,10 @@ abstract class BaseActivity : AppCompatActivity() {
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         getLayout().first?.let { setContentView(it)}
         getLayout().second?.let { setContentView(it)}
+        checkConnection()
     }
 
     abstract fun getLayout(): Pair<Int?, View?>
-
-    override fun onResume() {
-        super.onResume()
-        checkConnection()
-    }
 
     fun checkConnection() {
         if (!Utils.isInternetAvailable(this)){

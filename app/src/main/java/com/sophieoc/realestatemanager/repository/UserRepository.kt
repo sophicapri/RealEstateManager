@@ -4,16 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
 import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.TIMESTAMP
 import com.sophieoc.realestatemanager.utils.USERS_PATH
 import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import kotlinx.coroutines.CoroutineScope
@@ -26,12 +24,16 @@ class UserRepository(private val userDao: UserDao) {
     private val userCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(USERS_PATH)
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(PROPERTIES_PATH)
     private val firebaseUser = FirebaseAuth.getInstance().currentUser
-    val currentUser = getUserWithProperties(getUserId())
+
+    fun getCurrentUser(): MutableLiveData<UserWithProperties> {
+        return getUserWithProperties(getUserId())
+    }
 
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val user: MutableLiveData<UserWithProperties> = MutableLiveData()
-        getUserFromRoom(uid, user)
-        if (PreferenceHelper.internetAvailable)
+        if (!PreferenceHelper.internetAvailable)
+            getUserFromRoom(uid, user)
+        else
             getUserFromFirestore(uid, user)
         return user
     }
@@ -69,14 +71,15 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     private fun getUserPropertiesFromFirestore(uid: String, userMutable: MutableLiveData<UserWithProperties>, user: User) {
-        propertyCollectionRef.whereEqualTo("userId", uid).get().addOnCompleteListener { task: Task<QuerySnapshot> ->
-            if (task.isSuccessful)
-                task.result?.toObjects(Property::class.java)?.let {
-                    userMutable.postValue(UserWithProperties(user, it))
+        propertyCollectionRef.whereEqualTo("userId", uid).orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                .get().addOnCompleteListener { task: Task<QuerySnapshot> ->
+                    if (task.isSuccessful)
+                        task.result?.toObjects(Property::class.java)?.let {
+                            userMutable.postValue(UserWithProperties(user, it))
+                        }
+                    else if (task.exception != null)
+                        Log.e(TAG, "getUserPropertiesFromFirestore " + task.exception!!.message)
                 }
-            else if (task.exception != null)
-                Log.e(TAG, "getUserPropertiesById " + task.exception!!.message)
-        }
     }
 
     private fun createUserAndSaveInDB() {
@@ -111,6 +114,6 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     private fun getUserId(): String {
-        return firebaseUser?.uid ?:PreferenceHelper.currentUserId
+        return firebaseUser?.uid ?: PreferenceHelper.currentUserId
     }
 }

@@ -6,6 +6,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,8 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
@@ -48,7 +52,12 @@ class PropertyListFragment : Fragment() {
             binding.swipeRefreshView.isRefreshing = false
         }
         binding.fabAddProperty.setOnClickListener {
-            (mainContext as MainActivity).startNewActivity(EditOrAddPropertyActivity::class.java)
+            if (Utils.isInternetAvailable(mainContext))
+                mainContext.startNewActivity(EditOrAddPropertyActivity::class.java)
+            else {
+                Toast.makeText(mainContext, getString(R.string.cant_add_property_offline), LENGTH_LONG).show()
+                PreferenceHelper.internetAvailable = false
+            }
         }
     }
 

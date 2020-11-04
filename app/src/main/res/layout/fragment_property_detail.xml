@@ -4,11 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <import type="java.util.Locale" />
-
         <import type="com.sophieoc.realestatemanager.utils.ExtensionsKt" />
 
         <variable
@@ -81,8 +78,9 @@
                     app:layout_collapseMode="parallax"
                     tools:text="Front of the house" />
 
-                <include android:id="@+id/property_detail_toolbar"
-                    layout="@layout/toolbar_property_detail"/>
+                <include
+                    android:id="@+id/property_detail_toolbar"
+                    layout="@layout/toolbar_property_detail" />
 
                 <TextView
                     android:id="@+id/property_availability"
@@ -196,7 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_5"
-                    android:text="@{String.valueOf(property.numberOfBedrooms)}"
+                    android:text="@{property.numberOfBedrooms == -1 ? `n/a` : String.valueOf(property.numberOfBedrooms)}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_bed"
@@ -220,7 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_5"
-                    android:text="@{String.valueOf(property.numberOfBathrooms)}"
+                    android:text="@{property.numberOfBathrooms == -1 ? `n/a` : String.valueOf(property.numberOfBathrooms)}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/ic_bath"
@@ -358,7 +356,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/map_container"/>
+                    app:layout_constraintTop_toBottomOf="@+id/map_container" />
 
                 <TextView
                     android:id="@+id/description"

@@ -24,6 +24,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_default"
+                    android:textColor="@color/colorPrimary"
                     android:layout_marginTop="@dimen/margin_default"
                     android:text="@string/street_n"
                     app:layout_constraintStart_toStartOf="parent"
@@ -40,15 +41,13 @@
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
                     android:inputType="number"
+                    android:hint="@string/hint_street_number"
                     android:padding="@dimen/margin_10"
                     android:text="@={propertyViewModel.property.address.streetNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/title_street_nbr"
                     app:layout_constraintTop_toBottomOf="@+id/title_street_nbr"
-                    tools:ignore="LabelFor">
-
-                    <requestFocus />
-                </EditText>
+                    tools:ignore="LabelFor"/>
 
                 <TextView
                     android:id="@+id/title_apartment_nbr"
@@ -56,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:text="@string/apartment_n"
+                    android:textColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="@+id/title_street_nbr"
                     app:layout_constraintTop_toBottomOf="@+id/street_nbr_input" />
 
@@ -66,6 +66,7 @@
                     android:background="@drawable/bkg_rectangle_grey"
                     android:cursorVisible="true"
                     android:freezesText="true"
+                    android:hint="@string/hint_apartment_number"
                     android:layout_marginTop="@dimen/margin_5"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
@@ -83,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:text="@string/street_name"
+                    android:textColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="@+id/title_apartment_nbr"
                     app:layout_constraintTop_toBottomOf="@+id/apartment_nbr_input" />
 
@@ -94,6 +96,7 @@
                     android:cursorVisible="true"
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
+                    android:hint="@string/hint_street_name"
                     android:layout_marginTop="@dimen/margin_5"
                     android:padding="@dimen/margin_10"
                     android:text="@={propertyViewModel.property.address.streetName}"
@@ -109,6 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:text="@string/city"
+                    android:textColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="@+id/title_street_name"
                     app:layout_constraintTop_toBottomOf="@+id/street_name_input" />
 
@@ -122,6 +126,7 @@
                     android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                     android:importantForAutofill="no"
                     android:layout_marginTop="@dimen/margin_5"
+                    android:hint="@string/hint_city"
                     android:padding="@dimen/margin_10"
                     android:text="@={propertyViewModel.property.address.city}"
                     app:layout_constraintEnd_toEndOf="@+id/street_name_input"
@@ -136,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:text="@string/postal_code"
+                    android:textColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="@+id/title_city"
                     app:layout_constraintTop_toBottomOf="@+id/city_input" />
 
@@ -150,6 +156,7 @@
                     android:inputType="number"
                     android:layout_marginTop="@dimen/margin_5"
                     android:padding="@dimen/margin_10"
+                    android:hint="@string/hint_postal_code"
                     android:text="@={propertyViewModel.property.address.postalCode}"
                     app:layout_constraintEnd_toEndOf="@+id/city_input"
                     app:layout_constraintStart_toStartOf="@+id/title_postal_code"
@@ -162,8 +169,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:text="@string/region"
+                    android:textColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="@+id/title_postal_code"
                     app:layout_constraintTop_toBottomOf="@+id/postal_code_input" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/optional"
+                    android:textColor="@color/grey"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    android:layout_marginStart="@dimen/margin_5"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_region"
+                    app:layout_constraintStart_toEndOf="@+id/title_region"
+                    app:layout_constraintTop_toTopOf="@+id/title_region" />
 
                 <EditText
                     android:id="@+id/region_input"
@@ -176,6 +196,7 @@
                     android:inputType="text"
                     android:layout_marginTop="@dimen/margin_5"
                     android:padding="@dimen/margin_10"
+                    android:hint="@string/hint_region"
                     android:text="@={propertyViewModel.property.address.region}"
                     app:layout_constraintEnd_toEndOf="@+id/postal_code_input"
                     app:layout_constraintStart_toStartOf="@+id/title_region"
@@ -189,8 +210,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:text="@string/country_title"
+                    android:textColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="@+id/title_region"
                     app:layout_constraintTop_toBottomOf="@+id/region_input" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/optional"
+                    android:textColor="@color/grey"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    android:layout_marginStart="@dimen/margin_5"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_country"
+                    app:layout_constraintStart_toEndOf="@+id/title_country"
+                    app:layout_constraintTop_toTopOf="@+id/title_country" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/optional"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:textColor="@color/grey"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_apartment_nbr"
+                    app:layout_constraintStart_toEndOf="@+id/title_apartment_nbr"
+                    app:layout_constraintTop_toTopOf="@+id/title_apartment_nbr" />
 
                 <EditText
                     android:id="@+id/country_input"
@@ -203,6 +250,7 @@
                     android:inputType="text"
                     android:layout_marginTop="@dimen/margin_5"
                     android:padding="@dimen/margin_10"
+                    android:hint="@string/hint_country"
                     android:text="@={propertyViewModel.property.address.country}"
                     app:layout_constraintEnd_toEndOf="@+id/region_input"
                     app:layout_constraintStart_toStartOf="@+id/title_country"

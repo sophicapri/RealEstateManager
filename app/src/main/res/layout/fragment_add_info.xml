@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:text="@string/property_type_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +43,6 @@
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/price_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_property_type"
             app:layout_constraintTop_toBottomOf="@+id/types_spinner" />
 
@@ -62,7 +60,7 @@
             android:paddingTop="@dimen/margin_10"
             android:paddingEnd="@dimen/margin_40"
             android:paddingBottom="@dimen/margin_10"
-            android:text="@={`` + propertyViewModel.property.price}"
+            app:emptyIfNegativeValue="@={`` + propertyViewModel.property.price}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title_price"
             app:layout_constraintTop_toBottomOf="@+id/title_price"
@@ -86,9 +84,21 @@
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/number_of_bedrooms_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_price"
             app:layout_constraintTop_toBottomOf="@+id/price_input" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/margin_5"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_beds"
+            app:layout_constraintStart_toEndOf="@+id/title_nbr_of_beds"
+            app:layout_constraintTop_toTopOf="@+id/title_nbr_of_beds" />
+
 
         <EditText
             android:id="@+id/nbr_of_beds_input"
@@ -104,7 +114,7 @@
             android:paddingEnd="@dimen/margin_40"
             android:paddingTop="@dimen/margin_10"
             android:paddingBottom="@dimen/margin_10"
-            android:text="@={`` + propertyViewModel.property.numberOfBedrooms}"
+            app:emptyIfNegativeValue="@={`` + propertyViewModel.property.numberOfBedrooms}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_beds"
@@ -127,9 +137,20 @@
             android:layout_marginTop="@dimen/margin_10"
             android:text="@string/number_of_bathrooms_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_nbr_of_beds"
             app:layout_constraintTop_toBottomOf="@+id/nbr_of_beds_input" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/margin_5"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@+id/title_nbr_of_bath"
+            app:layout_constraintStart_toEndOf="@+id/title_nbr_of_bath"
+            app:layout_constraintTop_toTopOf="@+id/title_nbr_of_bath" />
 
         <EditText
             android:id="@+id/nbr_of_bath_input"
@@ -145,7 +166,7 @@
             android:paddingTop="@dimen/margin_10"
             android:paddingEnd="@dimen/margin_40"
             android:paddingBottom="@dimen/margin_10"
-            android:text="@={`` + propertyViewModel.property.numberOfBathrooms}"
+            app:emptyIfNegativeValue="@={`` + propertyViewModel.property.numberOfBathrooms}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/nbr_of_beds_input"
@@ -169,7 +190,6 @@
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/number_of_rooms_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_price"
             app:layout_constraintTop_toBottomOf="@+id/nbr_of_bath_input" />
 
@@ -187,7 +207,7 @@
             android:paddingTop="@dimen/margin_10"
             android:paddingEnd="@dimen/margin_40"
             android:paddingBottom="@dimen/margin_10"
-            android:text="@={`` + propertyViewModel.property.numberOfRooms}"
+            app:emptyIfNegativeValue="@={`` + propertyViewModel.property.numberOfRooms}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_nbr_of_rooms"
@@ -212,7 +232,6 @@
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/surface"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_nbr_of_rooms"
             app:layout_constraintTop_toBottomOf="@+id/nbr_of_rooms_input" />
 
@@ -230,7 +249,7 @@
             android:paddingTop="@dimen/margin_10"
             android:paddingEnd="@dimen/margin_40"
             android:paddingBottom="@dimen/margin_10"
-            android:text="@={`` + propertyViewModel.property.surface}"
+            app:emptyIfNegativeValue="@={`` + propertyViewModel.property.surface}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title_surface"
             app:layout_constraintTop_toBottomOf="@+id/title_surface"
@@ -252,7 +271,6 @@
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/availability"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_surface"
             app:layout_constraintTop_toBottomOf="@+id/surface_input" />
 
@@ -273,7 +291,7 @@
             android:text="@string/click_to_select_a_date"
             app:layout_constraintEnd_toEndOf="@+id/availability_spinner"
             app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="@+id/availability_spinner"
+            app:layout_constraintStart_toEndOf="@+id/title_since"
             app:layout_constraintTop_toBottomOf="@+id/availability_spinner" />
 
         <TextView
@@ -316,9 +334,20 @@
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/description_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_availability"
             app:layout_constraintTop_toBottomOf="@+id/title_since" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/margin_5"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@+id/title_description"
+            app:layout_constraintStart_toEndOf="@+id/title_description"
+            app:layout_constraintTop_toTopOf="@+id/title_description" />
 
         <EditText
             android:id="@+id/description_input"

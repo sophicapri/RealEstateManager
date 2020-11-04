@@ -1,9 +1,11 @@
 package com.sophieoc.realestatemanager.utils
 
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -83,4 +85,17 @@ fun SpringDotsIndicator.setViewPager(viewPager2: ViewPager2?){
 fun FloatingActionButton.setVisibility(userId: String?, currentUserId : String?){
     if (userId != null && currentUserId != null)
         this.visibility = if (userId == currentUserId) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("emptyIfNegativeValue")
+fun EditText.setText(text: String?) {
+    if (text == "-1") this.setText("") else this.setText(text)
+}
+
+@InverseBindingAdapter(attribute = "emptyIfNegativeValue", event = "android:textAttrChanged")
+fun EditText.getText(): String {
+    return if (this.text.toString().isEmpty())
+        "-1"
+    else
+        this.text.toString()
 }

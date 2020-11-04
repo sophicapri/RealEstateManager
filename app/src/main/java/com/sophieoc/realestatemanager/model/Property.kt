@@ -31,8 +31,8 @@ data class Property(
         @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size,
         @ColumnInfo(name = "timestamp") val timestamp: Long = Date().time
 )  {
-    constructor() : this(UUID.randomUUID().toString(), PropertyType.FLAT, 0, 0,
-            0, 0, 0, "", PropertyAvailability.AVAILABLE, null, null,
+    constructor() : this(UUID.randomUUID().toString(), PropertyType.HOUSE, -1, -1,
+            -1, -1, -1, "", PropertyAvailability.AVAILABLE, null, null,
             Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "not defined")
 
     companion object {

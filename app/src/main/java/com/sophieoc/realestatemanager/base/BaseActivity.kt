@@ -25,7 +25,6 @@ import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
-import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
 import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
@@ -33,7 +32,6 @@ import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
 abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var auth: FirebaseAuth
     private lateinit var locationManager: LocationManager
-    val fragmentMap = MapFragment()
     val fragmentList = PropertyListFragment()
     val fragmentUser = UserPropertiesFragment()
     val fragmentPropertyDetail = PropertyDetailFragment()

@@ -36,6 +36,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
     private var propertyDetailView: View? = null
     private lateinit var currentLocation: Location
+    private var fragmentNotRestarted = true
     val propertyViewModel by viewModel<PropertyViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,7 +62,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mainContext.checkConnection()
         mainContext.checkLocationEnabled()
         handleMapSize()
-        if (getLocationFromIntent() == null)
+        if (fragmentNotRestarted && getLocationFromIntent() == null)
             fetchLastLocation()
     }
 
@@ -129,7 +130,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     if (currentLocation != null && currentLocation.longitude != 0.0 && currentLocation.longitude != 0.0) {
                         this.currentLocation = currentLocation
                         focusMap(currentLocation)
-                        progressBar.visibility = GONE
+                        if (progressBar != null ) progressBar.visibility = GONE
                     } else {
                         // -> update view after location enabled
                         mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
@@ -178,5 +179,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         lng?.let { location.longitude = it }
         lat?.let { return location }
         return null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        fragmentNotRestarted = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fragmentNotRestarted = true
     }
 }

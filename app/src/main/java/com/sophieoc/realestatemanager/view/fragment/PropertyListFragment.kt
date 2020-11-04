@@ -1,6 +1,5 @@
 package com.sophieoc.realestatemanager.view.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,20 +14,16 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.utils.PROPERTY_ID
-import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MainActivity
-import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import kotlinx.android.synthetic.main.fragment_property_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClickListener {
-    lateinit var adapter: PropertyListAdapter
-    lateinit var mainContext : BaseActivity
+class PropertyListFragment : Fragment() {
+    private lateinit var adapter: PropertyListAdapter
+    private lateinit var mainContext: BaseActivity
     private val propertyViewModel by viewModel<PropertyViewModel>()
     private lateinit var binding: FragmentPropertyListBinding
 
@@ -45,9 +40,8 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView(binding.recyclerViewProperties)
-        getAndUpdatePropertiesList()
         binding.swipeRefreshView.setOnRefreshListener {
-            if (results_search_container.visibility == VISIBLE) {
+            if (binding.resultsSearchContainer.visibility == VISIBLE) {
                 (mainContext as MainActivity).displayResults()
             } else
                 getAndUpdatePropertiesList()
@@ -61,6 +55,10 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
     override fun onResume() {
         super.onResume()
         mainContext.checkConnection()
+        if (binding.resultsSearchContainer.visibility == VISIBLE)
+            (mainContext as MainActivity).displayResults()
+        else
+            getAndUpdatePropertiesList()
     }
 
     private fun getAndUpdatePropertiesList() {
@@ -75,11 +73,17 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
         })
     }
 
-    fun configureRecyclerView(recyclerView: RecyclerView) {
+    private fun configureRecyclerView(recyclerView: RecyclerView) {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = PropertyListAdapter(this)
+        adapter = PropertyListAdapter(getListener())
         recyclerView.adapter = adapter
+    }
+
+    private fun getListener() = object : PropertyListAdapter.OnPropertyClickListener {
+        override fun onPropertyClick(propertyId: String) {
+            mainContext.onPropertyClick(propertyId)
+        }
     }
 
     fun updateList(filteredList: ArrayList<Property>) {
@@ -88,21 +92,5 @@ open class PropertyListFragment : Fragment(), PropertyListAdapter.OnPropertyClic
 
     fun resetFilter() {
         getAndUpdatePropertiesList()
-    }
-
-    override fun onPropertyClick(propertyId: String) {
-        val propertyDetailView = activity?.findViewById<View?>(R.id.frame_property_details)
-        if (propertyDetailView == null) {
-            val intent = Intent(mainContext, PropertyDetailActivity::class.java)
-            intent.putExtra(PROPERTY_ID, propertyId)
-            mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
-        } else {
-            val bundle = Bundle()
-            bundle.putString(PROPERTY_ID, propertyId)
-            val propertyDetailFragment = PropertyDetailFragment()
-            propertyDetailFragment.arguments = bundle
-            mainContext.supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_property_details, propertyDetailFragment).commit()
-        }
     }
 }

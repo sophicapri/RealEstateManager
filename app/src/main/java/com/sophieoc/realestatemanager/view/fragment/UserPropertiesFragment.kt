@@ -5,16 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentUserPropertiesBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.USER_ID
+import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserPropertiesFragment : PropertyListFragment() {
+class UserPropertiesFragment : Fragment(){
     private val userViewModel by viewModel<UserViewModel>()
+    private lateinit var adapter: PropertyListAdapter
+    private lateinit var mainContext : BaseActivity
     private lateinit var binding : FragmentUserPropertiesBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,6 +32,7 @@ class UserPropertiesFragment : PropertyListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mainContext = activity as BaseActivity
         var id = ""
         if (mainContext.intent.hasExtra(USER_ID))
              id = mainContext.intent.extras?.get(USER_ID) as String
@@ -47,12 +55,16 @@ class UserPropertiesFragment : PropertyListFragment() {
         adapter.updateList(ArrayList(it.properties))
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //Override to not call super.onViewCreated in PropertyListFragment.kt
-        // do not delete
+    private fun configureRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = PropertyListAdapter(getListener())
+        recyclerView.adapter = adapter
     }
-    
-    companion object{
-        const val TAG = "LogUserProperties"
+
+    private fun getListener() = object : PropertyListAdapter.OnPropertyClickListener {
+        override fun onPropertyClick(propertyId: String) {
+            mainContext.onPropertyClick(propertyId)
+        }
     }
 }

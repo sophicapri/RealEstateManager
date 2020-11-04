@@ -57,8 +57,9 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
 
     fun getAllProperties(): LiveData<List<Property>> {
         val properties: MutableLiveData<List<Property>> = MutableLiveData()
-        getPropertiesFromRoom(properties)
-        if (PreferenceHelper.internetAvailable)
+        if (!PreferenceHelper.internetAvailable)
+            getPropertiesFromRoom(properties)
+        else
             getPropertiesFromFirestore(properties)
         return properties
     }
@@ -167,7 +168,7 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         return properties
     }
 
-    companion object{
+    companion object {
         const val TAG = "PropertyRepository"
     }
 }

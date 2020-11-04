@@ -23,12 +23,14 @@ import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
+import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
+import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.view.fragment.MapFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
 import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
 import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var auth: FirebaseAuth
     private lateinit var locationManager: LocationManager
     val fragmentMap = MapFragment()
@@ -76,6 +78,22 @@ abstract class BaseActivity : AppCompatActivity() {
             fragment = fragmentPropertyDetail
             val fm = supportFragmentManager.beginTransaction()
             fm.add(R.id.frame_property_details, fragment, fragment::class.java.simpleName).commit()
+        }
+    }
+
+    override fun onPropertyClick(propertyId: String) {
+        val propertyDetailView = findViewById<View?>(R.id.frame_property_details)
+        if (propertyDetailView == null) {
+            val intent = Intent(this, PropertyDetailActivity::class.java)
+            intent.putExtra(PROPERTY_ID, propertyId)
+            startActivityForResult(intent, RQ_CODE_PROPERTY)
+        } else {
+            val bundle = Bundle()
+            bundle.putString(PROPERTY_ID, propertyId)
+            val propertyDetailFragment = PropertyDetailFragment()
+            propertyDetailFragment.arguments = bundle
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame_property_details, propertyDetailFragment).commit()
         }
     }
 

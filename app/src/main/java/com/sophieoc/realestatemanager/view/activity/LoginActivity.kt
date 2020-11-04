@@ -31,7 +31,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun startSignInWithGoogle() {
-        if (PreferenceHelper.locationEnabled) {
+        if (PreferenceHelper.internetAvailable) {
             startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build()))

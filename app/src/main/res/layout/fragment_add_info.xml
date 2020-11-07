@@ -357,13 +357,14 @@
             android:background="@drawable/bkg_rectangle_grey"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:padding="@dimen/margin_10"
+            android:inputType="textMultiLine"
             android:text="@={propertyViewModel.property.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title_description"
             app:layout_constraintTop_toBottomOf="@+id/title_description"
             android:importantForAutofill="no"
-            tools:ignore="LabelFor"
-            android:inputType="text" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="LabelFor"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

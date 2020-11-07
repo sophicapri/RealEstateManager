@@ -18,11 +18,11 @@ import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserPropertiesFragment : Fragment(){
+class UserPropertiesFragment : Fragment() {
     private val userViewModel by viewModel<UserViewModel>()
     private lateinit var adapter: PropertyListAdapter
-    private lateinit var mainContext : BaseActivity
-    private lateinit var binding : FragmentUserPropertiesBinding
+    private lateinit var mainContext: BaseActivity
+    private lateinit var binding: FragmentUserPropertiesBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_properties, container, false)
@@ -35,17 +35,16 @@ class UserPropertiesFragment : Fragment(){
         mainContext = activity as BaseActivity
         var id = ""
         if (mainContext.intent.hasExtra(USER_ID))
-             id = mainContext.intent.extras?.get(USER_ID) as String
-        if (id.isNotEmpty() && id != PreferenceHelper.currentUserId) {
+            id = mainContext.intent.extras?.get(USER_ID) as String
+        if (id.isNotEmpty()) {
             userViewModel.getUserById(id).observe(mainContext, {
                 if (it != null) initView(it)
-                binding.myToolbar.title = mainContext.getString(R.string.agent_properties, it.user.username)
+                if (id != PreferenceHelper.currentUserId)
+                    binding.myToolbar.title = mainContext.getString(R.string.agent_properties, it.user.username)
+                else
+                    binding.myToolbar.title = mainContext.getString(R.string.my_properties)
             })
-        } else
-            userViewModel.currentUser.observe(mainContext, {
-                if (it != null) initView(it)
-                binding.myToolbar.title = mainContext.getString(R.string.my_properties)
-            })
+        }
     }
 
     private fun initView(it: UserWithProperties) {

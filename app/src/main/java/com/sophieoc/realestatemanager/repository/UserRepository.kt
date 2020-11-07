@@ -24,10 +24,7 @@ class UserRepository(private val userDao: UserDao) {
     private val userCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(USERS_PATH)
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(PROPERTIES_PATH)
     private val firebaseUser = FirebaseAuth.getInstance().currentUser
-
-    fun getCurrentUser(): MutableLiveData<UserWithProperties> {
-        return getUserWithProperties(getUserId())
-    }
+    val currentUser = getUserWithProperties(getUserId())
 
     fun getUserWithProperties(uid: String): MutableLiveData<UserWithProperties> {
         val user: MutableLiveData<UserWithProperties> = MutableLiveData()

@@ -29,4 +29,7 @@ class FilterViewModel (private val propertySource: PropertyRepository): ViewMode
     }
 
     fun getPriceOfPriciestProperty() = propertySource.getPriceOfPriciestProperty()
+
+    fun getSurfaceOfBiggestProperty() = propertySource.getSurfaceOfBiggestProperty()
+
 }

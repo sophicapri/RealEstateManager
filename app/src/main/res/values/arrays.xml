@@ -12,16 +12,4 @@
         <item> @string/for_sale </item>
         <item> @string/sold </item>
     </string-array>
-
-
-     <array name="initial_price_slider_values">
-            <item>0.</item>
-            <item>1800000</item>
-        </array>
-
-
-    <array name="initial_surface_slider_values">
-        <item>0.</item>
-        <item>500</item>
-    </array>
 </resources>

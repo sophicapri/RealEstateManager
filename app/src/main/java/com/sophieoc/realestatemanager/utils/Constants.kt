@@ -35,3 +35,5 @@ const val USER_ID = "user id"
 const val USERS_PATH = "users"
 
 const val PROPERTIES_PATH = "properties"
+
+const val STEP_SIZE_PRICE = 1000

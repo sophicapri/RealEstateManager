@@ -169,14 +169,25 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
     }
 
     fun getPriceOfPriciestProperty(): MutableLiveData<Int> {
-        val propertyMutable = MutableLiveData<Int>()
+        val priceMutable = MutableLiveData<Int>()
         CoroutineScope(Dispatchers.IO).launch {
             val property = propertyDao.getPriceOfPriciestProperty()
             withContext(Main) {
-                propertyMutable.postValue(property)
+                priceMutable.postValue(property)
             }
         }
-        return propertyMutable
+        return priceMutable
+    }
+
+    fun getSurfaceOfBiggestProperty(): MutableLiveData<Int> {
+        val surfaceMutable = MutableLiveData<Int>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val property = propertyDao.getSurfaceOfBiggestProperty()
+            withContext(Main) {
+                surfaceMutable.postValue(property)
+            }
+        }
+        return surfaceMutable
     }
 
     companion object {

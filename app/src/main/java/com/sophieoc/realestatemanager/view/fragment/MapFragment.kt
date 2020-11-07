@@ -37,6 +37,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var propertyDetailView: View? = null
     private lateinit var currentLocation: Location
     private var fragmentNotRestarted = true
+    private var updateView = false
     val propertyViewModel by viewModel<PropertyViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -122,6 +123,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     fun fetchLastLocation() {
         if (PreferenceHelper.locationEnabled) {
+            map?.isMyLocationEnabled = true
             val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext as MapActivity)
             val task: Task<Location?> = fusedLocationProviderClient.lastLocation
             task.addOnCompleteListener { getLocationTask: Task<Location?> ->
@@ -134,6 +136,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     } else {
                         // -> update view after location enabled
                         mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
+                        updateView = true
                     }
                 }else {
                     Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
@@ -181,13 +184,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return null
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         fragmentNotRestarted = false
+        if (!PreferenceHelper.locationEnabled || updateView)
+            fragmentNotRestarted = true
     }
 
     override fun onDestroy() {
         super.onDestroy()
         fragmentNotRestarted = true
+        updateView = false
     }
 }

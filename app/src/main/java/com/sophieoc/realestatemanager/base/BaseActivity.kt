@@ -95,16 +95,6 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null
-                && data.hasExtra(PROPERTY_ID))
-            intent.putExtra(PROPERTY_ID, data.getStringExtra(PROPERTY_ID))
-        if (requestCode == MapActivity.REQUEST_CODE_LOCATION && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            Log.d(MainActivity.TAG, "onActivityResult: location enabled")
-        }
-    }
-
     fun checkLocationEnabled() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MapActivity.REQUEST_CODE)
@@ -122,6 +112,17 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
             return
         }
         PreferenceHelper.locationEnabled = true
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null
+                && data.hasExtra(PROPERTY_ID))
+            intent.putExtra(PROPERTY_ID, data.getStringExtra(PROPERTY_ID))
+        if (requestCode == MapActivity.REQUEST_CODE_LOCATION && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Log.d(MainActivity.TAG, "onActivityResult: location enabled")
+        }
     }
 
     @SuppressLint("MissingPermission")

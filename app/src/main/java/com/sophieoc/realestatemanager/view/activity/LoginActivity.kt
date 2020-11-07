@@ -2,6 +2,8 @@ package com.sophieoc.realestatemanager.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.firebase.ui.auth.AuthUI
@@ -37,6 +39,7 @@ class LoginActivity : BaseActivity() {
                     .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build()))
                     .setIsSmartLockEnabled(false, true)
                     .build(), RC_SIGN_IN)
+            progressBar.visibility = VISIBLE
         } else
             Toast.makeText(this, getString(R.string.please_connect_to_internet), LENGTH_LONG).show()
     }
@@ -53,6 +56,7 @@ class LoginActivity : BaseActivity() {
             if (resultCode == RESULT_OK) {
                 userViewModel.currentUser.observe(this, {
                     startNewActivity(MainActivity::class.java)
+                    progressBar.visibility = GONE
                     finish()
                 })
             } else {

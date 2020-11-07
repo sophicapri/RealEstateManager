@@ -61,7 +61,7 @@ class UserRepository(private val userDao: UserDao) {
                     getUserPropertiesFromFirestore(uid, userMutable, user)
                 }
                 if (userResult == null)
-                    createUserAndSaveInDB()
+                    createUserAndSaveInDB(userMutable)
             } else if (task.exception != null)
                 Log.e("TAG", "getUser " + task.exception!!.message)
         }
@@ -79,7 +79,7 @@ class UserRepository(private val userDao: UserDao) {
                 }
     }
 
-    private fun createUserAndSaveInDB() {
+    private fun createUserAndSaveInDB(userMutable: MutableLiveData<UserWithProperties>) {
         firebaseUser?.let { firebaseUser ->
             val urlPicture = firebaseUser.photoUrl.toString()
             val uid: String = firebaseUser.uid
@@ -89,6 +89,7 @@ class UserRepository(private val userDao: UserDao) {
             val currentUser = UserWithProperties(user, ArrayList())
             PreferenceHelper.currentUserId = uid
             upsertUser(currentUser)
+            userMutable.postValue(currentUser)
         }
     }
 

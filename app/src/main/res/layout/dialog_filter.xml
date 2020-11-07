@@ -269,9 +269,6 @@
                 android:id="@+id/range_slider_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:stepSize="200"
-                android:valueFrom="0"
-                android:valueTo="3000000"
                 app:layout_constraintEnd_toEndOf="@+id/type_chip_group"
                 app:layout_constraintStart_toStartOf="@+id/type_chip_group"
                 app:layout_constraintTop_toBottomOf="@id/title_price"
@@ -280,8 +277,7 @@
                 app:thumbRadius="10dp"
                 app:tickColor="@android:color/transparent"
                 app:trackColorActive="@color/colorPrimary"
-                app:trackColorInactive="@color/lightGray"
-                app:values="@array/initial_price_slider_values" />
+                app:trackColorInactive="@color/lightGray"/>
 
             <TextView
                 android:id="@+id/min_price"
@@ -323,9 +319,7 @@
                 android:id="@+id/range_slider_surface"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:stepSize="10"
-                android:valueFrom="0"
-                android:valueTo="1000"
+                android:stepSize="1"
                 app:layout_constraintEnd_toEndOf="@+id/range_slider_price"
                 app:layout_constraintStart_toStartOf="@+id/range_slider_price"
                 app:layout_constraintTop_toBottomOf="@id/title_surface"
@@ -334,8 +328,7 @@
                 app:thumbRadius="10dp"
                 app:tickColor="@android:color/transparent"
                 app:trackColorActive="@color/colorPrimary"
-                app:trackColorInactive="@color/lightGray"
-                app:values="@array/initial_surface_slider_values" />
+                app:trackColorInactive="@color/lightGray" />
 
             <TextView
                 android:id="@+id/min_surface"

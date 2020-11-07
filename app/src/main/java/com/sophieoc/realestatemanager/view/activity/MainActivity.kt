@@ -146,11 +146,18 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         }
         bindingFilter.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
         filterViewModel.getPriceOfPriciestProperty().observe(this, {
+            bindingFilter.rangeSliderPrice.valueFrom = 0f
             bindingFilter.rangeSliderPrice.valueTo = it.toFloat()
             bindingFilter.rangeSliderPrice.values = arrayListOf(0.0f, it.toFloat() / 2)
-            bindingFilter.rangeSliderPrice.stepSize = it.toFloat() / 1000
+            bindingFilter.rangeSliderPrice.stepSize = it.toFloat() / STEP_SIZE_PRICE
         })
         bindingFilter.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
+        filterViewModel.getSurfaceOfBiggestProperty().observe(this, {
+            bindingFilter.rangeSliderSurface.valueFrom = 0f
+            bindingFilter.rangeSliderSurface.valueTo = it.toFloat()
+            bindingFilter.rangeSliderSurface.values = arrayListOf(0.0f, it.toFloat() / 2)
+            bindingFilter.rangeSliderSurface.stepSize = 1f
+        })
         bindingFilter.minPrice.text = getString(R.string.dollar_value, bindingFilter.rangeSliderPrice.values.first().toInt().formatToDollarsOrMeters())
         bindingFilter.maxPrice.text = getString(R.string.dollar_value, bindingFilter.rangeSliderPrice.values.last().toInt().formatToDollarsOrMeters())
         bindingFilter.minSurface.text = getString(R.string.sqft_value, bindingFilter.rangeSliderSurface.values.first().toInt())

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Test Results &mdash; Tests in 'com.sophieoc.realestatemanager'</title>
+<title>Test Results &mdash; realestatemanager in app</title>
 <style type="text/css">
           html {
             height: 100%
@@ -572,8 +572,8 @@ jQuery.cookie = function(name, value, options) {
 <body>
 <div id="container">
 <div id="header">
-<div class="time" xmlns="">28.93 s</div>
-<h1>Tests in 'com.sophieoc.realestatemanager': <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">3 total, </span><span class="passed">3 passed</span></strong>
+<div class="time" xmlns="">4.43 s</div>
+<h1>realestatemanager in app: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">12 total, </span><span class="passed">12 passed</span></strong>
 </h1>
 <div id="treecontrol">
 <ul>
@@ -588,33 +588,93 @@ jQuery.cookie = function(name, value, options) {
 </div>
 </div>
 <div id="content">
-<ul id="tree">
+<ul id="tree">&amp;quot;C:\Program Files\Android\Android Studio\jre\bin\java.exe&amp;quot; -ea -Didea.test.cyclic.buffer.size=1048576 &amp;quot;-javaagent:C:\Program Files\Android\Android Studio\lib\idea_rt.jar=54119:C:\Program Files\Android\Android Studio\bin&amp;quot; -Dfile.encoding=UTF-8 -classpath &amp;quot;C:\Program Files\Android\Android Studio\lib\idea_rt.jar&amp;quot; com.intellij.rt.execution.CommandLineWrapper C:\Users\sophi\AppData\Local\Temp\idea_classpath1451893630 com.intellij.rt.junit.JUnitStarter -ideVersion5 @w@C:\Users\sophi\AppData\Local\Temp\idea_working_dirs_junit.tmp @C:\Users\sophi\AppData\Local\Temp\idea_junit.tmp -socket54118
+Process finished with exit code 0
 <li xmlns="" class="level top open">
 <span><em class="time">
-<div class="time">6.24 s</div>
-</em>com.sophieoc.realestatemanager.PropertyContentProviderTests</span>
+<div class="time">3.68 s</div>
+</em>UserViewModelTest</span>
 <ul>
 <li class="level test">
 <span><em class="time">
-<div class="time">3.24 s</div>
-</em><em class="status">passed</em>insertAndGetProperty</span>
+<div class="time">3.65 s</div>
+</em><em class="status">passed</em>UserViewModelTest.get current user with success</span>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">3.00 s</div>
-</em><em class="status">passed</em>insertAndGetPropertyForUser</span>
+<div class="time">24 ms</div>
+</em><em class="status">passed</em>UserViewModelTest.update user with success</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">5 ms</div>
+</em><em class="status">passed</em>UserViewModelTest.get user by id with success</span>
 </li>
 </ul>
 </li>
 <li class="level top open">
 <span><em class="time">
-<div class="time">22.69 s</div>
-</em>com.sophieoc.realestatemanager.UtilsInternetConnectionTest</span>
+<div class="time">599 ms</div>
+</em>FilterViewModelTest</span>
 <ul>
 <li class="level test">
 <span><em class="time">
-<div class="time">22.69 s</div>
-</em><em class="status">passed</em>internetAvailability</span>
+<div class="time">599 ms</div>
+</em><em class="status">passed</em>FilterViewModelTest.get result for search</span>
+</li>
+</ul>
+</li>
+<li class="level top open">
+<span><em class="time">
+<div class="time">120 ms</div>
+</em>PropertyViewModelTest</span>
+<ul>
+<li class="level test">
+<span><em class="time">
+<div class="time">53 ms</div>
+</em><em class="status">passed</em>PropertyViewModelTest.insert property with success</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">5 ms</div>
+</em><em class="status">passed</em>PropertyViewModelTest.get property by id with success</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">4 ms</div>
+</em><em class="status">passed</em>PropertyViewModelTest.update property with success</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">5 ms</div>
+</em><em class="status">passed</em>PropertyViewModelTest.get nearby point of interests with success</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">53 ms</div>
+</em><em class="status">passed</em>PropertyViewModelTest.get all properties with success</span>
+</li>
+</ul>
+</li>
+<li class="level top open">
+<span><em class="time">
+<div class="time">23 ms</div>
+</em>UtilsUnitTest</span>
+<ul>
+<li class="level test">
+<span><em class="time">
+<div class="time">15 ms</div>
+</em><em class="status">passed</em>UtilsUnitTest.convertDollarToEuro_isCorrect</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">7 ms</div>
+</em><em class="status">passed</em>UtilsUnitTest.todayDatePattern_isCorrect</span>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">1 ms</div>
+</em><em class="status">passed</em>UtilsUnitTest.convertEuroToDollar_isCorrect</span>
 </li>
 </ul>
 </li>
@@ -622,7 +682,7 @@ jQuery.cookie = function(name, value, options) {
 </div>
 </div>
 <div id="footer">
-<p>Generated by Android Studio on 02/11/20 10:46</p>
+<p>Generated by Android Studio on 07/11/20 23:02</p>
 </div>
 </body>
 </html>

@@ -49,6 +49,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
         refocus_btn.setOnClickListener {
+            mainContext.checkLocationEnabled()
             if (PreferenceHelper.locationEnabled) {
                 fetchLastLocation()
             } else

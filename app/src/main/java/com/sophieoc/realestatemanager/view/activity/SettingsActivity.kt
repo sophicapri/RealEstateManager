@@ -14,6 +14,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.storage.FirebaseStorage
@@ -57,17 +58,21 @@ class SettingsActivity : BaseActivity() {
     }
 
     fun editUsername(view: View) {
-        binding.editUsernameContainer.visibility = VISIBLE
-        showSoftKeyboard(binding.editTextUsername)
-        binding.editTextUsername.requestFocus()
-        binding.editTextUsername.setSelection(currentUser.user.username.length)
-        binding.editTextUsername.setOnKeyListener { _, keyCode, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                saveUsername(null)
-                return@setOnKeyListener true
+        checkConnection()
+        if (PreferenceHelper.internetAvailable) {
+            binding.editUsernameContainer.visibility = VISIBLE
+            showSoftKeyboard(binding.editTextUsername)
+            binding.editTextUsername.requestFocus()
+            binding.editTextUsername.setSelection(currentUser.user.username.length)
+            binding.editTextUsername.setOnKeyListener { _, keyCode, keyEvent ->
+                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    saveUsername(null)
+                    return@setOnKeyListener true
+                }
+                return@setOnKeyListener false
             }
-            return@setOnKeyListener false
-        }
+        } else
+            Toast.makeText(this, getString(R.string.cannot_edit_username_offline), LENGTH_LONG).show()
     }
 
     fun saveUsername(view: View?) {
@@ -89,12 +94,16 @@ class SettingsActivity : BaseActivity() {
     }
 
     fun addPhoto(view: View?) {
-        if (ActivityCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(permission.READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
-            return
-        }
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        this.startActivityForResult(intent, RC_SELECT_PHOTO)
+        checkConnection()
+        if (PreferenceHelper.internetAvailable) {
+            if (ActivityCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(permission.READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
+                return
+            }
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            this.startActivityForResult(intent, RC_SELECT_PHOTO)
+        } else
+            Toast.makeText(this, getString(R.string.cannot_change_photo_offline), LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

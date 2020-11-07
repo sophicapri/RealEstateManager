@@ -140,5 +140,7 @@
     <string name="hint_postal_code"><i>11000</i></string>
     <string name="hint_region"><i>Long Island</i></string>
     <string name="hint_country"><i>United States</i></string>
+    <string name="cannot_change_photo_offline">Can\'t change profile picture in offline mode</string>
+    <string name="cannot_edit_username_offline">Can\'t edit username in offline mode</string>
 
 </resources>

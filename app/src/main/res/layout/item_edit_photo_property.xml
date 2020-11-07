@@ -54,6 +54,7 @@
             android:layout_marginStart="@dimen/margin_default"
             android:layout_marginEnd="@dimen/margin_default"
             android:padding="@dimen/margin_10"
+            android:hint="@string/description_hint"
             android:text="@={photo.description}"
             android:imeOptions="flagNoExtractUi|flagNoEnterAction"
             android:background="@drawable/bkg_rectangle_grey"

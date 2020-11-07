@@ -28,11 +28,9 @@
             name="property"
             type="com.sophieoc.realestatemanager.model.Property" />
     </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
@@ -312,12 +310,16 @@
                 <TextView
                     android:id="@+id/username"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:clickable="true"
                     android:focusable="true"
+                    android:gravity="start"
+                    android:maxLines="2"
+                    app:layout_constraintHorizontal_bias="0"
                     android:text="@{user.username}"
                     android:textColor="@android:color/secondary_text_light"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_profile_picture"
                     app:layout_constraintEnd_toStartOf="@+id/map_container"
                     app:layout_constraintStart_toStartOf="@+id/title_agent"
                     app:layout_constraintTop_toBottomOf="@+id/title_agent"

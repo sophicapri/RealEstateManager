@@ -133,6 +133,7 @@ class SettingsActivity : BaseActivity() {
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
         if (Utils.isInternetAvailable(this)) {
+            binding.progressBar.visibility = VISIBLE
             imageRef.putFile(data)
                     .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
@@ -140,7 +141,6 @@ class SettingsActivity : BaseActivity() {
                             currentUser.user.urlPhoto = pathImage
                             dataChanged = true
                             userViewModel.updateUser(currentUser)
-                            binding.progressBar.visibility = VISIBLE
                         }
                     }
             PreferenceHelper.internetAvailable = true

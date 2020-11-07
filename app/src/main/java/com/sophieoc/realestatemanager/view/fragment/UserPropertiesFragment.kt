@@ -34,9 +34,11 @@ class UserPropertiesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         mainContext = activity as BaseActivity
         var id = ""
-        if (mainContext.intent.hasExtra(USER_ID))
-            id = mainContext.intent.extras?.get(USER_ID) as String
-        if (id.isNotEmpty()) {
+        id = if (mainContext.intent.hasExtra(USER_ID))
+            mainContext.intent.extras?.get(USER_ID) as String
+        else
+            PreferenceHelper.currentUserId
+        if (id.isNotEmpty())
             userViewModel.getUserById(id).observe(mainContext, {
                 if (it != null) initView(it)
                 if (id != PreferenceHelper.currentUserId)
@@ -44,7 +46,6 @@ class UserPropertiesFragment : Fragment() {
                 else
                     binding.myToolbar.title = mainContext.getString(R.string.my_properties)
             })
-        }
     }
 
     private fun initView(it: UserWithProperties) {

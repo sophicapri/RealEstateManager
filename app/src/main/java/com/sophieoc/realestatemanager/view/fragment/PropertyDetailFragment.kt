@@ -59,13 +59,13 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+        mainContext.checkConnection()
+        mainContext.checkLocationEnabled()
         when {
             arguments != null -> getPropertyIdFromArgs(arguments)
             mainContext.intent.hasExtra(PROPERTY_ID) -> getPropertyIdFromIntent(mainContext.intent.extras)
             else -> displayNoPropertyFragment()
         }
-        mainContext.checkConnection()
-        mainContext.checkLocationEnabled()
         initMap()
     }
 
@@ -113,9 +113,6 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         binding.pictureDescription = binding.picDescription
         binding.viewPagerForSpringDots = binding.viewPager
         binding.propertyDetailToolbar.property_detail_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
-        binding.icProfilePicture.setOnClickListener { startUserActivity() }
-        binding.username.setOnClickListener { startUserActivity() }
-        binding.titleAgent.setOnClickListener { startUserActivity() }
         binding.fabEditProperty.setOnClickListener { startEditPropertyActivity() }
         binding.btnMapFullscreen.setOnClickListener { startMapActivity() }
         binding.property?.let {
@@ -123,8 +120,11 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
             userViewModel.getUserById(it.userId).observe(mainContext, { agent ->
                 agent?.let {
                     binding.user = agent.user
-                    binding.progressBar.visibility = View.GONE
+                    binding.icProfilePicture.setOnClickListener { startUserActivity() }
+                    binding.username.setOnClickListener { startUserActivity() }
+                    binding.titleAgent.setOnClickListener { startUserActivity() }
                 }
+                binding.progressBar.visibility = View.GONE
             })
         }
     }

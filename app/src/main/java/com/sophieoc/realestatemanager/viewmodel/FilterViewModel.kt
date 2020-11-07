@@ -27,4 +27,6 @@ class FilterViewModel (private val propertySource: PropertyRepository): ViewMode
     fun startSearch() {
         _entriesToSearch.value = entries
     }
+
+    fun getPriceOfPriciestProperty() = propertySource.getPriceOfPriciestProperty()
 }

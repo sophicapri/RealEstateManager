@@ -41,6 +41,9 @@ interface PropertyDao {
     @Query("DELETE FROM property")
     fun deleteAll(): Int
 
+    @Query("SELECT price FROM property WHERE price = (SELECT MAX(price) FROM property)")
+    fun getPriceOfPriciestProperty(): Int
+
     @Query("""SELECT * FROM property WHERE  
         CASE WHEN :propertyType IS NOT NULL THEN type LIKE '_' || :propertyType || '_' ELSE 1 END 
         AND CASE WHEN :nbrOfBed IS NOT NULL THEN number_of_bedrooms = :nbrOfBed ELSE 1 END

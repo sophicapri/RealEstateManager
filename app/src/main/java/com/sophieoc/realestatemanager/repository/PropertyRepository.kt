@@ -168,6 +168,17 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
         return properties
     }
 
+    fun getPriceOfPriciestProperty(): MutableLiveData<Int> {
+        val propertyMutable = MutableLiveData<Int>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val property = propertyDao.getPriceOfPriciestProperty()
+            withContext(Main) {
+                propertyMutable.postValue(property)
+            }
+        }
+        return propertyMutable
+    }
+
     companion object {
         const val TAG = "PropertyRepository"
     }

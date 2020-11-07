@@ -145,6 +145,11 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
             bindingFilter.btnDeleteDate.visibility = GONE
         }
         bindingFilter.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
+        filterViewModel.getPriceOfPriciestProperty().observe(this, {
+            bindingFilter.rangeSliderPrice.valueTo = it.toFloat()
+            bindingFilter.rangeSliderPrice.values = arrayListOf(0.0f, it.toFloat() / 2)
+            bindingFilter.rangeSliderPrice.stepSize = it.toFloat() / 1000
+        })
         bindingFilter.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
         bindingFilter.minPrice.text = getString(R.string.dollar_value, bindingFilter.rangeSliderPrice.values.first().toInt().formatToDollarsOrMeters())
         bindingFilter.maxPrice.text = getString(R.string.dollar_value, bindingFilter.rangeSliderPrice.values.last().toInt().formatToDollarsOrMeters())

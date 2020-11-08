@@ -144,4 +144,8 @@
 
     <string name="cannot_change_photo_offline">Can\'t change profile picture in offline mode</string>
     <string name="cannot_edit_username_offline">Can\'t edit username in offline mode</string>
+    <string name="choose_from_gallery">Gallery</string>
+    <string name="choose_from_photo">Camera</string>
+    <string name="select_picture_from_gallery">Select picture from gallery</string>
+    <string name="select_picture_from_camera">Select picture from camera</string>
 </resources>

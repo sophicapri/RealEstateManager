@@ -64,10 +64,16 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     private fun bindViews() {
-        btn_add_picture.setOnClickListener { addPhoto() }
+        btn_add_picture.setOnClickListener { addPhotoFromGallery() }
     }
 
-    private fun addPhoto() {
+
+    private fun addPhoto(){
+        val bottomSheetDialog = rootActivity.showDialogAndGetBottomSheetBinding()
+
+    }
+
+    private fun addPhotoFromGallery() {
         if (context?.let { ActivityCompat.checkSelfPermission(it, READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
             return
@@ -94,7 +100,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         if (requestCode == RC_PERMISSION_PHOTO && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            addPhoto()
+            addPhotoFromGallery()
         } else
             Log.d(TAG, "onRequestPermissionsResult: refused")
     }

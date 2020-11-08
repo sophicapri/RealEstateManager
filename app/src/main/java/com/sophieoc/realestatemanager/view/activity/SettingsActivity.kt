@@ -90,7 +90,6 @@ class SettingsActivity : BaseActivity() {
 
     fun cancelUsernameEdit(view: View) {
         binding.editUsernameContainer.visibility = GONE
-        binding.editTextUsername.text.clear()
     }
 
     fun addPhoto(view: View?) {

@@ -13,10 +13,13 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.databinding.BottomSheetDialogBinding
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
@@ -35,6 +38,7 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
     val fragmentList = PropertyListFragment()
     val fragmentUser = UserPropertiesFragment()
     val fragmentPropertyDetail = PropertyDetailFragment()
+    var bindingBottomSheet = BottomSheetDialogBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +81,16 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
             val fm = supportFragmentManager.beginTransaction()
             fm.add(R.id.frame_property_details, fragment, fragment::class.java.simpleName).commit()
         }
+    }
+
+    fun showDialogAndGetBottomSheetBinding(): BottomSheetDialogBinding {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val inflater = layoutInflater
+        bindingBottomSheet = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
+        bottomSheetDialog.setContentView(bindingBottomSheet.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+        bottomSheetDialog.show()
+        return bindingBottomSheet
     }
 
     override fun onPropertyClick(propertyId: String) {

@@ -17,4 +17,5 @@
     <dimen name="size_ic_user_in_property">80dp</dimen>
     <dimen name="size_map_in_property">150dp</dimen>
     <dimen name="size_poi">250dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_background"
+        android:padding="@dimen/margin_24">
+
+        <ImageView
+            android:id="@+id/add_from_gallery_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_icon"
+            android:padding="@dimen/padding_15"
+            app:layout_constraintEnd_toStartOf="@+id/add_from_camera_btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_photo_24"
+            android:contentDescription="@string/select_picture_from_gallery" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_from_gallery"
+            app:layout_constraintEnd_toEndOf="@+id/add_from_gallery_btn"
+            app:layout_constraintStart_toStartOf="@+id/add_from_gallery_btn"
+            app:layout_constraintTop_toBottomOf="@+id/add_from_gallery_btn" />
+
+        <ImageView
+            android:id="@+id/add_from_camera_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_10"
+            android:background="@drawable/round_icon"
+            android:padding="@dimen/padding_15"
+            app:layout_constraintBottom_toBottomOf="@+id/add_from_gallery_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/add_from_gallery_btn"
+            app:layout_constraintTop_toTopOf="@+id/add_from_gallery_btn"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24"
+            android:contentDescription="@string/select_picture_from_camera" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_from_photo"
+            app:layout_constraintEnd_toEndOf="@+id/add_from_camera_btn"
+            app:layout_constraintStart_toStartOf="@+id/add_from_camera_btn"
+            app:layout_constraintTop_toBottomOf="@+id/add_from_camera_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

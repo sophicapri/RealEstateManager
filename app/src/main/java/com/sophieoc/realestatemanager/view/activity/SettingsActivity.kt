@@ -24,7 +24,7 @@ import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.utils.RC_PERMISSION_PHOTO
+import com.sophieoc.realestatemanager.utils.RC_PERMISSION_PHOTO_GALLERY
 import com.sophieoc.realestatemanager.utils.RC_SELECT_PHOTO_GALLERY
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
@@ -96,7 +96,7 @@ class SettingsActivity : BaseActivity() {
         checkConnection()
         if (PreferenceHelper.internetAvailable) {
             if (ActivityCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(permission.READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
+                ActivityCompat.requestPermissions(this, arrayOf(permission.READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO_GALLERY)
                 return
             }
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -112,7 +112,7 @@ class SettingsActivity : BaseActivity() {
 
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        if (requestCode == RC_PERMISSION_PHOTO && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             addPhoto(null)
         } else
             Log.d(TAG, "onRequestPermissionsResult: refused")

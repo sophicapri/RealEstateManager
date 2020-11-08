@@ -78,7 +78,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
 
     private fun addPhotoFromGallery() {
         if (context?.let { ActivityCompat.checkSelfPermission(it, READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO)
+            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO_GALLERY)
             return
         }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -86,7 +86,8 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     private fun addPhotoFromCamera() {
-
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        this.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
     }
 
     private fun configureRecyclerView() {
@@ -110,7 +111,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
 
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        if (requestCode == RC_PERMISSION_PHOTO && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             addPhotoFromGallery()
         } else
             Log.d(TAG, "onRequestPermissionsResult: refused")

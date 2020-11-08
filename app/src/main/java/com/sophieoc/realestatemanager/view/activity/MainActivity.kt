@@ -129,7 +129,7 @@ class MainActivity : BaseActivity(), OnDateSetListener, NavigationView.OnNavigat
         alertBuilder.setCustomTitle(view)
                 .setView(bindingFilter.root)
                 .setPositiveButton(getString(R.string.ok_btn), null)
-                .setNegativeButton(getString(R.string.cancel).toUpperCase(Locale.ROOT)) { dialog, _ -> dialog.dismiss() }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                 .setOnDismissListener(this)
         filterDialog = alertBuilder.create()
         filterDialog?.setOnShowListener(this)

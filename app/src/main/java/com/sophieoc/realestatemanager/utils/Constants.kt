@@ -24,7 +24,9 @@ const val NO_IMAGE_AVAILABLE_USER = "https://i.ibb.co/dL8H9D9/ic-default.png"
 
 const val RC_PERMISSION_PHOTO =  444
 
-const val RC_SELECT_PHOTO = 333
+const val RC_SELECT_PHOTO_GALLERY = 333
+
+const val RC_PHOTO_CAMERA = 999
 
 const val TIMESTAMP = "timestamp"
 

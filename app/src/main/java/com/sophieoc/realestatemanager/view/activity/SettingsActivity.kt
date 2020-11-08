@@ -25,7 +25,7 @@ import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.RC_PERMISSION_PHOTO
-import com.sophieoc.realestatemanager.utils.RC_SELECT_PHOTO
+import com.sophieoc.realestatemanager.utils.RC_SELECT_PHOTO_GALLERY
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_settings.view.*
@@ -100,7 +100,7 @@ class SettingsActivity : BaseActivity() {
                 return
             }
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            this.startActivityForResult(intent, RC_SELECT_PHOTO)
+            this.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
         } else
             Toast.makeText(this, getString(R.string.cannot_change_photo_offline), LENGTH_LONG).show()
     }
@@ -119,7 +119,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun handleResponse(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SELECT_PHOTO) {
+        if (requestCode == RC_SELECT_PHOTO_GALLERY) {
             if (resultCode == RESULT_OK) {
                 data?.let { it -> it.data?.let { saveImage(it) } }
             } else {

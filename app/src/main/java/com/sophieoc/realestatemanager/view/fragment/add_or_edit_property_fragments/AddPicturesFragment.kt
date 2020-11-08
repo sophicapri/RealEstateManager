@@ -18,15 +18,13 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.utils.RC_PERMISSION_PHOTO
-import com.sophieoc.realestatemanager.utils.RC_SELECT_PHOTO
-import com.sophieoc.realestatemanager.utils.Utils
+import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import kotlinx.android.synthetic.main.fragment_add_pictures.*
@@ -37,6 +35,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     lateinit var binding: FragmentAddPicturesBinding
     private lateinit var adapter: PicturesAdapter
     private lateinit var rootActivity: EditOrAddPropertyActivity
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,13 +63,17 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     private fun bindViews() {
-        btn_add_picture.setOnClickListener { addPhotoFromGallery() }
+        btn_add_picture.setOnClickListener { addPhoto() }
     }
 
-
-    private fun addPhoto(){
-        val bottomSheetDialog = rootActivity.showDialogAndGetBottomSheetBinding()
-
+    private fun addPhoto() {
+        if (!::bottomSheetDialog.isInitialized)
+            bottomSheetDialog = BottomSheetDialog(rootActivity).buildBottomSheetDialog()
+        bottomSheetDialog.show()
+        val addFromGalleryBtn = bottomSheetDialog.getBinding().addFromGalleryBtn
+        val addFromCameraBtn = bottomSheetDialog.getBinding().addFromCameraBtn
+        addFromGalleryBtn.setOnClickListener { addPhotoFromGallery() }
+        addFromCameraBtn.setOnClickListener { addPhotoFromCamera() }
     }
 
     private fun addPhotoFromGallery() {
@@ -79,7 +82,11 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             return
         }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        this.startActivityForResult(intent, RC_SELECT_PHOTO)
+        this.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
+    }
+
+    private fun addPhotoFromCamera() {
+
     }
 
     private fun configureRecyclerView() {
@@ -94,7 +101,11 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        handleResponse(requestCode, resultCode, data)
+        bottomSheetDialog.dismiss()
+        if (requestCode == RC_SELECT_PHOTO_GALLERY) {
+            handleResponseGallery(resultCode, data)
+        } //else if (requestCode == RC_PHOTO_CAMERA)
+        //handleResponseCamera(resultCode, data)
     }
 
     @SuppressLint("MissingPermission")
@@ -105,14 +116,16 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             Log.d(TAG, "onRequestPermissionsResult: refused")
     }
 
-    private fun handleResponse(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SELECT_PHOTO) {
-            if (resultCode == RESULT_OK) {
-                data?.let { it -> it.data?.let { saveImage(it) } }
-            } else {
-                Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun handleResponseGallery(resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK)
+            data?.let { it -> it.data?.let { saveImage(it) } }
+        else
+            Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleResponseCamera(resultCode: Int, data: Intent?) {
+        //if (resultCode == RESULT_OK)
+
     }
 
     private fun saveImage(data: Uri) {

@@ -68,7 +68,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
 
     private fun addPhoto() {
         if (!::bottomSheetDialog.isInitialized)
-            bottomSheetDialog = BottomSheetDialog(rootActivity).buildBottomSheetDialog()
+            bottomSheetDialog = BottomSheetDialog(rootActivity, R.style.BottomSheetDialogBackground).buildBottomSheetDialog()
         bottomSheetDialog.show()
         val addFromGalleryBtn = bottomSheetDialog.getBinding().addFromGalleryBtn
         val addFromCameraBtn = bottomSheetDialog.getBinding().addFromCameraBtn

@@ -1,5 +1,7 @@
 package com.sophieoc.realestatemanager.utils
 
+import android.graphics.Bitmap
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -13,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
+import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment.Companion.TAG
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 
 
@@ -43,6 +46,15 @@ fun ImageView.bindPropertyImage(photo: Photo?) {
     Glide.with(this.context)
             .load(url)
             .apply(RequestOptions().centerCrop())
+            .into(this)
+}
+
+@BindingAdapter("imageBitmap")
+fun ImageView.bindBitmap(image: Bitmap) {
+    Log.d(TAG, "bindBitmap: $image")
+    Glide.with(this.context)
+            .load(image)
+            .apply(RequestOptions().centerInside())
             .into(this)
 }
 

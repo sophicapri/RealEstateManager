@@ -6,13 +6,9 @@ import android.graphics.Canvas
 import android.os.Build
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.databinding.DataBindingUtil
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.databinding.BottomSheetDialogBinding
 import java.text.DateFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -52,18 +48,3 @@ fun String.toDate(): Date? {
     val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
     return formatter.parse(this)
 }
-
-fun BottomSheetDialog.buildBottomSheetDialog(): BottomSheetDialog {
-    this.setContentView(getBinding().root)
-    this.setCanceledOnTouchOutside(true)
-    return this
-}
-
-private lateinit var bindingBottomSheet: BottomSheetDialogBinding
-fun BottomSheetDialog.getBinding(): BottomSheetDialogBinding {
-    val inflater = layoutInflater
-    if (!::bindingBottomSheet.isInitialized)
-        bindingBottomSheet = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_dialog, null, false)
-    return bindingBottomSheet
-}
-

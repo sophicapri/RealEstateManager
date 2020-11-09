@@ -26,6 +26,10 @@ const val RC_PERMISSION_PHOTO_GALLERY =  444
 
 const val RC_SELECT_PHOTO_GALLERY = 333
 
+const val RC_PHOTO_CAMERA = 999
+
+const val RC_PERMISSION_SAVE_FROM_CAMERA =  345
+
 const val TIMESTAMP = "timestamp"
 
 const val MINIMUM_PICTURES = 1
@@ -37,3 +41,7 @@ const val USERS_PATH = "users"
 const val PROPERTIES_PATH = "properties"
 
 const val STEP_SIZE_PRICE = 1000
+
+const val DATA_PATH = "data"
+
+const val MIME_TYPE = "image/jpeg"

@@ -14,9 +14,9 @@ class UtilsUnitTest {
         val month = todayDate.get(Calendar.MONTH) + 1
         val year = todayDate.get(Calendar.YEAR)
         var dateExpected = "$day/$month/$year"
-        if (month < 9)
+        if (month <= 9)
             dateExpected = "$day/0$month/$year"
-        if (day < 9)
+        if (day <= 9)
             dateExpected = "0$dateExpected"
         val todayDateResult = Utils.todayDate
         Assert.assertEquals(dateExpected, todayDateResult)

@@ -85,6 +85,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        addPhotoUtil.bottomSheetDialog.dismiss()
         if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             addPhotoUtil.addPhotoFromGallery()
         } else if (requestCode == RC_PERMISSION_SAVE_FROM_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED){

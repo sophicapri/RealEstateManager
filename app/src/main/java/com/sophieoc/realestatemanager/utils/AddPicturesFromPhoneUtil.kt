@@ -42,7 +42,10 @@ class AddPicturesFromPhoneUtil(private val activity: AppCompatActivity, private 
             return
         }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        activity.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
+        if (fragment != null)
+            fragment.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
+        else
+            activity.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
     }
 
     fun addPhotoFromCamera() {
@@ -74,7 +77,8 @@ class AddPicturesFromPhoneUtil(private val activity: AppCompatActivity, private 
                             it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    activity.startActivityForResult(takePictureIntent, RC_PHOTO_CAMERA)
+                    if (fragment != null) fragment.startActivityForResult(takePictureIntent, RC_PHOTO_CAMERA)
+                    else activity.startActivityForResult(takePictureIntent, RC_PHOTO_CAMERA)
                 }
             }
         }

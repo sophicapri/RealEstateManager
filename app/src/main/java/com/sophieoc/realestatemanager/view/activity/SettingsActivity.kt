@@ -33,8 +33,6 @@ class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private var dataChanged = false
     private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
-    private var bottomSheetDialog: CustomBottomSheetDialog? = null
-
 
     override fun getLayout() = Pair(null, binding.root)
 
@@ -96,27 +94,13 @@ class SettingsActivity : BaseActivity() {
         if (PreferenceHelper.internetAvailable) {
             addPhotoUtil = AddPicturesFromPhoneUtil(this, null)
             addPhotoUtil.addPhoto()
-            bottomSheetDialog = addPhotoUtil.bottomSheetDialog
-            /*
-            if (ActivityCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(permission.READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO_GALLERY)
-                return
-            }
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            this.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
-
-             */
         } else
             Toast.makeText(this, getString(R.string.cannot_change_photo_offline), LENGTH_LONG).show()
     }
 
-    override fun onPause() {
-        super.onPause()
-        bottomSheetDialog?.dismiss()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        addPhotoUtil.bottomSheetDialog.dismiss()
         if (requestCode == RC_SELECT_PHOTO_GALLERY)
             handleResponseGallery(resultCode, data)
         else if (requestCode == RC_PHOTO_CAMERA)

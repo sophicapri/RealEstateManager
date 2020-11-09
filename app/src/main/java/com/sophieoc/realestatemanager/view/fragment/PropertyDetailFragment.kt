@@ -39,7 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
-    private lateinit var mainContext : BaseActivity
+    private lateinit var mainContext: BaseActivity
     private var propertyMarker: MarkerOptions? = null
     private var latLngProperty = LatLng(0.0, 0.0)
     private val propertyViewModel by viewModel<PropertyViewModel>()
@@ -131,13 +131,13 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun getOnPageChangeCallback(photos : List<Photo>): ViewPager2.OnPageChangeCallback {
+    private fun getOnPageChangeCallback(photos: List<Photo>): ViewPager2.OnPageChangeCallback {
         return object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    if (photos.isNotEmpty())
-                        binding.picDescription.text = photos[position].description
-                }
+            override fun onPageSelected(position: Int) {
+                if (photos.isNotEmpty() && position < photos.size)
+                    binding.picDescription.text = photos[position].description
             }
+        }
     }
 
     fun startMapActivity() {
@@ -192,7 +192,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     class NoPropertyClickedFragment : Fragment() {
-        private lateinit var binding : NoPropertyClickedBinding
+        private lateinit var binding: NoPropertyClickedBinding
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             binding = DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)

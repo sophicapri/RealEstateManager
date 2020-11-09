@@ -32,7 +32,6 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     private lateinit var adapter: PicturesAdapter
     private lateinit var rootActivity: EditOrAddPropertyActivity
     private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
-    private var bottomSheetDialog: CustomBottomSheetDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,40 +62,8 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         btn_add_picture.setOnClickListener {
             addPhotoUtil = AddPicturesFromPhoneUtil(rootActivity, this)
             addPhotoUtil.addPhoto()
-            bottomSheetDialog = addPhotoUtil.bottomSheetDialog
         }
     }
-
- /*   private fun addPhoto() {
-        if (!::bottomSheetDialog.isInitialized)
-            bottomSheetDialog = CustomBottomSheetDialog(rootActivity, R.style.BottomSheetDialogBackground).buildBottomSheetDialog()
-        bottomSheetDialog.show()
-        val addFromGalleryBtn = bottomSheetDialog.getBinding().addFromGalleryBtn
-        val addFromCameraBtn = bottomSheetDialog.getBinding().addFromCameraBtn
-        addFromGalleryBtn.setOnClickListener { addPhotoFromGallery() }
-        addFromCameraBtn.setOnClickListener { addPhotoFromCamera() }
-    }
-
-    private fun addPhotoFromGallery() {
-        if (ActivityCompat.checkSelfPermission(rootActivity, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO_GALLERY)
-            return
-        }
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        this.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
-    }
-
-    private fun addPhotoFromCamera() {
-        if (ActivityCompat.checkSelfPermission(rootActivity, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(rootActivity, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), RC_PERMISSION_SAVE_FROM_CAMERA)
-            return
-        }
-        newCameraPictureUtil = NewCameraPictureUtil(rootActivity)
-        newCameraPictureUtil.dispatchTakePictureIntent()
-    }
-
-  */
 
     private fun configureRecyclerView() {
         recycler_view_pictures.setHasFixedSize(true)
@@ -109,12 +76,8 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         rootActivity.propertyViewModel.property.photos = photos
     }
 
-    override fun onPause() {
-        super.onPause()
-        bottomSheetDialog?.dismiss()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        addPhotoUtil.bottomSheetDialog.dismiss()
         if (requestCode == RC_SELECT_PHOTO_GALLERY)
             handleResponseGallery(resultCode, data)
         else if (requestCode == RC_PHOTO_CAMERA)

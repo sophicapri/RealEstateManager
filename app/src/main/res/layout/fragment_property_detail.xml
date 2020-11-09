@@ -13,10 +13,6 @@
             type="androidx.viewpager2.widget.ViewPager2" />
 
         <variable
-            name="pictureDescription"
-            type="android.widget.TextView" />
-
-        <variable
             name="user"
             type="com.sophieoc.realestatemanager.model.User" />
 
@@ -46,11 +42,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:adapter="@{property.photos}"
-                    app:bindToView="@{pictureDescription}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:pageChangeListener="@{property.photos}" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <View
                     android:layout_width="match_parent"

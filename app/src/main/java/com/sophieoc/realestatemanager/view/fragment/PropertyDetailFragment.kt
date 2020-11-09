@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,6 +24,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
 import com.sophieoc.realestatemanager.databinding.NoPropertyClickedBinding
+import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
@@ -110,12 +112,12 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun bindViews() {
-        binding.pictureDescription = binding.picDescription
         binding.viewPagerForSpringDots = binding.viewPager
         binding.propertyDetailToolbar.property_detail_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
         binding.fabEditProperty.setOnClickListener { startEditPropertyActivity() }
         binding.btnMapFullscreen.setOnClickListener { startMapActivity() }
         binding.property?.let {
+            binding.viewPager.registerOnPageChangeCallback(getOnPageChangeCallback(it.photos))
             configureRecyclerView(it.pointOfInterests)
             userViewModel.getUserById(it.userId).observe(mainContext, { agent ->
                 agent?.let {
@@ -127,6 +129,15 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.progressBar.visibility = View.GONE
             })
         }
+    }
+
+    private fun getOnPageChangeCallback(photos : List<Photo>): ViewPager2.OnPageChangeCallback {
+        return object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    if (photos.isNotEmpty())
+                        binding.picDescription.text = photos[position].description
+                }
+            }
     }
 
     fun startMapActivity() {

@@ -61,19 +61,6 @@ fun ViewPager2.bindAdapter(photos : List<Photo>?){
     }
 }
 
-@BindingAdapter("pageChangeListener", "bindToView")
-fun ViewPager2.registerPageChangeListener(photos: List<Photo>?, pictureDescription : TextView?){
-    photos?.let {
-        this.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                if (photos.isNotEmpty())
-                    pictureDescription?.text = photos[position].description
-            }
-        })
-    }
-}
-
 @BindingAdapter("setViewPager")
 fun SpringDotsIndicator.setViewPager(viewPager2: ViewPager2?){
     viewPager2?.let {

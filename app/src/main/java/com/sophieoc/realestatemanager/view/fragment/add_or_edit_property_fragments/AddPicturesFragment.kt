@@ -4,12 +4,9 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -20,15 +17,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.databinding.DialogCameraBinding
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.CustomBottomSheetDialog
 import com.sophieoc.realestatemanager.model.Photo
@@ -36,9 +31,9 @@ import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import kotlinx.android.synthetic.main.fragment_add_pictures.*
-import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
-import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -47,6 +42,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     private lateinit var adapter: PicturesAdapter
     private lateinit var rootActivity: EditOrAddPropertyActivity
     private lateinit var bottomSheetDialog: CustomBottomSheetDialog
+    private lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,8 +98,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             requestPermissions(arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), RC_PERMISSION_SAVE_FROM_CAMERA)
             return
         }
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        this.startActivityForResult(intent, RC_PHOTO_CAMERA)
+        dispatchTakePictureIntent()
     }
 
     private fun configureRecyclerView() {
@@ -122,7 +117,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         if (requestCode == RC_SELECT_PHOTO_GALLERY)
             handleResponseGallery(resultCode, data)
         else if (requestCode == RC_PHOTO_CAMERA)
-            handleResponseCamera(resultCode, data)
+            handleResponseCamera(resultCode)
     }
 
     @SuppressLint("MissingPermission")
@@ -131,7 +126,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             addPhotoFromGallery()
         } else if (requestCode == RC_PERMISSION_SAVE_FROM_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             addPhotoFromCamera()
-            Log.e(TAG, "onRequestPermissionsResult: ", )
+            Log.e(TAG, "onRequestPermissionsResult: ")
         } else
             Log.d(TAG, "onRequestPermissionsResult: refused")
     }
@@ -143,30 +138,50 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
     }
 
-    private fun handleResponseCamera(resultCode: Int, data: Intent?) {
+    private fun handleResponseCamera(resultCode: Int) {
         if (resultCode == RESULT_OK) {
-            data?.extras?.get(DATA_PATH).let { image ->
-                showAlertDialog(image as Bitmap)
-            }
+            val f = File(currentPhotoPath)
+            saveImage(Uri.fromFile(f))
         } else
             Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
     }
 
-    private fun showAlertDialog(image: Bitmap) {
-        val alertBuilder = AlertDialog.Builder(rootActivity, R.style.Dialog)
-        val inflater = layoutInflater
-        val bindingCameraDialog: DialogCameraBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_camera,
-                null, false)
-        alertBuilder.setView(bindingCameraDialog.root)
-        val dialog = alertBuilder.create()
-        bindingCameraDialog.image = image
-        bindingCameraDialog.okBtnAddPhoto.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) saveImage(getImageUri(image))
-            else saveImage(getImageUriOldSdk(image))
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(rootActivity.packageManager)?.also {
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    Log.e(TAG, "dispatchTakePictureIntent: Error occurred while creating the File" + ex.message)
+                    null
+                }
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                            rootActivity,
+                            FILE_PROVIDER_AUTHORITIES,
+                            it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, RC_PHOTO_CAMERA)
+                }
+            }
         }
-        bindingCameraDialog.retakePhotoBtn.setOnClickListener { addPhotoFromCamera() }
-        bindingCameraDialog.cancelBtn.setOnClickListener { dialog.dismiss() }
-        dialog.show()
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val storageDir: File? = rootActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
     }
 
     private fun saveImage(data: Uri) {
@@ -197,46 +212,6 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         photos.remove(photoToMove)
         photos.add(0, photoToMove)
         rootActivity.propertyViewModel.property.photos = photos
-    }
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun getImageUri(bitmap: Bitmap): Uri {
-        val relativeLocation = Environment.DIRECTORY_PICTURES
-        val contentValues = ContentValues()
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "Image")
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, MIME_TYPE)
-        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
-        val resolver = rootActivity.contentResolver;
-        var stream: OutputStream? = null
-        var uri: Uri? = null
-        try {
-            val contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            uri = resolver.insert(contentUri, contentValues)
-            if (uri == null)
-                throw IOException("Failed to create new MediaStore record.")
-            stream = resolver.openOutputStream(uri)
-
-            if (stream == null)
-                throw IOException("Failed to get output stream.")
-
-            if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream))
-                throw  IOException("Failed to save bitmap.")
-
-            return uri
-        } catch (e: IOException) {
-            if (uri != null)
-                resolver.delete(uri, null, null)
-            throw e
-        } finally {
-            stream?.close()
-        }
-    }
-
-    private fun getImageUriOldSdk(image: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(rootActivity.contentResolver, image, "Image", null)
-        return Uri.parse(path)
     }
 
     companion object {

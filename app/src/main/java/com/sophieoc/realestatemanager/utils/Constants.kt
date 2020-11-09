@@ -42,6 +42,4 @@ const val PROPERTIES_PATH = "properties"
 
 const val STEP_SIZE_PRICE = 1000
 
-const val DATA_PATH = "data"
-
-const val MIME_TYPE = "image/jpeg"
+const val FILE_PROVIDER_AUTHORITIES = "com.sophieoc.android.fileprovider"

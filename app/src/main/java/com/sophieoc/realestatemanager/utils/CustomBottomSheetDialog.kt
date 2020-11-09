@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.model
+package com.sophieoc.realestatemanager.utils
 
 import android.content.Context
 import androidx.databinding.DataBindingUtil

@@ -1,12 +1,9 @@
 package com.sophieoc.realestatemanager.view.activity
 
-import android.Manifest.permission
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -15,7 +12,6 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
@@ -23,13 +19,12 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.utils.RC_PERMISSION_PHOTO_GALLERY
-import com.sophieoc.realestatemanager.utils.RC_SELECT_PHOTO_GALLERY
-import com.sophieoc.realestatemanager.utils.Utils
+import com.sophieoc.realestatemanager.utils.*
+import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_settings.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 import java.util.*
 
 class SettingsActivity : BaseActivity() {
@@ -37,6 +32,10 @@ class SettingsActivity : BaseActivity() {
     private lateinit var currentUser: UserWithProperties
     private lateinit var binding: ActivitySettingsBinding
     private var dataChanged = false
+    private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
+    private var bottomSheetDialog: CustomBottomSheetDialog? = null
+
+
     override fun getLayout() = Pair(null, binding.root)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,37 +94,57 @@ class SettingsActivity : BaseActivity() {
     fun addPhoto(view: View?) {
         checkConnection()
         if (PreferenceHelper.internetAvailable) {
+            addPhotoUtil = AddPicturesFromPhoneUtil(this, null)
+            addPhotoUtil.addPhoto()
+            bottomSheetDialog = addPhotoUtil.bottomSheetDialog
+            /*
             if (ActivityCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(permission.READ_EXTERNAL_STORAGE), RC_PERMISSION_PHOTO_GALLERY)
                 return
             }
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             this.startActivityForResult(intent, RC_SELECT_PHOTO_GALLERY)
+
+             */
         } else
             Toast.makeText(this, getString(R.string.cannot_change_photo_offline), LENGTH_LONG).show()
     }
 
+    override fun onPause() {
+        super.onPause()
+        bottomSheetDialog?.dismiss()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        handleResponse(requestCode, resultCode, data)
+        if (requestCode == RC_SELECT_PHOTO_GALLERY)
+            handleResponseGallery(resultCode, data)
+        else if (requestCode == RC_PHOTO_CAMERA)
+            handleResponseCamera(resultCode)
     }
 
-    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            addPhoto(null)
+            addPhotoUtil.addPhotoFromGallery()
+        } else if (requestCode == RC_PERMISSION_SAVE_FROM_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            addPhotoUtil.addPhotoFromCamera()
         } else
-            Log.d(TAG, "onRequestPermissionsResult: refused")
+            Log.d(AddPicturesFragment.TAG, "onRequestPermissionsResult: refused")
     }
 
-    private fun handleResponse(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SELECT_PHOTO_GALLERY) {
-            if (resultCode == RESULT_OK) {
-                data?.let { it -> it.data?.let { saveImage(it) } }
-            } else {
-                Toast.makeText(this, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun handleResponseGallery(resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK)
+            data?.let { it -> it.data?.let { saveImage(it) } }
+        else
+            Toast.makeText(this, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleResponseCamera(resultCode: Int) {
+        if (resultCode == RESULT_OK) {
+            val f = File(addPhotoUtil.currentPhotoPath)
+            saveImage(Uri.fromFile(f))
+        } else
+            Toast.makeText(this, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
     }
 
     private fun saveImage(data: Uri) {

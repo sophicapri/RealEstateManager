@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -23,12 +24,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.databinding.FragmentMapBinding
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -38,31 +38,34 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var currentLocation: Location
     private var fragmentNotRestarted = true
     private var updateView = false
+    private lateinit var binding : FragmentMapBinding
+    private lateinit var progressBar: ProgressBar
     val propertyViewModel by viewModel<PropertyViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_map, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentMapBinding.inflate(LayoutInflater.from(context), container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainContext = activity as BaseActivity
+        mainContext = activity as MapActivity
         initMap()
         propertyDetailView = activity?.findViewById(R.id.frame_property_details)
-        refocus_btn.setOnClickListener {
-            mainContext.checkLocationEnabled()
-            if (PreferenceHelper.locationEnabled) {
-                fetchLastLocation()
-            } else
+        progressBar = binding.progressBar
+        binding.apply {
+            refocusBtn.setOnClickListener {
                 mainContext.checkLocationEnabled()
+                if (PreferenceHelper.locationEnabled) {
+                    fetchLastLocation()
+                } else
+                    mainContext.checkLocationEnabled()
+            }
+            progressBar.visibility = VISIBLE
         }
-        progressBar.visibility = VISIBLE
-        mainContext.my_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
     }
 
     override fun onResume() {
         super.onResume()
-        mainContext.checkConnection()
-        mainContext.checkLocationEnabled()
         handleMapSize()
         if (fragmentNotRestarted && getLocationFromIntent() == null)
             fetchLastLocation()
@@ -79,13 +82,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         map = googleMap
         if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(LONGITUDE_PROPERTY))
             getLocationFromIntent()?.let { it -> focusMap(it)
-                progressBar.visibility = GONE
+                binding.progressBar.visibility = GONE
             }
         initMarkers()
         if (PreferenceHelper.locationEnabled)
             map?.isMyLocationEnabled = true
         else
-            progressBar.visibility = GONE
+            binding.progressBar.visibility = GONE
     }
 
     private fun startPropertyDetail(marker: Marker) {
@@ -95,7 +98,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
         } else {
             propertyDetailView?.visibility = VISIBLE
-            btn_map_size.text = getString(R.string.fullscreen)
+            binding.btnMapSize.text = getString(R.string.fullscreen)
             val bundle = Bundle()
             bundle.putString(PROPERTY_ID, marker.tag.toString())
             val propertyDetailFragment = PropertyDetailFragment()
@@ -106,19 +109,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleMapSize() {
-        if (propertyDetailView?.visibility == VISIBLE) {
-            btn_map_size.visibility = VISIBLE
-            btn_map_size.setOnClickListener {
-                if (propertyDetailView?.visibility == VISIBLE) {
-                    propertyDetailView?.visibility = GONE
-                    btn_map_size.text = getString(R.string.reduce_map)
-                } else {
-                    propertyDetailView?.visibility = VISIBLE
-                    btn_map_size.text = getString(R.string.fullscreen)
+        binding.apply {
+            if (propertyDetailView?.visibility == VISIBLE) {
+                btnMapSize.visibility = VISIBLE
+                btnMapSize.setOnClickListener {
+                    if (propertyDetailView?.visibility == VISIBLE) {
+                        propertyDetailView?.visibility = GONE
+                        btnMapSize.text = getString(R.string.reduce_map)
+                    } else {
+                        propertyDetailView?.visibility = VISIBLE
+                        btnMapSize.text = getString(R.string.fullscreen)
+                    }
                 }
-            }
-        } else if (propertyDetailView == null)
-            btn_map_size.visibility = GONE
+            } else if (propertyDetailView == null)
+                btnMapSize.visibility = GONE
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -133,7 +138,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     if (currentLocation != null && currentLocation.longitude != 0.0 && currentLocation.longitude != 0.0) {
                         this.currentLocation = currentLocation
                         focusMap(currentLocation)
-                        if (progressBar != null ) progressBar.visibility = GONE
+                        progressBar.visibility = GONE
                     } else {
                         // -> update view after location enabled
                         mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()

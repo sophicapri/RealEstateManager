@@ -2,10 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
+        android:id="@+id/fragment_property_list"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,9 +13,8 @@
             android:layout_height="match_parent">
 
             <include
-                android:id="@+id/results_search_container"
-                layout="@layout/results_for_search"
-                android:visibility="gone" />
+                android:id="@+id/results_search_layout"
+                layout="@layout/results_for_search" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_view"
@@ -23,7 +22,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/results_search_container"
+                app:layout_constraintTop_toBottomOf="@+id/results_search_layout"
                 android:layout_height="0dp" >
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_properties"
@@ -41,7 +40,7 @@
                 app:layout_constraintVertical_bias="0.3"
                 android:text="@string/no_properties_found_matching"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/results_search_container" />
+                app:layout_constraintTop_toBottomOf="@+id/results_search_layout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

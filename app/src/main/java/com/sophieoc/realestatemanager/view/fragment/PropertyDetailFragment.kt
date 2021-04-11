@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
@@ -31,9 +32,9 @@ import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
 import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
+import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.toolbar_property_detail.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -112,8 +113,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun bindViews() {
-        binding.viewPagerForSpringDots = binding.viewPager
-        binding.propertyDetailToolbar.property_detail_toolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
+        binding.propertyDetailToolbar.propertyDetailToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
         binding.fabEditProperty.setOnClickListener { startEditPropertyActivity() }
         binding.btnMapFullscreen.setOnClickListener { startMapActivity() }
         binding.property?.let {
@@ -128,7 +128,16 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
                 }
                 binding.progressBar.visibility = View.GONE
             })
+
+            it.photos.let { photos ->
+                val listPhotos = if (photos.isNotEmpty()) photos
+                else
+                    arrayListOf(Photo("", ""))
+                binding.viewPager.adapter = SliderAdapter(listPhotos)
+            }
         }
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        }.attach()
     }
 
     private fun getOnPageChangeCallback(photos: List<Photo>): ViewPager2.OnPageChangeCallback {

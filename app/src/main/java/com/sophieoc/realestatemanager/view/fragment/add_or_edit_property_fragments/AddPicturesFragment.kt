@@ -22,7 +22,6 @@ import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
-import kotlinx.android.synthetic.main.fragment_add_pictures.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -59,16 +58,18 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     private fun bindViews() {
-        btn_add_picture.setOnClickListener {
+        binding.btnAddPicture.setOnClickListener {
             addPhotoUtil = AddPicturesFromPhoneUtil(rootActivity, this)
             addPhotoUtil.addPhoto()
         }
     }
 
     private fun configureRecyclerView() {
-        recycler_view_pictures.setHasFixedSize(true)
         adapter = PicturesAdapter(this, this, rootActivity.propertyViewModel)
-        recycler_view_pictures.adapter = adapter
+        binding.apply {
+            recyclerViewPictures.setHasFixedSize(true)
+            recyclerViewPictures.adapter = adapter
+        }
     }
 
     override fun onDeleteClick(position: Int, photos: ArrayList<Photo>) {
@@ -110,7 +111,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     private fun saveImage(data: Uri) {
-        progressBar.visibility = VISIBLE
+        binding.progressBar.visibility = VISIBLE
         val arrayPhoto = ArrayList(rootActivity.propertyViewModel.property.photos)
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
@@ -122,7 +123,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
                             arrayPhoto.add(Photo(pathImage, ""))
                             rootActivity.propertyViewModel.property.photos = arrayPhoto
                             adapter.notifyDataSetChanged()
-                            progressBar.visibility = GONE
+                            binding.progressBar.visibility = GONE
                         }
                     }
             PreferenceHelper.internetAvailable = true

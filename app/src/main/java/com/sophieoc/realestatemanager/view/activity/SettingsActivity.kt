@@ -22,7 +22,6 @@ import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.activity_settings.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.util.*
@@ -73,16 +72,17 @@ class SettingsActivity : BaseActivity() {
     }
 
     fun saveUsername(view: View?) {
-        val editTextUsername = binding.editUsernameContainer.edit_text_username
-        if (editTextUsername.text.toString().isNotEmpty()) {
-            binding.progressBar.visibility = VISIBLE
-            currentUser.user.username = editTextUsername.text.toString()
-            binding.editUsernameContainer.visibility = GONE
-            hideSoftKeyboard(binding.editTextUsername)
-            dataChanged = true
-            userViewModel.updateUser(currentUser)
-        } else
-            editTextUsername.error = getString(R.string.empty_field)
+        binding.apply {
+            if (editTextUsername.text.toString().isNotEmpty()) {
+                progressBar.visibility = VISIBLE
+                currentUser.user.username = editTextUsername.text.toString()
+                editUsernameContainer.visibility = GONE
+                hideSoftKeyboard(editTextUsername)
+                dataChanged = true
+                userViewModel?.updateUser(currentUser)
+            } else
+                editTextUsername.error = getString(R.string.empty_field)
+        }
     }
 
     fun cancelUsernameEdit(view: View) {
@@ -107,7 +107,9 @@ class SettingsActivity : BaseActivity() {
             handleResponseCamera(resultCode)
     }
 
+    //TODO: Change to registerActivityForResult()
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         addPhotoUtil.bottomSheetDialog.dismiss()
         if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             addPhotoUtil.addPhotoFromGallery()

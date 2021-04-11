@@ -3,16 +3,23 @@ package com.sophieoc.realestatemanager.view.activity
 import android.os.Bundle
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.databinding.ActivityMapBinding
 import com.sophieoc.realestatemanager.view.fragment.MapFragment
 
 class MapActivity : BaseActivity() {
-    override fun getLayout() = Pair(R.layout.activity_map, null)
+    private lateinit var binding: ActivityMapBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        binding = ActivityMapBinding.inflate(layoutInflater)
         supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_map, MapFragment(), MapFragment().javaClass.simpleName).commit()
+            .replace(R.id.frame_map, MapFragment(), MapFragment().javaClass.simpleName)
+            .commit()
+        checkLocationEnabled()
+        binding.myToolbar.setNavigationOnClickListener { onBackPressed()}
+        super.onCreate(savedInstanceState)
     }
+
+    override fun getLayout() = Pair(null, binding.root)
 
     override fun onResume() {
         super.onResume()

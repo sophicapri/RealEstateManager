@@ -3,12 +3,12 @@ package com.sophieoc.realestatemanager.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.utils.formatToDollarsOrMeters
 import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter.PointOfInterestViewHolder
-import kotlinx.android.synthetic.main.item_point_of_interest.view.*
 
 class PointOfInterestAdapter(private val pointOfInterests: List<PointOfInterest>) : RecyclerView.Adapter<PointOfInterestViewHolder>() {
 
@@ -25,10 +25,13 @@ class PointOfInterestAdapter(private val pointOfInterests: List<PointOfInterest>
 
     inner class PointOfInterestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(pointOfInterest: PointOfInterest) {
-            itemView.type_and_name_poi.text = itemView.context.getString(R.string.poi_type_name,
+            val typeAndNamePoi = itemView.findViewById<TextView>(R.id.type_and_name_poi)
+            val addressPoi = itemView.findViewById<TextView>(R.id.address_poi)
+            val distance = itemView.findViewById<TextView>(R.id.distance)
+            typeAndNamePoi.text = itemView.context.getString(R.string.poi_type_name,
                     pointOfInterest.type, pointOfInterest.name )
-            itemView.address_poi.text = pointOfInterest.address
-            itemView.distance.text = itemView.context.getString(R.string.distance_format, pointOfInterest.distance.formatToDollarsOrMeters())
+            addressPoi.text = pointOfInterest.address
+            distance.text = itemView.context.getString(R.string.distance_format, pointOfInterest.distance.formatToDollarsOrMeters())
 
         }
     }

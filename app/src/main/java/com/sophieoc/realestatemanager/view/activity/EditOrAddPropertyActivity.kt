@@ -9,6 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -28,15 +30,13 @@ import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragmen
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
 import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import kotlinx.android.synthetic.main.activity_edit_add_property.*
-import kotlinx.android.synthetic.main.fragment_add_address.*
-import kotlinx.android.synthetic.main.fragment_add_info.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
+class EditOrAddPropertyActivity : BaseActivity(),
+    BottomNavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private var fragmentAddress: Fragment = AddAddressFragment()
     var fragmentPropertyInfo: Fragment = AddPropertyInfoFragment()
     var fragmentPictures: Fragment = AddPicturesFragment()
@@ -53,32 +53,54 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
 
     private fun bindViews() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_add_property)
-        binding.propertyViewModel = propertyViewModel
-        intent.extras?.let {
-            title_edit_create.text = getString(R.string.edit_property_title)
+        binding.apply {
+            propertyViewModel = propertyViewModel
+            intent.extras?.let {
+                titleEditCreate.text = getString(R.string.edit_property_title)
+            }
+            if (intent.extras == null) titleEditCreate.text = getString(R.string.add_property_title)
+            toolbar.setNavigationOnClickListener { onBackPressed() }
+            bottomNavigationBar.setOnNavigationItemSelectedListener(this@EditOrAddPropertyActivity)
+            bottomNavigationBar.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@EditOrAddPropertyActivity,
+                    R.color.translucent_scrim_top_center
+                )
+            )
         }
-        if (intent.extras == null) title_edit_create.text = getString(R.string.add_property_title)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
-        bottom_navigation_bar.setOnNavigationItemSelectedListener(this)
-        bottom_navigation_bar.setBackgroundColor(ContextCompat.getColor(this, R.color.translucent_scrim_top_center))
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         activityRestarted = true
-        supportFragmentManager.findFragmentByTag(AddAddressFragment()::class.java.simpleName)?.let { fragmentAddress = it }
-        supportFragmentManager.findFragmentByTag(AddPropertyInfoFragment()::class.java.simpleName)?.let { fragmentPropertyInfo = it }
-        supportFragmentManager.findFragmentByTag(AddPicturesFragment()::class.java.simpleName)?.let { fragmentPictures = it }
+        supportFragmentManager.findFragmentByTag(AddAddressFragment()::class.java.simpleName)
+            ?.let { fragmentAddress = it }
+        supportFragmentManager.findFragmentByTag(AddPropertyInfoFragment()::class.java.simpleName)
+            ?.let { fragmentPropertyInfo = it }
+        supportFragmentManager.findFragmentByTag(AddPicturesFragment()::class.java.simpleName)
+            ?.let { fragmentPictures = it }
     }
 
     override fun onResume() {
         super.onResume()
         if (!activityRestarted && !fragmentAddress.isAdded) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.frame_add_property, fragmentAddress, fragmentAddress::class.java.simpleName)
-                    .add(R.id.frame_add_property, fragmentPropertyInfo, fragmentPropertyInfo::class.java.simpleName)
-                    .add(R.id.frame_add_property, fragmentPictures, fragmentPictures::class.java.simpleName)
-                    .hide(fragmentPropertyInfo).hide(fragmentPictures).commit()
+            fragmentTransaction.add(
+                R.id.frame_add_property,
+                fragmentAddress,
+                fragmentAddress::class.java.simpleName
+            )
+                .add(
+                    R.id.frame_add_property,
+                    fragmentPropertyInfo,
+                    fragmentPropertyInfo::class.java.simpleName
+                )
+                .add(
+                    R.id.frame_add_property,
+                    fragmentPictures,
+                    fragmentPictures::class.java.simpleName
+                )
+                .hide(fragmentPropertyInfo).hide(fragmentPictures).commit()
         }
     }
 
@@ -124,7 +146,7 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     }
 
     private fun checkDates() {
-        if(propertyViewModel.property.availability == PropertyAvailability.AVAILABLE)
+        if (propertyViewModel.property.availability == PropertyAvailability.AVAILABLE)
             propertyViewModel.property.dateSold = null
         else
             propertyViewModel.property.dateOnMarket = null
@@ -159,7 +181,10 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         }
     }
 
-    private fun setPointOfInterest(placeDetails: PlaceDetails, location: Location): PointOfInterest {
+    private fun setPointOfInterest(
+        placeDetails: PlaceDetails,
+        location: Location
+    ): PointOfInterest {
         val position: Int
         val pointOfInterest = PointOfInterest()
         pointOfInterest.name = placeDetails.name.toString()
@@ -199,18 +224,24 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
 
     private fun checkMainInfoPage(property: Property): Boolean {
         emptyFieldsInMainInfo = false
+        val priceInput = findViewById<EditText>(R.id.price_input)
+        val surfaceInput = findViewById<EditText>(R.id.surface_input)
+        val nbOfRoomsInput = findViewById<EditText>(R.id.nbr_of_rooms_input)
+        val errorDate = findViewById<TextView>(R.id.error_date)
+
         try {
             if (property.price <= 0 || property.surface <= 0 || property.numberOfRooms <= 0 ||
-                    (property.dateSold == null && property.dateOnMarket == null)) {
+                (property.dateSold == null && property.dateOnMarket == null)
+            ) {
                 if (property.price <= 0)
-                    price_input?.error = getString(R.string.empty_field)
+                    priceInput?.error = getString(R.string.empty_field)
                 if (property.surface <= 0)
-                    surface_input?.error = getString(R.string.empty_field)
+                    surfaceInput?.error = getString(R.string.empty_field)
                 if (property.numberOfRooms <= 0)
-                    nbr_of_rooms_input?.error = getString(R.string.empty_field)
+                    nbOfRoomsInput?.error = getString(R.string.empty_field)
                 if (property.dateSold == null && property.dateOnMarket == null) {
-                    error_date?.visibility = VISIBLE
-                    error_date?.text = getString(R.string.please_select_a_date)
+                    errorDate?.visibility = VISIBLE
+                    errorDate?.text = getString(R.string.please_select_a_date)
                 }
                 emptyFieldsInMainInfo = true
                 return false
@@ -223,16 +254,22 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
 
     private fun checkAddressPage(property: Property): Boolean {
         emptyFieldsInAddress = false
+        val streetNbrInput = findViewById<EditText>(R.id.street_nbr_input)
+        val streetNameInput = findViewById<EditText>(R.id.street_name_input)
+        val cityInput = findViewById<EditText>(R.id.city_input)
+        val postalCodeInput = findViewById<EditText>(R.id.postal_code_input)
+
         if (property.address.streetNumber.isEmpty() || property.address.streetName.isEmpty() ||
-                property.address.city.isEmpty() || property.address.postalCode.isEmpty()) {
+            property.address.city.isEmpty() || property.address.postalCode.isEmpty()
+        ) {
             if (property.address.streetNumber.isEmpty())
-                street_nbr_input?.error = getString(R.string.empty_field)
+                streetNbrInput?.error = getString(R.string.empty_field)
             if (property.address.streetName.isEmpty())
-                street_name_input?.error = getString(R.string.empty_field)
+                streetNameInput?.error = getString(R.string.empty_field)
             if (property.address.city.isEmpty())
-                city_input?.error = getString(R.string.empty_field)
+                cityInput?.error = getString(R.string.empty_field)
             if (property.address.postalCode.isEmpty())
-                postal_code_input?.error = getString(R.string.empty_field)
+                postalCodeInput?.error = getString(R.string.empty_field)
             emptyFieldsInAddress = true
             return false
         }
@@ -252,11 +289,11 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         message += "."
 
         AlertDialog.Builder(this)
-                .setTitle(getString(R.string.forgot_info_title))
-                .setMessage(message)
-                .setPositiveButton(getString(R.string.ok_btn)) { dialog, _ -> dialog.dismiss() }
-                .setOnDismissListener(this)
-                .create().show()
+            .setTitle(getString(R.string.forgot_info_title))
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.ok_btn)) { dialog, _ -> dialog.dismiss() }
+            .setOnDismissListener(this)
+            .create().show()
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
@@ -267,8 +304,8 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
     private fun displayNotification() {
         val notificationHelper = NotificationHelper(this)
         val nb: NotificationCompat.Builder = notificationHelper
-                .getChannelNotification(getString(R.string.property_saved_successful))
-        with(NotificationManagerCompat.from(this)){
+            .getChannelNotification(getString(R.string.property_saved_successful))
+        with(NotificationManagerCompat.from(this)) {
             notify(NotificationHelper.NOTIFICATION_ID, nb.build())
         }
         //notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
@@ -276,11 +313,15 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
 
     private fun showAddressErrorDialog() {
         AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_cant_locate_address))
-                .setMessage(getString(R.string.address_not_found))
-                .setPositiveButton(getString(R.string.edit_address_btn)) { _, _ -> showFragment(fragmentAddress) }
-                .setNegativeButton(getString(R.string.ignore_btn)) { dialog, _ -> dialog.dismiss() }
-                .create().show()
+            .setTitle(getString(R.string.title_cant_locate_address))
+            .setMessage(getString(R.string.address_not_found))
+            .setPositiveButton(getString(R.string.edit_address_btn)) { _, _ ->
+                showFragment(
+                    fragmentAddress
+                )
+            }
+            .setNegativeButton(getString(R.string.ignore_btn)) { dialog, _ -> dialog.dismiss() }
+            .create().show()
     }
 
     override fun onDestroy() {

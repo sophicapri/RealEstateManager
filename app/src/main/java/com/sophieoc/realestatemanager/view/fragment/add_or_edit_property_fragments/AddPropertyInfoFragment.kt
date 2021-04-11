@@ -18,7 +18,6 @@ import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import com.sophieoc.realestatemanager.utils.toStringFormat
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
-import kotlinx.android.synthetic.main.fragment_add_info.*
 import java.text.DateFormat
 import java.util.*
 
@@ -64,34 +63,43 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US)
         val selectedDate = GregorianCalendar(year, month, dayOfMonth).time
-        btn_date.text = df.format(selectedDate)
-        error_date.visibility = GONE
-        btn_date?.setTextColor(ContextCompat.getColor(rootActivity, R.color.colorPrimaryLight))
-        if (rootActivity.propertyViewModel.property.availability == PropertyAvailability.AVAILABLE) {
-            rootActivity.propertyViewModel.property.dateOnMarket = selectedDate
-            rootActivity.propertyViewModel.property.dateSold = null
-        }else {
-            rootActivity.propertyViewModel.property.dateSold = selectedDate
+        binding.apply {
+            btnDate.text = df.format(selectedDate)
+            errorDate.visibility = GONE
+            btnDate.setTextColor(ContextCompat.getColor(rootActivity, R.color.colorPrimaryLight))
+            if (rootActivity.propertyViewModel.property.availability == PropertyAvailability.AVAILABLE) {
+                rootActivity.propertyViewModel.property.dateOnMarket = selectedDate
+                rootActivity.propertyViewModel.property.dateSold = null
+            } else {
+                rootActivity.propertyViewModel.property.dateSold = selectedDate
+            }
         }
     }
 
     private fun bindViews() {
         val property = rootActivity.propertyViewModel.property
-        types_spinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
-        types_spinner.onItemSelectedListener = getOnTypeSelectedListener()
-        if (rootActivity.intent.extras != null) {
-            availability_spinner.setSelection(getSpinnerPosition(property.availability.s, R.array.property_availability))
-            availability_spinner.onItemSelectedListener = getOnAvailabilitySelectedListener()
-            for_sale_text_view.visibility = GONE
-        } else {
-            property.availability = PropertyAvailability.AVAILABLE
-            for_sale_text_view.visibility = VISIBLE
-            availability_spinner.visibility = INVISIBLE
+        binding.apply {
+            typesSpinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
+            typesSpinner.onItemSelectedListener = getOnTypeSelectedListener()
+            if (rootActivity.intent.extras != null) {
+                availabilitySpinner.setSelection(
+                    getSpinnerPosition(
+                        property.availability.s,
+                        R.array.property_availability
+                    )
+                )
+                availabilitySpinner.onItemSelectedListener = getOnAvailabilitySelectedListener()
+                forSaleTextView.visibility = GONE
+            } else {
+                property.availability = PropertyAvailability.AVAILABLE
+                forSaleTextView.visibility = VISIBLE
+                availabilitySpinner.visibility = INVISIBLE
+            }
+            btnDate.setOnClickListener { showDatePickerDialog() }
+            btnDate.text = getString(R.string.click_to_select_a_date)
+            property.dateSold?.let { btnDate.text = it.toStringFormat() }
+            property.dateOnMarket?.let { btnDate.text = it.toStringFormat() }
         }
-        btn_date.setOnClickListener { showDatePickerDialog() }
-        btn_date.text = getString(R.string.click_to_select_a_date)
-        property.dateSold?.let {  btn_date.text = it.toStringFormat()}
-        property.dateOnMarket?.let {  btn_date.text = it.toStringFormat()}
     }
 
     private fun getSpinnerPosition(value: String, array: Int): Int {

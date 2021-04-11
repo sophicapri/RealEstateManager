@@ -6,14 +6,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
-import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 
 
 @BindingAdapter("imageUrl")
@@ -51,7 +48,7 @@ fun TextView.formatIntToDollar(price: Int) {
     this.text = price.formatToDollarsOrMeters()
 }
 
-@BindingAdapter("adapter")
+/*@BindingAdapter("adapter")
 fun ViewPager2.bindAdapter(photos : List<Photo>?){
     photos?.let {
         val listPhotos = if (photos.isNotEmpty()) photos
@@ -59,14 +56,7 @@ fun ViewPager2.bindAdapter(photos : List<Photo>?){
             arrayListOf(Photo("", ""))
         this.adapter = SliderAdapter(listPhotos)
     }
-}
-
-@BindingAdapter("setViewPager")
-fun SpringDotsIndicator.setViewPager(viewPager2: ViewPager2?){
-    viewPager2?.let {
-        this.setViewPager2(viewPager2)
-    }
-}
+}*/
 
 @BindingAdapter("checkUser", "withCurrentUser")
 fun FloatingActionButton.setVisibility(userId: String?, currentUserId : String?){

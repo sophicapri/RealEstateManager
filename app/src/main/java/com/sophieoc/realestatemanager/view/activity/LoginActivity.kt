@@ -1,11 +1,13 @@
 package com.sophieoc.realestatemanager.view.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
@@ -14,45 +16,38 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity() {
     val userViewModel by viewModel<UserViewModel>()
-
-    companion object {
-        const val TAG = "LoginActivity"
-        const val RC_SIGN_IN = 123
+    private lateinit var progressBar : ProgressBar
+    private val startForResult = registerForActivityResult(StartActivityForResult()){ activityResult ->
+            val response: IdpResponse? = IdpResponse.fromResultIntent(activityResult.data)
+            handleResponseAfterSignIn(activityResult.resultCode, response)
     }
 
     override fun getLayout() = Pair(R.layout.activity_login, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        google_sign_in_btn.setOnClickListener { startSignInWithGoogle()}
+        progressBar = findViewById(R.id.progress_bar)
+        val googleBtn = findViewById<ConstraintLayout>(R.id.google_sign_in_btn)
+        googleBtn.setOnClickListener { startSignInWithGoogle()}
     }
 
     private fun startSignInWithGoogle() {
         if (PreferenceHelper.internetAvailable) {
-            startActivityForResult(AuthUI.getInstance()
+            startForResult.launch(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(listOf(IdpConfig.GoogleBuilder().build()))
                     .setIsSmartLockEnabled(false, true)
-                    .build(), RC_SIGN_IN)
+                    .build())
             progressBar.visibility = VISIBLE
         } else
             Toast.makeText(this, getString(R.string.please_connect_to_internet), LENGTH_LONG).show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK)
-            handleResponseAfterSignIn(requestCode, resultCode, data)
-    }
-
-    private fun handleResponseAfterSignIn(requestCode: Int, resultCode: Int, data: Intent?) {
-        val response: IdpResponse? = IdpResponse.fromResultIntent(data)
-        if (requestCode == RC_SIGN_IN) {
+    private fun handleResponseAfterSignIn(resultCode: Int ,response: IdpResponse?) {
             if (resultCode == RESULT_OK) {
                 userViewModel.currentUser.observe(this, {
                     startNewActivity(MainActivity::class.java)
@@ -66,6 +61,9 @@ class LoginActivity : BaseActivity() {
                         Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
                     }
             }
-        }
+    }
+
+    companion object {
+        const val TAG = "LoginActivity"
     }
 }

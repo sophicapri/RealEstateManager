@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_10"
-        android:text="@string/results_for"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/results_search_container"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btn_reset_search"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/margin_40"
-        android:layout_marginEnd="@dimen/margin_default"
-        android:text="@string/reset_filter"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="@string/results_for"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/data_searched"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/grey"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="@+id/btn_reset_search"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/btn_reset_search"
-        tools:text="House - 2 bedrooms - On market since last week - $1,500,000 to 2,000,000 - 3 pictures or more" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_reset_search"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_40"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:text="@string/reset_filter"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/data_searched"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/btn_reset_search"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/btn_reset_search"
+            tools:text="House - 2 bedrooms - On market since last week - $1,500,000 to 2,000,000 - 3 pictures or more" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

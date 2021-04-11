@@ -11,6 +11,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -267,7 +268,10 @@ class EditOrAddPropertyActivity : BaseActivity(), BottomNavigationView.OnNavigat
         val notificationHelper = NotificationHelper(this)
         val nb: NotificationCompat.Builder = notificationHelper
                 .getChannelNotification(getString(R.string.property_saved_successful))
-        notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
+        with(NotificationManagerCompat.from(this)){
+            notify(NotificationHelper.NOTIFICATION_ID, nb.build())
+        }
+        //notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
     }
 
     private fun showAddressErrorDialog() {

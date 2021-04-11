@@ -18,6 +18,12 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
             return field
         }
 
+    init {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel()
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val channel = NotificationChannel(CHANNEL_ID, PROPERTY_SAVED, NotificationManager.IMPORTANCE_HIGH)
@@ -37,11 +43,5 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         const val NOTIFICATION_ID: Int = 1
         const val CHANNEL_ID = "channelID"
         const val PROPERTY_SAVED = "Property saved successfully"
-    }
-
-    init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel()
-        }
     }
 }

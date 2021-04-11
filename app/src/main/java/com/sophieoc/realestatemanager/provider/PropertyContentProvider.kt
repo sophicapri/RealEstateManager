@@ -1,6 +1,7 @@
 package com.sophieoc.realestatemanager.provider
 
 import android.content.ContentProvider
+import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.database.Cursor
@@ -35,8 +36,8 @@ class PropertyContentProvider : ContentProvider() {
         throw IllegalArgumentException("Failed to query row for uri $uri")
     }
 
-    override fun getType(uri: Uri): String? {
-        return "vnd.android.cursor.item/$AUTHORITY.$TABLE_NAME"
+    override fun getType(uri: Uri): String {
+        return "${ContentResolver.CURSOR_ITEM_BASE_TYPE}/$AUTHORITY.$TABLE_NAME"
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {

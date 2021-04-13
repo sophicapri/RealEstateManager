@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="@dimen/margin_24"
+                    android:layout_marginBottom="@dimen/margin_16"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -86,23 +86,8 @@
                     android:textSize="18sp"
                     app:layout_collapseMode="pin"
                     tools:text="SOLD" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    app:layout_collapseMode="parallax"
-                    app:layout_constraintBottom_toBottomOf="@+id/view_pager"
-                    app:layout_constraintEnd_toEndOf="@+id/view_pager"
-                    app:layout_constraintStart_toStartOf="@+id/view_pager"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="2dp" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/container"
             android:layout_width="match_parent"
@@ -438,6 +423,21 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             android:visibility="gone" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/margin_10"
+            android:background="@null"
+            app:tabGravity="center"
+            app:tabBackground="@drawable/tab_selector"
+            app:layout_collapseMode="parallax"
+            android:scrollbars="none"
+            app:layout_anchorGravity="bottom"
+            app:layout_anchor="@id/appBar">
+        </com.google.android.material.tabs.TabLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_edit_property"

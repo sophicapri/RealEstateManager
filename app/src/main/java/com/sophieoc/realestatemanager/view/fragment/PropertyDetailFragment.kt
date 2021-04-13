@@ -136,8 +136,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.viewPager.adapter = SliderAdapter(listPhotos)
             }
         }
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-        }.attach()
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
     }
 
     private fun getOnPageChangeCallback(photos: List<Photo>): ViewPager2.OnPageChangeCallback {

@@ -54,7 +54,6 @@ et appuyez sur ""Run 'NomDeLaMethode'".
 - Places
 - Room
 - Koin
-- [Material View Pager Dots Indicator](https://github.com/tommybuonomo/dotsindicator)
 - Glide
 - Retrofit
 - Gson

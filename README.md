@@ -8,7 +8,7 @@ Fonctionnalités:
 - Afficher le profil d'un bien
 - Accéder à une carte qui affiche tous les biens à l'aide de punaises
 - Localiser l'agent connecté
-- Afficher les biens pris en charge par un agent sur son profil
+- Afficher les biens prit en charge par un agent sur son profil
 - Possibilité de changer de photo de profil et de nom d'utilisateur
 - Stockage des données sur Firestore et Room (mode hors-ligne)
 

@@ -28,7 +28,6 @@ class MapActivity : BaseActivity() {
 
     companion object {
         const val TAG = "LogMapActivity"
-        const val REQUEST_CODE_LOCATION = 321
         const val REQUEST_CODE = 123
     }
 }

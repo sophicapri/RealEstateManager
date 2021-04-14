@@ -4,11 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.databinding.ActivityPropertyDetailBinding
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 
 
 class PropertyDetailActivity : BaseActivity() {
-    override fun getLayout() = Pair(R.layout.activity_property_detail, null)
+    private lateinit var binding : ActivityPropertyDetailBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityPropertyDetailBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun getLayout() = binding.root
 
     override fun onResume() {
         super.onResume()

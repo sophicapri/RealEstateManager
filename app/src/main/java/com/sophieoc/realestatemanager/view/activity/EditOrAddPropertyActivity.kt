@@ -9,13 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sophieoc.realestatemanager.R
@@ -37,22 +34,21 @@ import kotlin.collections.ArrayList
 
 class EditOrAddPropertyActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
-    private var fragmentAddress: Fragment = AddAddressFragment()
-    var fragmentPropertyInfo: Fragment = AddPropertyInfoFragment()
-    var fragmentPictures: Fragment = AddPicturesFragment()
-    var activityRestarted = false
-    private var emptyFieldsInAddress = false
-    private var emptyFieldsInMainInfo = false
     lateinit var binding: ActivityEditAddPropertyBinding
-    val propertyViewModel by viewModel<PropertyViewModel>()
+    private val sharedViewModel by viewModel<PropertyViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityEditAddPropertyBinding.inflate(layoutInflater)
         bindViews()
+        intent.extras?.let {
+            getPropertyId(it)
+        }
         super.onCreate(savedInstanceState)
     }
 
+    override fun getLayout() = binding.root
+
     private fun bindViews() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_add_property)
         binding.apply {
             propertyViewModel = propertyViewModel
             intent.extras?.let {
@@ -70,19 +66,43 @@ class EditOrAddPropertyActivity : BaseActivity(),
         }
     }
 
+    private fun getPropertyId(extras: Bundle) {
+        if (extras.containsKey(PROPERTY_ID)) {
+            val propertyId = extras.get(PROPERTY_ID) as String
+            getProperty(propertyId)
+        }
+    }
+
+    private fun getProperty(propertyId: String) {
+        sharedViewModel.getPropertyById(propertyId).observe(this, {
+            it?.let {
+                sharedViewModel.property = it
+                addFragmentsToActivity()
+                // to update the view
+              /*  val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                if (Build.VERSION.SDK_INT >= 26) {
+                    ft.setReorderingAllowed(false)
+                }
+                ft.detach(fragmentAddress).attach(fragmentAddress)
+                    .detach(fragmentPropertyInfo).attach(fragmentPropertyInfo)
+                    .detach(fragmentPictures).attach(fragmentPictures).commit()*/
+            }
+        })
+    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         activityRestarted = true
         supportFragmentManager.findFragmentByTag(AddAddressFragment()::class.java.simpleName)
-            ?.let { fragmentAddress = it }
+            ?.let { fragmentAddress = it as AddAddressFragment }
         supportFragmentManager.findFragmentByTag(AddPropertyInfoFragment()::class.java.simpleName)
-            ?.let { fragmentPropertyInfo = it }
+            ?.let { fragmentPropertyInfo = it as AddPropertyInfoFragment }
         supportFragmentManager.findFragmentByTag(AddPicturesFragment()::class.java.simpleName)
-            ?.let { fragmentPictures = it }
+            ?.let { fragmentPictures = it as AddPicturesFragment }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun addFragmentsToActivity() {
+        //progress bar ?
         if (!activityRestarted && !fragmentAddress.isAdded) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.add(
@@ -130,13 +150,14 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     fun saveChanges(view: View) {
+
         if (Utils.isInternetAvailable(this)) {
             PreferenceHelper.internetAvailable = false
             checkDates()
             if (checkInputs()) {
                 binding.progressBar.visibility = VISIBLE
-                propertyViewModel.property.userId = PreferenceHelper.currentUserId
-                updatePointOfInterestsAndSave(propertyViewModel.property)
+                sharedViewModel.property.userId = PreferenceHelper.currentUserId
+                updatePointOfInterestsAndSave(sharedViewModel.property)
             } else
                 showAlertDialog()
         } else {
@@ -146,10 +167,10 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     private fun checkDates() {
-        if (propertyViewModel.property.availability == PropertyAvailability.AVAILABLE)
-            propertyViewModel.property.dateSold = null
+        if (sharedViewModel.property.availability == PropertyAvailability.AVAILABLE)
+            sharedViewModel.property.dateSold = null
         else
-            propertyViewModel.property.dateOnMarket = null
+            sharedViewModel.property.dateOnMarket = null
     }
 
     private fun updatePointOfInterestsAndSave(property: Property) {
@@ -158,7 +179,7 @@ class EditOrAddPropertyActivity : BaseActivity(),
         location.latitude = property.address.toLatLng(this).latitude
         location.longitude = property.address.toLatLng(this).longitude
         if (strLocation != LAT_LNG_NOT_FOUND) {
-            propertyViewModel.getPointOfInterests(strLocation).observe(this, { placeDetailList ->
+            sharedViewModel.getPointOfInterests(strLocation).observe(this, { placeDetailList ->
                 placeDetailList?.let {
                     if (placeDetailList.isNotEmpty()) {
                         val listPointOfInterest = ArrayList<PointOfInterest>()
@@ -208,8 +229,8 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     private fun saveProperty() {
-        propertyViewModel.upsertProperty()
-        propertyViewModel.propertySaved.observe(this, {
+        sharedViewModel.upsertProperty()
+        sharedViewModel.propertySaved.observe(this, {
             it?.let {
                 onBackPressed()
                 binding.progressBar.visibility = GONE
@@ -219,61 +240,8 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     private fun checkInputs(): Boolean {
-        return checkAddressPage(propertyViewModel.property).and(checkMainInfoPage(propertyViewModel.property))
-    }
-
-    private fun checkMainInfoPage(property: Property): Boolean {
-        emptyFieldsInMainInfo = false
-        val priceInput = findViewById<EditText>(R.id.price_input)
-        val surfaceInput = findViewById<EditText>(R.id.surface_input)
-        val nbOfRoomsInput = findViewById<EditText>(R.id.nbr_of_rooms_input)
-        val errorDate = findViewById<TextView>(R.id.error_date)
-
-        try {
-            if (property.price <= 0 || property.surface <= 0 || property.numberOfRooms <= 0 ||
-                (property.dateSold == null && property.dateOnMarket == null)
-            ) {
-                if (property.price <= 0)
-                    priceInput?.error = getString(R.string.empty_field)
-                if (property.surface <= 0)
-                    surfaceInput?.error = getString(R.string.empty_field)
-                if (property.numberOfRooms <= 0)
-                    nbOfRoomsInput?.error = getString(R.string.empty_field)
-                if (property.dateSold == null && property.dateOnMarket == null) {
-                    errorDate?.visibility = VISIBLE
-                    errorDate?.text = getString(R.string.please_select_a_date)
-                }
-                emptyFieldsInMainInfo = true
-                return false
-            }
-        } catch (e: NullPointerException) {
-            Log.d(TAG, "checkMainInfoPage: ${e.stackTrace}")
-        }
-        return true
-    }
-
-    private fun checkAddressPage(property: Property): Boolean {
-        emptyFieldsInAddress = false
-        val streetNbrInput = findViewById<EditText>(R.id.street_nbr_input)
-        val streetNameInput = findViewById<EditText>(R.id.street_name_input)
-        val cityInput = findViewById<EditText>(R.id.city_input)
-        val postalCodeInput = findViewById<EditText>(R.id.postal_code_input)
-
-        if (property.address.streetNumber.isEmpty() || property.address.streetName.isEmpty() ||
-            property.address.city.isEmpty() || property.address.postalCode.isEmpty()
-        ) {
-            if (property.address.streetNumber.isEmpty())
-                streetNbrInput?.error = getString(R.string.empty_field)
-            if (property.address.streetName.isEmpty())
-                streetNameInput?.error = getString(R.string.empty_field)
-            if (property.address.city.isEmpty())
-                cityInput?.error = getString(R.string.empty_field)
-            if (property.address.postalCode.isEmpty())
-                postalCodeInput?.error = getString(R.string.empty_field)
-            emptyFieldsInAddress = true
-            return false
-        }
-        return true
+        return fragmentAddress.checkAddressPage(sharedViewModel.property)
+            .and(fragmentPropertyInfo.checkMainInfoPage(sharedViewModel.property))
     }
 
     private fun showAlertDialog() {
@@ -329,9 +297,13 @@ class EditOrAddPropertyActivity : BaseActivity(),
         activityRestarted = false
     }
 
-    override fun getLayout() = Pair(null, binding.root)
-
     companion object {
         const val TAG = "AddPropertyActivity"
+        var activityRestarted = false
+        private var fragmentAddress = AddAddressFragment()
+        var fragmentPropertyInfo = AddPropertyInfoFragment()
+        var fragmentPictures = AddPicturesFragment()
+        var emptyFieldsInAddress = false
+        var emptyFieldsInMainInfo = false
     }
 }

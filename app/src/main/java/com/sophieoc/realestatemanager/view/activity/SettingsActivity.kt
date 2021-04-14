@@ -12,7 +12,6 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
-import androidx.databinding.DataBindingUtil
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
@@ -33,10 +32,8 @@ class SettingsActivity : BaseActivity() {
     private var dataChanged = false
     private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
 
-    override fun getLayout() = Pair(null, binding.root)
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         binding.userViewModel = userViewModel
         binding.lifecycleOwner = this
         userViewModel.userUpdated.observe(this, {
@@ -52,6 +49,8 @@ class SettingsActivity : BaseActivity() {
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
         super.onCreate(savedInstanceState)
     }
+
+    override fun getLayout() = binding.root
 
     fun editUsername(view: View) {
         checkConnection()

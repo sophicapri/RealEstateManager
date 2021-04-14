@@ -22,6 +22,8 @@ import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,13 +31,8 @@ import kotlin.collections.ArrayList
 class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener, PicturesAdapter.OnSetAsCoverListener {
     lateinit var binding: FragmentAddPicturesBinding
     private lateinit var adapter: PicturesAdapter
-    private lateinit var rootActivity: EditOrAddPropertyActivity
     private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        rootActivity = (activity as EditOrAddPropertyActivity)
-    }
+    private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
@@ -44,7 +41,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
                 container,
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
-        if (rootActivity.activityRestarted) {
+        if (EditOrAddPropertyActivity.activityRestarted) {
             binding.executePendingBindings()
         }
         return binding.root
@@ -52,20 +49,19 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
 
     override fun onResume() {
         super.onResume()
-        rootActivity.checkConnection()
         bindViews()
         configureRecyclerView()
     }
 
     private fun bindViews() {
         binding.btnAddPicture.setOnClickListener {
-            addPhotoUtil = AddPicturesFromPhoneUtil(rootActivity, this)
+            addPhotoUtil = AddPicturesFromPhoneUtil(requireActivity() as EditOrAddPropertyActivity, this)
             addPhotoUtil.addPhoto()
         }
     }
 
     private fun configureRecyclerView() {
-        adapter = PicturesAdapter(this, this, rootActivity.propertyViewModel)
+        adapter = PicturesAdapter(this, this, sharedViewModel)
         binding.apply {
             recyclerViewPictures.setHasFixedSize(true)
             recyclerViewPictures.adapter = adapter
@@ -74,7 +70,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
 
     override fun onDeleteClick(position: Int, photos: ArrayList<Photo>) {
         photos.removeAt(position)
-        rootActivity.propertyViewModel.property.photos = photos
+        sharedViewModel.property.photos = photos
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -99,7 +95,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         if (resultCode == RESULT_OK)
             data?.let { it -> it.data?.let { saveImage(it) } }
         else
-            Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
     }
 
     private fun handleResponseCamera(resultCode: Int) {
@@ -107,28 +103,28 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             val f = File(addPhotoUtil.currentPhotoPath)
             saveImage(Uri.fromFile(f))
         } else
-            Toast.makeText(rootActivity, getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
     }
 
     private fun saveImage(data: Uri) {
         binding.progressBar.visibility = VISIBLE
-        val arrayPhoto = ArrayList(rootActivity.propertyViewModel.property.photos)
+        val arrayPhoto = ArrayList(sharedViewModel.property.photos)
         val uuid = UUID.randomUUID().toString()
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
-        if (Utils.isInternetAvailable(rootActivity)) {
+        if (Utils.isInternetAvailable(requireContext())) {
             imageRef.putFile(data)
                     .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
                             val pathImage = uri.toString()
                             arrayPhoto.add(Photo(pathImage, ""))
-                            rootActivity.propertyViewModel.property.photos = arrayPhoto
+                            sharedViewModel.property.photos = arrayPhoto
                             adapter.notifyDataSetChanged()
                             binding.progressBar.visibility = GONE
                         }
                     }
             PreferenceHelper.internetAvailable = true
         } else {
-            Toast.makeText(rootActivity, getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
             PreferenceHelper.internetAvailable = false
         }
     }
@@ -137,7 +133,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         val photoToMove = photos[position]
         photos.remove(photoToMove)
         photos.add(0, photoToMove)
-        rootActivity.propertyViewModel.property.photos = photos
+        sharedViewModel.property.photos = photos
     }
 
     companion object {

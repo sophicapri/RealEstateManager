@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
@@ -24,32 +25,25 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
-    //private var filterDialog: AlertDialog? = null
-    //private val filterViewModel by viewModel<FilterViewModel>()
     private val userViewModel by viewModel<UserViewModel>()
-   // lateinit var bindingFilter: DialogFilterBinding
-    lateinit var binding: ActivityMainBinding
+    val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater)}
     private lateinit var drawerLayout: DrawerLayout
-    //private lateinit var bindingPropertyList: FragmentPropertyListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         drawerLayout = binding.drawerLayout
+        setSupportActionBar(binding.myToolbar)
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_property_list, fragmentList, fragmentList.javaClass.simpleName)
             .commit()
-        setSupportActionBar(binding.myToolbar)
     }
 
-
-    override fun getLayout() = Pair(null, binding.root)
+    override fun getLayout() = binding.root
 
     override fun onResume() {
         super.onResume()
         configureDrawerLayout()
         configurePropertyDetailFragment()
-        // bindingPropertyList = FragmentPropertyListBinding.bind(findViewById(R.id.fragment_property_list))
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -67,10 +61,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         toggle.syncState()
         navigationView.setNavigationItemSelectedListener(this)
         val headerView: View = navigationView.getHeaderView(0)
+        val appLogo = headerView.findViewById<ImageView>(R.id.app_logo)
         val profilePic = headerView.findViewById<ImageView>(R.id.profile_picture)
         val username = headerView.findViewById<TextView>(R.id.username)
         val email = headerView.findViewById<TextView>(R.id.email_user)
-
+        appLogo.setImageDrawable(
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_app_logo, null)
+        )
         userViewModel.currentUser.observe(this, {
             it?.let {
                 val user = it.user

@@ -1,68 +1,57 @@
 package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
-import com.sophieoc.realestatemanager.utils.PROPERTY_ID
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class AddAddressFragment : Fragment(){
     private lateinit var binding: FragmentAddAddressBinding
-    private lateinit var rootActivity: EditOrAddPropertyActivity
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        rootActivity = (activity as EditOrAddPropertyActivity)
-        rootActivity.intent.extras?.let {
-            getPropertyId(it)
-        }
-    }
-
-    private fun getPropertyId(extras: Bundle) {
-        if (extras.containsKey(PROPERTY_ID)) {
-            val propertyId = extras.get(PROPERTY_ID) as String
-            getProperty(propertyId)
-        }
-    }
-
-    private fun getProperty(propertyId: String) {
-        rootActivity.propertyViewModel.getPropertyById(propertyId).observe(rootActivity, {
-            it?.let {
-                rootActivity.propertyViewModel.property = it
-                // to update the view
-                val ft: FragmentTransaction = rootActivity.supportFragmentManager.beginTransaction()
-                if (Build.VERSION.SDK_INT >= 26) {
-                    ft.setReorderingAllowed(false)
-                }
-                ft.detach(this).attach(this)
-                        .detach(rootActivity.fragmentPropertyInfo).attach(rootActivity.fragmentPropertyInfo)
-                        .detach(rootActivity.fragmentPictures).attach(rootActivity.fragmentPictures).commit()
-            }
-        })
-    }
+    private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_add_address,
-                container,
-                false)
+        binding = FragmentAddAddressBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.propertyViewModel = rootActivity.propertyViewModel
-        if (rootActivity.activityRestarted)
+        binding.propertyViewModel = sharedViewModel
+        if (EditOrAddPropertyActivity.activityRestarted)
             binding.executePendingBindings()
         return binding.root
     }
 
+    fun checkAddressPage(property: Property): Boolean {
+        emptyFieldsInAddress = false
+        val streetNbrInput = binding.streetNbrInput
+        val streetNameInput = binding.streetNameInput
+        val cityInput = binding.cityInput
+        val postalCodeInput = binding.postalCodeInput
+
+        if (property.address.streetNumber.isEmpty() || property.address.streetName.isEmpty() ||
+            property.address.city.isEmpty() || property.address.postalCode.isEmpty()
+        ) {
+            if (property.address.streetNumber.isEmpty())
+                streetNbrInput.error = getString(R.string.empty_field)
+            if (property.address.streetName.isEmpty())
+                streetNameInput.error = getString(R.string.empty_field)
+            if (property.address.city.isEmpty())
+                cityInput.error = getString(R.string.empty_field)
+            if (property.address.postalCode.isEmpty())
+                postalCodeInput.error = getString(R.string.empty_field)
+            emptyFieldsInAddress = true
+            return false
+        }
+        return true
+    }
+
     companion object {
-        const val TAG = "AddAddressFragment"
+        private const val TAG = "AddAddressFragment"
     }
 }

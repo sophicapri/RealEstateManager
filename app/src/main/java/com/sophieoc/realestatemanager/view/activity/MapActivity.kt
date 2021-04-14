@@ -19,7 +19,7 @@ class MapActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getLayout() = Pair(null, binding.root)
+    override fun getLayout() = binding.root
 
     override fun onResume() {
         super.onResume()

@@ -38,14 +38,13 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(getLayout())
+        checkConnection()
         auth = FirebaseAuth.getInstance()
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        getLayout().first?.let { setContentView(it)}
-        getLayout().second?.let { setContentView(it)}
-        checkConnection()
     }
 
-    abstract fun getLayout(): Pair<Int?, View?>
+    abstract fun getLayout(): View
 
     fun checkConnection() {
         if (!Utils.isInternetAvailable(this)){

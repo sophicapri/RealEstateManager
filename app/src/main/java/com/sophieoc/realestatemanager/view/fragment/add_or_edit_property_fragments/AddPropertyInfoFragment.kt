@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragme
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -14,21 +15,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddInfoBinding
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import com.sophieoc.realestatemanager.utils.toStringFormat
 import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInMainInfo
+import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.text.DateFormat
 import java.util.*
 
 class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     lateinit var binding: FragmentAddInfoBinding
-    private lateinit var rootActivity: EditOrAddPropertyActivity
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        rootActivity = (activity as EditOrAddPropertyActivity)
-    }
+    private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
@@ -37,21 +37,20 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 container,
                 false)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.propertyViewModel = rootActivity.propertyViewModel
-        if (rootActivity.activityRestarted)
+        binding.propertyViewModel = sharedViewModel
+        if (EditOrAddPropertyActivity.activityRestarted)
             binding.executePendingBindings()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        rootActivity.checkConnection()
         bindViews()
     }
 
     private fun showDatePickerDialog() {
         Locale.setDefault(Locale.US)
-        val datePickerDialog = DatePickerDialog(rootActivity,
+        val datePickerDialog = DatePickerDialog(requireContext(),
                 this, Calendar.getInstance()[Calendar.YEAR],
                 Calendar.getInstance()[Calendar.MONTH],
                 Calendar.getInstance()[Calendar.DAY_OF_MONTH])
@@ -66,22 +65,22 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.apply {
             btnDate.text = df.format(selectedDate)
             errorDate.visibility = GONE
-            btnDate.setTextColor(ContextCompat.getColor(rootActivity, R.color.colorPrimaryLight))
-            if (rootActivity.propertyViewModel.property.availability == PropertyAvailability.AVAILABLE) {
-                rootActivity.propertyViewModel.property.dateOnMarket = selectedDate
-                rootActivity.propertyViewModel.property.dateSold = null
+            btnDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryLight))
+            if (sharedViewModel.property.availability == PropertyAvailability.AVAILABLE) {
+                sharedViewModel.property.dateOnMarket = selectedDate
+                sharedViewModel.property.dateSold = null
             } else {
-                rootActivity.propertyViewModel.property.dateSold = selectedDate
+                sharedViewModel.property.dateSold = selectedDate
             }
         }
     }
 
     private fun bindViews() {
-        val property = rootActivity.propertyViewModel.property
+        val property = sharedViewModel.property
         binding.apply {
             typesSpinner.setSelection(getSpinnerPosition(property.type.s, R.array.property_types))
             typesSpinner.onItemSelectedListener = getOnTypeSelectedListener()
-            if (rootActivity.intent.extras != null) {
+            if (requireActivity().intent.extras != null) {
                 availabilitySpinner.setSelection(
                     getSpinnerPosition(
                         property.availability.s,
@@ -111,7 +110,7 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun getOnAvailabilitySelectedListener() = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            rootActivity.propertyViewModel.property.availability = PropertyAvailability.values()[position]
+            sharedViewModel.property.availability = PropertyAvailability.values()[position]
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -120,11 +119,41 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun getOnTypeSelectedListener() = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            rootActivity.propertyViewModel.property.type = PropertyType.values()[position]
+            sharedViewModel.property.type = PropertyType.values()[position]
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
         }
+    }
+
+    fun checkMainInfoPage(property: Property): Boolean {
+        emptyFieldsInMainInfo = false
+        val priceInput = binding.priceInput
+        val surfaceInput = binding.surfaceInput
+        val nbOfRoomsInput = binding.nbrOfRoomsInput
+        val errorDate = binding.errorDate
+
+        try {
+            if (property.price <= 0 || property.surface <= 0 || property.numberOfRooms <= 0 ||
+                (property.dateSold == null && property.dateOnMarket == null)
+            ) {
+                if (property.price <= 0)
+                    priceInput.error = getString(R.string.empty_field)
+                if (property.surface <= 0)
+                    surfaceInput.error = getString(R.string.empty_field)
+                if (property.numberOfRooms <= 0)
+                    nbOfRoomsInput.error = getString(R.string.empty_field)
+                if (property.dateSold == null && property.dateOnMarket == null) {
+                    errorDate.visibility = VISIBLE
+                    errorDate.text = getString(R.string.please_select_a_date)
+                }
+                emptyFieldsInMainInfo = true
+                return false
+            }
+        } catch (e: NullPointerException) {
+            Log.d(EditOrAddPropertyActivity.TAG, "checkMainInfoPage: ${e.stackTrace}")
+        }
+        return true
     }
 
     companion object {

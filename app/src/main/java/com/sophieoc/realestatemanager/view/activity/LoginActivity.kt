@@ -14,26 +14,29 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
+import com.sophieoc.realestatemanager.databinding.ActivityLoginBinding
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity() {
     val userViewModel by viewModel<UserViewModel>()
+    private lateinit var binding : ActivityLoginBinding
     private lateinit var progressBar : ProgressBar
     private val startForResult = registerForActivityResult(StartActivityForResult()){ activityResult ->
             val response: IdpResponse? = IdpResponse.fromResultIntent(activityResult.data)
             handleResponseAfterSignIn(activityResult.resultCode, response)
     }
 
-    override fun getLayout() = Pair(R.layout.activity_login, null)
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         progressBar = findViewById(R.id.progress_bar)
         val googleBtn = findViewById<ConstraintLayout>(R.id.google_sign_in_btn)
         googleBtn.setOnClickListener { startSignInWithGoogle()}
     }
+
+    override fun getLayout() = binding.root
 
     private fun startSignInWithGoogle() {
         if (PreferenceHelper.internetAvailable) {

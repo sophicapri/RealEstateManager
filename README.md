@@ -1,5 +1,5 @@
 # Projet Real Estate Manager
-Création d'une application permettant à des agents immobilier d'une même agence de gérer des biens immobilier.
+Création d'une application permettant à des agents immobilier d'une même agence de gérer des biens.
 
 Fonctionnalités:
 - Afficher la liste des biens

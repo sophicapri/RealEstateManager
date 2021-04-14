@@ -10,14 +10,6 @@ import androidx.core.app.NotificationCompat
 import com.sophieoc.realestatemanager.R
 
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
-    var manager: NotificationManager? = null
-        get() {
-            if (field == null) {
-                field = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            }
-            return field
-        }
-
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel()
@@ -27,7 +19,8 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
     @TargetApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         val channel = NotificationChannel(CHANNEL_ID, PROPERTY_SAVED, NotificationManager.IMPORTANCE_HIGH)
-        manager?.createNotificationChannel(channel)
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
     }
 
     fun getChannelNotification(message: String?): NotificationCompat.Builder {

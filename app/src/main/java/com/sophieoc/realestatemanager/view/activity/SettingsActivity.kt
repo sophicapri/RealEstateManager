@@ -1,10 +1,8 @@
 package com.sophieoc.realestatemanager.view.activity
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
@@ -12,6 +10,7 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.activity.result.ActivityResult
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
@@ -19,13 +18,12 @@ import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.util.*
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResultListener {
     private val userViewModel by viewModel<UserViewModel>()
     private lateinit var currentUser: UserWithProperties
     private lateinit var binding: ActivitySettingsBinding
@@ -34,8 +32,17 @@ class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
-        binding.userViewModel = userViewModel
-        binding.lifecycleOwner = this
+        bindViews()
+        addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
+        super.onCreate(savedInstanceState)
+    }
+
+    private fun bindViews() {
+        binding.apply {
+            userViewModel = this@SettingsActivity.userViewModel
+            lifecycleOwner = this@SettingsActivity
+            toolbar.setNavigationOnClickListener { onBackPressed() }
+        }
         userViewModel.userUpdated.observe(this, {
             if (it != null) {
                 binding.progressBar.visibility = GONE
@@ -46,8 +53,6 @@ class SettingsActivity : BaseActivity() {
                 currentUser = it
             }
         })
-        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-        super.onCreate(savedInstanceState)
     }
 
     override fun getLayout() = binding.root
@@ -91,31 +96,18 @@ class SettingsActivity : BaseActivity() {
     fun addPhoto(view: View?) {
         checkConnection()
         if (PreferenceHelper.internetAvailable) {
-            addPhotoUtil = AddPicturesFromPhoneUtil(this, null)
             addPhotoUtil.addPhoto()
         } else
             Toast.makeText(this, getString(R.string.cannot_change_photo_offline), LENGTH_LONG).show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+
+    override fun onActivityResult(requestCode: Int, activityResult: ActivityResult) {
         addPhotoUtil.bottomSheetDialog.dismiss()
         if (requestCode == RC_SELECT_PHOTO_GALLERY)
-            handleResponseGallery(resultCode, data)
+            handleResponseGallery(activityResult.resultCode, activityResult.data)
         else if (requestCode == RC_PHOTO_CAMERA)
-            handleResponseCamera(resultCode)
-    }
-
-    //TODO: Change to registerActivityForResult()
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        addPhotoUtil.bottomSheetDialog.dismiss()
-        if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            addPhotoUtil.addPhotoFromGallery()
-        } else if (requestCode == RC_PERMISSION_SAVE_FROM_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            addPhotoUtil.addPhotoFromCamera()
-        } else
-            Log.d(AddPicturesFragment.TAG, "onRequestPermissionsResult: refused")
+            handleResponseCamera(activityResult.resultCode)
     }
 
     private fun handleResponseGallery(resultCode: Int, data: Intent?) {

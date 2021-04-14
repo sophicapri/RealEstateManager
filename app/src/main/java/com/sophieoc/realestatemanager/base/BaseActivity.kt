@@ -2,7 +2,6 @@ package com.sophieoc.realestatemanager.base
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
@@ -10,6 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.utils.RQ_CODE_PROPERTY
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.view.activity.MainActivity
 import com.sophieoc.realestatemanager.view.activity.MapActivity
@@ -35,6 +34,19 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
     val fragmentList = PropertyListFragment()
     val fragmentUser = UserPropertiesFragment()
     val fragmentPropertyDetail = PropertyDetailFragment()
+    private val startLocationSettingsForResult = registerForActivityResult(StartActivityForResult()) { activityResult ->
+        if (activityResult.resultCode == RESULT_OK && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Log.d(MainActivity.TAG, "onActivityResult: location enabled")
+        }
+    }
+    val startDetailActivityForResult = registerForActivityResult(StartActivityForResult()){ activityResult ->
+        if (activityResult.resultCode == RESULT_OK) {
+            activityResult.data?.let { intent ->
+                if (intent.hasExtra(PROPERTY_ID))
+                    intent.putExtra(PROPERTY_ID, intent.getStringExtra(PROPERTY_ID))
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +95,7 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
         if (propertyDetailView == null) {
             val intent = Intent(this, PropertyDetailActivity::class.java)
             intent.putExtra(PROPERTY_ID, propertyId)
-            startActivityForResult(intent, RQ_CODE_PROPERTY)
+            startDetailActivityForResult.launch(intent)
         } else {
             val bundle = Bundle()
             bundle.putString(PROPERTY_ID, propertyId)
@@ -104,24 +116,13 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
             AlertDialog.Builder(this)
                     .setMessage(R.string.gps_network_not_enabled)
                     .setPositiveButton(R.string.open_location_settings) { _, _ ->
-                        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), MapActivity.REQUEST_CODE_LOCATION)}
+                        startLocationSettingsForResult.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))}
                     .setNegativeButton(R.string.ignore, null)
                     .show()
             PreferenceHelper.locationEnabled = false
             return
         }
         PreferenceHelper.locationEnabled = true
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RQ_CODE_PROPERTY && resultCode == Activity.RESULT_OK && data != null
-                && data.hasExtra(PROPERTY_ID))
-            intent.putExtra(PROPERTY_ID, data.getStringExtra(PROPERTY_ID))
-        if (requestCode == MapActivity.REQUEST_CODE_LOCATION && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            Log.d(MainActivity.TAG, "onActivityResult: location enabled")
-        }
     }
 
     @SuppressLint("MissingPermission")

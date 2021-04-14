@@ -43,6 +43,8 @@ class EditOrAddPropertyActivity : BaseActivity(),
         intent.extras?.let {
             getPropertyId(it)
         }
+        //init ActivityResultLaunchers
+        fragmentPictures.addPhotoUtil = AddPicturesFromPhoneUtil(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -78,14 +80,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
             it?.let {
                 sharedViewModel.property = it
                 addFragmentsToActivity()
-                // to update the view
-              /*  val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                if (Build.VERSION.SDK_INT >= 26) {
-                    ft.setReorderingAllowed(false)
-                }
-                ft.detach(fragmentAddress).attach(fragmentAddress)
-                    .detach(fragmentPropertyInfo).attach(fragmentPropertyInfo)
-                    .detach(fragmentPictures).attach(fragmentPictures).commit()*/
             }
         })
     }
@@ -102,7 +96,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     private fun addFragmentsToActivity() {
-        //progress bar ?
         if (!activityRestarted && !fragmentAddress.isAdded) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.add(
@@ -150,7 +143,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     fun saveChanges(view: View) {
-
         if (Utils.isInternetAvailable(this)) {
             PreferenceHelper.internetAvailable = false
             checkDates()
@@ -240,8 +232,8 @@ class EditOrAddPropertyActivity : BaseActivity(),
     }
 
     private fun checkInputs(): Boolean {
-        return fragmentAddress.checkAddressPage(sharedViewModel.property)
-            .and(fragmentPropertyInfo.checkMainInfoPage(sharedViewModel.property))
+        return fragmentAddress.checkAddressPage()
+            .and(fragmentPropertyInfo.checkMainInfoPage())
     }
 
     private fun showAlertDialog() {
@@ -276,7 +268,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
         with(NotificationManagerCompat.from(this)) {
             notify(NotificationHelper.NOTIFICATION_ID, nb.build())
         }
-        //notificationHelper.manager?.notify(NotificationHelper.NOTIFICATION_ID, nb.build())
     }
 
     private fun showAddressErrorDialog() {

@@ -2,16 +2,15 @@ package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragme
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
@@ -28,35 +27,46 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener, PicturesAdapter.OnSetAsCoverListener {
-    lateinit var binding: FragmentAddPicturesBinding
+class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
+    PicturesAdapter.OnSetAsCoverListener,
+    AddPicturesFromPhoneUtil.OnActivityResultListener {
+    private var _binding: FragmentAddPicturesBinding? = null
+    private val binding: FragmentAddPicturesBinding
+        get() = _binding!!
     private lateinit var adapter: PicturesAdapter
-    private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
+    lateinit var addPhotoUtil: AddPicturesFromPhoneUtil
     private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_add_pictures,
-                container,
-                false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        if (EditOrAddPropertyActivity.activityRestarted) {
-            binding.executePendingBindings()
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_add_pictures,
+            container,
+            false
+        )
+        bindViews()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        bindViews()
         configureRecyclerView()
     }
 
     private fun bindViews() {
-        binding.btnAddPicture.setOnClickListener {
-            addPhotoUtil = AddPicturesFromPhoneUtil(requireActivity() as EditOrAddPropertyActivity, this)
-            addPhotoUtil.addPhoto()
+        binding.apply {
+            lifecycleOwner = this@AddPicturesFragment.viewLifecycleOwner
+            if (EditOrAddPropertyActivity.activityRestarted) {
+                executePendingBindings()
+            }
+            btnAddPicture.setOnClickListener {
+                addPhotoUtil.onActivityResultListener = this@AddPicturesFragment
+                addPhotoUtil.addPhoto()
+            }
         }
     }
 
@@ -73,29 +83,22 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         sharedViewModel.property.photos = photos
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        addPhotoUtil.bottomSheetDialog.dismiss()
+    override fun onActivityResult(requestCode: Int, activityResult: ActivityResult) {
         if (requestCode == RC_SELECT_PHOTO_GALLERY)
-            handleResponseGallery(resultCode, data)
+            handleResponseGallery(activityResult.resultCode, activityResult.data)
         else if (requestCode == RC_PHOTO_CAMERA)
-            handleResponseCamera(resultCode)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        addPhotoUtil.bottomSheetDialog.dismiss()
-        if (requestCode == RC_PERMISSION_PHOTO_GALLERY && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            addPhotoUtil.addPhotoFromGallery()
-        } else if (requestCode == RC_PERMISSION_SAVE_FROM_CAMERA && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            addPhotoUtil.addPhotoFromCamera()
-        } else
-            Log.d(TAG, "onRequestPermissionsResult: refused")
+            handleResponseCamera(activityResult.resultCode)
     }
 
     private fun handleResponseGallery(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK)
             data?.let { it -> it.data?.let { saveImage(it) } }
         else
-            Toast.makeText(requireContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.no_image_selected),
+                Toast.LENGTH_SHORT
+            ).show()
     }
 
     private fun handleResponseCamera(resultCode: Int) {
@@ -103,7 +106,11 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
             val f = File(addPhotoUtil.currentPhotoPath)
             saveImage(Uri.fromFile(f))
         } else
-            Toast.makeText(requireContext(), getString(R.string.no_image_selected), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.no_image_selected),
+                Toast.LENGTH_SHORT
+            ).show()
     }
 
     private fun saveImage(data: Uri) {
@@ -113,18 +120,22 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         val imageRef = FirebaseStorage.getInstance().getReference(uuid)
         if (Utils.isInternetAvailable(requireContext())) {
             imageRef.putFile(data)
-                    .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
-                        taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
-                            val pathImage = uri.toString()
-                            arrayPhoto.add(Photo(pathImage, ""))
-                            sharedViewModel.property.photos = arrayPhoto
-                            adapter.notifyDataSetChanged()
-                            binding.progressBar.visibility = GONE
-                        }
+                .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri: Uri ->
+                        val pathImage = uri.toString()
+                        arrayPhoto.add(Photo(pathImage, ""))
+                        sharedViewModel.property.photos = arrayPhoto
+                        adapter.notifyDataSetChanged()
+                        binding.progressBar.visibility = GONE
                     }
+                }
             PreferenceHelper.internetAvailable = true
         } else {
-            Toast.makeText(requireContext(), getString(R.string.load_picture_unable), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.load_picture_unable),
+                Toast.LENGTH_LONG
+            ).show()
             PreferenceHelper.internetAvailable = false
         }
     }
@@ -134,6 +145,11 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         photos.remove(photoToMove)
         photos.add(0, photoToMove)
         sharedViewModel.property.photos = photos
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

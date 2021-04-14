@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddInfoBinding
-import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import com.sophieoc.realestatemanager.utils.toStringFormat
@@ -27,19 +26,23 @@ import java.text.DateFormat
 import java.util.*
 
 class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
-    lateinit var binding: FragmentAddInfoBinding
+    private var _binding: FragmentAddInfoBinding? = null
+    private val binding: FragmentAddInfoBinding
+        get() = _binding!!
     private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_add_info,
-                container,
-                false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.propertyViewModel = sharedViewModel
-        if (EditOrAddPropertyActivity.activityRestarted)
-            binding.executePendingBindings()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_info, container, false)
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            propertyViewModel = sharedViewModel
+            if (EditOrAddPropertyActivity.activityRestarted)
+                executePendingBindings()
+        }
         return binding.root
     }
 
@@ -50,10 +53,12 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun showDatePickerDialog() {
         Locale.setDefault(Locale.US)
-        val datePickerDialog = DatePickerDialog(requireContext(),
-                this, Calendar.getInstance()[Calendar.YEAR],
-                Calendar.getInstance()[Calendar.MONTH],
-                Calendar.getInstance()[Calendar.DAY_OF_MONTH])
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            this, Calendar.getInstance()[Calendar.YEAR],
+            Calendar.getInstance()[Calendar.MONTH],
+            Calendar.getInstance()[Calendar.DAY_OF_MONTH]
+        )
         datePickerDialog.show()
         val okButton = datePickerDialog.getButton(DialogInterface.BUTTON_POSITIVE)
         okButton.id = R.id.calendar_ok_button
@@ -65,7 +70,12 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.apply {
             btnDate.text = df.format(selectedDate)
             errorDate.visibility = GONE
-            btnDate.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryLight))
+            btnDate.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorPrimaryLight
+                )
+            )
             if (sharedViewModel.property.availability == PropertyAvailability.AVAILABLE) {
                 sharedViewModel.property.dateOnMarket = selectedDate
                 sharedViewModel.property.dateSold = null
@@ -126,34 +136,38 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    fun checkMainInfoPage(property: Property): Boolean {
+    fun checkMainInfoPage(): Boolean {
         emptyFieldsInMainInfo = false
-        val priceInput = binding.priceInput
-        val surfaceInput = binding.surfaceInput
-        val nbOfRoomsInput = binding.nbrOfRoomsInput
-        val errorDate = binding.errorDate
-
         try {
-            if (property.price <= 0 || property.surface <= 0 || property.numberOfRooms <= 0 ||
-                (property.dateSold == null && property.dateOnMarket == null)
-            ) {
-                if (property.price <= 0)
-                    priceInput.error = getString(R.string.empty_field)
-                if (property.surface <= 0)
-                    surfaceInput.error = getString(R.string.empty_field)
-                if (property.numberOfRooms <= 0)
-                    nbOfRoomsInput.error = getString(R.string.empty_field)
-                if (property.dateSold == null && property.dateOnMarket == null) {
-                    errorDate.visibility = VISIBLE
-                    errorDate.text = getString(R.string.please_select_a_date)
+            binding.apply {
+                sharedViewModel.apply {
+                    if (property.price <= 0 || property.surface <= 0 || property.numberOfRooms <= 0 ||
+                        (property.dateSold == null && property.dateOnMarket == null)
+                    ) {
+                        if (property.price <= 0)
+                            priceInput.error = getString(R.string.empty_field)
+                        if (property.surface <= 0)
+                            surfaceInput.error = getString(R.string.empty_field)
+                        if (property.numberOfRooms <= 0)
+                            nbrOfRoomsInput.error = getString(R.string.empty_field)
+                        if (property.dateSold == null && property.dateOnMarket == null) {
+                            errorDate.visibility = VISIBLE
+                            errorDate.text = getString(R.string.please_select_a_date)
+                        }
+                        emptyFieldsInMainInfo = true
+                        return false
+                    }
                 }
-                emptyFieldsInMainInfo = true
-                return false
             }
         } catch (e: NullPointerException) {
             Log.d(EditOrAddPropertyActivity.TAG, "checkMainInfoPage: ${e.stackTrace}")
         }
         return true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

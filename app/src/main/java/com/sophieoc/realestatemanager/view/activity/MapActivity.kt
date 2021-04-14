@@ -11,12 +11,12 @@ class MapActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMapBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_map, MapFragment(), MapFragment().javaClass.simpleName)
             .commit()
         checkLocationEnabled()
         binding.myToolbar.setNavigationOnClickListener { onBackPressed()}
-        super.onCreate(savedInstanceState)
     }
 
     override fun getLayout() = binding.root

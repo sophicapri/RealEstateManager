@@ -32,18 +32,24 @@ import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : Fragment(), OnMapReadyCallback {
-    private lateinit var mainContext : BaseActivity
+    private lateinit var mainContext: BaseActivity
     private var map: GoogleMap? = null
     private var propertyDetailView: View? = null
     private lateinit var currentLocation: Location
     private var fragmentNotRestarted = true
     private var updateView = false
-    private lateinit var binding : FragmentMapBinding
+    private var _binding: FragmentMapBinding? = null
+    private val binding: FragmentMapBinding
+        get() = _binding!!
     private lateinit var progressBar: ProgressBar
     val propertyViewModel by viewModel<PropertyViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentMapBinding.inflate(LayoutInflater.from(context), container,false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -80,8 +86,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             if (marker != null) startPropertyDetail(marker)
         }
         map = googleMap
-        if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(LONGITUDE_PROPERTY))
-            getLocationFromIntent()?.let { it -> focusMap(it)
+        if (mainContext.intent.hasExtra(LATITUDE_PROPERTY) && mainContext.intent.hasExtra(
+                LONGITUDE_PROPERTY
+            )
+        )
+            getLocationFromIntent()?.let { it ->
+                focusMap(it)
                 binding.progressBar.visibility = GONE
             }
         initMarkers()
@@ -95,7 +105,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         if (propertyDetailView == null) {
             val intent = Intent(mainContext, PropertyDetailActivity::class.java)
             intent.putExtra(PROPERTY_ID, marker.tag.toString())
-            mainContext.startActivityForResult(intent, RQ_CODE_PROPERTY)
+            (requireActivity() as MapActivity).startDetailActivityForResult.launch(intent)
         } else {
             propertyDetailView?.visibility = VISIBLE
             binding.btnMapSize.text = getString(R.string.fullscreen)
@@ -104,7 +114,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val propertyDetailFragment = PropertyDetailFragment()
             propertyDetailFragment.arguments = bundle
             mainContext.supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_property_details, propertyDetailFragment).commit()
+                .replace(R.id.frame_property_details, propertyDetailFragment).commit()
         }
     }
 
@@ -130,7 +140,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     fun fetchLastLocation() {
         if (PreferenceHelper.locationEnabled) {
             map?.isMyLocationEnabled = true
-            val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mainContext as MapActivity)
+            val fusedLocationProviderClient: FusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(mainContext as MapActivity)
             val task: Task<Location?> = fusedLocationProviderClient.lastLocation
             task.addOnCompleteListener { getLocationTask: Task<Location?> ->
                 if (getLocationTask.isSuccessful) {
@@ -141,10 +152,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                         progressBar.visibility = GONE
                     } else {
                         // -> update view after location enabled
-                        mainContext.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
+                        mainContext.supportFragmentManager.beginTransaction().detach(this)
+                            .attach(this).commit()
                         updateView = true
                     }
-                }else {
+                } else {
                     Toast.makeText(activity, R.string.cant_get_location, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -157,7 +169,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initMap() {
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
     }
 
@@ -168,9 +181,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     if (property.address.toString().isNotEmpty()) {
                         val latLng = property.address.toLatLng(mainContext)
                         if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
-                            val marker: Marker? = map?.addMarker(MarkerOptions().title(property.type.toString())
+                            val marker: Marker? = map?.addMarker(
+                                MarkerOptions().title(property.type.toString())
                                     .position(latLng)
-                                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources)))
+                                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
+                            )
                             marker?.tag = property.id
                         }
 

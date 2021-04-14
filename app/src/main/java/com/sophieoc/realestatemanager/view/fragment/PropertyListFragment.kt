@@ -56,7 +56,7 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener, Dia
         mainContext = activity as BaseActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentPropertyListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -121,11 +121,11 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener, Dia
         }
     }
 
-    fun updateList(filteredList: ArrayList<Property>) {
+    private fun updateList(filteredList: ArrayList<Property>) {
         adapter.updateList(filteredList)
     }
 
-    fun resetFilter() {
+    private fun resetFilter() {
         getAndUpdatePropertiesList()
     }
 

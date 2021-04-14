@@ -52,7 +52,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         mainContext = activity as BaseActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_detail, container, false)
         binding.userViewModel = userViewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -202,7 +202,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     class NoPropertyClickedFragment : Fragment() {
         private lateinit var binding: NoPropertyClickedBinding
 
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             binding = DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)
             return binding.root
         }

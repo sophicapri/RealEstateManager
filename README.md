@@ -59,5 +59,6 @@ et appuyez sur ""Run 'NomDeLaMethode'".
 - Gson
 - Espresso
 - AndroidX
+- Content Provider
 
 

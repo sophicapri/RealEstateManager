@@ -60,5 +60,6 @@ et appuyez sur ""Run 'NomDeLaMethode'".
 - Espresso
 - AndroidX
 - Content Provider
+- WorkManager
 
 

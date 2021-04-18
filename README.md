@@ -38,17 +38,6 @@ puis clicker sur "Build Project" (menu "Build").
 
 **Lancer l'application:** Cliquer sur le bouton "play" ou sélectionnez "Run 'app' " dans le menu "Run".
 
-## Lancement des tests unitaires et UI
-
-Vous trouverez les test unitaires dans le dossier "test" et les tests instrumentalisés
-dans le dossier "androidTest".
-
-**Lancer tous les tests d'une même classe:** Click droit sur le nom de la classe
-et appuyez sur "Run 'NomDeLaClasse'".
-
-**Lancer les tests un par un:** Click droit sur le nom de la méthode @Test que vous désirez lancer,
-et appuyez sur ""Run 'NomDeLaMethode'".
-
 ## Librairies
 
 - FirebaseUI

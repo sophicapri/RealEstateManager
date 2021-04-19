@@ -6,7 +6,7 @@ Création d'une application permettant à des agents immobilier d'une même agen
 Fonctionnalités:
 - Afficher la liste des biens
 - Rechercher des biens selon différents critères
-- Ajouter/Modifier un bien immobilier
+- Ajouter/Modifier un bien immobilier avec des photos provenant de sa galerie photo ou de l'appareil photo
 - Afficher le profil d'un bien
 - Accéder à une carte qui affiche tous les biens à l'aide de punaises
 - Localiser l'agent

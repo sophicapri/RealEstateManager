@@ -34,7 +34,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
                     android:layout_toStartOf="@+id/btn_save_property"
-                    android:gravity="center"
+                    android:gravity="start|center"
                     android:text="@string/add_a_property_title"
                     android:textColor="@color/white" />
 

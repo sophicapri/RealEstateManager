@@ -1,4 +1,6 @@
 # Projet Real Estate Manager
+**P9 de la formation "Developpeur.se d'Application Android" d'Openclassrooms**
+
 Création d'une application permettant à des agents immobilier d'une même agence de gérer des biens.
 
 Fonctionnalités:
@@ -7,7 +9,7 @@ Fonctionnalités:
 - Ajouter/Modifier un bien immobilier
 - Afficher le profil d'un bien
 - Accéder à une carte qui affiche tous les biens à l'aide de punaises
-- Localiser l'agent connecté
+- Localiser l'agent
 - Afficher les biens prit en charge par un agent sur son profil
 - Possibilité de changer de photo de profil et de nom d'utilisateur
 - Stockage des données sur Firestore et Room (mode hors-ligne)
@@ -36,17 +38,6 @@ puis clicker sur "Build Project" (menu "Build").
 
 **Lancer l'application:** Cliquer sur le bouton "play" ou sélectionnez "Run 'app' " dans le menu "Run".
 
-## Lancement des tests unitaires et UI
-
-Vous trouverez les test unitaires dans le dossier "test" et les tests instrumentalisés
-dans le dossier "androidTest".
-
-**Lancer tous les tests d'une même classe:** Click droit sur le nom de la classe
-et appuyez sur "Run 'NomDeLaClasse'".
-
-**Lancer les tests un par un:** Click droit sur le nom de la méthode @Test que vous désirez lancer,
-et appuyez sur ""Run 'NomDeLaMethode'".
-
 ## Librairies
 
 - FirebaseUI
@@ -59,5 +50,7 @@ et appuyez sur ""Run 'NomDeLaMethode'".
 - Gson
 - Espresso
 - AndroidX
+- Content Provider
+- WorkManager
 
 

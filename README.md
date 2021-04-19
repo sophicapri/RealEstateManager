@@ -52,6 +52,6 @@ puis clicker sur "Build Project" (menu "Build").
 - AndroidX
 - Content Provider
 - WorkManager
-- Result
+- ActivityResult
 
 

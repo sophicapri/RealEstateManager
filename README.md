@@ -14,9 +14,6 @@ Fonctionnalités:
 - Possibilité de changer de photo de profil et de nom d'utilisateur
 - Stockage des données sur Firestore et Room (mode hors-ligne)
 
-
-La résolution du bug qui était dans le projet de départ se trouve dans la branche "bug_fix".
-
 ## Screenshots
 ![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
 ![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)

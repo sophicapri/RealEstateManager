@@ -51,4 +51,7 @@ puis clicker sur "Build Project" (menu "Build").
 - WorkManager
 - ActivityResult
 
+**MAJ Mai 2021 (branche dev):**
+ - Hilt (au lieu de Koin)
+
 

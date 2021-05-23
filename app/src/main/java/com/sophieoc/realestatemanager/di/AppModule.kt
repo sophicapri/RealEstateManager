@@ -1,13 +1,15 @@
-package com.sophieoc.realestatemanager.utils
+package com.sophieoc.realestatemanager.di
 
 import android.content.Context
 import com.sophieoc.realestatemanager.BaseApplication
+import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
@@ -17,20 +19,3 @@ object AppModule {
         return app as BaseApplication
     }
 }
-
-/*
-
-val viewModelModule = module {
-    // Specific viewModel pattern to tell Koin how to build ViewModel
-    viewModel {
-        PropertyViewModel(get())
-    }
-
-    viewModel {
-        FilterViewModel(get())
-    }
-
-    viewModel {
-        UserViewModel(get())
-    }
-}*/

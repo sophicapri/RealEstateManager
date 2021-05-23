@@ -5,7 +5,9 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityMapBinding
 import com.sophieoc.realestatemanager.presentation.fragment.MapFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MapActivity : BaseActivity() {
     private lateinit var binding: ActivityMapBinding
 

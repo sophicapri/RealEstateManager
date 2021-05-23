@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -38,28 +39,23 @@ import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     DialogInterface.OnShowListener,
     DialogInterface.OnDismissListener {
-    @Inject
-    private lateinit var _propertyViewModel: PropertyViewModel
-    private val propertyViewModel: PropertyViewModel
-        get() = _propertyViewModel
-
-    @Inject
-    private lateinit var _filterViewModel: FilterViewModel
-    private val filterViewModel: FilterViewModel
-        get() = _filterViewModel
-
-    private lateinit var binding: FragmentPropertyListBinding
+    private val propertyViewModel: PropertyViewModel by viewModels()
+    private val filterViewModel: FilterViewModel by viewModels()
+    private var _binding: FragmentPropertyListBinding? = null
+    private val binding: FragmentPropertyListBinding
+        get() = _binding!!
+    private var _bindingFilter: DialogFilterBinding? = null
+    private val bindingFilter: DialogFilterBinding
+        get() = _bindingFilter!!
     private lateinit var adapter: PropertyListAdapter
     private lateinit var mainContext: BaseActivity
     private var filterDialog: AlertDialog? = null
-    lateinit var bindingFilter: DialogFilterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +67,7 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPropertyListBinding.inflate(inflater, container, false)
+        _binding = FragmentPropertyListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -149,7 +145,7 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         val inflater = layoutInflater
         val view = inflater.inflate(R.layout.title_filter_dialog, null)
         filterViewModel.entries = EntriesFilter()
-        bindingFilter = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
+        _bindingFilter = DataBindingUtil.inflate(inflater, R.layout.dialog_filter, null, false)
         bindFilterViews()
         alertBuilder.setCustomTitle(view)
             .setView(bindingFilter.root)
@@ -399,5 +395,11 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             }
         }
         return msg
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        _bindingFilter = null
     }
 }

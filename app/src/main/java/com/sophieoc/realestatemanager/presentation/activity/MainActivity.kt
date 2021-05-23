@@ -22,8 +22,9 @@ import com.sophieoc.realestatemanager.databinding.ActivityMainBinding
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val userViewModel by viewModels<UserViewModel>()
     val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater)}

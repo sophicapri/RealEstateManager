@@ -41,13 +41,10 @@ class EditOrAddPropertyActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityEditAddPropertyBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
         bindViews()
-        intent.extras?.let {
-            getPropertyId(it)
-        }
         //init ActivityResultLaunchers
         fragmentPictures.addPhotoUtil = AddPicturesFromPhoneUtil(this)
-        super.onCreate(savedInstanceState)
     }
 
     override fun getLayout() = binding.root
@@ -70,16 +67,18 @@ class EditOrAddPropertyActivity : BaseActivity(),
         }
     }
 
-    private fun getPropertyId(extras: Bundle) {
-        if (extras.containsKey(PROPERTY_ID)) {
-            val propertyId = extras.get(PROPERTY_ID) as String
-            getProperty(propertyId)
-        }
+    override fun onResume() {
+        super.onResume()
+        if (intent.extras != null && (intent.extras as Bundle).containsKey(PROPERTY_ID))
+            getPropertyId(intent.extras as Bundle)
+        else
+            addFragmentsToActivity()
     }
 
-    private fun getProperty(propertyId: String) {
-        sharedViewModel.getPropertyById(propertyId).observe(this, {
-            it?.let {
+    private fun getPropertyId(extras: Bundle) {
+        val propertyId = extras.get(PROPERTY_ID) as String
+        sharedViewModel.getPropertyById(propertyId).observe(this, { property ->
+            property?.let {
                 sharedViewModel.property = it
                 addFragmentsToActivity()
             }
@@ -88,6 +87,7 @@ class EditOrAddPropertyActivity : BaseActivity(),
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG, "onRestoreInstanceState: ")
         activityRestarted = true
         supportFragmentManager.findFragmentByTag(AddAddressFragment()::class.java.simpleName)
             ?.let { fragmentAddress = it as AddAddressFragment }

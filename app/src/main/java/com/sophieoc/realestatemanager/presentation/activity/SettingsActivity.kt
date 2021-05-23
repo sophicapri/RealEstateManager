@@ -19,9 +19,11 @@ import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*
 
+@AndroidEntryPoint
 class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResultListener {
     private val userViewModel by viewModels<UserViewModel>()
     private lateinit var currentUser: UserWithProperties
@@ -30,11 +32,11 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
     private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        bindViews()
         // init AddPhotoUtil to init all the ActivityResultLaunchers
-        addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
+        bindViews()
     }
 
     private fun bindViews() {

@@ -222,16 +222,24 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     class NoPropertyClickedFragment : Fragment() {
-        private lateinit var binding: NoPropertyClickedBinding
+        private var _binding: NoPropertyClickedBinding? = null
+        private val binding: NoPropertyClickedBinding
+            get() = _binding!!
 
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View {
-            binding =
-                DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)
+            _binding = DataBindingUtil.inflate(
+                inflater, R.layout.no_property_clicked, container, false
+            )
             return binding.root
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
         }
     }
 

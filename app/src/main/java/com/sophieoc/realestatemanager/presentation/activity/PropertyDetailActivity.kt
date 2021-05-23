@@ -6,8 +6,9 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityPropertyDetailBinding
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PropertyDetailActivity : BaseActivity() {
     private lateinit var binding : ActivityPropertyDetailBinding
 

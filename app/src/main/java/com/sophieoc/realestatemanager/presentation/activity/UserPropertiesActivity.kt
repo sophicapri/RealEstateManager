@@ -4,7 +4,9 @@ import android.os.Bundle
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityUserPropertiesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserPropertiesActivity : BaseActivity() {
     lateinit var binding: ActivityUserPropertiesBinding
 

@@ -16,14 +16,18 @@ import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.USER_ID
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserPropertiesFragment : Fragment() {
     private val userViewModel by viewModels<UserViewModel>()
     private lateinit var adapter: PropertyListAdapter
-    private lateinit var binding: FragmentUserPropertiesBinding
+    private var _binding: FragmentUserPropertiesBinding? = null
+    private val binding: FragmentUserPropertiesBinding
+        get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_properties, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_properties, container, false)
         binding.lifecycleOwner = this
         bindViews()
         return binding.root

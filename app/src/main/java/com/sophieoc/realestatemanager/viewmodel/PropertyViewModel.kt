@@ -1,9 +1,6 @@
 package com.sophieoc.realestatemanager.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.repository.PropertyRepository
@@ -29,4 +26,17 @@ class PropertyViewModel(private val propertySource: PropertyRepository) : ViewMo
     fun getPropertyById(propertyId: String): LiveData<Property> = propertySource.getPropertyById(propertyId)
 
     fun getProperties(): LiveData<List<Property>> = propertySource.getAllProperties()
+
+    companion object {
+        fun createWithFactory(propertySource: PropertyRepository,
+            create: () -> ViewModel
+        ): ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return create.invoke() as T
+                }
+            }
+        }
+    }
 }

@@ -1,23 +1,25 @@
-package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
+package com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
-import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
+import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class AddAddressFragment : Fragment() {
     private var _binding: FragmentAddAddressBinding? = null
     private val binding: FragmentAddAddressBinding
         get() = _binding!!
-    private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
+    private val sharedViewModel by viewModels<PropertyViewModel> {
+        PropertyViewModel.createWithFactory()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.fragment
+package com.sophieoc.realestatemanager.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentUserPropertiesBinding
+import com.sophieoc.realestatemanager.presentation.activity.UserPropertiesActivity
+import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.USER_ID
-import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
-import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserPropertiesFragment : Fragment() {
-    private val userViewModel by viewModel<UserViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
     private lateinit var adapter: PropertyListAdapter
     private lateinit var binding: FragmentUserPropertiesBinding
 

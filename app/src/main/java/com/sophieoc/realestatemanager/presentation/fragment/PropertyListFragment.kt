@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.fragment
+package com.sophieoc.realestatemanager.presentation.fragment
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -29,25 +29,35 @@ import com.sophieoc.realestatemanager.databinding.DialogFilterBinding
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.EntriesFilter
 import com.sophieoc.realestatemanager.model.Property
+import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.activity.MainActivity
+import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.view.activity.MainActivity
-import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
 import com.sophieoc.realestatemanager.viewmodel.FilterViewModel
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-
-class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener, DialogInterface.OnShowListener,
+@AndroidEntryPoint
+class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+    DialogInterface.OnShowListener,
     DialogInterface.OnDismissListener {
+    @Inject
+    private lateinit var _propertyViewModel: PropertyViewModel
+    private val propertyViewModel: PropertyViewModel
+        get() = _propertyViewModel
+
+    @Inject
+    private lateinit var _filterViewModel: FilterViewModel
+    private val filterViewModel: FilterViewModel
+        get() = _filterViewModel
+
+    private lateinit var binding: FragmentPropertyListBinding
     private lateinit var adapter: PropertyListAdapter
     private lateinit var mainContext: BaseActivity
-    private val propertyViewModel by viewModel<PropertyViewModel>()
-    private lateinit var binding: FragmentPropertyListBinding
-    private val filterViewModel by viewModel<FilterViewModel>()
     private var filterDialog: AlertDialog? = null
     lateinit var bindingFilter: DialogFilterBinding
 
@@ -56,7 +66,11 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener, Dia
         mainContext = activity as BaseActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentPropertyListBinding.inflate(inflater, container, false)
         return binding.root
     }

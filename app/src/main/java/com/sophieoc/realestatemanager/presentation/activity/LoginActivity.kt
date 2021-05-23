@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.activity
+package com.sophieoc.realestatemanager.presentation.activity
 
 import android.os.Bundle
 import android.view.View.GONE
@@ -7,6 +7,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
@@ -17,10 +18,9 @@ import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityLoginBinding
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity() {
-    val userViewModel by viewModel<UserViewModel>()
+    val userViewModel by viewModels<UserViewModel>()
     private lateinit var binding : ActivityLoginBinding
     private lateinit var progressBar : ProgressBar
     private val startForResult = registerForActivityResult(StartActivityForResult()){ activityResult ->

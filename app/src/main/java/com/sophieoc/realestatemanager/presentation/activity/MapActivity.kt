@@ -1,10 +1,10 @@
-package com.sophieoc.realestatemanager.view.activity
+package com.sophieoc.realestatemanager.presentation.activity
 
 import android.os.Bundle
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityMapBinding
-import com.sophieoc.realestatemanager.view.fragment.MapFragment
+import com.sophieoc.realestatemanager.presentation.fragment.MapFragment
 
 class MapActivity : BaseActivity() {
     private lateinit var binding: ActivityMapBinding

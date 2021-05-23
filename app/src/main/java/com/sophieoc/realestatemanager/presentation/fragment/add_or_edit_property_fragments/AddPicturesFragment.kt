@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments
+package com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -18,9 +18,9 @@ import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.Photo
+import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.adapter.PicturesAdapter
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.view.adapter.PicturesAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.File

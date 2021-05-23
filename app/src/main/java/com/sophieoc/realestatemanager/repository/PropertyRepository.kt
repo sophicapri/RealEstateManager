@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
-import com.sophieoc.realestatemanager.api.PlaceApi
+import com.sophieoc.realestatemanager.api.PlaceService
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
@@ -21,7 +21,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: PlaceApi) {
+class PropertyRepository(private val propertyDao: PropertyDao, val placeService: PlaceService) {
     private val propertyCollectionRef: CollectionReference = FirebaseFirestore.getInstance().collection(PROPERTIES_PATH)
 
     fun upsert(property: Property): MutableLiveData<Property> {
@@ -121,9 +121,9 @@ class PropertyRepository(private val propertyDao: PropertyDao, val placeApi: Pla
             override fun onActive() {
                 super.onActive()
                 CoroutineScope(Dispatchers.IO).launch {
-                    val parkList = placeApi.getNearbyParks(location).placeDetails
-                    val storeList = placeApi.getNearbyStores(location).placeDetails
-                    val schoolList = placeApi.getNearbySchools(location).placeDetails
+                    val parkList = placeService.getNearbyParks(location).placeDetails
+                    val storeList = placeService.getNearbyStores(location).placeDetails
+                    val schoolList = placeService.getNearbySchools(location).placeDetails
                     withContext(Main) {
                         val placeDetailsList = ArrayList<PlaceDetails>()
                         storeList?.let {

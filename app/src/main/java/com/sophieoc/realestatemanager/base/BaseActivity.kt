@@ -18,16 +18,16 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sophieoc.realestatemanager.R
+import com.sophieoc.realestatemanager.presentation.activity.MainActivity
+import com.sophieoc.realestatemanager.presentation.activity.MapActivity
+import com.sophieoc.realestatemanager.presentation.activity.PropertyDetailActivity
+import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
+import com.sophieoc.realestatemanager.presentation.fragment.PropertyDetailFragment
+import com.sophieoc.realestatemanager.presentation.fragment.PropertyListFragment
+import com.sophieoc.realestatemanager.presentation.fragment.UserPropertiesFragment
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
-import com.sophieoc.realestatemanager.view.activity.MainActivity
-import com.sophieoc.realestatemanager.view.activity.MapActivity
-import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
-import com.sophieoc.realestatemanager.view.adapter.PropertyListAdapter
-import com.sophieoc.realestatemanager.view.fragment.PropertyDetailFragment
-import com.sophieoc.realestatemanager.view.fragment.PropertyListFragment
-import com.sophieoc.realestatemanager.view.fragment.UserPropertiesFragment
 
 abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var auth: FirebaseAuth

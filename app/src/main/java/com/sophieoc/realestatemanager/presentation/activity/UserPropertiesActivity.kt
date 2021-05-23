@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.activity
+package com.sophieoc.realestatemanager.presentation.activity
 
 import android.os.Bundle
 import com.sophieoc.realestatemanager.R

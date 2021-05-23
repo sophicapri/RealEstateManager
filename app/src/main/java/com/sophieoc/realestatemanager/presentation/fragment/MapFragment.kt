@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.fragment
+package com.sophieoc.realestatemanager.presentation.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,11 +26,10 @@ import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentMapBinding
+import com.sophieoc.realestatemanager.presentation.activity.MapActivity
+import com.sophieoc.realestatemanager.presentation.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.activity.MapActivity
-import com.sophieoc.realestatemanager.view.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
@@ -41,7 +41,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val binding: FragmentMapBinding
         get() = _binding!!
     private lateinit var progressBar: ProgressBar
-    val propertyViewModel by viewModel<PropertyViewModel>()
+    val propertyViewModel by viewModels<PropertyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,13 +101,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun startPropertyDetail(marker: Marker) {
         if (propertyDetailView == null) {
             val intent = Intent(requireContext(), PropertyDetailActivity::class.java)
-            intent.putExtra(PROPERTY_ID, marker.tag.toString())
+            intent.putExtra(PROPERTY_ID, marker.tag?.toString())
             (requireActivity() as MapActivity).startDetailActivityForResult.launch(intent)
         } else {
             propertyDetailView?.visibility = VISIBLE
             binding.btnMapSize.text = getString(R.string.fullscreen)
             val bundle = Bundle()
-            bundle.putString(PROPERTY_ID, marker.tag.toString())
+            bundle.putString(PROPERTY_ID, marker.tag?.toString())
             val propertyDetailFragment = PropertyDetailFragment()
             propertyDetailFragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction()

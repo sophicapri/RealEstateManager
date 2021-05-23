@@ -1,11 +1,11 @@
-package com.sophieoc.realestatemanager.view.adapter
+package com.sophieoc.realestatemanager.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.databinding.ItemImageViewPagerBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.view.adapter.SliderAdapter.SliderViewHolder
+import com.sophieoc.realestatemanager.presentation.adapter.SliderAdapter.SliderViewHolder
 
 class SliderAdapter(private val photos: List<Photo>) : RecyclerView.Adapter<SliderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {

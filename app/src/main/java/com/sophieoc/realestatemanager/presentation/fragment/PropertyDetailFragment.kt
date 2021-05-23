@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.fragment
+package com.sophieoc.realestatemanager.presentation.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,15 +28,14 @@ import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
 import com.sophieoc.realestatemanager.databinding.NoPropertyClickedBinding
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.model.PointOfInterest
+import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.activity.MapActivity
+import com.sophieoc.realestatemanager.presentation.activity.UserPropertiesActivity
+import com.sophieoc.realestatemanager.presentation.adapter.PointOfInterestAdapter
+import com.sophieoc.realestatemanager.presentation.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.view.activity.MapActivity
-import com.sophieoc.realestatemanager.view.activity.UserPropertiesActivity
-import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter
-import com.sophieoc.realestatemanager.view.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
@@ -43,8 +43,8 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mainContext: BaseActivity
     private var propertyMarker: MarkerOptions? = null
     private var latLngProperty = LatLng(0.0, 0.0)
-    private val propertyViewModel by viewModel<PropertyViewModel>()
-    private val userViewModel by viewModel<UserViewModel>()
+    private val propertyViewModel by viewModels<PropertyViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
     lateinit var binding: FragmentPropertyDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,7 +193,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
             map?.clear()
             propertyMarker = MarkerOptions().position(latLngProperty)
                     .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
-            map?.addMarker(propertyMarker)
+            map?.addMarker(propertyMarker!!)
             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngProperty, 17f))
         } else
             view?.let { Snackbar.make(it, getString(R.string.cant_locate_property), LENGTH_LONG).show() }
@@ -208,7 +208,11 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     companion object {
-        const val TAG = "PropertyDetailFragment"
+        private const val TAG = "PropertyDetailFragment"
     }
 }

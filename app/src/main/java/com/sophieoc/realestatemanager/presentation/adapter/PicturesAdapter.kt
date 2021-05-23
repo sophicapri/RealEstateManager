@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.adapter
+package com.sophieoc.realestatemanager.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View.GONE

@@ -8,12 +8,12 @@ import com.google.firebase.firestore.*
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
+import com.sophieoc.realestatemanager.presentation.activity.MainActivity.Companion.TAG
 import com.sophieoc.realestatemanager.room_database.dao.UserDao
 import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.TIMESTAMP
 import com.sophieoc.realestatemanager.utils.USERS_PATH
-import com.sophieoc.realestatemanager.view.activity.MainActivity.Companion.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.adapter
+package com.sophieoc.realestatemanager.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.model.PointOfInterest
+import com.sophieoc.realestatemanager.presentation.adapter.PointOfInterestAdapter.PointOfInterestViewHolder
 import com.sophieoc.realestatemanager.utils.formatToDollarsOrMeters
-import com.sophieoc.realestatemanager.view.adapter.PointOfInterestAdapter.PointOfInterestViewHolder
 
 class PointOfInterestAdapter(private val pointOfInterests: List<PointOfInterest>) : RecyclerView.Adapter<PointOfInterestViewHolder>() {
 

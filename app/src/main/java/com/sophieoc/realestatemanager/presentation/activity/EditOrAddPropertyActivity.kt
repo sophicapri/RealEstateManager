@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.activity
+package com.sophieoc.realestatemanager.presentation.activity
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -22,12 +23,11 @@ import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.notification.NotificationHelper
+import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddAddressFragment
+import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPicturesFragment
+import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddAddressFragment
-import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPicturesFragment
-import com.sophieoc.realestatemanager.view.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
 class EditOrAddPropertyActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     lateinit var binding: ActivityEditAddPropertyBinding
-    private val sharedViewModel by viewModel<PropertyViewModel>()
+    private val sharedViewModel by viewModels<PropertyViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityEditAddPropertyBinding.inflate(layoutInflater)
@@ -209,7 +209,11 @@ class EditOrAddPropertyActivity : BaseActivity(),
                 0
             else
                 1
-            pointOfInterest.type = placeTypes[position].capitalize(Locale.ROOT).replace('_', ' ')
+            pointOfInterest.type = placeTypes[position].replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }.replace('_', ' ')
             if (placeTypes.contains(PARK))
                 pointOfInterest.mainType = PARK
             if (placeTypes.contains(SCHOOL))

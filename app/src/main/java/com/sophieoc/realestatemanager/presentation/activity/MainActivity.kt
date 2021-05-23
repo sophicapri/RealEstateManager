@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.activity
+package com.sophieoc.realestatemanager.presentation.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
@@ -21,11 +22,10 @@ import com.sophieoc.realestatemanager.databinding.ActivityMainBinding
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
-    private val userViewModel by viewModel<UserViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
     val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater)}
     private lateinit var drawerLayout: DrawerLayout
 

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.view.activity
+package com.sophieoc.realestatemanager.presentation.activity
 
 import android.content.Intent
 import android.net.Uri
@@ -9,8 +9,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.activity.result.ActivityResult
+import androidx.activity.viewModels
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
@@ -19,12 +19,11 @@ import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.util.*
 
 class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResultListener {
-    private val userViewModel by viewModel<UserViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
     private lateinit var currentUser: UserWithProperties
     private lateinit var binding: ActivitySettingsBinding
     private var dataChanged = false
@@ -33,6 +32,7 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         bindViews()
+        // init AddPhotoUtil to init all the ActivityResultLaunchers
         addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
         super.onCreate(savedInstanceState)
     }
@@ -41,6 +41,7 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
         binding.apply {
             userViewModel = this@SettingsActivity.userViewModel
             lifecycleOwner = this@SettingsActivity
+            activity = this@SettingsActivity
             toolbar.setNavigationOnClickListener { onBackPressed() }
         }
         userViewModel.userUpdated.observe(this, {
@@ -57,7 +58,7 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
 
     override fun getLayout() = binding.root
 
-    fun editUsername(view: View) {
+    fun editUsername() {
         checkConnection()
         if (PreferenceHelper.internetAvailable) {
             binding.editUsernameContainer.visibility = VISIBLE
@@ -66,16 +67,16 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
             binding.editTextUsername.setSelection(currentUser.user.username.length)
             binding.editTextUsername.setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    saveUsername(null)
+                    saveUsername()
                     return@setOnKeyListener true
                 }
                 return@setOnKeyListener false
             }
         } else
-            Toast.makeText(this, getString(R.string.cannot_edit_username_offline), LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.cannot_edit_username_offline), Toast.LENGTH_LONG).show()
     }
 
-    fun saveUsername(view: View?) {
+    fun saveUsername() {
         binding.apply {
             if (editTextUsername.text.toString().isNotEmpty()) {
                 progressBar.visibility = VISIBLE
@@ -89,16 +90,16 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
         }
     }
 
-    fun cancelUsernameEdit(view: View) {
+    fun cancelUsernameEdit() {
         binding.editUsernameContainer.visibility = GONE
     }
 
-    fun addPhoto(view: View?) {
+    fun addPhoto() {
         checkConnection()
         if (PreferenceHelper.internetAvailable) {
             addPhotoUtil.addPhoto()
         } else
-            Toast.makeText(this, getString(R.string.cannot_change_photo_offline), LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.cannot_change_photo_offline), Toast.LENGTH_LONG).show()
     }
 
 

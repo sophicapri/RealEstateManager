@@ -5,8 +5,11 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PropertyViewModel(private val propertySource: PropertyRepository) : ViewModel() {
+@HiltViewModel
+class PropertyViewModel @Inject constructor(private val propertySource: PropertyRepository) : ViewModel() {
     var property = Property()
     private val _propertyToUpsert: MutableLiveData<Property> = MutableLiveData()
     val propertySaved: LiveData<Property> = Transformations.switchMap(_propertyToUpsert) {

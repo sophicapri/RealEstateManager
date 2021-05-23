@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.repository.UserRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserViewModel(private val userSource: UserRepository) : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(private val userSource: UserRepository) : ViewModel() {
     private var _currentUser = userSource.currentUser
     val currentUser : LiveData<UserWithProperties>
         get() = _currentUser

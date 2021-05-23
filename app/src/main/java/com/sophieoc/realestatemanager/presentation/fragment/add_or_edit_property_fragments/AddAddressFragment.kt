@@ -5,21 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
 import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
 import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AddAddressFragment : Fragment() {
     private var _binding: FragmentAddAddressBinding? = null
     private val binding: FragmentAddAddressBinding
         get() = _binding!!
-    private val sharedViewModel by viewModels<PropertyViewModel> {
-        PropertyViewModel.createWithFactory()
-    }
+    private val sharedViewModel by activityViewModels<PropertyViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {

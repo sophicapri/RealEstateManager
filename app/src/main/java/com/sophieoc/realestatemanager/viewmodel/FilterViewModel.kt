@@ -8,8 +8,11 @@ import com.sophieoc.realestatemanager.model.EntriesFilter
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class FilterViewModel (private val propertySource: PropertyRepository): ViewModel() {
+@HiltViewModel
+class FilterViewModel @Inject constructor(private val propertySource: PropertyRepository): ViewModel() {
     var entries = EntriesFilter()
     private val _entriesToSearch: MutableLiveData<EntriesFilter> = MutableLiveData()
     val resultSearch: LiveData<List<Property>> = Transformations.switchMap(_entriesToSearch) {

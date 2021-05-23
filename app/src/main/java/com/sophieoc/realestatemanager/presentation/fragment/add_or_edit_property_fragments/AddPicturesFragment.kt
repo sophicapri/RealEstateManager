@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
@@ -22,11 +23,12 @@ import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyAct
 import com.sophieoc.realestatemanager.presentation.adapter.PicturesAdapter
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     PicturesAdapter.OnSetAsCoverListener,
     AddPicturesFromPhoneUtil.OnActivityResultListener {
@@ -35,7 +37,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
         get() = _binding!!
     private lateinit var adapter: PicturesAdapter
     lateinit var addPhotoUtil: AddPicturesFromPhoneUtil
-    private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
+    private val sharedViewModel by activityViewModels<PropertyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

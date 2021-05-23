@@ -28,10 +28,12 @@ import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property
 import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.collections.ArrayList
 
 
+@AndroidEntryPoint
 class EditOrAddPropertyActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     lateinit var binding: ActivityEditAddPropertyBinding
@@ -52,7 +54,7 @@ class EditOrAddPropertyActivity : BaseActivity(),
 
     private fun bindViews() {
         binding.apply {
-            propertyViewModel = propertyViewModel
+            propertyViewModel = sharedViewModel
             intent.extras?.let {
                 titleEditCreate.text = getString(R.string.edit_property_title)
             }

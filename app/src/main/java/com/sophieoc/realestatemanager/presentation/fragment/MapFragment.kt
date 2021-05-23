@@ -30,7 +30,9 @@ import com.sophieoc.realestatemanager.presentation.activity.MapActivity
 import com.sophieoc.realestatemanager.presentation.activity.PropertyDetailActivity
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
     private var propertyDetailView: View? = null
@@ -41,7 +43,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val binding: FragmentMapBinding
         get() = _binding!!
     private lateinit var progressBar: ProgressBar
-    val propertyViewModel by viewModels<PropertyViewModel>()
+    val propertyViewModel: PropertyViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -209,10 +211,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             fragmentNotRestarted = true
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         fragmentNotRestarted = true
         updateView = false
-        _binding = null
     }
 }

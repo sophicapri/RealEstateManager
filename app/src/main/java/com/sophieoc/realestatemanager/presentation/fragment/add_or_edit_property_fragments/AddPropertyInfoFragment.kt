@@ -13,6 +13,7 @@ import android.widget.DatePicker
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddInfoBinding
 import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
@@ -21,15 +22,16 @@ import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import com.sophieoc.realestatemanager.utils.toStringFormat
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddInfoBinding? = null
     private val binding: FragmentAddInfoBinding
         get() = _binding!!
-    private val sharedViewModel: PropertyViewModel by lazy { requireActivity().getViewModel() }
+    private val sharedViewModel by activityViewModels<PropertyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -36,8 +36,9 @@ import com.sophieoc.realestatemanager.presentation.adapter.SliderAdapter
 import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import com.sophieoc.realestatemanager.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
     private lateinit var mainContext: BaseActivity
@@ -45,15 +46,23 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     private var latLngProperty = LatLng(0.0, 0.0)
     private val propertyViewModel by viewModels<PropertyViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
-    lateinit var binding: FragmentPropertyDetailBinding
+    private var _binding: FragmentPropertyDetailBinding? = null
+    private val binding: FragmentPropertyDetailBinding
+        get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainContext = activity as BaseActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_property_detail, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_property_detail, container, false
+        )
         binding.userViewModel = userViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.progressBar.visibility = VISIBLE
@@ -91,7 +100,11 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun displayNoPropertyFragment() {
         mainContext.supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_property_details, NoPropertyClickedFragment(), NoPropertyClickedFragment()::class.java.simpleName).commit()
+            .replace(
+                R.id.frame_property_details,
+                NoPropertyClickedFragment(),
+                NoPropertyClickedFragment()::class.java.simpleName
+            ).commit()
         binding.progressBar.visibility = View.GONE
     }
 
@@ -107,7 +120,8 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun initMap() {
         if (PreferenceHelper.locationEnabled) {
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
+            val mapFragment =
+                childFragmentManager.findFragmentById(R.id.map_container) as SupportMapFragment?
             mapFragment?.getMapAsync(this)
         }
     }
@@ -163,7 +177,8 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
             startActivity(intent)
             PreferenceHelper.internetAvailable = true
         } else {
-            Toast.makeText(mainContext, getString(R.string.edit_add_unavailable), Toast.LENGTH_LONG).show()
+            Toast.makeText(mainContext, getString(R.string.edit_add_unavailable), Toast.LENGTH_LONG)
+                .show()
             PreferenceHelper.internetAvailable = false
         }
     }
@@ -192,24 +207,32 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         if (latLngProperty.toString() != LAT_LNG_NOT_FOUND) {
             map?.clear()
             propertyMarker = MarkerOptions().position(latLngProperty)
-                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
+                .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
             map?.addMarker(propertyMarker!!)
             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngProperty, 17f))
         } else
-            view?.let { Snackbar.make(it, getString(R.string.cant_locate_property), LENGTH_LONG).show() }
+            view?.let {
+                Snackbar.make(it, getString(R.string.cant_locate_property), LENGTH_LONG).show()
+            }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     class NoPropertyClickedFragment : Fragment() {
         private lateinit var binding: NoPropertyClickedBinding
 
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            binding = DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            binding =
+                DataBindingUtil.inflate(inflater, R.layout.no_property_clicked, container, false)
             return binding.root
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     companion object {

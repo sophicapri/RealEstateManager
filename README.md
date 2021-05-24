@@ -1,5 +1,4 @@
 # Real Estate Manager
-**P9 school project**
 
 App for Real Estate agents to manage their properties.
 

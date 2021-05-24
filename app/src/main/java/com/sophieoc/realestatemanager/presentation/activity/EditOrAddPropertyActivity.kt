@@ -2,11 +2,8 @@ package com.sophieoc.realestatemanager.presentation.activity
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -19,9 +16,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityEditAddPropertyBinding
-import com.sophieoc.realestatemanager.model.PointOfInterest
-import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.notification.NotificationHelper
 import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddAddressFragment
 import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPicturesFragment
@@ -30,7 +24,6 @@ import com.sophieoc.realestatemanager.utils.*
 import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -43,6 +36,7 @@ class EditOrAddPropertyActivity : BaseActivity(),
         binding = ActivityEditAddPropertyBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         bindViews()
+
         //init ActivityResultLaunchers
         fragmentPictures.addPhotoUtil = AddPicturesFromPhoneUtil(this)
     }
@@ -52,6 +46,7 @@ class EditOrAddPropertyActivity : BaseActivity(),
     private fun bindViews() {
         binding.apply {
             propertyViewModel = sharedViewModel
+            activity = this@EditOrAddPropertyActivity
             intent.extras?.let {
                 titleEditCreate.text = getString(R.string.edit_property_title)
             }
@@ -87,7 +82,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        Log.d(TAG, "onRestoreInstanceState: ")
         activityRestarted = true
         supportFragmentManager.findFragmentByTag(AddAddressFragment()::class.java.simpleName)
             ?.let { fragmentAddress = it as AddAddressFragment }
@@ -144,14 +138,14 @@ class EditOrAddPropertyActivity : BaseActivity(),
         return true
     }
 
-    fun saveChanges(view: View) {
+    fun saveChanges() {
         if (Utils.isInternetAvailable(this)) {
             PreferenceHelper.internetAvailable = false
             checkDates()
             if (checkInputs()) {
                 binding.progressBar.visibility = VISIBLE
                 sharedViewModel.property.userId = PreferenceHelper.currentUserId
-                updatePointOfInterestsAndSave(sharedViewModel.property)
+                saveProperty()
             } else
                 showAlertDialog()
         } else {
@@ -165,65 +159,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
             sharedViewModel.property.dateSold = null
         else
             sharedViewModel.property.dateOnMarket = null
-    }
-
-    private fun updatePointOfInterestsAndSave(property: Property) {
-        val strLocation = property.address.toLatLng(this).toStringFormat()
-        val location = Location(property.id)
-        location.latitude = property.address.toLatLng(this).latitude
-        location.longitude = property.address.toLatLng(this).longitude
-        if (strLocation != LAT_LNG_NOT_FOUND) {
-            sharedViewModel.getPointOfInterests(strLocation).observe(this, { placeDetailList ->
-                placeDetailList?.let {
-                    if (placeDetailList.isNotEmpty()) {
-                        val listPointOfInterest = ArrayList<PointOfInterest>()
-                        placeDetailList.forEachIndexed { index, placeDetails ->
-                            val pointOfInterest = setPointOfInterest(placeDetails, location)
-                            listPointOfInterest.add(pointOfInterest)
-                            if ((index + 1) == placeDetailList.size) {
-                                property.pointOfInterests = listPointOfInterest
-                                saveProperty()
-                            }
-                        }
-                    }
-                }
-                if (placeDetailList == null)
-                    Log.d(TAG, "setPointOfInterestsAndSave: list == null")
-            })
-        } else {
-            Log.d(TAG, "setPointOfInterestsAndSave: latLng not found")
-            showAddressErrorDialog()
-        }
-    }
-
-    private fun setPointOfInterest(
-        placeDetails: PlaceDetails,
-        location: Location
-    ): PointOfInterest {
-        val position: Int
-        val pointOfInterest = PointOfInterest()
-        pointOfInterest.name = placeDetails.name.toString()
-        pointOfInterest.address = placeDetails.vicinity.toString()
-        pointOfInterest.distance = placeDetails.getDistanceFrom(location)
-        val placeTypes = placeDetails.types
-        if (placeTypes != null) {
-            position = if (placeTypes[0] != POINT_OF_INTEREST)
-                0
-            else
-                1
-            pointOfInterest.type = placeTypes[position].replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.ROOT
-                ) else it.toString()
-            }.replace('_', ' ')
-            if (placeTypes.contains(PARK))
-                pointOfInterest.mainType = PARK
-            if (placeTypes.contains(SCHOOL))
-                pointOfInterest.mainType = SCHOOL
-            if (placeTypes.contains(STORE))
-                pointOfInterest.mainType = STORE
-        }
-        return pointOfInterest
     }
 
     private fun saveProperty() {
@@ -274,19 +209,6 @@ class EditOrAddPropertyActivity : BaseActivity(),
         with(NotificationManagerCompat.from(this)) {
             notify(NotificationHelper.NOTIFICATION_ID, nb.build())
         }
-    }
-
-    private fun showAddressErrorDialog() {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.title_cant_locate_address))
-            .setMessage(getString(R.string.address_not_found))
-            .setPositiveButton(getString(R.string.edit_address_btn)) { _, _ ->
-                showFragment(
-                    fragmentAddress
-                )
-            }
-            .setNegativeButton(getString(R.string.ignore_btn)) { dialog, _ -> dialog.dismiss() }
-            .create().show()
     }
 
     override fun onDestroy() {

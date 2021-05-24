@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
+            name="activity"
+            type="com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity" />
+        <variable
             name="propertyViewModel"
             type="com.sophieoc.realestatemanager.viewmodel.PropertyViewModel" />
     </data>
@@ -44,7 +47,7 @@
                     android:layout_width="60dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:onClick="saveChanges"
+                    android:onClick="@{() -> activity.saveChanges()}"
                     app:srcCompat="@drawable/ic_baseline_save_24"
                     app:tint="@color/white"
                     android:contentDescription="@string/save_property_btn" />

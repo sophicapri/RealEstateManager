@@ -1,41 +1,28 @@
-# Projet Real Estate Manager
-**P9 de la formation "Developpeur.se d'Application Android" d'Openclassrooms**
+# Real Estate Manager
+**P9 school project**
 
-Création d'une application permettant à des agents immobilier d'une même agence de gérer des biens.
+App for Real Estate agents to manage their properties.
 
-Fonctionnalités:
-- Afficher la liste des biens
-- Rechercher des biens selon différents critères
-- Ajouter/Modifier un bien immobilier avec des photos provenant de sa galerie photo ou de l'appareil photo
-- Afficher le profil d'un bien
-- Accéder à une carte qui affiche tous les biens à l'aide de punaises
-- Localiser l'agent
+Fonctionnalities:
+- Display a list of properties
+- Filter properties
+- Add or edit a property, add pictures from phone or from the camera.
+- Display a map with all the properties pinned
+- Locate an agent
 - Afficher les biens prit en charge par un agent sur son profil
-- Possibilité de changer de photo de profil et de nom d'utilisateur
-- Stockage des données sur Firestore et Room (mode hors-ligne)
+- Change profil picture and name
+- Manage database with Firestore and Room (offline mode)
 
 ## Screenshots
 ![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
 ![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)
 ![](screenshots/filter.png)
 
-**Affichage tablette:**
+**Tablet mode:**
 
 ![](screenshots/tablet.png)
 
-## Prerequis
-**Obtenir le projet:**
-Clicker sur "Clone or Download" en haut à droite du projet sur Github, télécharger et extraire
-le fichier zip sur votre ordinateur.
-
-## Installation
-Dans Android Studio, ouvrez le projet que vous venez de télécharger
-et, si ce n'est pas fait automatiquement, cliquer sur "Sync project with Gradle Files" (menu "File")
-puis clicker sur "Build Project" (menu "Build").
-
-**Lancer l'application:** Cliquer sur le bouton "play" ou sélectionnez "Run 'app' " dans le menu "Run".
-
-## Librairies
+## Librairy
 
 - FirebaseUI
 - FirebaseStorage
@@ -51,7 +38,7 @@ puis clicker sur "Build Project" (menu "Build").
 - WorkManager
 - ActivityResult
 
-**MAJ Mai 2021 (branche dev):**
+**Update May 2021 (dev branch):**
  - Hilt (au lieu de Koin)
 
 

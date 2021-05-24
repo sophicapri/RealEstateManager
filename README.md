@@ -39,6 +39,6 @@ Fonctionnalities:
 - ActivityResult
 
 **Update May 2021 (dev branch):**
- - Hilt (au lieu de Koin)
+ - Hilt (instead of Koin)
 
 

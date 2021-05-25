@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment
+package com.sophieoc.realestatemanager.presentation.ui.propertylist
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -25,17 +25,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.slider.RangeSlider
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.DialogFilterBinding
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.EntriesFilter
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.presentation.activity.MainActivity
-import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
+import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.MainActivity
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.ui.filter.FilterViewModel
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.viewmodel.FilterViewModel
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
@@ -376,18 +375,6 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             msg += getString(R.string.sqft_between, entries.surfaceMin, entries.surfaceMax)
         }
         entries.nbrOfPictures?.let { msg += getString(R.string.with_x_pictures, it) }
-        if (entries.park != null || entries.store != null || entries.school != null) {
-            msg += getString(R.string.close_to_poi)
-            entries.park?.let { msg += it }
-            entries.store?.let {
-                msg += if (entries.park != null) ", $it"
-                else it
-            }
-            entries.school?.let {
-                msg += if (entries.park != null) ", $it"
-                else it
-            }
-        }
         return msg
     }
 

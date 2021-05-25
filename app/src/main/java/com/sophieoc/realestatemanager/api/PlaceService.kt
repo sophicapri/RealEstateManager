@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.api
 
+/*
 import com.sophieoc.realestatemanager.model.json_to_java.PlacesResult
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,4 +16,4 @@ interface PlaceService {
     @GET("nearbysearch/json?rankby=prominence&type=school&radius=2000")
     suspend fun getNearbySchools(@Query("location") location: String?): PlacesResult
 
-}
+}*/

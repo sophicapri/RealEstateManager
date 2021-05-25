@@ -32,12 +32,12 @@ class FilterViewModelTest {
         propertyListMutable.value = arrayListOf(Property())
         every {
             propertySource.getFilteredProperties(any(), any(), any(), any(), any(), any(), any(), any(),
-                    any(), any(), any(), any(), any(), any(), any(), any())
+                    any(), any(), any(), any(), any())
         } returns propertyListMutable
         filterViewModel.startSearch()
-        filterViewModel.resultSearch.observeForever {
+        filterViewModel.resultSearch.observeForever { propertyList ->
             //check if the property received is the one expected
-            assertSame(propertyListMutable.value, it)
+            assertSame(propertyListMutable.value, propertyList)
         }
     }
 }

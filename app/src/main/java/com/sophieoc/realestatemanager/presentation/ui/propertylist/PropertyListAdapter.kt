@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.adapter
+package com.sophieoc.realestatemanager.presentation.ui.propertylist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,8 @@ import com.sophieoc.realestatemanager.databinding.ItemPropertyBinding
 import com.sophieoc.realestatemanager.model.Property
 
 class PropertyListAdapter(
-        private var onPropertyClickListener: OnPropertyClickListener)
+        private var onPropertyClickListener: OnPropertyClickListener
+)
     : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
     var propertyList: ArrayList<Property> = ArrayList()
 

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment
+package com.sophieoc.realestatemanager.presentation.ui.property
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,19 +22,16 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentPropertyDetailBinding
 import com.sophieoc.realestatemanager.databinding.NoPropertyClickedBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.model.PointOfInterest
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.presentation.activity.MapActivity
-import com.sophieoc.realestatemanager.presentation.activity.UserPropertiesActivity
-import com.sophieoc.realestatemanager.presentation.adapter.PointOfInterestAdapter
-import com.sophieoc.realestatemanager.presentation.adapter.SliderAdapter
+import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.UserViewModel
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesActivity
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
-import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -132,7 +128,6 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         binding.btnMapFullscreen.setOnClickListener { startMapActivity() }
         binding.property?.let {
             binding.viewPager.registerOnPageChangeCallback(getOnPageChangeCallback(it.photos))
-            configureRecyclerView(it.pointOfInterests)
             userViewModel.getUserById(it.userId).observe(mainContext, { agent ->
                 agent?.let {
                     binding.user = agent.user
@@ -187,13 +182,6 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         val intent = Intent(mainContext, UserPropertiesActivity::class.java)
         intent.putExtra(USER_ID, binding.property?.userId)
         startActivity(intent)
-    }
-
-    private fun configureRecyclerView(pointOfInterests: List<PointOfInterest>) {
-        val recyclerView = binding.recyclerViewPointOfInterest
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = PointOfInterestAdapter(pointOfInterests)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPicturesFragment
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.AddPicturesFragment
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat

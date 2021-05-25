@@ -4,10 +4,10 @@
     <data>
         <variable
             name="activity"
-            type="com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity" />
+            type="com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity" />
         <variable
             name="propertyViewModel"
-            type="com.sophieoc.realestatemanager.viewmodel.PropertyViewModel" />
+            type="com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

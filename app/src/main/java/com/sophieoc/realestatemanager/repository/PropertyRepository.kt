@@ -5,10 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
-import com.sophieoc.realestatemanager.api.PlaceService
-import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.database.dao.PropertyDao
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.TIMESTAMP
@@ -18,7 +16,6 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class PropertyRepository(private val propertyDao: PropertyDao) {

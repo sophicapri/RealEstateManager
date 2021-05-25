@@ -1,10 +1,9 @@
-package com.sophieoc.realestatemanager.presentation.activity
+package com.sophieoc.realestatemanager.presentation.ui.map
 
 import android.os.Bundle
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityMapBinding
-import com.sophieoc.realestatemanager.presentation.fragment.MapFragment
+import com.sophieoc.realestatemanager.presentation.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -24,19 +24,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <activity android:name=".presentation.activity.SplashScreenActivity" android:theme="@style/SplashScreenTheme">
+        <activity android:name=".presentation.ui.SplashScreenActivity" android:theme="@style/SplashScreenTheme">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-        <activity android:name=".presentation.activity.MainActivity" />
-    <activity android:name=".presentation.activity.LoginActivity" />
-    <activity android:name=".presentation.activity.MapActivity" />
-    <activity android:name=".presentation.activity.UserPropertiesActivity" />
-        <activity android:name=".presentation.activity.PropertyDetailActivity" />
-        <activity android:name=".presentation.activity.EditOrAddPropertyActivity" />
-        <activity android:name=".presentation.activity.SettingsActivity" />
+        <activity android:name=".presentation.ui.MainActivity" />
+    <activity android:name=".presentation.ui.LoginActivity" />
+    <activity android:name=".presentation.ui.map.MapActivity" />
+    <activity android:name=".presentation.ui.userproperty.UserPropertiesActivity" />
+        <activity android:name=".presentation.ui.property.PropertyDetailActivity" />
+        <activity android:name=".presentation.ui.editproperty.EditOrAddPropertyActivity" />
+        <activity android:name=".presentation.ui.settings.SettingsActivity" />
 
         <provider
             android:authorities="com.sophieoc.realestatemanager.provider"

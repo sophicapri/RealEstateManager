@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.activity
+package com.sophieoc.realestatemanager.presentation.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -17,11 +17,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.navigation.NavigationView
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityMainBinding
+import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
+import com.sophieoc.realestatemanager.presentation.ui.settings.SettingsActivity
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesActivity
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
-import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

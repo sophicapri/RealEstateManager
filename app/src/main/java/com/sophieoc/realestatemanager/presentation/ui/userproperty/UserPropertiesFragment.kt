@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment
+package com.sophieoc.realestatemanager.presentation.ui.userproperty
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentUserPropertiesBinding
-import com.sophieoc.realestatemanager.presentation.activity.UserPropertiesActivity
-import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
+import com.sophieoc.realestatemanager.presentation.ui.UserViewModel
+import com.sophieoc.realestatemanager.presentation.ui.propertylist.PropertyListAdapter
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.USER_ID
-import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

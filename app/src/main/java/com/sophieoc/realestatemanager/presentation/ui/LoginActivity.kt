@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.activity
+package com.sophieoc.realestatemanager.presentation.ui
 
 import android.os.Bundle
 import android.view.View.GONE
@@ -14,10 +14,9 @@ import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityLoginBinding
+import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.adapter
+package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.view.LayoutInflater
 import android.view.View.GONE
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sophieoc.realestatemanager.databinding.ItemEditPhotoPropertyBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 
 
-class PicturesAdapter(var onDeletePictureListener: OnDeletePictureListener, var onSetAsCoverListener: OnSetAsCoverListener, var propertyViewModel: PropertyViewModel) :
-        RecyclerView.Adapter<PicturesAdapter.PicturesViewHolder>() {
+class PicturePropertyAdapter(var onDeletePictureListener: OnDeletePictureListener, var onSetAsCoverListener: OnSetAsCoverListener, var propertyViewModel: PropertyViewModel) :
+        RecyclerView.Adapter<PicturePropertyAdapter.PicturesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PicturesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

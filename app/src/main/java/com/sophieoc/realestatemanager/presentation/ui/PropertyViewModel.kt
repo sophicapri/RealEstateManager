@@ -1,11 +1,10 @@
-package com.sophieoc.realestatemanager.viewmodel
+package com.sophieoc.realestatemanager.presentation.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import com.sophieoc.realestatemanager.utils.AbsentLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel

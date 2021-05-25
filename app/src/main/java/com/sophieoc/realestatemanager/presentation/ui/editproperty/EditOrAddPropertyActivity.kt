@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.activity
+package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -14,14 +14,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivityEditAddPropertyBinding
 import com.sophieoc.realestatemanager.notification.NotificationHelper
-import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddAddressFragment
-import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPicturesFragment
-import com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments.AddPropertyInfoFragment
+import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 

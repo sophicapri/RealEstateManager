@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.activity
+package com.sophieoc.realestatemanager.presentation.ui.settings
 
 import android.content.Intent
 import android.net.Uri
@@ -14,11 +14,11 @@ import androidx.activity.viewModels
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
+import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.UserViewModel
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*

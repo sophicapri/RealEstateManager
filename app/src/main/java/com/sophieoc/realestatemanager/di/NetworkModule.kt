@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.di
 
+/*
 import com.sophieoc.realestatemanager.BuildConfig
 import com.sophieoc.realestatemanager.api.PlaceService
 import dagger.Module
@@ -13,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -54,4 +56,4 @@ object NetworkModule {
             chain.proceed(request)
         }
     }
-}
+}*/

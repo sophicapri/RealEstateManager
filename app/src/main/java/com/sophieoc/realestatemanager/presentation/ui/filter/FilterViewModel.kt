@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.viewmodel
+package com.sophieoc.realestatemanager.presentation.ui.filter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

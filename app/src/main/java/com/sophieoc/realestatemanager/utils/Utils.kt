@@ -7,55 +7,15 @@ import android.os.Build
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.roundToInt
 
-/**
- * Created by Philippe on 21/02/2018.
- */
 object Utils {
-    /**
-     * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
-     * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-     * @param dollars
-     * @return
-     */
-    fun convertDollarToEuro(dollars: Int): Int {
-        return (dollars * 0.846).roundToInt()
-    }
 
-    fun convertEuroToDollar(euro: Int): Int {
-        return (euro * 1.188).roundToInt()
-    }
-
-    /**
-     * Conversion de la date d'aujourd'hui en un format plus approprié
-     * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-     * @return
-     *
-     *
-     *  format de la date avant modification -> "yyyy/MM/dd"
-     */
     val todayDate: String
         get() {
             val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
             return dateFormat.format(Date())
         }
 
-    /**
-     * Vérification de la connexion réseau
-     * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-     * @param
-     * @return
-     */
-  /*  fun isInternetAvailable(context: Context): Boolean {
-        val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return wifi.isWifiEnabled
-    }
-
-   */
-    /**
-    *   Improved check for internet connection
-    */
     fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val isConnected: Boolean

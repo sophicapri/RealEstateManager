@@ -6,7 +6,7 @@
     <data>
         <variable
             name="propertyViewModel"
-            type="com.sophieoc.realestatemanager.viewmodel.PropertyViewModel" />
+            type="com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel" />
         <variable
             name="photo"
             type="com.sophieoc.realestatemanager.model.Photo" />

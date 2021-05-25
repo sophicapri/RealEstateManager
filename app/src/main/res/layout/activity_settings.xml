@@ -6,10 +6,10 @@
     <data>
         <variable
             name="activity"
-            type="com.sophieoc.realestatemanager.presentation.activity.SettingsActivity" />
+            type="com.sophieoc.realestatemanager.presentation.ui.settings.SettingsActivity" />
         <variable
             name="userViewModel"
-            type="com.sophieoc.realestatemanager.viewmodel.UserViewModel" />
+            type="com.sophieoc.realestatemanager.presentation.ui.UserViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

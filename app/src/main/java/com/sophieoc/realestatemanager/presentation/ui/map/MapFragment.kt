@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment
+package com.sophieoc.realestatemanager.presentation.ui.map
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -24,12 +24,12 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.base.BaseActivity
 import com.sophieoc.realestatemanager.databinding.FragmentMapBinding
-import com.sophieoc.realestatemanager.presentation.activity.MapActivity
-import com.sophieoc.realestatemanager.presentation.activity.PropertyDetailActivity
+import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailActivity
+import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailFragment
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

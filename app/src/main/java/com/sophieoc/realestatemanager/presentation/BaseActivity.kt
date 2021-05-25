@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.base
+package com.sophieoc.realestatemanager.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,13 +18,13 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.presentation.activity.MainActivity
-import com.sophieoc.realestatemanager.presentation.activity.MapActivity
-import com.sophieoc.realestatemanager.presentation.activity.PropertyDetailActivity
-import com.sophieoc.realestatemanager.presentation.adapter.PropertyListAdapter
-import com.sophieoc.realestatemanager.presentation.fragment.PropertyDetailFragment
-import com.sophieoc.realestatemanager.presentation.fragment.PropertyListFragment
-import com.sophieoc.realestatemanager.presentation.fragment.UserPropertiesFragment
+import com.sophieoc.realestatemanager.presentation.ui.MainActivity
+import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
+import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailActivity
+import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailFragment
+import com.sophieoc.realestatemanager.presentation.ui.propertylist.PropertyListAdapter
+import com.sophieoc.realestatemanager.presentation.ui.propertylist.PropertyListFragment
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesFragment
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils

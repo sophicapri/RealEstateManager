@@ -1,10 +1,9 @@
 package com.sophieoc.realestatemanager.di
 
-import com.sophieoc.realestatemanager.api.PlaceService
-import com.sophieoc.realestatemanager.repository.PropertyRepository
-import com.sophieoc.realestatemanager.repository.UserRepository
 import com.sophieoc.realestatemanager.database.dao.PropertyDao
 import com.sophieoc.realestatemanager.database.dao.UserDao
+import com.sophieoc.realestatemanager.repository.PropertyRepository
+import com.sophieoc.realestatemanager.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

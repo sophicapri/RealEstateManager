@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments
+package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -19,23 +19,21 @@ import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddPicturesBinding
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.presentation.adapter.PicturesAdapter
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 import com.sophieoc.realestatemanager.utils.*
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
-    PicturesAdapter.OnSetAsCoverListener,
+class AddPicturesFragment : Fragment(), PicturePropertyAdapter.OnDeletePictureListener,
+    PicturePropertyAdapter.OnSetAsCoverListener,
     AddPicturesFromPhoneUtil.OnActivityResultListener {
     private var _binding: FragmentAddPicturesBinding? = null
     private val binding: FragmentAddPicturesBinding
         get() = _binding!!
-    private lateinit var adapter: PicturesAdapter
+    private lateinit var adapter: PicturePropertyAdapter
     lateinit var addPhotoUtil: AddPicturesFromPhoneUtil
     private val sharedViewModel by activityViewModels<PropertyViewModel>()
 
@@ -73,7 +71,7 @@ class AddPicturesFragment : Fragment(), PicturesAdapter.OnDeletePictureListener,
     }
 
     private fun configureRecyclerView() {
-        adapter = PicturesAdapter(this, this, sharedViewModel)
+        adapter = PicturePropertyAdapter(this, this, sharedViewModel)
         binding.apply {
             recyclerViewPictures.setHasFixedSize(true)
             recyclerViewPictures.adapter = adapter

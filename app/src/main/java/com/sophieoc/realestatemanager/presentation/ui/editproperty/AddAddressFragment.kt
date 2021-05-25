@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments
+package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.presentation.fragment.add_or_edit_property_fragments
+package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.app.DatePickerDialog
 import android.content.DialogInterface
@@ -16,12 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddInfoBinding
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity
-import com.sophieoc.realestatemanager.presentation.activity.EditOrAddPropertyActivity.Companion.emptyFieldsInMainInfo
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity.Companion.emptyFieldsInMainInfo
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import com.sophieoc.realestatemanager.utils.toStringFormat
-import com.sophieoc.realestatemanager.viewmodel.PropertyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*

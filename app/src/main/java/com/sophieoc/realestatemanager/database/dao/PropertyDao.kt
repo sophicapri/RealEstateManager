@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.room_database.dao
+package com.sophieoc.realestatemanager.database.dao
 
 import android.database.Cursor
 import androidx.room.*
@@ -58,13 +58,10 @@ interface PropertyDao {
         AND price > :priceMin AND price < :priceMax
         AND surface > :surfaceMin AND surface < :surfaceMax 
         AND CASE WHEN :area IS NOT NULL THEN address LIKE '%' || :area || '%' ELSE 1 END
-        AND CASE WHEN :park IS NOT NULL THEN point_of_interest LIKE '%' || :park || '%' ELSE 1 END
-        AND CASE WHEN :school IS NOT NULL THEN point_of_interest LIKE '%' || :school || '%' ELSE 1 END
-        AND CASE WHEN :store IS NOT NULL THEN point_of_interest LIKE '%' || :store || '%' ELSE 1 END
         AND CASE WHEN :nbrOfPictures IS NOT NULL THEN (number_of_pictures >= :nbrOfPictures) ELSE 1 END""")
     fun getFilteredList(
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, nbrOfRooms : Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
             priceMin: Int?, priceMax: Int?, surfaceMin: Int?, surfaceMax: Int?,
-            nbrOfPictures: Int?, park: String?, school: String?, store: String?, area: String?): List<Property>
+            nbrOfPictures: Int?, area: String?): List<Property>
 }

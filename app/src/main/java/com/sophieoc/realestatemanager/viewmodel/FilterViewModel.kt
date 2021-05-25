@@ -15,14 +15,13 @@ import javax.inject.Inject
 class FilterViewModel @Inject constructor(private val propertySource: PropertyRepository): ViewModel() {
     var entries = EntriesFilter()
     private val _entriesToSearch: MutableLiveData<EntriesFilter> = MutableLiveData()
-    val resultSearch: LiveData<List<Property>> = Transformations.switchMap(_entriesToSearch) {
+    val resultSearch: LiveData<List<Property>> = Transformations.switchMap(_entriesToSearch) { entries ->
         if (_entriesToSearch.value != null) {
             propertySource.getFilteredProperties(
-                    propertyType = it.propertyType, nbrOfBed = it.nbrOfBed, nbrOfBath = it.nbrOfBath, nbrOfRooms = it.nbrOfRoom,
-                    propertyAvailability = it.propertyAvailability, dateOnMarket = it.dateOnMarket, dateSold = it.dateSold,
-                    priceMin = it.priceMin, priceMax = it.priceMax, surfaceMin = it.surfaceMin, surfaceMax = it.surfaceMax,
-                    nbrOfPictures = it.nbrOfPictures, park = it.park,
-                    school = it.school, store = it.store, area = it.area)
+                    propertyType = entries.propertyType, nbrOfBed = entries.nbrOfBed, nbrOfBath = entries.nbrOfBath, nbrOfRooms = entries.nbrOfRoom,
+                    propertyAvailability = entries.propertyAvailability, dateOnMarket = entries.dateOnMarket, dateSold = entries.dateSold,
+                    priceMin = entries.priceMin, priceMax = entries.priceMax, surfaceMin = entries.surfaceMin, surfaceMax = entries.surfaceMax,
+                    nbrOfPictures = entries.nbrOfPictures, area = entries.area)
         }else
             AbsentLiveData.create()
     }

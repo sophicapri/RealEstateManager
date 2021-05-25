@@ -9,7 +9,7 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.presentation.activity.MainActivity.Companion.TAG
-import com.sophieoc.realestatemanager.room_database.dao.UserDao
+import com.sophieoc.realestatemanager.database.dao.UserDao
 import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.TIMESTAMP

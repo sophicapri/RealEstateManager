@@ -406,66 +406,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/subtitle_nbr_of_pics"
                 app:layout_constraintStart_toEndOf="@+id/nbr_of_pic_input"
                 app:layout_constraintTop_toTopOf="@+id/subtitle_nbr_of_pics" />
-
-            <TextView
-                android:id="@+id/title_point_of_interest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_default"
-                android:text="@string/close_to"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/title_picture"
-                app:layout_constraintTop_toBottomOf="@+id/subtitle_nbr_of_pics" />
-
-            <TextView
-                android:id="@+id/poi_park"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5"
-                android:text="@string/park"
-                app:layout_constraintStart_toStartOf="@+id/title_point_of_interest"
-                app:layout_constraintTop_toBottomOf="@+id/title_point_of_interest" />
-
-            <CheckBox
-                android:id="@+id/checkbox_park"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/poi_park"
-                app:layout_constraintStart_toEndOf="@+id/poi_park"
-                app:layout_constraintTop_toTopOf="@+id/poi_park" />
-
-            <CheckBox
-                android:id="@+id/checkbox_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/poi_store"
-                app:layout_constraintStart_toEndOf="@+id/poi_store"
-                app:layout_constraintTop_toTopOf="@+id/poi_store" />
-
-            <CheckBox
-                android:id="@+id/checkbox_school"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/poi_school"
-                app:layout_constraintStart_toEndOf="@+id/poi_school"
-                app:layout_constraintTop_toTopOf="@+id/poi_school" />
-
-            <TextView
-                android:id="@+id/poi_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/store"
-                app:layout_constraintStart_toEndOf="@+id/checkbox_park"
-                app:layout_constraintTop_toTopOf="@+id/poi_park" />
-
-            <TextView
-                android:id="@+id/poi_school"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/school"
-                app:layout_constraintStart_toEndOf="@+id/checkbox_store"
-                app:layout_constraintTop_toTopOf="@+id/poi_store" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

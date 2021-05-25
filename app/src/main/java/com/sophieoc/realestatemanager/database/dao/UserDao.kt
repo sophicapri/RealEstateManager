@@ -1,4 +1,4 @@
-package com.sophieoc.realestatemanager.room_database.dao
+package com.sophieoc.realestatemanager.database.dao
 
 import androidx.room.*
 import com.sophieoc.realestatemanager.model.User

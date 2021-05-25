@@ -257,12 +257,6 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         if (bindingFilter.nbrOfPicInput.text.toString().isNotEmpty())
             filterViewModel.entries.nbrOfPictures =
                 bindingFilter.nbrOfPicInput.text.toString().trim().toInt()
-        if (bindingFilter.checkboxPark.isChecked)
-            filterViewModel.entries.park = PARK
-        if (bindingFilter.checkboxStore.isChecked)
-            filterViewModel.entries.store = STORE
-        if (bindingFilter.checkboxSchool.isChecked)
-            filterViewModel.entries.school = SCHOOL
     }
 
     private fun displayResultsText() {

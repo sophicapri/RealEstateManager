@@ -27,8 +27,6 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
         _propertyToUpsert.value = property
     }
 
-    fun getPointOfInterests(location: String): LiveData<List<PlaceDetails>> = propertySource.getNearbyPointOfInterests(location)
-
     fun getPropertyById(propertyId: String): LiveData<Property> = propertySource.getPropertyById(propertyId)
 
     fun getProperties(): LiveData<List<Property>> = propertySource.getAllProperties()

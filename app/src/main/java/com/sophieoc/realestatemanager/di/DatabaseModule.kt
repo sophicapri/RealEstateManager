@@ -1,9 +1,9 @@
 package com.sophieoc.realestatemanager.di
 
 import android.content.Context
-import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
-import com.sophieoc.realestatemanager.room_database.dao.PropertyDao
-import com.sophieoc.realestatemanager.room_database.dao.UserDao
+import com.sophieoc.realestatemanager.database.RealEstateDatabase
+import com.sophieoc.realestatemanager.database.dao.PropertyDao
+import com.sophieoc.realestatemanager.database.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

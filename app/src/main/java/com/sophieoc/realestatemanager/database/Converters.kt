@@ -1,10 +1,9 @@
-package com.sophieoc.realestatemanager.room_database
+package com.sophieoc.realestatemanager.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.model.Address
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.model.PointOfInterest
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import java.util.*
@@ -16,12 +15,6 @@ class Converters {
 
     @TypeConverter
     fun jsonToListPhoto(value: String) = Gson().fromJson(value, Array<Photo>::class.java).toList()
-
-    @TypeConverter
-    fun listPointOfInterestToJson(value: List<PointOfInterest>?): String = Gson().toJson(value)
-
-    @TypeConverter
-    fun jsonToListPointOfInterest(value: String) = Gson().fromJson(value, Array<PointOfInterest>::class.java).toList()
 
     @TypeConverter
     fun enumToJson(value: PropertyType?): String = Gson().toJson(value)

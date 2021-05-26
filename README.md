@@ -1,4 +1,5 @@
 # Real Estate Manager
+**School project**
 
 App for Real Estate agents to manage their properties.
 

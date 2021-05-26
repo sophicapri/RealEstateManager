@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -36,6 +37,7 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
+        AnimationUtils.loadAnimation(this, R.anim.fui_slide_in_right)
         bindViews()
     }
 

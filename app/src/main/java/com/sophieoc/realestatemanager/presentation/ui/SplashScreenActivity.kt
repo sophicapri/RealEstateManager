@@ -1,6 +1,5 @@
 package com.sophieoc.realestatemanager.presentation.ui
 
-import android.content.Intent
 import android.os.Bundle
 import com.sophieoc.realestatemanager.databinding.ActivitySplashScreenBinding
 import com.sophieoc.realestatemanager.presentation.BaseActivity
@@ -12,20 +11,12 @@ class SplashScreenActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        if (isCurrentUserLogged()) startMainActivity() else startLoginActivity()
+        if (isCurrentUserLogged())
+            startNewActivity(MainActivity::class.java)
+        else
+            startNewActivity(LoginActivity::class.java)
+        finish()
     }
 
     override fun getLayout() = binding.root
-
-    private fun startLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 }

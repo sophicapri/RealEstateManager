@@ -1,9 +1,13 @@
 package com.sophieoc.realestatemanager.utils
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,5 +31,18 @@ object Utils {
             capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         }
         return isConnected
+    }
+
+    fun hideStatusBar(activity: Activity){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = activity.window.insetsController
+            controller?.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller?.hide(WindowInsets.Type.statusBars())
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            activity.window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
     }
 }

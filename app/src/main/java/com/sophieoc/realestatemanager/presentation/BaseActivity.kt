@@ -59,6 +59,10 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
 
     abstract fun getLayout(): View
 
+    fun isCurrentUserLogged(): Boolean {
+        return auth.currentUser != null
+    }
+
     fun checkConnection() {
         if (!Utils.isInternetAvailable(this)){
             Snackbar.make(window.decorView.findViewById(android.R.id.content)
@@ -66,10 +70,6 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
             PreferenceHelper.internetAvailable = false
         } else
             PreferenceHelper.internetAvailable = true
-    }
-
-    fun isCurrentUserLogged(): Boolean {
-        return auth.currentUser != null
     }
 
     fun <T> startNewActivity(activity: Class<T>) {

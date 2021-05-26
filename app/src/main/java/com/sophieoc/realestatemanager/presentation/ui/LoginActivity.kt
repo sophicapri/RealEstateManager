@@ -1,6 +1,7 @@
 package com.sophieoc.realestatemanager.presentation.ui
 
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ProgressBar
@@ -8,7 +9,6 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
@@ -17,6 +17,7 @@ import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.ActivityLoginBinding
 import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
+import com.sophieoc.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,14 +31,16 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        progressBar = findViewById(R.id.progress_bar)
-        val googleBtn = findViewById<ConstraintLayout>(R.id.google_sign_in_btn)
-        googleBtn.setOnClickListener { startSignInWithGoogle()}
+        Utils.hideStatusBar(this)
+        progressBar = binding.progressBar
+        binding.googleSignInBtn.setOnClickListener { startSignInWithGoogle()}
     }
 
-    override fun getLayout() = binding.root
+    override fun getLayout(): View {
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
     private fun startSignInWithGoogle() {
         if (PreferenceHelper.internetAvailable) {

@@ -22,7 +22,7 @@ Fonctionnalities:
 
 ![](screenshots/tablet.png)
 
-## Librairy
+## Library
 
 - FirebaseUI
 - FirebaseStorage

@@ -39,7 +39,7 @@ Functionalities:
 - WorkManager
 - ActivityResult
 
-**"initial_school_project" branch:**
+**"initial_school_version" branch:**
  - Koin
 
 

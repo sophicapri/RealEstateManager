@@ -39,7 +39,7 @@
     <activity android:name=".presentation.ui.map.MapActivity" />
     <activity android:name=".presentation.ui.userproperty.UserPropertiesActivity" />
         <activity android:name=".presentation.ui.property.PropertyDetailActivity" />
-        <activity android:name=".presentation.ui.editproperty.EditOrAddPropertyActivity" />
+        <activity android:name=".presentation.ui.editproperty.EditAddPropertyActivity" />
         <activity android:name=".presentation.ui.settings.SettingsActivity" />
 
         <provider

@@ -1,6 +1,7 @@
 package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddAddressBinding
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
-import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity.Companion.emptyFieldsInAddress
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditAddPropertyFragment.Companion.emptyFieldsInAddress
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,11 +23,11 @@ class AddAddressFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddAddressBinding.inflate(inflater, container, false)
+        Log.d(TAG, "onCreateView: ${binding.propertyViewModel?.property?.description}")
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             propertyViewModel = sharedViewModel
-            if (EditOrAddPropertyActivity.activityRestarted)
-                executePendingBindings()
+            executePendingBindings()
         }
         return binding.root
     }

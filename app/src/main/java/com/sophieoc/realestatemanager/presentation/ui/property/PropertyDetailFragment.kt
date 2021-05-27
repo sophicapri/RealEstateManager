@@ -28,7 +28,7 @@ import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 import com.sophieoc.realestatemanager.presentation.ui.UserViewModel
-import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditAddPropertyActivity
 import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
 import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesActivity
 import com.sophieoc.realestatemanager.utils.*
@@ -167,7 +167,7 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun startEditPropertyActivity() {
         if (Utils.isInternetAvailable(mainContext)) {
-            val intent = Intent(mainContext, EditOrAddPropertyActivity::class.java)
+            val intent = Intent(mainContext, EditAddPropertyActivity::class.java)
             intent.putExtra(PROPERTY_ID, binding.property?.id)
             startActivity(intent)
             PreferenceHelper.internetAvailable = true

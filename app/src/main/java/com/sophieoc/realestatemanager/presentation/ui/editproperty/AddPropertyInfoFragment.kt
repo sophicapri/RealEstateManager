@@ -17,7 +17,7 @@ import androidx.fragment.app.activityViewModels
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentAddInfoBinding
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
-import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity.Companion.emptyFieldsInMainInfo
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditAddPropertyFragment.Companion.emptyFieldsInMainInfo
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import com.sophieoc.realestatemanager.utils.PropertyType
 import com.sophieoc.realestatemanager.utils.toStringFormat
@@ -41,8 +41,7 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             propertyViewModel = sharedViewModel
-            if (EditOrAddPropertyActivity.activityRestarted)
-                executePendingBindings()
+            executePendingBindings()
         }
         return binding.root
     }
@@ -161,7 +160,7 @@ class AddPropertyInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
             }
         } catch (e: NullPointerException) {
-            Log.d(EditOrAddPropertyActivity.TAG, "checkMainInfoPage: ${e.stackTrace}")
+            Log.d(EditAddPropertyFragment.TAG, "checkMainInfoPage: ${e.stackTrace}")
         }
         return true
     }

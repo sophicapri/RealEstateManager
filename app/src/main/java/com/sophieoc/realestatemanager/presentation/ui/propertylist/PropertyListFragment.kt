@@ -32,7 +32,7 @@ import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.presentation.ui.MainActivity
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
-import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditOrAddPropertyActivity
+import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditAddPropertyActivity
 import com.sophieoc.realestatemanager.presentation.ui.filter.FilterViewModel
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,7 +83,7 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             }
             fabAddProperty.setOnClickListener {
                 if (Utils.isInternetAvailable(mainContext))
-                    mainContext.startNewActivity(EditOrAddPropertyActivity::class.java)
+                    mainContext.startNewActivity(EditAddPropertyActivity::class.java)
                 else {
                     Toast.makeText(
                         mainContext,

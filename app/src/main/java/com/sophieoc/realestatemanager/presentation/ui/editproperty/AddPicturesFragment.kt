@@ -34,7 +34,6 @@ class AddPicturesFragment : Fragment(), PicturePropertyAdapter.OnDeletePictureLi
     private val binding: FragmentAddPicturesBinding
         get() = _binding!!
     private lateinit var adapter: PicturePropertyAdapter
-    lateinit var addPhotoUtil: AddPicturesFromPhoneUtil
     private val sharedViewModel by activityViewModels<PropertyViewModel>()
 
     override fun onCreateView(
@@ -60,9 +59,7 @@ class AddPicturesFragment : Fragment(), PicturePropertyAdapter.OnDeletePictureLi
     private fun bindViews() {
         binding.apply {
             lifecycleOwner = this@AddPicturesFragment.viewLifecycleOwner
-            if (EditOrAddPropertyActivity.activityRestarted) {
-                executePendingBindings()
-            }
+            executePendingBindings()
             btnAddPicture.setOnClickListener {
                 addPhotoUtil.onActivityResultListener = this@AddPicturesFragment
                 addPhotoUtil.addPhoto()
@@ -154,5 +151,6 @@ class AddPicturesFragment : Fragment(), PicturePropertyAdapter.OnDeletePictureLi
 
     companion object {
         const val TAG = "AddPictures"
+        lateinit var addPhotoUtil: AddPicturesFromPhoneUtil
     }
 }

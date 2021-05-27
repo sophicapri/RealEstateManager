@@ -11,7 +11,7 @@
         <item
             android:id="@+id/user_properties"
             android:title="@string/my_properties"
-            android:icon="@drawable/ic_property_24"/>
+            android:icon="@drawable/ic_property_active"/>
 
         <item android:id="@+id/settings"
             android:title="@string/settings"

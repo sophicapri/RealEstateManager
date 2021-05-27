@@ -10,7 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.provider.PropertyContentProvider
-import com.sophieoc.realestatemanager.room_database.RealEstateDatabase
+import com.sophieoc.realestatemanager.database.RealEstateDatabase
 import com.sophieoc.realestatemanager.utils.PropertyAvailability
 import org.hamcrest.Matchers
 import org.junit.Assert

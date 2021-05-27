@@ -15,16 +15,12 @@ data class EntriesFilter(
         var surfaceMin: Int? = null,
         var surfaceMax: Int? = null,
         var nbrOfPictures: Int? = null,
-        var park: String? = null,
-        var school: String? = null,
-        var store: String? = null,
         var area: String? = null,
 ) {
     override fun toString(): String {
         return "type = $propertyType  | bed = $nbrOfBed | bath = $nbrOfBath | room = $nbrOfRoom" +
                 "| availability = $propertyAvailability | onMarket = $dateOnMarket | sold = $dateSold" +
                 "| priceMin = $priceMin | priceMax = $priceMax | surfaceMin = $surfaceMin |" +
-                "surfaceMax = $surfaceMax | pics = $nbrOfPictures | park = $park | " +
-                "school = $school | store = $store | area = $area"
+                "surfaceMax = $surfaceMax | pics = $nbrOfPictures | area = $area"
     }
 }

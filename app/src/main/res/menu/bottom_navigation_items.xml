@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/address_page"
         android:title="@string/address_title"
-        android:icon="@drawable/ic_baseline_edit_location_24"/>
+        android:icon="@drawable/ic_edit_address_active"/>
     <item android:id="@+id/property_info_page"
         android:title="@string/main_informations_title"
-        android:icon="@drawable/ic_property_24"/>
+        android:icon="@drawable/ic_property_active"/>
     <item android:id="@+id/pictures_page"
         android:title="@string/pictures_title"
-        android:icon="@drawable/ic_round_add_photo_alternate_24"/>
+        android:icon="@drawable/ic_add_picture_active"/>
 </menu>

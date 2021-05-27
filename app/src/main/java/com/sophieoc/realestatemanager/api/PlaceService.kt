@@ -1,44 +1,19 @@
 package com.sophieoc.realestatemanager.api
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.sophieoc.realestatemanager.BuildConfig
-import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
+/*
+import com.sophieoc.realestatemanager.model.json_to_java.PlacesResult
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-object PlaceService {
-    private val logging: HttpLoggingInterceptor = HttpLoggingInterceptor()
-    private val httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
-    private const val API_URL = "https://maps.googleapis.com/maps/api/place/"
-    private fun initLogging() {
-        logging.level = HttpLoggingInterceptor.Level.BODY
-       // httpClient.addInterceptor(logging)
-    }
+interface PlaceService {
 
-    private fun initApiKey() {
-        httpClient.addInterceptor { chain ->
-            val original: Request = chain.request()
-            val originalHttpUrl: HttpUrl = original.url
-            val url: HttpUrl = originalHttpUrl.newBuilder()
-                    .addQueryParameter("key", BuildConfig.API_KEY)
-                    .build()
+    @GET("nearbysearch/json?rankby=prominence&type=park&radius=2000")
+    suspend fun getNearbyParks(@Query("location") location: String?): PlacesResult
 
-            // Request customization: add request headers
-            val requestBuilder = original.newBuilder()
-                    .url(url)
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }
-    }
+    @GET("nearbysearch/json?rankby=prominence&type=store&radius=2000")
+    suspend fun getNearbyStores(@Query("location") location: String?): PlacesResult
 
-    fun <S> createService(serviceClass: Class<S>): S {
-        initApiKey()
-        initLogging()
-        val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build()
-        return retrofit.create(serviceClass)
-    }
-}
+    @GET("nearbysearch/json?rankby=prominence&type=school&radius=2000")
+    suspend fun getNearbySchools(@Query("location") location: String?): PlacesResult
+
+}*/

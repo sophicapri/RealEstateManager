@@ -3,7 +3,7 @@ package com.sophieoc.realestatemanager.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.model.json_to_java.PlaceDetails
+import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -73,16 +73,6 @@ class PropertyViewModelTest {
             assertSame(propertiesMutable.value, it)
             assertSame((propertiesMutable.value as ArrayList<Property>).size, it.size)
             assertSame(it.size, 2)
-        }
-    }
-
-    @Test
-    fun `get nearby point of interests with success`() {
-        val pointOfInterests = MutableLiveData(mockk<List<PlaceDetails>>())
-        pointOfInterests.value = arrayListOf(PlaceDetails())
-        every { propertySource.getNearbyPointOfInterests(any())} returns pointOfInterests
-        viewModel.getPointOfInterests(String()).observeForever{
-            assertSame(pointOfInterests.value, it)
         }
     }
 }

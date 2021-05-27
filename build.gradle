@@ -2,10 +2,10 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.4.32'
+        kotlinVersion = '1.5.10'
         navigationVersion = '2.3.5'
-        roomVersion = '2.3.0-rc01'
-        koin_version = '3.0.1-beta-2'
+        roomVersion = '2.4.0-alpha02'
+        hilt_version = '2.35.1'
     }
 
     repositories {
@@ -13,9 +13,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha14'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.google.gms:google-services:4.3.8'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,7 +28,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://maven.google.com" }
-        //  maven{ url = "https://dl.bintray.com/ekito/koin"}
     }
 }
 

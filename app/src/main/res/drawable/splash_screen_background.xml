@@ -5,9 +5,9 @@
 
     <item android:drawable="@drawable/gradient_white"/>
     <!-- Set the Background Image-->
-    <item android:gravity="center">
+<!--    <item android:gravity="center">
         <selector >
             <item android:drawable="@drawable/ic_app_logo_with_text"/>
         </selector>
-    </item>
+    </item>-->
 </layer-list>

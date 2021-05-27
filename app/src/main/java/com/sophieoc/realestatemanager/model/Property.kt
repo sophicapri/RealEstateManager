@@ -26,14 +26,13 @@ data class Property(
         @ColumnInfo(name = "date_sold") var dateSold: Date?,
         @ColumnInfo(name = "address") var address: Address,
         @ColumnInfo(name = "photos") var photos: List<Photo>,
-        @ColumnInfo(name = "point_of_interest") var pointOfInterests: List<PointOfInterest>,
         @ColumnInfo(name = "user_id") var userId: String,
         @ColumnInfo(name = "number_of_pictures") var nbrOfPictures: Int = photos.size,
         @ColumnInfo(name = "timestamp") val timestamp: Long = Date().time
 )  {
     constructor() : this(UUID.randomUUID().toString(), PropertyType.HOUSE, -1, -1,
             -1, -1, -1, "", PropertyAvailability.AVAILABLE, null, null,
-            Address(), ArrayList<Photo>(), ArrayList<PointOfInterest>(), "not defined")
+            Address(), ArrayList<Photo>(), "not defined")
 
     companion object {
         fun fromContentValues(values: ContentValues): Property {
@@ -60,9 +59,7 @@ data class Property(
             //
             if (values.containsKey("photos")) property.photos = Gson().fromJson(
                     values.getAsString("photos"), Array<Photo>::class.java).toList()
-            if (values.containsKey("pointOfInterests")) property.pointOfInterests = Gson().fromJson(
-                    values.getAsString("pointOfInterests"), Array<PointOfInterest>::class.java).toList()
-            if (values.containsKey("userId")) property.userId = values.getAsString("userId")
+           if (values.containsKey("userId")) property.userId = values.getAsString("userId")
             return property
         }
     }

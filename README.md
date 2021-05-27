@@ -9,8 +9,8 @@ Fonctionnalities:
 - Add or edit a property, add pictures from phone or from the camera.
 - Display a map with all the properties pinned
 - Locate an agent on a map
-- Afficher les biens prit en charge par un agent sur son profil
-- Change profil picture and name
+- Display agent's profile with the properties they manage
+- Change profile picture and name
 - Manage database with Firestore and Room (offline mode)
 
 ## Screenshots

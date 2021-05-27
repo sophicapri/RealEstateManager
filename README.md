@@ -3,7 +3,8 @@
 
 App for Real Estate agents to manage their properties.
 
-Fonctionnalities:
+Functionalities:
+- Sign in with a Google account
 - Display a list of properties
 - Filter properties
 - Add or edit a property, add pictures from phone or from the camera.

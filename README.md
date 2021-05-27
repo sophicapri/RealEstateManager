@@ -29,7 +29,7 @@ Functionalities:
 - FirebaseStorage
 - Places
 - Room
-- Koin
+- Hilt
 - Glide
 - Retrofit
 - Gson
@@ -39,7 +39,7 @@ Functionalities:
 - WorkManager
 - ActivityResult
 
-**Update May 2021 (dev branch):**
- - Hilt (instead of Koin)
+**"initial_school_project" branch:**
+ - Koin
 
 

@@ -1,7 +1,6 @@
 package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ class AddAddressFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddAddressBinding.inflate(inflater, container, false)
-        Log.d(TAG, "onCreateView: ${binding.propertyViewModel?.property?.description}")
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             propertyViewModel = sharedViewModel

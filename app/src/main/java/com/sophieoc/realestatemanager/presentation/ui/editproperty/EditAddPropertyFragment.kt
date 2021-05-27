@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentEditAddPropertyBinding
@@ -30,6 +31,7 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
         get() = _binding!!
     private val sharedViewModel by activityViewModels<PropertyViewModel>()
     private lateinit var pagerAdapter: EditPropertyPagerAdapter
+    private var currentFragmentIndex = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -41,12 +43,36 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
         pagerAdapter = EditPropertyPagerAdapter(this)
         viewPager.adapter = pagerAdapter
 
-        // Set the icon and text for each tab
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        if (savedInstanceState != null){
+            currentFragmentIndex = savedInstanceState.getInt(CURRENT_FRAGMENT)
+            viewPager.currentItem = currentFragmentIndex
+        }
+
+        tabLayout.addOnTabSelectedListener(getOnTabSelectedListener())
+        TabLayoutMediator(tabLayout, viewPager, true) { tab, position ->
             tab.setIcon(getTabIcon(position))
             tab.text = getTabTitle(position)
         }.attach()
         return binding.root
+    }
+
+    private fun getOnTabSelectedListener(): TabLayout.OnTabSelectedListener {
+        return object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(position: TabLayout.Tab) {
+                currentFragmentIndex = position.position
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(CURRENT_FRAGMENT, currentFragmentIndex)
     }
 
     private fun getTabIcon(position: Int): Int {
@@ -79,32 +105,6 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
             toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
         }
     }
-
-/*    private fun addFragmentsToActivity() {
-        if (!activityRestarted && !fragmentAddress.isAdded) {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.add(
-                R.id.frame_add_property,
-                fragmentAddress,
-                fragmentAddress::class.java.simpleName
-            )
-                .add(
-                    R.id.frame_add_property,
-                    fragmentPropertyInfo,
-                    fragmentPropertyInfo::class.java.simpleName
-                )
-                .add(
-                    R.id.frame_add_property,
-                    fragmentPictures,
-                    fragmentPictures::class.java.simpleName
-                )
-                .hide(fragmentPropertyInfo).hide(fragmentPictures).commit()
-        }
-    }*/
-
-/*    override fun onRestart() {
-        super.onRestart()
-    }*/
 
     fun saveChanges() {
         if (Utils.isInternetAvailable(requireContext())) {
@@ -183,7 +183,6 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-
     }
 
     companion object {

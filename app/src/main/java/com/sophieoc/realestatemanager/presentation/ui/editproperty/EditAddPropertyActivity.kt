@@ -1,7 +1,6 @@
 package com.sophieoc.realestatemanager.presentation.ui.editproperty
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.sophieoc.realestatemanager.R
@@ -16,13 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class EditAddPropertyActivity : BaseActivity() {
     lateinit var binding: ActivityEditAddPropertyBinding
     private val sharedViewModel by viewModels<PropertyViewModel>()
+    private var editPropertyFragment = EditAddPropertyFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ")
         binding.apply {
             propertyViewModel = sharedViewModel
         }
+
         if (intent.extras != null && intent!!.extras!!.containsKey(PROPERTY_ID))
             getProperty()
         else
@@ -35,24 +35,17 @@ class EditAddPropertyActivity : BaseActivity() {
     private fun launchFragments() {
         supportFragmentManager.beginTransaction()
             .replace(
-                R.id.frame_add_property, EditAddPropertyFragment(),
-                EditAddPropertyFragment().javaClass.simpleName
+                R.id.frame_add_property, editPropertyFragment,
+                editPropertyFragment.javaClass.simpleName
             )
             .commit()
     }
 
-/*
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        activityRestarted = true
-        supportFragmentManager.find(AddAddressFragment()::class.java.simpleName)
-            ?.let { fragmentAddress = it as AddAddressFragment }
-        supportFragmentManager.findFragmentByTag(AddPropertyInfoFragment()::class.java.simpleName)
-            ?.let { fragmentPropertyInfo = it as AddPropertyInfoFragment }
-        supportFragmentManager.findFragmentByTag(AddPicturesFragment()::class.java.simpleName)
-            ?.let { fragmentPictures = it as AddPicturesFragment }
+        supportFragmentManager.findFragmentByTag(editPropertyFragment.javaClass.simpleName)
+            ?.let { editPropertyFragment = it as EditAddPropertyFragment }
     }
-*/
 
     override fun getLayout(): View {
         binding = ActivityEditAddPropertyBinding.inflate(layoutInflater)
@@ -65,7 +58,6 @@ class EditAddPropertyActivity : BaseActivity() {
             property?.let {
                 sharedViewModel.property = it
                 launchFragments()
-                Log.d(TAG, "bindViews: ${it.description}")
             }
         })
     }

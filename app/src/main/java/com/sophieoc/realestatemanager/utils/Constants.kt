@@ -43,3 +43,5 @@ const val PROPERTIES_PATH = "properties"
 const val STEP_SIZE_PRICE = 1000
 
 const val FILE_PROVIDER_AUTHORITIES = "com.sophieoc.android.fileprovider"
+
+const val CURRENT_FRAGMENT = "Current fragment selected"

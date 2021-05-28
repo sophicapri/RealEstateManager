@@ -12,7 +12,7 @@ Functionalities:
 - Locate an agent on a map
 - Display agent's profile with the properties they manage
 - Change profile picture and name
-- Manage database with Firestore and Room (offline mode)
+- Data saved with Firestore and Room (offline mode)
 
 ## Screenshots
 ![](screenshots/list_properties.png).![](screenshots/property_detail.png)  

@@ -27,7 +27,6 @@ Functionalities:
 
 - FirebaseUI
 - FirebaseStorage
-- Places
 - Room
 - Hilt
 - Glide
@@ -41,5 +40,7 @@ Functionalities:
 
 **"initial_school_version" branch:**
  - Koin
+ - Places
+
 
 

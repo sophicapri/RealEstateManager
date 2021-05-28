@@ -13,14 +13,17 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentEditAddPropertyBinding
 import com.sophieoc.realestatemanager.notification.NotificationHelper
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.property.PropertyUiState
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
 
@@ -132,13 +135,19 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
 
     private fun saveProperty() {
         sharedViewModel.upsertProperty()
-        sharedViewModel.propertySaved.observe(this, {
-            it?.let {
-                requireActivity().onBackPressed()
-                binding.progressBar.visibility = GONE
-                displayNotification()
+        lifecycleScope.launchWhenStarted {
+            sharedViewModel.propertySaved.collect { propertyUiState ->
+                when (propertyUiState) {
+                    is PropertyUiState.Success -> {
+                        requireActivity().onBackPressed()
+                        binding.progressBar.visibility = GONE
+                        displayNotification()
+                    }
+                    is PropertyUiState.Error -> { /* showError(propertyUiState.exception) */}
+                    is PropertyUiState.Loading -> {/* showLoading()*/}
+                }
             }
-        })
+        }
     }
 
     private fun checkInputs(): Boolean {

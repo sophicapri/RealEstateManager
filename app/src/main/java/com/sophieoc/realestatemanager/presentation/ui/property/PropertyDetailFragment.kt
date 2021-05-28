@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,6 +34,7 @@ import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
 import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesActivity
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
@@ -105,13 +107,19 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getProperty(propertyId: String) {
-        propertyViewModel.getPropertyById(propertyId).observe(mainContext, {
-            it?.let {
-                binding.property = it
-                map?.let { addMarkerAndZoom() }
-                bindViews()
+        lifecycleScope.launchWhenStarted {
+            propertyViewModel.getPropertyById(propertyId).collect { propertyUiState ->
+                when (propertyUiState) {
+                    is PropertyUiState.Success -> {
+                        binding.property = propertyUiState.property
+                        map?.let { addMarkerAndZoom() }
+                        bindViews()
+                    }
+                    is PropertyUiState.Error -> TODO()
+                    is PropertyUiState.Loading -> TODO()
+                }
             }
-        })
+        }
     }
 
     private fun initMap() {

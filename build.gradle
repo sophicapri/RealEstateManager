@@ -5,7 +5,7 @@ buildscript {
         kotlinVersion = '1.5.10'
         navigationVersion = '2.3.5'
         roomVersion = '2.4.0-alpha02'
-        hilt_version = '2.35.1'
+        hilt_version = '2.36'
     }
 
     repositories {

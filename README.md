@@ -14,15 +14,6 @@ Functionalities:
 - Change profile picture and name
 - Data saved with Firestore and Room (offline mode)
 
-## Screenshots
-![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
-![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)
-![](screenshots/filter.png)
-
-**Tablet mode:**
-
-![](screenshots/tablet.png)
-
 ## Library
 
 - FirebaseUI
@@ -41,6 +32,15 @@ Functionalities:
 **"initial_school_version" branch:**
  - Koin
  - Places
+
+## Screenshots
+![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
+![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)
+![](screenshots/filter.png)
+
+**Tablet mode:**
+
+![](screenshots/tablet.png)
 
 
 

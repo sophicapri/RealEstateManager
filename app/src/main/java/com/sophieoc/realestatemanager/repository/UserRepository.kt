@@ -34,6 +34,7 @@ class UserRepository(private val userDao: UserDao) {
             getUserFromRoom(uid, user)
         else
             getUserFromFirestore(uid, user)
+        CoroutineScope(IO).launch { user.emit(user.value) }
         return user
     }
 
@@ -47,9 +48,7 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     private fun upsertInRoom(user: User) {
-        CoroutineScope(IO).launch {
-            userDao.upsert(user)
-        }
+        CoroutineScope(IO).launch { userDao.upsert(user) }
     }
 
     // FIRESTORE
@@ -68,7 +67,7 @@ class UserRepository(private val userDao: UserDao) {
                     if (userResult == null)
                         saveNewUserInDB(userMutable)
                 } else if (task.exception != null) {
-                    Log.e("TAG", "getUser " + task.exception!!.message)
+                    Log.e(TAG, "getUser " + task.exception!!.message)
                     throw task.exception!!
                 }
             }
@@ -108,8 +107,8 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
-    fun upsertUser(user: UserWithProperties): Flow<UserWithProperties> {
-        val userToUpsert = MutableStateFlow(UserWithProperties(User(), emptyList()))
+    suspend fun upsertUser(user: UserWithProperties): Flow<UserWithProperties?> {
+        val userToUpsert: MutableStateFlow<UserWithProperties?> = MutableStateFlow(null)
         userCollectionRef.document(user.user.uid).get()
             .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
                 if (task.isSuccessful && task.result != null) {
@@ -118,15 +117,18 @@ class UserRepository(private val userDao: UserDao) {
                                 if (userUpsertTask.isSuccessful) {
                                     upsertInRoom(user.user)
                                     userToUpsert.value = user
-                                } else if (userUpsertTask.exception != null)
-                                    Log.e(TAG, "upsertUserTask " + userUpsertTask.exception?.message)
+                                } else if (userUpsertTask.exception != null) {
+                                    Log.e(TAG, "upsertUserTask "
+                                            + userUpsertTask.exception?.message)
                                     throw userUpsertTask.exception!!
+                                }
                             }
                 } else if (task.exception != null) {
                     Log.e(TAG, "upsertUser " + task.exception!!.message)
                     throw task.exception!!
                 }
             }
+        userToUpsert.emit(userToUpsert.value)
         return userToUpsert
     }
 

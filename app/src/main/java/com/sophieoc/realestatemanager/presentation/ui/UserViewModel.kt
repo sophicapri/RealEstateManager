@@ -15,20 +15,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(private val userSource: UserRepository) : ViewModel() {
-    private val _currentUser: MutableStateFlow<UserUiState>
-        get() {
-            val userMutableStateFlow: MutableStateFlow<UserUiState> =
-                MutableStateFlow(UserUiState.Loading)
-            viewModelScope.launch {
-                userSource.currentUser.catch { e -> UserUiState.Error(e) }
-                    .collect { user ->
-                        if (user == null) userMutableStateFlow.value = UserUiState.Loading
-                        else userMutableStateFlow.value = UserUiState.Success(user)
-                    }
-            }
-            return userMutableStateFlow
-        }
+    private var _currentUser: MutableStateFlow<UserUiState> = getMutableUser()
     val currentUser: StateFlow<UserUiState> = _currentUser
+
+    private fun getMutableUser(): MutableStateFlow<UserUiState> {
+        val userMutableStateFlow: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
+        viewModelScope.launch {
+            userSource.currentUser.catch { e -> UserUiState.Error(e) }
+                .collect { user ->
+                    if (user == null) userMutableStateFlow.value = UserUiState.Loading
+                    else userMutableStateFlow.value = UserUiState.Success(user)
+                }
+        }
+        return userMutableStateFlow
+    }
 
     fun getUserById(uid: String): StateFlow<UserUiState> {
         val userMutable: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
@@ -50,8 +50,11 @@ class UserViewModel @Inject constructor(private val userSource: UserRepository) 
             userSource.upsertUser(user).catch { e ->
                 _currentUser.value = UserUiState.Error(e)
             }
-                .collect {
-                    _currentUser.value = UserUiState.Success(user)
+                .collect { userUpdated ->
+                    if (userUpdated == null)
+                        _currentUser.value = UserUiState.Loading
+                    else
+                        _currentUser.value = UserUiState.Success(user)
                 }
         }
     }

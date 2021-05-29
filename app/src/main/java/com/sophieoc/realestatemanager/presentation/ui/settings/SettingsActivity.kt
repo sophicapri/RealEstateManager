@@ -7,7 +7,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -36,11 +35,9 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
     private lateinit var addPhotoUtil : AddPicturesFromPhoneUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // init AddPhotoUtil to init all the ActivityResultLaunchers
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        // init AddPhotoUtil to init all the ActivityResultLaunchers
         addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
-        AnimationUtils.loadAnimation(this, R.anim.fui_slide_in_right)
         lifecycleScope.launchWhenStarted {
             userViewModel.currentUser.collect { userUiState ->
                 bindViews(userUiState)
@@ -70,7 +67,10 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
         }
     }
 
-    override fun getLayout() = binding.root
+    override fun getLayout(): View {
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
     fun editUsername() {
         checkConnection()

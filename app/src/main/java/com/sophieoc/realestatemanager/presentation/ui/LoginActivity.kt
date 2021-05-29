@@ -9,6 +9,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.ErrorCodes
@@ -16,9 +17,11 @@ import com.firebase.ui.auth.IdpResponse
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.ActivityLoginBinding
 import com.sophieoc.realestatemanager.presentation.BaseActivity
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserUiState
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity() {
@@ -56,11 +59,19 @@ class LoginActivity : BaseActivity() {
 
     private fun handleResponseAfterSignIn(resultCode: Int ,response: IdpResponse?) {
             if (resultCode == RESULT_OK) {
-                userViewModel.currentUser.observe(this, {
-                    startNewActivity(MainActivity::class.java)
-                    progressBar.visibility = GONE
-                    finish()
-                })
+                lifecycleScope.launchWhenStarted {
+                    userViewModel.currentUser.collect { userUiState ->
+                        when(userUiState) {
+                           is UserUiState.Success -> {
+                               startNewActivity(MainActivity::class.java)
+                               progressBar.visibility = GONE
+                               finish()
+                           }
+                            is UserUiState.Error -> {/*TODO: */}
+                            is UserUiState.Loading -> {/* TODO: */}
+                        }
+                    }
+                }
             } else {
                     if (response?.error?.errorCode == ErrorCodes.NO_NETWORK) {
                         Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show()
@@ -71,6 +82,6 @@ class LoginActivity : BaseActivity() {
     }
 
     companion object {
-        const val TAG = "LoginActivity"
+        private const val TAG = "LoginActivity"
     }
 }

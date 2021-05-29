@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.database.dao
 import androidx.room.*
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -21,11 +22,11 @@ interface UserDao {
 
     @Transaction
     @Query("SELECT * FROM users WHERE uid = :uid")
-    fun getUserWithPropertiesById(uid: String): UserWithProperties
+    fun getUserWithPropertiesById(uid: String): Flow<UserWithProperties>
 
     @Transaction
     @Query("SELECT * FROM users")
-    fun getUsersWithProperties(): List<UserWithProperties>
+    fun getUsersWithProperties(): Flow<List<UserWithProperties>>
 
     @Query("DELETE FROM users")
     suspend fun deleteUsers(): Int

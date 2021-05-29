@@ -37,7 +37,8 @@
             android:theme="@style/MyFAB"
             app:layout_anchorGravity="end|bottom"
             app:srcCompat="@drawable/ic_baseline_my_location_24"
-            android:layout_marginBottom="@dimen/margin_default" />
+            android:layout_marginBottom="@dimen/margin_default"
+            android:contentDescription="@string/focus_on_my_position" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

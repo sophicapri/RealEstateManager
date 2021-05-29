@@ -59,6 +59,7 @@ class AddPicturesFragment : Fragment(), PicturePropertyAdapter.OnDeletePictureLi
     private fun bindViews() {
         binding.apply {
             lifecycleOwner = this@AddPicturesFragment.viewLifecycleOwner
+
             executePendingBindings()
             btnAddPicture.setOnClickListener {
                 addPhotoUtil.onActivityResultListener = this@AddPicturesFragment

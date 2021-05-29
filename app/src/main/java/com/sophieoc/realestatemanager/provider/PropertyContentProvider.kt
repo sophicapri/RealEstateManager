@@ -89,7 +89,7 @@ class PropertyContentProvider : ContentProvider() {
 
     companion object {
         private const val AUTHORITY = "com.sophieoc.realestatemanager.provider"
-        private val TABLE_NAME = Property::class.java.simpleName.toLowerCase(Locale.ROOT)
+        private val TABLE_NAME = Property::class.java.simpleName.lowercase(Locale.ROOT)
         val URI_PROPERTY: Uri = Uri.parse("content://$AUTHORITY/$TABLE_NAME")
     }
 }

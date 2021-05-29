@@ -3,6 +3,7 @@ package com.sophieoc.realestatemanager.database.dao
 import android.database.Cursor
 import androidx.room.*
 import com.sophieoc.realestatemanager.model.Property
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 
@@ -24,7 +25,7 @@ interface PropertyDao {
     }
 
     @Query("SELECT * FROM property ORDER BY timestamp DESC")
-    fun getProperties(): List<Property>
+    fun getProperties(): Flow<List<Property>>
 
     @Query("SELECT * FROM property")
     fun getPropertiesWithCursor(): Cursor
@@ -33,7 +34,7 @@ interface PropertyDao {
     fun getPropertiesWithCursorForUser(userId: String): Cursor
 
     @Query("SELECT * FROM property WHERE id = :id")
-    fun getPropertyById(id: String): Property
+    fun getPropertyById(id: String): Flow<Property>
 
     @Query("DELETE FROM property WHERE id = :propertyId")
     fun deleteById(propertyId: String): Int
@@ -42,10 +43,10 @@ interface PropertyDao {
     fun deleteAll(): Int
 
     @Query("SELECT price FROM property WHERE price = (SELECT MAX(price) FROM property)")
-    fun getPriceOfPriciestProperty(): Int
+    fun getPriceOfPriciestProperty(): Flow<Int>
 
     @Query("SELECT surface FROM property WHERE surface = (SELECT MAX(surface) FROM property)")
-    fun getSurfaceOfBiggestProperty(): Int
+    fun getSurfaceOfBiggestProperty(): Flow<Int>
 
     @Query("""SELECT * FROM property WHERE  
         CASE WHEN :propertyType IS NOT NULL THEN type LIKE '_' || :propertyType || '_' ELSE 1 END 
@@ -63,5 +64,5 @@ interface PropertyDao {
             propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, nbrOfRooms : Int?,
             propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
             priceMin: Int?, priceMax: Int?, surfaceMin: Int?, surfaceMax: Int?,
-            nbrOfPictures: Int?, area: String?): List<Property>
+            nbrOfPictures: Int?, area: String?): Flow<List<Property>>
 }

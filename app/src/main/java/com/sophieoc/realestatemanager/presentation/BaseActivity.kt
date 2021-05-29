@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.sophieoc.realestatemanager.R
-import com.sophieoc.realestatemanager.presentation.ui.MainActivity
 import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
 import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailActivity
 import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailFragment
@@ -28,7 +27,9 @@ import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertie
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropertyClickListener {
     lateinit var auth: FirebaseAuth
     private lateinit var locationManager: LocationManager
@@ -37,7 +38,7 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
     val fragmentPropertyDetail = PropertyDetailFragment()
     private val startLocationSettingsForResult = registerForActivityResult(StartActivityForResult()) { activityResult ->
         if (activityResult.resultCode == RESULT_OK && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            Log.d(MainActivity.TAG, "onActivityResult: location enabled")
+            Log.d(TAG, "onActivityResult: location enabled")
         }
     }
     val startDetailActivityForResult = registerForActivityResult(StartActivityForResult()){ activityResult ->
@@ -145,6 +146,6 @@ abstract class BaseActivity : AppCompatActivity(), PropertyListAdapter.OnPropert
     }
 
     companion object{
-        const val TAG = "LogBaseActivity"
+        const val TAG = "BaseActivity"
     }
 }

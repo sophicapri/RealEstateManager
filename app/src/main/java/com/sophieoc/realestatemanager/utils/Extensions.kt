@@ -14,8 +14,8 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Int.toBitmap(resources: Resources?): BitmapDescriptor? {
-    var drawable = ResourcesCompat.getDrawable(resources!!, this, null)
+fun Int.toBitmap(resources: Resources): BitmapDescriptor? {
+    var drawable = ResourcesCompat.getDrawable(resources, this, null)
     var bitmap: Bitmap? = null
     if (drawable != null) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

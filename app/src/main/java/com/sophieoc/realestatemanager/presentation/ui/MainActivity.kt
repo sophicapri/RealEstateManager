@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.navigation.NavigationView
@@ -22,14 +23,16 @@ import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
 import com.sophieoc.realestatemanager.presentation.ui.settings.SettingsActivity
 import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesActivity
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserUiState
 import com.sophieoc.realestatemanager.utils.PreferenceHelper
 import com.sophieoc.realestatemanager.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val userViewModel by viewModels<UserViewModel>()
-    val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater)}
+    val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,18 +74,26 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         appLogo.setImageDrawable(
             ResourcesCompat.getDrawable(resources, R.drawable.ic_app_logo, null)
         )
-        userViewModel.currentUser.observe(this, {
-            it?.let {
-                val user = it.user
-                Glide.with(profilePic.context)
-                    .load(user.urlPhoto)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(profilePic)
-                username.text = user.username
-                email.text = user.email
-                PreferenceHelper.currentUserId = user.uid
+
+        lifecycleScope.launchWhenStarted {
+            userViewModel.currentUser.collect { userUiState ->
+                when (userUiState) {
+                    is UserUiState.Success -> {
+                        userUiState.userWithProperties.apply {
+                            Glide.with(profilePic.context)
+                                .load(user.urlPhoto)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(profilePic)
+                            username.text = user.username
+                            email.text = user.email
+                            PreferenceHelper.currentUserId = user.uid
+                        }
+                    }
+                    is UserUiState.Error -> { /*TODO:*/ }
+                    is UserUiState.Loading -> {/*TODO:*/ }
+                }
             }
-        })
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -108,23 +119,23 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
-private fun startMapActivity() {
-    if (Utils.isInternetAvailable(this)) {
-        startNewActivity(MapActivity::class.java)
-        PreferenceHelper.internetAvailable = true
-    } else {
-        Toast.makeText(this, getString(R.string.map_unavailable), LENGTH_LONG).show()
-        PreferenceHelper.internetAvailable = false
+    private fun startMapActivity() {
+        if (Utils.isInternetAvailable(this)) {
+            startNewActivity(MapActivity::class.java)
+            PreferenceHelper.internetAvailable = true
+        } else {
+            Toast.makeText(this, getString(R.string.map_unavailable), LENGTH_LONG).show()
+            PreferenceHelper.internetAvailable = false
+        }
     }
-}
 
-private fun signOut() {
-    auth.signOut()
-    finishAffinity()
-    startNewActivity(LoginActivity::class.java)
-}
+    private fun signOut() {
+        auth.signOut()
+        finishAffinity()
+        startNewActivity(LoginActivity::class.java)
+    }
 
-companion object {
-    const val TAG = "LogMainActivity"
-}
+    companion object {
+        private const val TAG = "LogMainActivity"
+    }
 }

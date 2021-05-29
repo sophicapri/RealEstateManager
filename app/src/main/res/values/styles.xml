@@ -47,7 +47,7 @@
         <item name="colorOnSecondary">@color/colorPrimary</item>
     </style>
 
-    <style name="Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:textColor">@android:color/secondary_text_light</item>
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
         <item name="buttonBarPositiveButtonStyle">@style/ButtonPositiveStyle</item>

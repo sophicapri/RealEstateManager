@@ -12,13 +12,15 @@ Functionalities:
 - Locate an agent on a map
 - Display agent's profile with the properties they manage
 - Change profile picture and name
-- Data saved with Firestore and Room (offline mode)
+- Save data on a remote server
+- Access data in offline mode
 
-## Library
+## Stack
 
 - FirebaseUI
 - FirebaseStorage
 - Room
+- Flow
 - Hilt
 - Glide
 - Retrofit

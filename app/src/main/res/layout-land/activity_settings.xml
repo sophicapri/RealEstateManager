@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="activity"
+            type="com.sophieoc.realestatemanager.presentation.ui.settings.SettingsActivity" />
+        <variable
             name="userViewModel"
             type="com.sophieoc.realestatemanager.presentation.ui.UserViewModel" />
     </data>
@@ -28,7 +31,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="@dimen/margin_default"
-            android:onClick="addPhoto"
+            android:onClick="@{() -> activity.addPhoto()}"
             app:imageUrl="@{userViewModel.currentUser.user.urlPhoto}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_default"
-            android:onClick="editUsername"
+            android:onClick="@{() -> activity.editUsername()}"
             android:text="@{userViewModel.currentUser.user.username}"
             app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
             app:layout_constraintEnd_toStartOf="@+id/profile_picture"
@@ -71,7 +74,7 @@
             android:text="@string/touch_to_update"
             android:textColor="@color/colorSecondary"
             android:textSize="12sp"
-            android:onClick="editUsername"
+            android:onClick="@{() -> activity.editUsername()}"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="@+id/username"
             app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -119,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:onClick="saveUsername"
+                android:onClick="@{() -> activity.saveUsername()}"
                 app:srcCompat="@drawable/ic_check_black_24"
                 app:tint="@android:color/holo_green_dark" />
 
@@ -128,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="cancelUsernameEdit"
+                android:onClick="@{() -> activity.cancelUsernameEdit()}"
                 android:layout_marginEnd="@dimen/margin_10"
                 app:srcCompat="@drawable/ic_close_black_24dp" />
         </LinearLayout>

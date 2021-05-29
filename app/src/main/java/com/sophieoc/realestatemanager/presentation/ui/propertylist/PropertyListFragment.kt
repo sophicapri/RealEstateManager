@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -20,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -30,12 +30,12 @@ import com.sophieoc.realestatemanager.databinding.FragmentPropertyListBinding
 import com.sophieoc.realestatemanager.model.EntriesFilter
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.presentation.BaseActivity
-import com.sophieoc.realestatemanager.presentation.ui.MainActivity
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditAddPropertyActivity
 import com.sophieoc.realestatemanager.presentation.ui.filter.FilterViewModel
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -78,7 +78,7 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 if (resultsSearchLayout.resultsSearchContainer.visibility == VISIBLE) {
                     displayResults()
                 } else
-                    getAndUpdatePropertiesList()
+                    updatePropertyList()
                 swipeRefreshView.isRefreshing = false
             }
             fabAddProperty.setOnClickListener {
@@ -102,19 +102,25 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         if (binding.resultsSearchLayout.resultsSearchContainer.visibility == VISIBLE)
             displayResults()
         else
-            getAndUpdatePropertiesList()
+            updatePropertyList()
     }
 
-    private fun getAndUpdatePropertiesList() {
-        propertyViewModel.getProperties().observe(mainContext, {
-            if (it != null) {
-                if (it.isNotEmpty()) {
-                    adapter.updateList(ArrayList(it))
-                    binding.noPropertiesInDb.visibility = GONE
-                } else
-                    binding.noPropertiesInDb.visibility = VISIBLE
+    private fun updatePropertyList() {
+        lifecycleScope.launchWhenStarted {
+            propertyViewModel.getProperties().collect { propertyListUiState ->
+                when (propertyListUiState) {
+                    is PropertyListUiState.Loading -> {/* TODO: showProgressBar() */
+                    }
+                    is PropertyListUiState.Empty -> binding.noPropertiesInDb.visibility = VISIBLE
+                    is PropertyListUiState.Error -> {/* TODO: handleError */
+                    }
+                    is PropertyListUiState.Success -> {
+                        adapter.updateList(ArrayList(propertyListUiState.propertyList))
+                        binding.noPropertiesInDb.visibility = GONE
+                    }
+                }
             }
-        })
+        }
     }
 
     private fun configureRecyclerView(recyclerView: RecyclerView) {
@@ -135,7 +141,7 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun resetFilter() {
-        getAndUpdatePropertiesList()
+        updatePropertyList()
     }
 
     @SuppressLint("InflateParams")
@@ -165,18 +171,21 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             bindingFilter.btnDeleteDate.visibility = GONE
         }
         bindingFilter.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
-        filterViewModel.getPriceOfPriciestProperty().observe(this, {
-            bindingFilter.rangeSliderPrice.valueFrom = 0f
-            bindingFilter.rangeSliderPrice.valueTo = it.toFloat()
-            bindingFilter.rangeSliderPrice.values = arrayListOf(0.0f, it.toFloat() / 2)
-            bindingFilter.rangeSliderPrice.stepSize = it.toFloat() / STEP_SIZE_PRICE
-        })
-        bindingFilter.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
-        filterViewModel.getSurfaceOfBiggestProperty().observe(this, {
-            bindingFilter.rangeSliderSurface.valueFrom = 0f
-            bindingFilter.rangeSliderSurface.valueTo = it.toFloat()
-            bindingFilter.rangeSliderSurface.values = arrayListOf(0.0f, it.toFloat() / 2)
-        })
+        lifecycleScope.launchWhenStarted {
+            filterViewModel.getPriceOfPriciestProperty().collect { price ->
+                bindingFilter.rangeSliderPrice.valueFrom = 0f
+                bindingFilter.rangeSliderPrice.valueTo = price.toFloat()
+                bindingFilter.rangeSliderPrice.values = arrayListOf(0.0f, price.toFloat() / 2)
+                bindingFilter.rangeSliderPrice.stepSize = price.toFloat() / STEP_SIZE_PRICE
+            }
+
+            bindingFilter.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
+            filterViewModel.getSurfaceOfBiggestProperty().collect {  surface ->
+                bindingFilter.rangeSliderSurface.valueFrom = 0f
+                bindingFilter.rangeSliderSurface.valueTo = surface.toFloat()
+                bindingFilter.rangeSliderSurface.values = arrayListOf(0.0f, surface.toFloat() / 2)
+            }
+        }
         bindingFilter.minPrice.text = getString(
             R.string.dollar_value,
             bindingFilter.rangeSliderPrice.values.first().toInt().formatToDollarsOrMeters()
@@ -273,18 +282,23 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun displayResults() {
-        filterViewModel.resultSearch.observe(viewLifecycleOwner, {
-            it?.let {
-                updateList(ArrayList(it))
-                binding.apply {
-                    if (it.isEmpty()) noPropertiesFound.visibility = VISIBLE
-                    else noPropertiesFound.visibility = GONE
+        lifecycleScope.launchWhenStarted {
+            filterViewModel.resultSearch.collect { propertyListUiState ->
+                when (propertyListUiState) {
+                    is PropertyListUiState.Loading -> {/*TODO: show progressBar*/
+                    }
+                    is PropertyListUiState.Empty -> {
+                        binding.noPropertiesFound.visibility = VISIBLE
+                    }
+                    is PropertyListUiState.Success -> {
+                        updateList(ArrayList(propertyListUiState.propertyList))
+                        binding.noPropertiesFound.visibility = GONE
+                    }
+                    is PropertyListUiState.Error -> {/* TODO: handleError */ }
                 }
+                filterDialog?.dismiss()
             }
-            if (it == null)
-                Log.d(MainActivity.TAG, "startSearch: property list is null")
-            filterDialog?.dismiss()
-        })
+        }
     }
 
     override fun onShow(dialogInterface: DialogInterface?) {
@@ -343,9 +357,15 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         val entries = filterViewModel.entries
         var msg = ""
         entries.propertyType?.let { msg += "$it - " }
-        entries.nbrOfRoom?.let { msg += getString(R.string.nbr_of_room_filter, it) }
-        entries.nbrOfBed?.let { msg += getString(R.string.nbr_of_bed_filter, it) }
-        entries.nbrOfBath?.let { msg += getString(R.string.nbr_of_bath_filter, it) }
+        entries.nbrOfRoom?.let {
+            msg += resources.getQuantityString(R.plurals.nbr_of_room_filter, it, it)
+        }
+        entries.nbrOfBed?.let {
+            msg +=  resources.getQuantityString(R.plurals.nbr_of_bed_filter, it, it)
+        }
+        entries.nbrOfBath?.let {
+            msg +=  resources.getQuantityString(R.plurals.nbr_of_bath_filter, it, it)
+        }
         entries.propertyAvailability?.let {
             msg += if (it == PropertyAvailability.AVAILABLE.name) "${PropertyAvailability.AVAILABLE.s} "
             else "${PropertyAvailability.SOLD.s} "
@@ -374,7 +394,9 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         if (entries.surfaceMin != null && entries.surfaceMax != null) {
             msg += getString(R.string.sqft_between, entries.surfaceMin, entries.surfaceMax)
         }
-        entries.nbrOfPictures?.let { msg += getString(R.string.with_x_pictures, it) }
+        entries.nbrOfPictures?.let {
+            msg +=  resources.getQuantityString(R.plurals.with_x_pictures, it, it)
+        }
         return msg
     }
 

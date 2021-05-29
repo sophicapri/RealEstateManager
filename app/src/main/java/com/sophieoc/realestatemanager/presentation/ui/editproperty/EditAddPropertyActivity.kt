@@ -3,13 +3,16 @@ package com.sophieoc.realestatemanager.presentation.ui.editproperty
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.ActivityEditAddPropertyBinding
 import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
+import com.sophieoc.realestatemanager.presentation.ui.property.PropertyUiState
 import com.sophieoc.realestatemanager.utils.AddPicturesFromPhoneUtil
 import com.sophieoc.realestatemanager.utils.PROPERTY_ID
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class EditAddPropertyActivity : BaseActivity() {
@@ -24,15 +27,15 @@ class EditAddPropertyActivity : BaseActivity() {
         }
 
         if (intent.extras != null && intent!!.extras!!.containsKey(PROPERTY_ID))
-            getProperty()
+            getPropertyToEdit()
         else
-            launchFragments()
+            showFragments()
 
         //init ActivityResultLaunchers
         AddPicturesFragment.addPhotoUtil = AddPicturesFromPhoneUtil(this)
     }
 
-    private fun launchFragments() {
+    private fun showFragments() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.frame_add_property, editPropertyFragment,
@@ -52,13 +55,19 @@ class EditAddPropertyActivity : BaseActivity() {
         return binding.root
     }
 
-    private fun getProperty() {
+    private fun getPropertyToEdit() {
         val propertyId = intent?.extras?.get(PROPERTY_ID) as String
-        sharedViewModel.getPropertyById(propertyId).observe(this, { property ->
-            property?.let {
-                sharedViewModel.property = it
-                launchFragments()
+        lifecycleScope.launchWhenStarted {
+            sharedViewModel.getPropertyById(propertyId).collect { propertyUiState ->
+                when(propertyUiState){
+                is PropertyUiState.Loading -> {/*Todo: show progressBar*/}
+                    is PropertyUiState.Success -> {
+                        sharedViewModel.property = propertyUiState.property
+                        showFragments()
+                    }
+                    is PropertyUiState.Error -> { /*handleError(propertyUiState.exception) */}
+                }
             }
-        })
+        }
     }
 }

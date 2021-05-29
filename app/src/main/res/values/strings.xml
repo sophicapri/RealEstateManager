@@ -113,11 +113,24 @@
     <string name="since_date">"since %s "</string>
     <string name="price_between">"From $%1$s and $%2$s - "</string>
     <string name="sqft_between">"From %1$d to %2$d sqft - "</string>
-    <string name="with_x_pictures">"With at least %d pictures - "</string>
+    <plurals name="with_x_pictures">
+        <item quantity="one">"With at least %d picture -"</item>
+        <item quantity="other">"With at least %d pictures - "</item>
+    </plurals>
     <string name="close_to_poi">"Close to "</string>
-    <string name="nbr_of_room_filter">"%d room(s) - "</string>
-    <string name="nbr_of_bed_filter">"%d bedroom(s) - "</string>
-    <string name="nbr_of_bath_filter">"%d bathroom(s) - "</string>
+    <!-- <plurals name="nbr_of_room_filter">"%d room(s) - "</plurals>-->
+    <plurals name="nbr_of_room_filter">
+        <item quantity="one">"%d room - "</item>
+        <item quantity="other">"%d rooms - "</item>
+    </plurals>
+    <plurals name="nbr_of_bed_filter">
+        <item quantity="one">"%d bedroom - "</item>
+        <item quantity="other">"%d bedrooms - "</item>
+    </plurals>
+    <plurals name="nbr_of_bath_filter">
+        <item quantity="one">"%d bathroom - "</item>
+        <item quantity="other">"%d bathrooms - "</item>
+    </plurals>
     <string name="no_properties_found_matching">No properties found matching</string>
     <string name="optional">(optional)</string>
     <string name="forgot_info_title">"Oops! You forgot to add some informations!"</string>
@@ -149,4 +162,5 @@
     <string name="select_picture_from_camera">Select picture from camera</string>
     <string name="retake_photo">RETAKE</string>
     <string name="photo_taken_from_camera">Photo taken from camera</string>
+    <string name="focus_on_my_position">Focus on my position</string>
 </resources>

@@ -4,9 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.presentation.ui.property.PropertyUiState
+import com.sophieoc.realestatemanager.presentation.ui.propertylist.PropertyListUiState
 import com.sophieoc.realestatemanager.repository.PropertyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,7 +19,7 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
     ViewModel() {
     var property = Property()
     private val _propertyToUpsert: MutableStateFlow<PropertyUiState> =
-        MutableStateFlow(PropertyUiState.Loading(Property()))
+        MutableStateFlow(PropertyUiState.Loading)
     val propertySaved: StateFlow<PropertyUiState> = _propertyToUpsert
 
     fun upsertProperty() {
@@ -33,7 +37,7 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
 
     fun getPropertyById(propertyId: String): StateFlow<PropertyUiState> {
         val property: MutableStateFlow<PropertyUiState>
-        = MutableStateFlow(PropertyUiState.Loading(Property()))
+        = MutableStateFlow(PropertyUiState.Loading)
         viewModelScope.launch {
             propertySource.getPropertyById(propertyId)
                 .catch { e ->
@@ -46,5 +50,21 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
         return property
     }
 
-    fun getProperties(): Flow<List<Property>> = propertySource.getAllProperties()
+    fun getProperties(): StateFlow<PropertyListUiState> {
+        val propertyList: MutableStateFlow<PropertyListUiState>
+                = MutableStateFlow(PropertyListUiState.Loading)
+        viewModelScope.launch {
+            propertySource.getAllProperties()
+                .catch { e ->
+                    propertyList.value = PropertyListUiState.Error(e)
+                }
+                .collect { propertyListReceived ->
+                    if (propertyListReceived.isEmpty())
+                        propertyList.value = PropertyListUiState.Empty
+                    else
+                        propertyList.value = PropertyListUiState.Success(propertyListReceived)
+                }
+        }
+        return propertyList
+    }
 }

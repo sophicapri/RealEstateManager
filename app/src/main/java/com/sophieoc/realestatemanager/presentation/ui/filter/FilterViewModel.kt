@@ -17,7 +17,7 @@ import javax.inject.Inject
 class FilterViewModel @Inject constructor(private val propertySource: PropertyRepository): ViewModel() {
     var entries = EntriesFilter()
     private val _resultSearch : MutableStateFlow<PropertyListUiState>
-    = MutableStateFlow(PropertyListUiState.Loading(emptyList()))
+    = MutableStateFlow(PropertyListUiState.Loading)
     val resultSearch: StateFlow<PropertyListUiState> = _resultSearch
 
     fun startSearch() {

@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,12 +26,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.sophieoc.realestatemanager.R
 import com.sophieoc.realestatemanager.databinding.FragmentMapBinding
+import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
 import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailActivity
 import com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailFragment
+import com.sophieoc.realestatemanager.presentation.ui.propertylist.PropertyListUiState
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -174,23 +178,33 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initMarkers() {
-        propertyViewModel.getProperties().observe(requireActivity(), { propertyList ->
-            propertyList?.let {
-                for (property in propertyList) {
-                    if (property.address.toString().isNotEmpty()) {
-                        val latLng = property.address.toLatLng(requireContext())
-                        if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
-                            val marker: Marker? = map?.addMarker(
-                                MarkerOptions().title(property.type.toString())
-                                    .position(latLng)
-                                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
-                            )
-                            marker?.tag = property.id
+        lifecycleScope.launchWhenStarted {
+            propertyViewModel.getProperties().collect { propertyListUiState ->
+                when (propertyListUiState) {
+                    is PropertyListUiState.Loading -> {/*TODO: */}
+                    is PropertyListUiState.Success -> {
+                        for (property in propertyListUiState.propertyList) {
+                            if (property.address.toString().isNotEmpty())
+                                pinPropertyOnMap(property)
                         }
                     }
+                    is PropertyListUiState.Empty -> {/*TODO: */}
+                    is PropertyListUiState.Error -> {/*TODO: */}
                 }
             }
-        })
+        }
+    }
+
+    private fun pinPropertyOnMap(property: Property) {
+        val latLng = property.address.toLatLng(requireContext())
+        if (latLng.toStringFormat() != LAT_LNG_NOT_FOUND) {
+            val marker: Marker? = map?.addMarker(
+                MarkerOptions().title(property.type.toString())
+                    .position(latLng)
+                    .icon(R.drawable.ic_baseline_house_24.toBitmap(resources))
+            )
+            marker?.tag = property.id
+        }
     }
 
     private fun getLocationFromIntent(): Location? {

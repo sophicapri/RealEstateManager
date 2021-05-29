@@ -173,17 +173,26 @@ class PropertyListFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         bindingFilter.rangeSliderPrice.addOnChangeListener(getPriceSliderListener())
         lifecycleScope.launchWhenStarted {
             filterViewModel.getPriceOfPriciestProperty().collect { price ->
-                bindingFilter.rangeSliderPrice.valueFrom = 0f
-                bindingFilter.rangeSliderPrice.valueTo = price.toFloat()
-                bindingFilter.rangeSliderPrice.values = arrayListOf(0.0f, price.toFloat() / 2)
-                bindingFilter.rangeSliderPrice.stepSize = price.toFloat() / STEP_SIZE_PRICE
+                if (price != null) {
+                    bindingFilter.apply {
+                        rangeSliderPrice.valueFrom = 0f
+                        rangeSliderPrice.valueTo = price.toFloat()
+                        rangeSliderPrice.values = arrayListOf(0.0f, price.toFloat() / 2)
+                        rangeSliderPrice.stepSize = price.toFloat() / STEP_SIZE_PRICE
+                    }
+                }
             }
-
+        }
+        lifecycleScope.launchWhenStarted {
             bindingFilter.rangeSliderSurface.addOnChangeListener(getSurfaceSliderListener())
-            filterViewModel.getSurfaceOfBiggestProperty().collect {  surface ->
-                bindingFilter.rangeSliderSurface.valueFrom = 0f
-                bindingFilter.rangeSliderSurface.valueTo = surface.toFloat()
-                bindingFilter.rangeSliderSurface.values = arrayListOf(0.0f, surface.toFloat() / 2)
+            filterViewModel.getSurfaceOfBiggestProperty().collect { surface ->
+                if (surface != null) {
+                    bindingFilter.apply {
+                        rangeSliderSurface.valueFrom = 0f
+                        rangeSliderSurface.valueTo = surface.toFloat()
+                        rangeSliderSurface.values = arrayListOf(0.0f, surface.toFloat() / 2)
+                    }
+                }
             }
         }
         bindingFilter.minPrice.text = getString(

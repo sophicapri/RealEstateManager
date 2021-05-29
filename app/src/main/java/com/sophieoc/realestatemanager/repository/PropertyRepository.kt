@@ -141,8 +141,8 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         return properties
     }
 
-    fun getPriceOfPriciestProperty(): Flow<Int> {
-        val priceMutable : MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getPriceOfPriciestProperty(): Flow<Int?> {
+        val priceMutable : MutableStateFlow<Int?> = MutableStateFlow(null)
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getPriceOfPriciestProperty().collect { price ->
                 priceMutable.value = price
@@ -152,8 +152,8 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         return priceMutable
     }
 
-    fun getSurfaceOfBiggestProperty(): Flow<Int> {
-        val surfaceMutable : MutableStateFlow<Int> = MutableStateFlow(0)
+    fun getSurfaceOfBiggestProperty(): Flow<Int?> {
+        val surfaceMutable : MutableStateFlow<Int?> = MutableStateFlow(null)
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getSurfaceOfBiggestProperty().collect { surface ->
                 surfaceMutable.value = surface

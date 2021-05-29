@@ -82,7 +82,7 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
         return when (position) {
             FragmentIndex.ADD_ADDRESS_FRAGMENT -> R.drawable.add_address_tab_selector
             FragmentIndex.ADD_PROPERTY_INFO_FRAGMENT -> R.drawable.property_info_tab_selector
-            FragmentIndex.ADD_PICTURES_FRAGMENT -> R.drawable.ic_add_picture_active
+            FragmentIndex.ADD_PICTURES_FRAGMENT -> R.drawable.add_pictures_tab_selector
             else -> throw IndexOutOfBoundsException()
         }
     }
@@ -100,9 +100,7 @@ class EditAddPropertyFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.apply {
             propertyViewModel = sharedViewModel
             activity = this@EditAddPropertyFragment
-            requireActivity().intent.extras?.let { extras ->
-                titleEditCreate.text = getString(R.string.edit_property_title)
-            }
+            requireActivity().intent.extras?.let { titleEditCreate.text = getString(R.string.edit_property_title) }
             if (requireActivity().intent.extras == null)
                 titleEditCreate.text = getString(R.string.add_property_title)
             toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }

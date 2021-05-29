@@ -15,28 +15,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(private val userSource: UserRepository) : ViewModel() {
-    private val _currentUser : MutableStateFlow<UserUiState>
+    private val _currentUser: MutableStateFlow<UserUiState>
         get() {
             val userMutableStateFlow: MutableStateFlow<UserUiState> =
                 MutableStateFlow(UserUiState.Loading)
-                viewModelScope.launch {
+            viewModelScope.launch {
                 userSource.currentUser.catch { e -> UserUiState.Error(e) }
-                    .collect { userMutableStateFlow.value = UserUiState.Success(it) }
+                    .collect { user ->
+                        if (user == null) userMutableStateFlow.value = UserUiState.Loading
+                        else userMutableStateFlow.value = UserUiState.Success(user)
+                    }
             }
-         return userMutableStateFlow
-    }
-    val currentUser : StateFlow<UserUiState>
-        get() = _currentUser
-    val userUpdated: StateFlow<UserUiState> = _currentUser
+            return userMutableStateFlow
+        }
+    val currentUser: StateFlow<UserUiState> = _currentUser
 
     fun getUserById(uid: String): StateFlow<UserUiState> {
-        val userMutable : MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
+        val userMutable: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
         viewModelScope.launch {
             userSource.getUserWithProperties(uid)
                 .catch { e -> userMutable.value = UserUiState.Error(e) }
                 .collect { user ->
-                userMutable.value = UserUiState.Success(user)
-            }
+                    if (user == null)
+                        userMutable.value = UserUiState.Loading
+                    else
+                        userMutable.value = UserUiState.Success(user)
+                }
         }
         return userMutable
     }
@@ -47,8 +51,8 @@ class UserViewModel @Inject constructor(private val userSource: UserRepository) 
                 _currentUser.value = UserUiState.Error(e)
             }
                 .collect {
-                _currentUser.value = UserUiState.Success(user)
-            }
+                    _currentUser.value = UserUiState.Success(user)
+                }
         }
     }
 }

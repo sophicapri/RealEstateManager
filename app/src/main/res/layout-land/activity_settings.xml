@@ -8,8 +8,8 @@
             name="activity"
             type="com.sophieoc.realestatemanager.presentation.ui.settings.SettingsActivity" />
         <variable
-            name="userViewModel"
-            type="com.sophieoc.realestatemanager.presentation.ui.UserViewModel" />
+            name="user"
+            type="com.sophieoc.realestatemanager.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
             android:layout_height="150dp"
             android:layout_marginTop="@dimen/margin_default"
             android:onClick="@{() -> activity.addPhoto()}"
-            app:imageUrl="@{userViewModel.currentUser.user.urlPhoto}"
+            app:imageUrl="@{user.urlPhoto}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.3"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_default"
             android:onClick="@{() -> activity.editUsername()}"
-            android:text="@{userViewModel.currentUser.user.username}"
+            android:text="@{user.username}"
             app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
             app:layout_constraintEnd_toStartOf="@+id/profile_picture"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
                 android:paddingEnd="3dp"
                 android:imeOptions="flagNoExtractUi|flagNoEnterAction"
                 android:inputType="text"
-                android:text="@={userViewModel.currentUser.user.username}"
+                android:text="@={user.username}"
                 android:textSize="16sp"
                 tools:ignore="Autofill,LabelFor">
                 <requestFocus />

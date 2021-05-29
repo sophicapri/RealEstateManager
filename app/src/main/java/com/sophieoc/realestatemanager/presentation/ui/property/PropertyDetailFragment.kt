@@ -32,6 +32,7 @@ import com.sophieoc.realestatemanager.presentation.ui.UserViewModel
 import com.sophieoc.realestatemanager.presentation.ui.editproperty.EditAddPropertyActivity
 import com.sophieoc.realestatemanager.presentation.ui.map.MapActivity
 import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserPropertiesActivity
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserUiState
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -61,8 +62,6 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
         _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_property_detail, container, false
         )
-        binding.userViewModel = userViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
         binding.progressBar.visibility = VISIBLE
         return binding.root
     }
@@ -115,8 +114,12 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
                         map?.let { addMarkerAndZoom() }
                         bindViews()
                     }
-                    is PropertyUiState.Error -> TODO()
-                    is PropertyUiState.Loading -> TODO()
+                    is PropertyUiState.Error -> {
+                       /* TODO() */
+                    }
+                    is PropertyUiState.Loading -> {
+                     /*   TODO()*/
+                    }
                 }
             }
         }
@@ -131,29 +134,42 @@ class PropertyDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun bindViews() {
-        binding.propertyDetailToolbar.propertyDetailToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
-        binding.fabEditProperty.setOnClickListener { startEditPropertyActivity() }
-        binding.btnMapFullscreen.setOnClickListener { startMapActivity() }
-        binding.property?.let {
-            binding.viewPager.registerOnPageChangeCallback(getOnPageChangeCallback(it.photos))
-            userViewModel.getUserById(it.userId).observe(mainContext, { agent ->
-                agent?.let {
-                    binding.user = agent.user
-                    binding.icProfilePicture.setOnClickListener { startUserActivity() }
-                    binding.username.setOnClickListener { startUserActivity() }
-                    binding.titleAgent.setOnClickListener { startUserActivity() }
-                }
-                binding.progressBar.visibility = View.GONE
-            })
+        binding.apply {
+            fragment = this@PropertyDetailFragment
+            loggedUserId = PreferenceHelper.currentUserId
+            lifecycleOwner = viewLifecycleOwner
+            propertyDetailToolbar.propertyDetailToolbar.setNavigationOnClickListener { mainContext.onBackPressed() }
+            fabEditProperty.setOnClickListener { startEditPropertyActivity() }
+            btnMapFullscreen.setOnClickListener { startMapActivity() }
+        }
+        binding.property?.let { property ->
+            binding.viewPager.registerOnPageChangeCallback(getOnPageChangeCallback(property.photos))
+            lifecycleScope.launchWhenStarted {
+                userViewModel.getUserById(property.userId).collect { userUiState ->
+                    when (userUiState) {
+                        is UserUiState.Success -> {
+                            binding.apply {
+                                user = userUiState.userWithProperties.user
+                                icProfilePicture.setOnClickListener { startUserActivity() }
+                                username.setOnClickListener { startUserActivity() }
+                                titleAgent.setOnClickListener { startUserActivity() }
+                                progressBar.visibility = View.GONE
 
-            it.photos.let { photos ->
-                val listPhotos = if (photos.isNotEmpty()) photos
-                else
-                    arrayListOf(Photo("", ""))
-                binding.viewPager.adapter = SliderAdapter(listPhotos)
+                                property.photos.let { photos ->
+                                    val listPhotos = if (photos.isNotEmpty()) photos
+                                    else
+                                        arrayListOf(Photo("", ""))
+                                    viewPager.adapter = SliderAdapter(listPhotos)
+                                    TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
+                                }
+                            }
+                        }
+                        is UserUiState.Error -> {/*TODO:*/ }
+                        is UserUiState.Loading -> {/*TODO:*/ }
+                    }
+                }
             }
         }
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
     }
 
     private fun getOnPageChangeCallback(photos: List<Photo>): ViewPager2.OnPageChangeCallback {

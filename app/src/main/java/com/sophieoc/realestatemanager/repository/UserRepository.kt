@@ -27,9 +27,9 @@ class UserRepository(private val userDao: UserDao) {
     private val firebaseUser = FirebaseAuth.getInstance().currentUser
     val currentUser = getUserWithProperties(getUserId())
 
-    fun getUserWithProperties(uid: String): Flow<UserWithProperties> {
-        val user: MutableStateFlow<UserWithProperties> =
-            MutableStateFlow(UserWithProperties(User(), emptyList()))
+    fun getUserWithProperties(uid: String): Flow<UserWithProperties?> {
+        val user: MutableStateFlow<UserWithProperties?> =
+            MutableStateFlow(null)
         if (!PreferenceHelper.internetAvailable)
             getUserFromRoom(uid, user)
         else
@@ -38,7 +38,7 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     // ROOM
-    private fun getUserFromRoom(uid: String, userMutable: MutableStateFlow<UserWithProperties>) {
+    private fun getUserFromRoom(uid: String, userMutable: MutableStateFlow<UserWithProperties?>) {
         CoroutineScope(IO).launch {
             userDao.getUserWithPropertiesById(uid).collect { userWithProperties ->
                 userMutable.value = userWithProperties
@@ -55,7 +55,7 @@ class UserRepository(private val userDao: UserDao) {
     // FIRESTORE
     private fun getUserFromFirestore(
         uid: String,
-        userMutable: MutableStateFlow<UserWithProperties>
+        userMutable: MutableStateFlow<UserWithProperties?>
     ) {
         userCollectionRef.document(uid).get()
             .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
@@ -76,7 +76,7 @@ class UserRepository(private val userDao: UserDao) {
 
     private fun getUserPropertiesFromFirestore(
         uid: String,
-        userMutable: MutableStateFlow<UserWithProperties>,
+        userMutable: MutableStateFlow<UserWithProperties?>,
         user: User
     ) {
         propertyCollectionRef.whereEqualTo("userId", uid)
@@ -91,7 +91,7 @@ class UserRepository(private val userDao: UserDao) {
             }
     }
 
-    private fun saveNewUserInDB(userMutable: MutableStateFlow<UserWithProperties>) {
+    private fun saveNewUserInDB(userMutable: MutableStateFlow<UserWithProperties?>) {
         firebaseUser?.let { firebaseUser ->
             val urlPicture = firebaseUser.photoUrl.toString()
             val uid: String = firebaseUser.uid

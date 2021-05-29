@@ -1,5 +1,6 @@
 package com.sophieoc.realestatemanager.presentation.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sophieoc.realestatemanager.model.Property
@@ -44,7 +45,10 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
                      property.value = PropertyUiState.Error(e)
             }
                 .collect { propertyReceived ->
-                    property.value = PropertyUiState.Success(propertyReceived)
+                    if(propertyReceived == null)
+                        property.value = PropertyUiState.Loading
+                    else
+                        property.value = PropertyUiState.Success(propertyReceived)
                 }
         }
         return property
@@ -59,12 +63,19 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
                     propertyList.value = PropertyListUiState.Error(e)
                 }
                 .collect { propertyListReceived ->
-                    if (propertyListReceived.isEmpty())
+                    if (propertyListReceived == null)
+                        propertyList.value = PropertyListUiState.Loading
+                    else if (propertyListReceived.isEmpty()) {
                         propertyList.value = PropertyListUiState.Empty
-                    else
+                        Log.d(TAG, "getProperties: empty ?")
+                    } else
                         propertyList.value = PropertyListUiState.Success(propertyListReceived)
                 }
         }
         return propertyList
+    }
+
+    companion object{
+        private val TAG = PropertyViewModel::class.java.simpleName
     }
 }

@@ -163,4 +163,5 @@
     <string name="retake_photo">RETAKE</string>
     <string name="photo_taken_from_camera">Photo taken from camera</string>
     <string name="focus_on_my_position">Focus on my position</string>
+    <string name="edit_this_property">Edit this property</string>
 </resources>

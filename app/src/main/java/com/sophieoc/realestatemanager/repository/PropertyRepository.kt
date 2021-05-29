@@ -37,8 +37,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
                                         propertyCreationTask.exception?.message)
                         }
                 } else if (propertyIdTask.exception != null) Log.e(
-                    "TAG",
-                    " createProperty: " + propertyIdTask.exception?.message
+                    TAG, " createProperty: " + propertyIdTask.exception?.message
                 )
             }
         return propertyToCreate
@@ -50,24 +49,26 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         }
     }
 
-    fun getPropertyById(id: String): Flow<Property> {
-        val property: MutableStateFlow<Property> = MutableStateFlow(Property())
+    suspend fun getPropertyById(id: String): Flow<Property?> {
+        val property: MutableStateFlow<Property?> = MutableStateFlow(null)
         getPropertyFromRoom(id, property)
         if (PreferenceHelper.internetAvailable)
             getPropertyFromFirestore(id, property)
+        property.emit(property.value)
         return property
     }
 
-    fun getAllProperties(): Flow<List<Property>> {
-        val properties: MutableStateFlow<List<Property>> = MutableStateFlow(emptyList())
+    suspend fun getAllProperties(): Flow<List<Property>?> {
+        val properties: MutableStateFlow<List<Property>?> = MutableStateFlow(null)
         if (!PreferenceHelper.internetAvailable)
             getPropertiesFromRoom(properties)
         else
             getPropertiesFromFirestore(properties)
+        properties.emit(properties.value)
         return properties
     }
 
-    private fun getPropertiesFromRoom(properties: MutableStateFlow<List<Property>>) {
+    private fun getPropertiesFromRoom(properties: MutableStateFlow<List<Property>?>) {
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getProperties().collect { propertyList ->
                 properties.value = propertyList
@@ -75,7 +76,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         }
     }
 
-    private fun getPropertiesFromFirestore(properties: MutableStateFlow<List<Property>>) {
+    private fun getPropertiesFromFirestore(properties: MutableStateFlow<List<Property>?>) {
         propertyCollectionRef.orderBy(TIMESTAMP, Query.Direction.DESCENDING).get()
             .addOnCompleteListener { task: Task<QuerySnapshot> ->
                 if (task.isSuccessful) {
@@ -97,7 +98,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         }
     }
 
-    private fun getPropertyFromRoom(id: String, property: MutableStateFlow<Property>) {
+    private fun getPropertyFromRoom(id: String, property: MutableStateFlow<Property?>) {
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getPropertyById(id).collect { propertyRoom ->
                 property.value = propertyRoom
@@ -105,7 +106,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         }
     }
 
-    private fun getPropertyFromFirestore(id: String, property: MutableStateFlow<Property>) {
+    private fun getPropertyFromFirestore(id: String, property: MutableStateFlow<Property?>) {
         propertyCollectionRef.document(id).get()
             .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
                 if (task.isSuccessful) {
@@ -119,7 +120,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
             }
     }
 
-    fun getFilteredProperties(
+    suspend fun getFilteredProperties(
         propertyType: String?, nbrOfBed: Int?, nbrOfBath: Int?, nbrOfRooms: Int?,
         propertyAvailability: String?, dateOnMarket: Date?, dateSold: Date?,
         priceMin: Int?, priceMax: Int?, surfaceMin: Int?, surfaceMax: Int?, nbrOfPictures: Int?,
@@ -136,14 +137,16 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
                     properties.value = propertyList
                 }
         }
+        properties.emit(properties.value)
         return properties
     }
 
     fun getPriceOfPriciestProperty(): Flow<Int> {
         val priceMutable : MutableStateFlow<Int> = MutableStateFlow(0)
         CoroutineScope(Dispatchers.IO).launch {
-            propertyDao.getPriceOfPriciestProperty().collect { property ->
-                priceMutable.value = property
+            propertyDao.getPriceOfPriciestProperty().collect { price ->
+                priceMutable.value = price
+                priceMutable.emit(priceMutable.value)
             }
         }
         return priceMutable
@@ -154,6 +157,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getSurfaceOfBiggestProperty().collect { surface ->
                 surfaceMutable.value = surface
+                surfaceMutable.emit(surfaceMutable.value)
             }
         }
         return surfaceMutable

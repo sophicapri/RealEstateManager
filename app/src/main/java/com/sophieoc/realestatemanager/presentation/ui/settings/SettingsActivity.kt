@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.sophieoc.realestatemanager.R
@@ -19,8 +20,10 @@ import com.sophieoc.realestatemanager.databinding.ActivitySettingsBinding
 import com.sophieoc.realestatemanager.model.UserWithProperties
 import com.sophieoc.realestatemanager.presentation.BaseActivity
 import com.sophieoc.realestatemanager.presentation.ui.UserViewModel
+import com.sophieoc.realestatemanager.presentation.ui.userproperty.UserUiState
 import com.sophieoc.realestatemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.io.File
 import java.util.*
 
@@ -38,26 +41,33 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
         super.onCreate(savedInstanceState)
         addPhotoUtil = AddPicturesFromPhoneUtil(this, this)
         AnimationUtils.loadAnimation(this, R.anim.fui_slide_in_right)
-        bindViews()
+        lifecycleScope.launchWhenStarted {
+            userViewModel.currentUser.collect { userUiState ->
+                bindViews(userUiState)
+            }
+        }
     }
 
-    private fun bindViews() {
-        binding.apply {
-            userViewModel = this@SettingsActivity.userViewModel
-            lifecycleOwner = this@SettingsActivity
-            activity = this@SettingsActivity
-            toolbar.setNavigationOnClickListener { onBackPressed() }
-        }
-        userViewModel.userUpdated.observe(this, {
-            if (it != null) {
+    private fun bindViews(userUiState: UserUiState) {
+        when (userUiState) {
+            is UserUiState.Success -> {
+                currentUser = userUiState.userWithProperties
+                binding.apply {
+                    user = userUiState.userWithProperties.user
+                    lifecycleOwner = this@SettingsActivity
+                    activity = this@SettingsActivity
+                    toolbar.setNavigationOnClickListener { onBackPressed() }
+                }
                 binding.progressBar.visibility = GONE
                 if (dataChanged) {
-                    Toast.makeText(this, getString(R.string.changes_saved), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@SettingsActivity, getString(R.string.changes_saved),
+                        Toast.LENGTH_LONG).show()
                     dataChanged = false
                 }
-                currentUser = it
             }
-        })
+            is UserUiState.Error -> {/*handleError(userUiState.exception) */}
+            is UserUiState.Loading -> {/* TODO: */}
+        }
     }
 
     override fun getLayout() = binding.root
@@ -88,7 +98,7 @@ class SettingsActivity : BaseActivity(), AddPicturesFromPhoneUtil.OnActivityResu
                 editUsernameContainer.visibility = GONE
                 hideSoftKeyboard(editTextUsername)
                 dataChanged = true
-                userViewModel?.updateUser(currentUser)
+                userViewModel.updateUser(currentUser)
             } else
                 editTextUsername.error = getString(R.string.empty_field)
         }

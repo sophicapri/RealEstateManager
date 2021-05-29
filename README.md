@@ -15,8 +15,16 @@ Functionalities:
 - Save data on a remote server
 - Access data in offline mode
 
-## Stack
+## Screenshots
+![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
+![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)
+![](screenshots/filter.png)
 
+**Tablet mode:**
+
+![](screenshots/tablet.png)
+
+## Stack
 - FirebaseUI
 - FirebaseStorage
 - Room
@@ -35,15 +43,6 @@ Functionalities:
  - Koin
  - Places
  - LiveData
-
-## Screenshots
-![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
-![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)
-![](screenshots/filter.png)
-
-**Tablet mode:**
-
-![](screenshots/tablet.png)
 
 
 

@@ -41,7 +41,7 @@ Functionalities:
 
 **"initial_school_version" branch:**
  - Koin
- - Places
+ - Places API
  - LiveData
 
 

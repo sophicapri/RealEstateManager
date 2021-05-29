@@ -34,6 +34,7 @@ Functionalities:
 **"initial_school_version" branch:**
  - Koin
  - Places
+ - LiveData
 
 ## Screenshots
 ![](screenshots/list_properties.png).![](screenshots/property_detail.png)  

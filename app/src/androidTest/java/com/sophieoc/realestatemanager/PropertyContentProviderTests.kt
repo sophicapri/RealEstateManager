@@ -8,10 +8,10 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.gson.Gson
+import com.sophieoc.realestatemanager.database.RealEstateDatabase
 import com.sophieoc.realestatemanager.model.Photo
 import com.sophieoc.realestatemanager.provider.PropertyContentProvider
-import com.sophieoc.realestatemanager.database.RealEstateDatabase
-import com.sophieoc.realestatemanager.utils.PropertyAvailability
+import com.sophieoc.realestatemanager.util.PropertyAvailability
 import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Before

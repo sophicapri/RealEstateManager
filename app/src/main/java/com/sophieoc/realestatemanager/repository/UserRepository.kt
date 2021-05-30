@@ -8,10 +8,10 @@ import com.sophieoc.realestatemanager.database.dao.UserDao
 import com.sophieoc.realestatemanager.model.Property
 import com.sophieoc.realestatemanager.model.User
 import com.sophieoc.realestatemanager.model.UserWithProperties
-import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.utils.TIMESTAMP
-import com.sophieoc.realestatemanager.utils.USERS_PATH
+import com.sophieoc.realestatemanager.util.PROPERTIES_PATH
+import com.sophieoc.realestatemanager.util.PreferenceHelper
+import com.sophieoc.realestatemanager.util.TIMESTAMP
+import com.sophieoc.realestatemanager.util.USERS_PATH
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow

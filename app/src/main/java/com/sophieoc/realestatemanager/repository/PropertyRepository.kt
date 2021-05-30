@@ -5,9 +5,9 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
 import com.sophieoc.realestatemanager.database.dao.PropertyDao
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.utils.PROPERTIES_PATH
-import com.sophieoc.realestatemanager.utils.PreferenceHelper
-import com.sophieoc.realestatemanager.utils.TIMESTAMP
+import com.sophieoc.realestatemanager.util.PROPERTIES_PATH
+import com.sophieoc.realestatemanager.util.PreferenceHelper
+import com.sophieoc.realestatemanager.util.TIMESTAMP
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -33,8 +33,10 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
                                 propertyToCreate.value = property
                                 upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
-                                Log.e(TAG, " createProperty: " +
-                                        propertyCreationTask.exception?.message)
+                                Log.e(
+                                    TAG, " createProperty: " +
+                                            propertyCreationTask.exception?.message
+                                )
                         }
                 } else if (propertyIdTask.exception != null) Log.e(
                     TAG, " createProperty: " + propertyIdTask.exception?.message
@@ -68,7 +70,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
         return properties
     }
 
-    private fun getPropertiesFromRoom(properties: MutableStateFlow<List<Property>?>) {
+    private suspend fun getPropertiesFromRoom(properties: MutableStateFlow<List<Property>?>) {
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getProperties().collect { propertyList ->
                 properties.value = propertyList
@@ -142,7 +144,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
     }
 
     fun getPriceOfPriciestProperty(): Flow<Int?> {
-        val priceMutable : MutableStateFlow<Int?> = MutableStateFlow(null)
+        val priceMutable: MutableStateFlow<Int?> = MutableStateFlow(null)
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getPriceOfPriciestProperty().collect { price ->
                 priceMutable.value = price
@@ -153,7 +155,7 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
     }
 
     fun getSurfaceOfBiggestProperty(): Flow<Int?> {
-        val surfaceMutable : MutableStateFlow<Int?> = MutableStateFlow(null)
+        val surfaceMutable: MutableStateFlow<Int?> = MutableStateFlow(null)
         CoroutineScope(Dispatchers.IO).launch {
             propertyDao.getSurfaceOfBiggestProperty().collect { surface ->
                 surfaceMutable.value = surface

@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
-import com.sophieoc.realestatemanager.utils.PropertyAvailability
-import com.sophieoc.realestatemanager.utils.PropertyType
+import com.sophieoc.realestatemanager.util.PropertyAvailability
+import com.sophieoc.realestatemanager.util.PropertyType
 import java.util.*
 import kotlin.collections.ArrayList
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.sophieoc.realestatemanager.presentation.ui.settings.SettingsActivity" />
+            type="com.sophieoc.realestatemanager.ui.settings.SettingsActivity" />
         <variable
             name="user"
             type="com.sophieoc.realestatemanager.model.User" />

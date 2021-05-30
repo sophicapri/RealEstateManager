@@ -27,20 +27,20 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <activity android:name=".presentation.ui.SplashScreenActivity"
+        <activity android:name=".ui.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-        <activity android:name=".presentation.ui.MainActivity" />
-    <activity android:name=".presentation.ui.LoginActivity" />
-    <activity android:name=".presentation.ui.map.MapActivity" />
-    <activity android:name=".presentation.ui.userproperty.UserPropertiesActivity" />
-        <activity android:name=".presentation.ui.property.PropertyDetailActivity" />
-        <activity android:name=".presentation.ui.editproperty.EditAddPropertyActivity" />
-        <activity android:name=".presentation.ui.settings.SettingsActivity" />
+        <activity android:name=".ui.MainActivity" />
+    <activity android:name=".ui.LoginActivity" />
+    <activity android:name=".ui.map.MapActivity" />
+    <activity android:name=".ui.user.UserPropertiesActivity" />
+        <activity android:name=".ui.property.PropertyDetailActivity" />
+        <activity android:name=".ui.editproperty.EditAddPropertyActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
 
         <provider
             android:authorities="com.sophieoc.realestatemanager.provider"

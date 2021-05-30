@@ -9,11 +9,11 @@
 
         <import type="java.util.Locale" />
 
-        <import type="com.sophieoc.realestatemanager.utils.ExtensionsKt" />
+        <import type="com.sophieoc.realestatemanager.util.ExtensionsKt" />
 
         <variable
             name="fragment"
-            type="com.sophieoc.realestatemanager.presentation.ui.property.PropertyDetailFragment" />
+            type="com.sophieoc.realestatemanager.ui.property.PropertyDetailFragment" />
 
         <variable
             name="user"

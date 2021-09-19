@@ -38,6 +38,7 @@ Functionalities:
 - Content Provider
 - WorkManager
 - ActivityResult
+- MockK
 
 **"initial_school_version" branch:**
  - Koin

@@ -1,5 +1,6 @@
 # Real Estate Manager
-**School project**
+**School project** Edit 2021: This is an old project. The architecture and the error handling could be improved. 
+
 
 App for Real Estate agents to manage their properties.
 
@@ -16,13 +17,16 @@ Functionalities:
 - Access data in offline mode
 
 ## Screenshots
-![](screenshots/list_properties.png).![](screenshots/property_detail.png)  
-![](screenshots/add_address.png).![](screenshots/main_info.png).![](screenshots/add_pictures.png)
-![](screenshots/filter.png)
 
-**Tablet mode:**
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/list_properties.png" align="left" width="30%">
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/property_detail.png" align="left" width="30%">
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/add_address.png" align="left" width="30%">
 
-![](screenshots/tablet.png)
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/main_info.png" align="left" width="30%">
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/add_pictures.png" align="left" width="30%">
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/filter.png" align="left" width="30%">
+
+<img src="https://github.com/sophicapri/RealEstateManager/blob/master/screenshots/tablet.png" width="70%">
 
 ## Stack
 - FirebaseUI
@@ -38,6 +42,7 @@ Functionalities:
 - Content Provider
 - WorkManager
 - ActivityResult
+- MockK
 
 **"initial_school_version" branch:**
  - Koin

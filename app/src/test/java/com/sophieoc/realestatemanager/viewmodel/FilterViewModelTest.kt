@@ -3,9 +3,9 @@ package com.sophieoc.realestatemanager.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.sophieoc.realestatemanager.model.Property
-import com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel
-import com.sophieoc.realestatemanager.presentation.ui.filter.FilterViewModel
 import com.sophieoc.realestatemanager.repository.PropertyRepository
+import com.sophieoc.realestatemanager.ui.filter.FilterViewModel
+import com.sophieoc.realestatemanager.ui.property.PropertyViewModel
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertSame

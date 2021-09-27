@@ -9,7 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
-import com.sophieoc.realestatemanager.utils.Utils
+import com.sophieoc.realestatemanager.util.Utils
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.Matchers
 import org.junit.Before

@@ -6,7 +6,7 @@
     <data>
       <variable
             name="propertyViewModel"
-            type="com.sophieoc.realestatemanager.presentation.ui.PropertyViewModel" />
+            type="com.sophieoc.realestatemanager.ui.property.PropertyViewModel" />
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

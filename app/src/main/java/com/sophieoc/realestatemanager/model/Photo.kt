@@ -1,7 +1,7 @@
 package com.sophieoc.realestatemanager.model
 
 import androidx.room.ColumnInfo
-import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE_PROPERTY
+import com.sophieoc.realestatemanager.util.NO_IMAGE_AVAILABLE_PROPERTY
 
 data class Photo(
         @ColumnInfo(name = "url_photo") val urlPhoto: String,

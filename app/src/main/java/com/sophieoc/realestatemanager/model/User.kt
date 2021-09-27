@@ -3,7 +3,7 @@ package com.sophieoc.realestatemanager.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.sophieoc.realestatemanager.utils.NO_IMAGE_AVAILABLE_USER
+import com.sophieoc.realestatemanager.util.NO_IMAGE_AVAILABLE_USER
 
 @Entity(tableName = "users")
 data class User(

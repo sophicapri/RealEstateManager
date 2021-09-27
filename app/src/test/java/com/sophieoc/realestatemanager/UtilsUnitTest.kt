@@ -1,6 +1,6 @@
 package com.sophieoc.realestatemanager
 
-import com.sophieoc.realestatemanager.utils.Utils
+import com.sophieoc.realestatemanager.util.Utils
 import org.junit.Assert
 import org.junit.Test
 import java.util.*

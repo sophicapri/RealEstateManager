@@ -4,8 +4,8 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.sophieoc.realestatemanager.model.Address
 import com.sophieoc.realestatemanager.model.Photo
-import com.sophieoc.realestatemanager.utils.PropertyAvailability
-import com.sophieoc.realestatemanager.utils.PropertyType
+import com.sophieoc.realestatemanager.util.PropertyAvailability
+import com.sophieoc.realestatemanager.util.PropertyType
 import java.util.*
 
 class Converters {

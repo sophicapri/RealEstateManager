@@ -35,6 +35,7 @@ class UserPropertiesFragment : Fragment() {
     }
 
     private fun bindViews() {
+        configureRecyclerView(binding.recyclerViewUserProperties)
         val id = if (requireActivity().intent.hasExtra(USER_ID))
             requireActivity().intent.extras?.get(USER_ID) as String
         else
@@ -53,7 +54,6 @@ class UserPropertiesFragment : Fragment() {
                                                 userUiState.userWithProperties.user.username)
                                     else
                                         myToolbar.title = activity?.getString(R.string.my_properties)
-                                    configureRecyclerView(recyclerViewUserProperties)
                                 }
                             }
                         is UserUiState.Error -> {/*TODO:*/}

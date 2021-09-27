@@ -76,4 +76,9 @@ class UserPropertiesFragment : Fragment() {
             (requireActivity() as UserPropertiesActivity).onPropertyClick(propertyId)
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

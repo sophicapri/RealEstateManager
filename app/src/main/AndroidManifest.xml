@@ -28,7 +28,8 @@
             android:value="@string/API_KEY" />
 
         <activity android:name=".presentation.ui.SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

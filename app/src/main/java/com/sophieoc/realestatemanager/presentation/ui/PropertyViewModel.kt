@@ -59,17 +59,16 @@ class PropertyViewModel @Inject constructor(private val propertySource: Property
                 = MutableStateFlow(PropertyListUiState.Loading)
         viewModelScope.launch {
             propertySource.getAllProperties()
-                .catch { e ->
-                    propertyList.value = PropertyListUiState.Error(e)
-                }
+                .catch { e -> propertyList.value = PropertyListUiState.Error(e) }
                 .collect { propertyListReceived ->
-                    if (propertyListReceived == null)
-                        propertyList.value = PropertyListUiState.Loading
-                    else if (propertyListReceived.isEmpty()) {
-                        propertyList.value = PropertyListUiState.Empty
-                        Log.d(TAG, "getProperties: empty ?")
-                    } else
-                        propertyList.value = PropertyListUiState.Success(propertyListReceived)
+                    when {
+                        propertyListReceived == null -> propertyList.value = PropertyListUiState.Loading
+                        propertyListReceived.isEmpty() -> {
+                            propertyList.value = PropertyListUiState.Empty
+                            Log.d(TAG, "getProperties: empty ?")
+                        }
+                        else -> propertyList.value = PropertyListUiState.Success(propertyListReceived)
+                    }
                 }
         }
         return propertyList

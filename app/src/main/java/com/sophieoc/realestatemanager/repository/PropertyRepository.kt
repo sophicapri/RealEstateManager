@@ -33,12 +33,10 @@ class PropertyRepository(private val propertyDao: PropertyDao) {
                                 propertyToCreate.value = property
                                 upsertInRoom(property)
                             } else if (propertyCreationTask.exception != null)
-                                Log.e(TAG, " createProperty: " +
-                                        propertyCreationTask.exception?.message)
+                                throw Exception(propertyCreationTask.exception)
                         }
-                } else if (propertyIdTask.exception != null) Log.e(
-                    TAG, " createProperty: " + propertyIdTask.exception?.message
-                )
+                } else if (propertyIdTask.exception != null)
+                    throw Exception(propertyIdTask.exception)
             }
         return propertyToCreate
     }

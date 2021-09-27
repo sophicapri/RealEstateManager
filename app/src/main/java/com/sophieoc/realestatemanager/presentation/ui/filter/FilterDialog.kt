@@ -206,7 +206,7 @@ class FilterDialog(
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US)
-        val selectedDate = GregorianCalendar(year, month, dayOfMonth).time
+        val selectedDate: Date = GregorianCalendar(year, month, dayOfMonth).time
         bindingFilter.selectDate.text = df.format(selectedDate)
         bindingFilter.selectDate.setTextColor(
             ContextCompat.getColor(

@@ -2,7 +2,7 @@
 
 # Real Estate Manager
 
-**School project** Edit 2021: This is an old project. The architecture and the error handling could be improved. 
+**School project**
 
 App for Real Estate agents to manage their properties.
 
